@@ -1,0 +1,25 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+}
+
+.texto-centralizado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.botao {
+  color: white;
+  font-weight: bold;
+  font-size: 16pt;
+  transition: 0.5s all;
+}
+
+.botao:hover {
+  background-color: #fc9700;
+  color: white;
+}
