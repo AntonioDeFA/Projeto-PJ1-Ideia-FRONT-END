@@ -10,13 +10,13 @@ import "./styles.css";
 function Login() {
   return (
     <div id="page-login">
-      <div className="row">
-        <div className="col mt-5">
+      <div className="row m-0">
+        <div className="col mt-5 px-5">
           <div className="container">
-            <div className="texto-centralizado">
+            <div className="elementos-centralizados">
               <h2>Seja bem vindo!</h2>
             </div>
-            <div className="texto-centralizado">
+            <div className="elementos-centralizados">
               <h4>Faça seu Login</h4>
             </div>
           </div>
@@ -53,7 +53,7 @@ function Login() {
               </div>
 
               <button
-                class="btn btn-warning botao"
+                class="btn btn-warning botao-personalizado" id="botao-login"
               >
                 LOGIN
               </button>

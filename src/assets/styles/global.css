@@ -1,0 +1,72 @@
+:root {
+  --color-background: #FFF;
+  --color-button-text: #FFF;
+  --color-background-button: #FFC107;
+  --color-button-hover: #fc7a00;
+  --color-titles: #000;
+  --color-secundary-titles: rgb(20, 19, 19);
+  --color-inscricoes: #70AD47;
+  --color-aquecimento: rgb(255, 43, 43);
+  --color-imersao: #2B78E4;
+  --color-pitch: #FFC107;
+  --color-encerrado: #999;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100vh; /*Para que a aplicação ocupe toda a altura da tela*/
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+body {
+  background: var(--color-background);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Arial', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  text-align: center;
+}
+
+.elementos-centralizados {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulos-principais {
+  font-size: 24pt;
+}
+
+.botao-personalizado {
+  color: var(--color-button-text);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 16pt;
+  transition: 0.5s all;
+  padding: 5px;
+}
+
+#botao-login {
+  padding: 5px 0 5px 0;
+}
+
+.botao-personalizado:hover {
+  background-color: var(--color-button-hover);
+  color: white;
+}
