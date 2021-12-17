@@ -9,9 +9,9 @@ function ProjetoRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/minhas_competicoes" element={<MinhasCompeticoes />} />
         <Route exact path="/" element={<CompeticoesAbertas />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/minhasCompeticoes" element={<MinhasCompeticoes />} />
       </Routes>
     </BrowserRouter>
   );
