@@ -1,10 +1,10 @@
 import React from "react";
 
-import ImagemLogo from '../assets/images/Imagem1.png';
-import Dropdown from '../assets/images/Dropdown.png';
-import Grupo from '../assets/images/Grupo.png';
-import Trofeu from '../assets/images/Trofeu.png';
-import Confirma from '../assets/images/Confirma.png';
+import ImagemLogo from '../../assets/images/Imagem1.png';
+import Dropdown from '../../assets/images/Dropdown.png';
+import Grupo from '../../assets/images/Grupo.png';
+import Trofeu from '../../assets/images/Trofeu.png';
+import Confirma from '../../assets/images/Confirma.png';
 
 function DefaultHeader() {
   return (

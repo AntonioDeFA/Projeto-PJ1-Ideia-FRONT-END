@@ -10,8 +10,8 @@ import "./styles.css";
 function Login() {
   return (
     <div id="page-login">
-      <div className="row">
-        <div className="col mt-5">
+      <div className="row m-0">
+        <div className="col mt-5 px-5">
           <div className="container">
             <div className="texto-centralizado">
               <h2>Seja bem vindo!</h2>
