@@ -23,32 +23,75 @@ function DefaultHeader() {
           <ul className="nav nav-pills justify-content-center">
 
             <li className="nav-item bg-light">
-              <a class="nav-link active bg-light p-0" aria-current="page" href="#">
-                <img src={Trofeu} alt="navegacao_trofeu" className="img-fluid" />
+              <a
+                class="nav-link active bg-light p-0"
+                aria-current="page"
+                href="#">
+
+                <img
+                  src={Trofeu}
+                  alt="navegacao_trofeu"
+                  className="img-fluid"
+                />
+
               </a>
             </li>
 
             <li className="nav-item">
-              <a class="nav-link active bg-warning p-0" aria-current="page" href="#">
-                <img src={Confirma} alt="navegacao_confirma" className="img-fluid" />
+              <a
+                class="nav-link active bg-warning p-0"
+                aria-current="page"
+                href="#">
+
+                <img
+                  src={Confirma}
+                  alt="navegacao_confirma"
+                  className="img-fluid"
+                />
+
               </a>
             </li>
 
             <li className="nav-item">
-              <a class="nav-link active bg-warning p-0" aria-current="page" href="#">
-                <img src={Confirma} alt="navegacao_confirma" className="img-fluid" />
+              <a
+                class="nav-link active bg-warning p-0"
+                aria-current="page"
+                href="#">
+                <img
+                  src={Confirma}
+                  alt="navegacao_confirma"
+                  className="img-fluid"
+                />
               </a>
             </li>
 
             <li className="nav-item">
-              <a class="nav-link active bg-warning p-0" aria-current="page" href="#">
-                <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
+              <a
+                class="nav-link active bg-warning p-0"
+                aria-current="page"
+                href="#">
+
+                <img
+                  src={Grupo}
+                  alt="navegacao_grupo"
+                  className="img-fluid"
+                />
+
               </a>
             </li>
 
             <li className="nav-item">
-              <a class="nav-link active bg-warning p-0" aria-current="page" href="#">
-                <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
+              <a
+                class="nav-link active bg-warning p-0"
+                aria-current="page"
+                href="#">
+
+                <img
+                  src={Grupo}
+                  alt="navegacao_grupo"
+                  className="img-fluid"
+                />
+
               </a>
             </li>
 
