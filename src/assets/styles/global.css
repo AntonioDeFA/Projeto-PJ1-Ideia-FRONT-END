@@ -2,7 +2,7 @@
   --color-background: #FFF;
   --color-button-text: #FFF;
   --color-background-button: #FFC107;
-  --color-button-hover: #fc7a00;
+  --color-button-hover: #FC7A00;
   --color-titles: #000;
   --color-secundary-titles: rgb(20, 19, 19);
   --color-inscricoes: #70AD47;
@@ -10,6 +10,7 @@
   --color-imersao: #2B78E4;
   --color-pitch: #FFC107;
   --color-encerrado: #999;
+  --color-background-aside: rgb(223, 222, 222);
 }
 
 * {
@@ -62,11 +63,21 @@ body {
   padding: 5px;
 }
 
+.botao-menor-personalizado {
+  color: var(--color-button-text);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13pt;
+  transition: 0.5s all;
+  padding: 5px;
+}
+
 #botao-login {
   padding: 5px 0 5px 0;
 }
 
-.botao-personalizado:hover {
+.botao-personalizado:hover,
+.botao-menor-personalizado:hover {
   background-color: var(--color-button-hover);
   color: white;
 }

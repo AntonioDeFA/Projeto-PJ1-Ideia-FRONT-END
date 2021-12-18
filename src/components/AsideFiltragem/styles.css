@@ -1,5 +1,5 @@
 div .aside-filtragem-tela-inicial {
-  background-color: #ddd;
+  background-color: var(--color-background-aside);
   height: 100%;
   width: 18rem;
   padding: 15px;
@@ -8,4 +8,17 @@ div .aside-filtragem-tela-inicial {
 div #titulo-competicoes {
   margin-top: 12px;
   margin-bottom: 12px;
+}
+
+div .form-filtragem {
+  margin-top: 10px;
+  
+}
+
+div .margem-personalizada {
+  margin: 7px auto auto 8px;
+}
+
+div #radio-buttons-competicoes {
+  margin-top: 20px;
 }
