@@ -1,11 +1,13 @@
 import React from "react";
-import DefaultHeader from "../../components/DefaultHeader";
 
-function TelaInicialMinhasCompeticoes(){
+import DefaultHeader from "../../components/DefaultHeader";
+import AsideFiltragem from '../../components/AsideFiltragem'
+
+function TelaInicialMinhasCompeticoes() {
   return (
     <div id="page-minhas-competicoes">
-      <DefaultHeader/>
-      <h1>Minhas competições</h1>
+      <DefaultHeader />
+      <AsideFiltragem />
     </div>
   );
 }

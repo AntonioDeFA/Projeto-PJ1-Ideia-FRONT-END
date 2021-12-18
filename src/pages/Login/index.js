@@ -68,7 +68,7 @@ function Login() {
           </div>
         </div>
 
-        <div id="logo-img" className="col bg-warning">
+        <div className="col bg-warning elementos-centralizados">
           <img id="logo-img" src={ImgLogo} alt="Ideia" />
         </div>
       </div>
