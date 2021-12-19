@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -7,6 +7,8 @@ import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
+import FormGroup from '@mui/material/FormGroup';
+import Checkbox from '@mui/material/Checkbox';
 
 import "./styles.css";
 
@@ -61,17 +63,117 @@ const mesesDoAno = [
   }
 ];
 
-function AsideFiltragem() {
-  const [mesDoAno, setMesDoAno] = React.useState('');
-  const [opcaoCompeticoes, setOpcaoCompeticoes] = React.useState('');
+function AsideFiltragem(props) {
+  const [mesDoAno, setMesDoAno] = useState('');
+  const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('');
+  const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
-  const handleChange = (event) => {
+  const [checkboxAquecimento, setCheckboxAquecimento] = useState(false);
+  const [checkboxImersao, setCheckboxImersao] = useState(false);
+  const [checkboxPitch, setCheckboxPitch] = useState(false);
+  const [checkboxEncerrada, setCheckboxEncerrada] = useState(false);
+
+  const handleSelectMeses = (event) => {
     setMesDoAno(event.target.value);
+    // let mesSelecionado = event.target.value;
   };
 
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
+    // let opcaoCompeticoesSelecionada = event.target.value;
   };
+
+  const handleCheckboxAquecimento = (event) => {
+    setCheckboxAquecimento(event.target.checked);
+    console.log(`Aquecimento: ${event.target.checked}`);
+  };
+
+  const handleCheckboxImersao = (event) => {
+    setCheckboxImersao(event.target.checked);
+    console.log(`Imersão: ${event.target.checked}`);
+  };
+
+  const handleCheckboxPitch = (event) => {
+    setCheckboxPitch(event.target.checked);
+    console.log(`Pitch: ${event.target.checked}`);
+  };
+
+  const handleCheckboxEncerrada = (event) => {
+    setCheckboxEncerrada(event.target.checked);
+    console.log(`Encerrada: ${event.target.checked}`);
+  };
+
+  const checkboxes = () => {
+    if (props.hasCheckboxes) {
+      return (
+        <div className="margem-personalizada">
+          <FormGroup
+            value={etapasFiltragem}
+          >
+
+            <FormControlLabel
+              onChange={handleCheckboxAquecimento}
+              control={
+                <Checkbox
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#FC7A00',
+                    },
+                  }}
+                />
+              }
+              label="Aquecimento"
+            />
+
+            <FormControlLabel
+              onChange={handleCheckboxImersao}
+              control={
+                <Checkbox
+                  sx=
+                  {{
+                    '&.Mui-checked': {
+                      color: '#FC7A00',
+                    },
+                  }}
+                />
+              }
+              label="Imersão"
+            />
+
+            <FormControlLabel
+              onChange={handleCheckboxPitch}
+              control={
+                <Checkbox
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#FC7A00',
+                    },
+                  }}
+                />
+              }
+              label="Pitch"
+            />
+
+            <FormControlLabel
+              onChange={handleCheckboxEncerrada}
+              control={
+                <Checkbox
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#FC7A00',
+                    },
+                  }}
+                />
+              }
+              label="Encerrada"
+            />
+          </FormGroup>
+
+        </div>
+      );
+    }
+
+  }
 
   return (
     <div className="aside-filtragem-tela-inicial">
@@ -122,7 +224,7 @@ function AsideFiltragem() {
                 select
                 label="Mês"
                 value={mesDoAno}
-                onChange={handleChange}
+                onChange={handleSelectMeses}
                 variant="filled"
                 color="warning"
                 size="small"
@@ -147,16 +249,15 @@ function AsideFiltragem() {
           </Box>
         </div>
 
-        <div class="margem-personalizada">
+        <div className="margem-personalizada">
           <button className="btn btn-warning botao-menor-personalizado" id="botao-filtrar">
             filtrar
           </button>
         </div>
 
-        <div class="margem-personalizada" id="radio-buttons-competicoes">
+        <div className="margem-personalizada" id="radio-buttons-competicoes">
           <FormControl component="fieldset">
             <RadioGroup
-              aria-label="gender"
               name="controlled-radio-buttons-group"
               value={opcaoCompeticoes}
               onChange={handleRadioButtonsCompeticoes}
@@ -173,6 +274,7 @@ function AsideFiltragem() {
                   />
                 }
                 label="Competições Abertas"
+
               />
 
               <FormControlLabel
@@ -191,8 +293,10 @@ function AsideFiltragem() {
             </RadioGroup>
           </FormControl>
         </div>
-      </div>
 
+        {checkboxes()}
+
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ function DefaultHeader() {
 
             <li className="nav-item bg-light">
               <a
-                class="nav-link active bg-light p-0"
+                className="nav-link active bg-light p-0"
                 aria-current="page"
                 href="#">
 
@@ -39,7 +39,7 @@ function DefaultHeader() {
 
             <li className="nav-item">
               <a
-                class="nav-link active bg-warning p-0"
+                className="nav-link active bg-warning p-0"
                 aria-current="page"
                 href="#">
 
@@ -54,7 +54,7 @@ function DefaultHeader() {
 
             <li className="nav-item">
               <a
-                class="nav-link active bg-warning p-0"
+                className="nav-link active bg-warning p-0"
                 aria-current="page"
                 href="#">
                 <img
@@ -67,7 +67,7 @@ function DefaultHeader() {
 
             <li className="nav-item">
               <a
-                class="nav-link active bg-warning p-0"
+                className="nav-link active bg-warning p-0"
                 aria-current="page"
                 href="#">
 
@@ -82,7 +82,7 @@ function DefaultHeader() {
 
             <li className="nav-item">
               <a
-                class="nav-link active bg-warning p-0"
+                className="nav-link active bg-warning p-0"
                 aria-current="page"
                 href="#">
 

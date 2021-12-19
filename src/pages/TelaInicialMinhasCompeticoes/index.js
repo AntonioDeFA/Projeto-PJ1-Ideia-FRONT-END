@@ -7,7 +7,7 @@ function TelaInicialMinhasCompeticoes() {
   return (
     <div id="page-minhas-competicoes">
       <DefaultHeader />
-      <AsideFiltragem />
+      <AsideFiltragem hasCheckboxes="true" />
     </div>
   );
 }

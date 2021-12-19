@@ -23,24 +23,24 @@ function Login() {
 
           <div className="container mt-5">
             <form
-              class="row g-3 pb-4 needs-validation"
+              className="row g-3 pb-4 needs-validation"
             >
 
-              <div class="col-12">
-                <label for="username" class="form-label">Email</label>
+              <div className="col-12">
+                <label for="username" className="form-label">Email</label>
                 <input
                   name="username"
-                  class="form-control border border-dark"
+                  className="form-control border border-dark"
                   placeholder="exemplo@exemplo.com"
                 />
               </div>
 
-              <div class="col-12">
-                <label for="password" class="form-label mt-4">Senha</label>
+              <div className="col-12">
+                <label for="password" className="form-label mt-4">Senha</label>
                 <input
                   type="password"
                   name="password"
-                  class="form-control border border-dark"
+                  className="form-control border border-dark"
                   placeholder="Senha"
                 />
               </div>
@@ -53,7 +53,7 @@ function Login() {
               </div>
 
               <button
-                class="btn btn-warning botao-personalizado" id="botao-login"
+                className="btn btn-warning botao-personalizado" id="botao-login"
               >
                 LOGIN
               </button>

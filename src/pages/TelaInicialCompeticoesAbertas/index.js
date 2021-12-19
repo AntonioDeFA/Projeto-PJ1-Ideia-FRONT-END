@@ -13,7 +13,7 @@ function TelaInicialCompeticoesAbertas() {
   return (
     <div>
       <DefaultHeader />
-      <AsideFiltragem />
+      <AsideFiltragem hasCheckboxes="true" />
     </div>
   );
 }
