@@ -97,15 +97,14 @@ function DefaultHeader() {
 
           </ul>
 
-          <h6 className="ms-0">nome do usuário</h6>
-
           <div className="dropdown">
+            <h6 className="ms-0 align-self-center">nome do usuário</h6>
             <img
               src={Dropdown}
               alt="imagem_logo_2"
               className="img-fluid dropdown-toggle m-3"
-              height="120"
-              width="120"
+              height="70"
+              width="70"
               id="navbarDropdownMenu"
               role="button"
               data-bs-toggle="dropdown"
