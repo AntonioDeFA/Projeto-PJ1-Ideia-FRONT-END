@@ -13,7 +13,10 @@ function TelaInicialCompeticoesAbertas() {
   return (
     <div>
       <DefaultHeader />
-      <AsideFiltragem />
+
+      <AsideFiltragem
+        isCompeticoesAbertas="true"
+      />
     </div>
   );
 }
