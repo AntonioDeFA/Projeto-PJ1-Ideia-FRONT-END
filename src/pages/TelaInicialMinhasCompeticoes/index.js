@@ -5,9 +5,13 @@ import AsideFiltragem from '../../components/AsideFiltragem'
 
 function TelaInicialMinhasCompeticoes() {
   return (
-    <div id="page-minhas-competicoes">
+    <div id="minhas-competicoes">
       <DefaultHeader />
-      <AsideFiltragem hasCheckboxes="true" />
+
+      <AsideFiltragem
+        hasCheckboxes="true"
+        isCompeticoesAbertas="false"
+      />
     </div>
   );
 }

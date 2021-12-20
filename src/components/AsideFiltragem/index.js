@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -65,13 +65,19 @@ const mesesDoAno = [
 
 function AsideFiltragem(props) {
   const [mesDoAno, setMesDoAno] = useState('');
+
   const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('');
+  const [isCompeticoesAbertas, setIsCompeticoesAbertas] = useState(false);
+
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
   const [checkboxAquecimento, setCheckboxAquecimento] = useState(false);
   const [checkboxImersao, setCheckboxImersao] = useState(false);
   const [checkboxPitch, setCheckboxPitch] = useState(false);
   const [checkboxEncerrada, setCheckboxEncerrada] = useState(false);
+
+  const rdButtonCompeticoesAbertas = useRef(null);
+  const rdButtonMinhasCompeticoes = useRef(null);
 
   const handleSelectMeses = (event) => {
     setMesDoAno(event.target.value);
@@ -80,7 +86,16 @@ function AsideFiltragem(props) {
 
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
+
     // let opcaoCompeticoesSelecionada = event.target.value;
+
+    if (isCompeticoesAbertas) {
+      setIsCompeticoesAbertas(true);
+      console.log(rdButtonCompeticoesAbertas.current);
+    } else {
+      setIsCompeticoesAbertas(false);
+      console.log(rdButtonMinhasCompeticoes.current);
+    }
   };
 
   const handleCheckboxAquecimento = (event) => {
@@ -256,7 +271,7 @@ function AsideFiltragem(props) {
         </div>
 
         <div className="margem-personalizada" id="radio-buttons-competicoes">
-          <FormControl component="fieldset">
+          <FormControl component="fieldset" >
             <RadioGroup
               name="controlled-radio-buttons-group"
               value={opcaoCompeticoes}
@@ -264,6 +279,7 @@ function AsideFiltragem(props) {
             >
               <FormControlLabel
                 value="competicoesAbertas"
+                ref={rdButtonCompeticoesAbertas}
                 control={
                   <Radio sx={{
                     color: '#999',
@@ -274,11 +290,11 @@ function AsideFiltragem(props) {
                   />
                 }
                 label="Competições Abertas"
-
               />
 
               <FormControlLabel
                 value="minhasCompeticoes"
+                ref={rdButtonMinhasCompeticoes}
                 control={
                   <Radio sx={{
                     color: '#999',

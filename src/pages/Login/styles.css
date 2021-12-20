@@ -1,4 +1,25 @@
-div .page-login {
-  position: absolute;
-  height: 100vh;
+div #saudacoes {
+  margin: 10% auto 7% auto;
+}
+
+div .input {
+  margin-bottom: 20px;
+}
+
+div #inputs,
+div #botao-login {
+  margin: 3% auto 3% auto;
+}
+
+div #botao-login button {
+  width: 550px;
+}
+
+div #link-criar-conta {
+  margin: 3% auto 16.7% auto;
+}
+
+div #opcoes-links,
+div #link-criar-conta {
+  margin-left: 55px;
 }

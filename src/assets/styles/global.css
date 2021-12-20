@@ -50,6 +50,12 @@ body {
   align-items: center;
 }
 
+.elementos-alinhados-esquerda {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
 .titulos-principais {
   font-size: 24pt;
 }
@@ -72,9 +78,7 @@ body {
   padding: 5px;
 }
 
-#botao-login {
-  padding: 5px 0 5px 0;
-}
+
 
 .botao-personalizado:hover,
 .botao-menor-personalizado:hover {
