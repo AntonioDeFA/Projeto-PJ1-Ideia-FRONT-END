@@ -78,6 +78,10 @@ body {
   padding: 5px;
 }
 
+div .tamanho-card-personalizado{
+  width: 120%;
+}
+
 
 
 .botao-personalizado:hover,

@@ -1,9 +1,12 @@
 import React from "react";
+import CardCompeticao from "../CardCompeticao";
+import CardMinhasCompeticoes from "../CardMinhasCompeticoes";
+import "./styles.css";
 
 function CardItemList() {
-  return(
-    <div>
-      <h1>Esse é o cardItemList</h1>
+  return (
+    <div id="component-cardItemList" className=" me-5 margem-personalizada-list">
+      <CardCompeticao />
     </div>
   );
 }
