@@ -1,7 +1,9 @@
 import React from "react";
+import Grid from '@mui/material/Grid';
 
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from "../../components/AsideFiltragem";
+import CardItemList from "../../components/CardItemList";
 
 // import { Link } from "react-router-dom";
 
@@ -13,10 +15,12 @@ function TelaInicialCompeticoesAbertas() {
   return (
     <div>
       <DefaultHeader />
-
-      <AsideFiltragem
-        isCompeticoesAbertas="true"
-      />
+      <Grid container >
+        <AsideFiltragem
+          isCompeticoesAbertas="true"
+        />
+        <CardItemList />
+      </Grid>
     </div>
   );
 }

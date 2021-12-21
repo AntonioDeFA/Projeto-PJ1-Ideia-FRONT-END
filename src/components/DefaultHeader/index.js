@@ -97,7 +97,7 @@ function DefaultHeader() {
 
           </ul>
 
-          <div className="row">
+          <div className="row ">
             <div className="col">
               <h6 className="ms-3 align-middle">nome do usuário</h6>
             </div>
