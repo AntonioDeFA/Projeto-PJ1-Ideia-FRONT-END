@@ -2,6 +2,7 @@ import React from "react";
 
 import Lixo from '../../assets/images/lixo.svg';
 import Entrar from '../../assets/images/entrar.svg';
+import Editar from '../../assets/images/editar.svg';
 
 import '../../assets/styles/global.css';
 import "./styles.css";
@@ -44,6 +45,21 @@ function CardMinhasCompeticoes(props) {
     return element;
   }
 
+  const iconEditarCompeticao = () => {
+    if (props.userRole === 'ORGANIZADOR') {
+      return (
+        <a href="#">
+          <img
+            src={Editar}
+            alt="editar"
+            className="img-fluid"
+            width="20"
+            height="20" />
+        </a>
+      );
+    }
+  }
+
   return (
     <div id="component-cardCompeticao" className="me-5 margem-personalizada-card">
       <div className="card border border-warning tamanho-card-personalizado">
@@ -60,6 +76,7 @@ function CardMinhasCompeticoes(props) {
             {handleEtapaCompeticao()}
 
             <div>
+              {iconEditarCompeticao()}
               <a href="#">
                 <img
                   src={Entrar}
