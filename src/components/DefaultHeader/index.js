@@ -6,10 +6,12 @@ import Grupo from '../../assets/images/Grupo.svg';
 import Trofeu from '../../assets/images/Trofeu.svg';
 import Confirma from '../../assets/images/Confirma.svg';
 
+import "./styles.css";
+
 function DefaultHeader() {
   return (
     <div id="component-defaultHeader">
-      <div className="bg-warning navbar navbar-light text-white pb-0 pt-0">
+      <div className="bg-warning navbar navbar-light text-white pb-2 pt-2">
         <div className="container-fluid ">
 
           <img
@@ -97,11 +99,11 @@ function DefaultHeader() {
 
           </ul>
 
-          <div className="row ">
-            <div className="col">
-              <h6 className="ms-3 align-middle">nome do usuário</h6>
+          <div className="row">
+            <div className="col elementos-alinhados-esquerda">
+              <h6 className="fw-bold nome-usuario">nome do usuário</h6>
             </div>
-            <div className="col dropdown ">
+            <div className="col dropdown">
               <img
                 src={Dropdown}
                 alt="imagem_logo_2"
