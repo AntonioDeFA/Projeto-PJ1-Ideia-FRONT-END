@@ -11,7 +11,7 @@ import "./styles.css";
 function DefaultHeader() {
   return (
     <div id="component-defaultHeader">
-      <div className="bg-warning navbar navbar-light text-white pb-2 pt-2">
+      <div className="bg-warning navbar navbar-light text-white pb-0 pt-0">
         <div className="container-fluid ">
 
           <img
@@ -24,7 +24,7 @@ function DefaultHeader() {
 
           <ul className="nav nav-pills justify-content-center ">
 
-            <li className="nav-item bg-light mt-0">
+            <li className="nav-item bg-light mt-0 pt-3 pb-3 px-2">
               <a
                 className="nav-link active bg-light p-0"
                 aria-current="page"
@@ -33,13 +33,11 @@ function DefaultHeader() {
                 <img
                   src={Trofeu}
                   alt="navegacao_trofeu"
-                  className="img-fluid"
                 />
-
               </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item mt-0 pt-3 pb-3 px-2">
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
@@ -48,13 +46,11 @@ function DefaultHeader() {
                 <img
                   src={Confirma}
                   alt="navegacao_confirma"
-                  className="img-fluid"
                 />
-
               </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item mt-0 pt-3 pb-3 px-2">
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
@@ -62,12 +58,24 @@ function DefaultHeader() {
                 <img
                   src={Confirma}
                   alt="navegacao_confirma"
-                  className="img-fluid"
                 />
               </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item mt-0 pt-3 pb-3 px-2">
+              <a
+                className="nav-link active bg-warning p-0"
+                aria-current="page"
+                href="#">
+
+                <img
+                  src={Grupo}
+                  alt="navegacao_grupo"
+                />
+              </a>
+            </li>
+
+            <li className="nav-item mt-0 pt-3 pb-3 px-2">
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
@@ -81,22 +89,6 @@ function DefaultHeader() {
 
               </a>
             </li>
-
-            <li className="nav-item">
-              <a
-                className="nav-link active bg-warning p-0"
-                aria-current="page"
-                href="#">
-
-                <img
-                  src={Grupo}
-                  alt="navegacao_grupo"
-                  className="img-fluid"
-                />
-
-              </a>
-            </li>
-
           </ul>
 
           <div className="row">
@@ -130,8 +122,6 @@ function DefaultHeader() {
               </ul>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
