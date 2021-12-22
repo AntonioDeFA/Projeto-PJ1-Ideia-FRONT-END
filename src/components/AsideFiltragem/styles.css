@@ -3,6 +3,8 @@ div .aside-filtragem-tela-inicial {
   height: 100%;
   width: 18rem;
   padding: 15px;
+  display: block;
+  float: left;
 }
 
 div #titulo-competicoes {

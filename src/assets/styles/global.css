@@ -78,14 +78,24 @@ body {
   padding: 5px;
 }
 
-div .tamanho-card-personalizado{
-  width: 120%;
-}
-
-
-
 .botao-personalizado:hover,
 .botao-menor-personalizado:hover {
   background-color: var(--color-button-hover);
   color: white;
+}
+
+div .tamanho-card-personalizado {
+  width: 255px;
+  height: 240px;
+}
+
+div .margem-personalizada-card {
+  margin-top: 75px;
+  padding-left: 50px;
+}
+
+div .listagem-cards-competicoes ul li {
+  display: inline-block;
+  width: 305px;
+  margin-left: 30px;
 }

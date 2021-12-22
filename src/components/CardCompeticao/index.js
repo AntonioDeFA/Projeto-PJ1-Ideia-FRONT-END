@@ -1,9 +1,11 @@
 import React from "react";
+
 import '../../assets/styles/global.css';
+import "./styles.css";
 
 function CardCompeticao() {
   return (
-    <div id="component-cardCompeticao">
+    <div id="component-cardCompeticao" className="me-5 margem-personalizada-card">
       <div className="card border border-warning tamanho-card-personalizado">
         <div className="card-header bg-warning">
           <h5 className="card-title fw-bold">PITCH DO IF</h5>

@@ -2,22 +2,63 @@ import React from "react";
 
 import Lixo from '../../assets/images/lixo.svg';
 import Entrar from '../../assets/images/entrar.svg';
-import '../../assets/styles/global.css';
 
-function CardMinhasCompeticoes() {
+import '../../assets/styles/global.css';
+import "./styles.css";
+import { RotateLeft } from "@mui/icons-material";
+
+function CardMinhasCompeticoes(props) {
+
+  const handlePapelUsuario = () => {
+    let element = null;
+
+    if (props.userRole === 'ORGANIZADOR') {
+      element =
+        <div className="justify-content-center text-center border border-success mb-5">
+          <h6 className="text-success m-0">ORGANIZADOR</h6>
+        </div>;
+
+    } else if (props.userRole === 'COMPETIDOR') {
+      element =
+        <div className="justify-content-center text-center border border-danger mb-5">
+          <h6 className="text-danger m-0">COMPETIDOR</h6>
+        </div>;
+    }
+
+    return element;
+  }
+
+  const handleEtapaCompeticao = () => {
+    let element = null
+
+    if (props.etapaAtual === "AQUECIMENTO") {
+      element = <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>;
+    } else if (props.etapaAtual === "IMERSÃO") {
+      element = <h6 className="text-primary fw-bold m-0">IMERSÃO</h6>;
+    } else if (props.etapaAtual === "PITCH") {
+      element = <h6 className="text-warning fw-bold m-0">PITCH</h6>;
+    } else if (props.etapaAtual === "ENCERRADA") {
+      element = <h6 className="text-secondary fw-bold m-0">ENCERRADA</h6>;
+    }
+
+    return element;
+  }
+
   return (
-    <div id="component-cardCompeticao">
+    <div id="component-cardCompeticao" className="me-5 margem-personalizada-card">
       <div className="card border border-warning tamanho-card-personalizado">
+
         <div className="card-header bg-warning">
           <h5 className="card-title fw-bold">PITCH DO IF</h5>
           <h6 className="card-subtitle">21/12/2021 - 27/12/2021</h6>
         </div>
+
         <div className="card-body">
-          <div className="justify-content-center text-center border border-danger mb-5">
-            <h6 className="text-danger m-0">COMPETIDOR</h6>
-          </div>
-          <div className="navbar p-0">
-            <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>
+          {handlePapelUsuario()}
+
+          <div className="navbar p-0 etapa-atual">
+            {handleEtapaCompeticao()}
+
             <div>
               <a href="#">
                 <img
