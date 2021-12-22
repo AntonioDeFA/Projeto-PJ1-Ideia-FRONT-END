@@ -2,7 +2,7 @@ import React from "react";
 
 import Lixo from '../../assets/images/lixo.svg';
 import Entrar from '../../assets/images/entrar.svg';
-import Editar from '../../assets/images/editar.svg';
+import Editar from '../../assets/images/Editar.svg';
 
 import '../../assets/styles/global.css';
 import "./styles.css";
