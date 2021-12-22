@@ -5,3 +5,8 @@ div h6 .nome-usuario {
 h6 .nome-usuario {
   font-size: 20pt;
 }
+
+ul .margem-dropdown{
+  margin-left: 150px;
+}
+

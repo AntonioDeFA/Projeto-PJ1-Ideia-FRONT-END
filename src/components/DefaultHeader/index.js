@@ -91,11 +91,11 @@ function DefaultHeader() {
             </li>
           </ul>
 
-          <div className="row">
+          <div className="row dropdown">
             <div className="col elementos-alinhados-esquerda">
               <h6 className="fw-bold nome-usuario">nome do usuário</h6>
             </div>
-            <div className="col dropdown">
+            <div className="col ">
               <img
                 src={Dropdown}
                 alt="imagem_logo_2"
@@ -107,19 +107,21 @@ function DefaultHeader() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               />
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenu">
-                <li>
-                  <a href="#" className="nav-link text-dark">
-                    <h6>Meus dados</h6>
-                  </a>
-                </li>
+              <div className="dropdown-menu ms-5 p-0">
+                <ul className="list-group ms-3 p-0" aria-labelledby="navbarDropdownMenu">
+                  <li className="list-group-item m-0 p-0 border border-0">
+                    <a href="#" className="nav-link text-dark">
+                      <h6>Meus dados</h6>
+                    </a>
+                  </li>
 
-                <li>
-                  <a href="#" className="nav-link text-dark pt-0">
-                    <h6>Sair</h6>
-                  </a>
-                </li>
-              </ul>
+                  <li className="list-group-item m-0 p-0 border border-0">
+                    <a href="#" className="nav-link text-dark pt-0">
+                      <h6>Sair</h6>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -3,17 +3,21 @@ import React from "react";
 import '../../assets/styles/global.css';
 import "./styles.css";
 
-function CardCompeticao() {
+function CardCompeticao(props) {
+
+  let dataInicio = props.card.etapa.dataInicio;
+  let dataTermino = props.card.etapa.dataTermino;
+
   return (
     <div id="component-cardCompeticao" className="me-5 margem-personalizada-card">
       <div className="card border border-warning tamanho-card-personalizado">
         <div className="card-header bg-warning">
-          <h5 className="card-title fw-bold">PITCH DO IF</h5>
-          <h6 className="card-subtitle">21/12/2021 - 27/12/2021</h6>
+          <h5 className="card-title fw-bold">{props.card.nomeCompeticao}</h5>
+          <h6 className="card-subtitle">{dataInicio[2]}/{dataInicio[1]}/{dataInicio[0]} - {dataTermino[2]}/{dataTermino[1]}/{dataTermino[0]}</h6>
         </div>
         <div className="card-body">
           <div className="text-center">
-            <p>Para quem possui o domínio <br /> @academico.ifpb.edu.br</p>
+            <p>Para quem possui o domínio <br /> {props.card.dominioCompeticao}</p>
             <p>3 equipes inscritas</p>
           </div>
           <div className="text-end">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Grid from '@mui/material/Grid';
 
@@ -8,11 +8,25 @@ import CardCompeticao from "../../components/CardCompeticao";
 
 // import { Link } from "react-router-dom";
 
-// import api from "../../services/api";
+import api from "../../services/api";
 
 import "./styles.css";
 
 function TelaInicialCompeticoesAbertas() {
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.get("/competicoes/inscricoes?page=1").then((response) => {
+      const { content } = response.data;
+      setCards(content);
+    });
+  }, []);
+
+  const teste = () => {
+    console.log(cards);
+  }
+
   return (
     <div>
       <DefaultHeader />
@@ -23,16 +37,9 @@ function TelaInicialCompeticoesAbertas() {
           />
           <div className="listagem-cards-competicoes">
             <ul>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
-              <li><CardCompeticao /></li>
+              {cards.map((card) => {
+                return <li><CardCompeticao card={card} /></li>;
+              })}
             </ul>
           </div>
         </div>

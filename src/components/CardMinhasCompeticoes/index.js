@@ -10,6 +10,9 @@ import { RotateLeft } from "@mui/icons-material";
 
 function CardMinhasCompeticoes(props) {
 
+  let dataInicio = props.card.etapa.dataInicio;
+  let dataTermino = props.card.etapa.dataTermino;
+
   const handlePapelUsuario = () => {
     let element = null;
 
@@ -32,13 +35,13 @@ function CardMinhasCompeticoes(props) {
   const handleEtapaCompeticao = () => {
     let element = null
 
-    if (props.etapaAtual === "AQUECIMENTO") {
+    if (props.card.etapa.tipoEtapa === "AQUECIMENTO") {
       element = <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>;
-    } else if (props.etapaAtual === "IMERSÃO") {
-      element = <h6 className="text-primary fw-bold m-0">IMERSÃO</h6>;
-    } else if (props.etapaAtual === "PITCH") {
+    } else if (props.card.etapa.tipoEtapa === "IMERSAO") {
+      element = <h6 className="text-primary fw-bold m-0">IMERSAO</h6>;
+    } else if (props.card.etapa.tipoEtapa === "PITCH") {
       element = <h6 className="text-warning fw-bold m-0">PITCH</h6>;
-    } else if (props.etapaAtual === "ENCERRADA") {
+    } else if (props.card.etapa.tipoEtapa === "ENCERRADA") {
       element = <h6 className="text-secondary fw-bold m-0">ENCERRADA</h6>;
     }
 
@@ -65,8 +68,8 @@ function CardMinhasCompeticoes(props) {
       <div className="card border border-warning tamanho-card-personalizado">
 
         <div className="card-header bg-warning">
-          <h5 className="card-title fw-bold">PITCH DO IF</h5>
-          <h6 className="card-subtitle">21/12/2021 - 27/12/2021</h6>
+          <h5 className="card-title fw-bold">{props.card.nomeCompeticao}</h5>
+          <h6 className="card-subtitle">{dataInicio[2]}/{dataInicio[1]}/{dataInicio[0]} - {dataTermino[2]}/{dataTermino[1]}/{dataTermino[0]}</h6>
         </div>
 
         <div className="card-body">

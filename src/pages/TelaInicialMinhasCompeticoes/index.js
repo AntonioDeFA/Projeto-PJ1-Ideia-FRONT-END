@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Grid from '@mui/material/Grid';
 
@@ -6,7 +6,28 @@ import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from '../../components/AsideFiltragem';
 import CardMinhasCompeticoes from "../../components/CardMinhasCompeticoes";
 
+import api from "../../services/api";
+
 function TelaInicialMinhasCompeticoes() {
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.get("/competicoes/usuario/2").then((response) => {
+      const { data } = response;
+      setCards(data);
+    });
+  }, []);
+
+  let papel = "";
+  let cont = 0;
+
+  function papelUsuario() {
+
+    papel = cont % 2 == 0 ? "COMPETIDOR" : "ORGANIZADOR";
+    cont ++;
+  }
+
   return (
     <div id="minhas-competicoes">
       <DefaultHeader />
@@ -19,60 +40,10 @@ function TelaInicialMinhasCompeticoes() {
           />
           <div className="listagem-cards-competicoes">
             <ul>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="COMPETIDOR"
-                  etapaAtual="AQUECIMENTO"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="ORGANIZADOR"
-                  etapaAtual="IMERSÃO"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="COMPETIDOR"
-                  etapaAtual="PITCH"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="ORGANIZADOR"
-                  etapaAtual="ENCERRADA"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="COMPETIDOR"
-                  etapaAtual="AQUECIMENTO"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="ORGANIZADOR"
-                  etapaAtual="IMERSÃO"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="COMPETIDOR"
-                  etapaAtual="PITCH"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="ORGANIZADOR"
-                  etapaAtual="ENCERRADA"
-                />
-              </li>
-              <li>
-                <CardMinhasCompeticoes
-                  userRole="COMPETIDOR"
-                  etapaAtual="AQUECIMENTO"
-                />
-              </li>
+              {cards.map((card) => {
+                { papelUsuario() }
+                return <li><CardMinhasCompeticoes card={card} userRole={papel} /></li>;
+              })}
             </ul>
           </div>
         </div>
