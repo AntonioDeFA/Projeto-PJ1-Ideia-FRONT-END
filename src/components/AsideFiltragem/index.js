@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -277,35 +278,39 @@ function AsideFiltragem(props) {
               value={opcaoCompeticoes}
               onChange={handleRadioButtonsCompeticoes}
             >
-              <FormControlLabel
-                value="competicoesAbertas"
-                ref={rdButtonCompeticoesAbertas}
-                control={
-                  <Radio sx={{
-                    color: '#999',
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
-                    },
-                  }}
-                  />
-                }
-                label="Competições Abertas"
-              />
+              <Link to="/" className="link-aside">
+                <FormControlLabel
+                  value="competicoesAbertas"
+                  ref={rdButtonCompeticoesAbertas}
+                  control={
+                    <Radio sx={{
+                      color: '#999',
+                      '&.Mui-checked': {
+                        color: '#FC7A00',
+                      },
+                    }}
+                    />
+                  }
+                  label="Competições Abertas"
+                />
+              </Link>
 
-              <FormControlLabel
-                value="minhasCompeticoes"
-                ref={rdButtonMinhasCompeticoes}
-                control={
-                  <Radio sx={{
-                    color: '#999',
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
-                    },
-                  }}
-                  />
-                }
-                label="Minhas Competições"
-              />
+              <Link to="/minhasCompeticoes" className="link-aside">
+                <FormControlLabel
+                  value="minhasCompeticoes"
+                  ref={rdButtonMinhasCompeticoes}
+                  control={
+                    <Radio sx={{
+                      color: '#999',
+                      '&.Mui-checked': {
+                        color: '#FC7A00',
+                      },
+                    }}
+                    />
+                  }
+                  label="Minhas Competições"
+                />
+              </Link>
             </RadioGroup>
           </FormControl>
         </div>

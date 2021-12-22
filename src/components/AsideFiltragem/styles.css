@@ -25,3 +25,8 @@ div #radio-buttons-competicoes {
   margin-top: 25px;
   margin-bottom: 25px;
 }
+
+.link-aside {
+  text-decoration: none;
+  color: var(--color-titles);
+}
