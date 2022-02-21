@@ -22,32 +22,32 @@ function TelaInicialMinhasCompeticoes() {
   let papel = "";
   let cont = 0;
 
-  function papelUsuario() {
-
-    papel = cont % 2 == 0 ? "COMPETIDOR" : "ORGANIZADOR";
+  function identificarPapelUsuario() {
+    papel = cont % 2 === 0 ? "COMPETIDOR" : "ORGANIZADOR";
     cont ++;
   }
 
   return (
     <div id="minhas-competicoes">
       <DefaultHeader />
-
-      <Grid container >
-        <div>
+      <div className="row">
+        <div className="col-3">
           <AsideFiltragem
             hasCheckboxes="true"
             isCompeticoesAbertas="false"
           />
+        </div>
+        <div className="col p-0">
           <div className="listagem-cards-competicoes">
             <ul>
               {cards.map((card) => {
-                { papelUsuario() }
+                identificarPapelUsuario()
                 return <li><CardMinhasCompeticoes card={card} userRole={papel} /></li>;
               })}
             </ul>
           </div>
         </div>
-      </Grid>
+      </div>
     </div>
   );
 }

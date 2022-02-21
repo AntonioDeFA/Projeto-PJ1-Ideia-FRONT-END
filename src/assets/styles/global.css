@@ -1,14 +1,14 @@
 :root {
-  --color-background: #FFF;
-  --color-button-text: #FFF;
-  --color-background-button: #FFC107;
-  --color-button-hover: #FC7A00;
+  --color-background: #fff;
+  --color-button-text: #fff;
+  --color-background-button: #ffc107;
+  --color-button-hover: #fc7a00;
   --color-titles: #000;
   --color-secundary-titles: rgb(20, 19, 19);
-  --color-inscricoes: #70AD47;
+  --color-inscricoes: #70ad47;
   --color-aquecimento: rgb(255, 43, 43);
-  --color-imersao: #2B78E4;
-  --color-pitch: #FFC107;
+  --color-imersao: #2b78e4;
+  --color-pitch: #ffc107;
   --color-encerrado: #999;
   --color-background-aside: rgb(223, 222, 222);
 }
@@ -26,15 +26,15 @@ body,
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 body {
   background: var(--color-background);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Arial', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Arial", "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,16 +86,26 @@ body {
 
 div .tamanho-card-personalizado {
   width: 255px;
-  height: 240px;
+  min-height: 240px;
+
+  /* Verificar se não vai dar erro em CardMinhasCompeticoes */
+  margin-top: 75px;
 }
 
 div .margem-personalizada-card {
-  margin-top: 75px;
-  padding-left: 50px;
+  /* margin-top: 75px;
+  margin-left: 50px; */
+}
+
+div .listagem-cards-competicoes ul {
+  width: 100.8%;
+  padding-left: 0;
+  margin: 0;
 }
 
 div .listagem-cards-competicoes ul li {
   display: inline-block;
-  width: 305px;
-  margin-left: 30px;
+  width: 275px;
+  margin-right: 50px;
+  margin-left: 20px;
 }

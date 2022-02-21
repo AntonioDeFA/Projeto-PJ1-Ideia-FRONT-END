@@ -23,18 +23,16 @@ function TelaInicialCompeticoesAbertas() {
     });
   }, []);
 
-  const teste = () => {
-    console.log(cards);
-  }
-
   return (
     <div>
       <DefaultHeader />
-      <Grid container >
-        <div>
+      <div className="row">
+        <div className="col-3">
           <AsideFiltragem
             isCompeticoesAbertas="true"
           />
+        </div>
+        <div className="col p-0">
           <div className="listagem-cards-competicoes">
             <ul>
               {cards.map((card) => {
@@ -43,7 +41,7 @@ function TelaInicialCompeticoesAbertas() {
             </ul>
           </div>
         </div>
-      </Grid>
+      </div>
     </div>
   );
 }
