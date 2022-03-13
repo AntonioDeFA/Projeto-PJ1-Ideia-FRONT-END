@@ -6,7 +6,6 @@ import Editar from '../../assets/images/Editar.svg';
 
 import '../../assets/styles/global.css';
 import "./styles.css";
-import { RotateLeft } from "@mui/icons-material";
 
 function CardMinhasCompeticoes(props) {
 
@@ -60,7 +59,7 @@ function CardMinhasCompeticoes(props) {
   const iconEditarCompeticao = () => {
     if (props.userRole === 'ORGANIZADOR') {
       return (
-        <a href="#">
+        <a href="google.com">
           <img
             src={Editar}
             alt="editar"
@@ -89,7 +88,7 @@ function CardMinhasCompeticoes(props) {
 
             <div>
               {iconEditarCompeticao()}
-              <a href="#">
+              <a href="google.com">
                 <img
                   src={Entrar}
                   alt="lixo"
@@ -97,7 +96,7 @@ function CardMinhasCompeticoes(props) {
                   width="20"
                   height="20" />
               </a>
-              <a href="#">
+              <a href="google.com">
                 <img
                   src={Lixo}
                   alt="lixo"

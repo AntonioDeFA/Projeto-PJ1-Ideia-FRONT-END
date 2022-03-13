@@ -105,8 +105,8 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="opcoes-links">
               <p>
-                <a href="#">Esqueceu sua senha?</a><br />
-                <a href="#">Acesse com seu token de membro!</a>
+                <a href="google.com">Esqueceu sua senha?</a><br />
+                <a href="google.com">Acesse com seu token de membro!</a>
               </p>
             </div>
 
@@ -118,7 +118,7 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="link-criar-conta">
               <p>
-                Não tem conta? <a href="#">Crie a sua aqui!</a>
+                Não tem conta? <a href="google.com">Crie a sua aqui!</a>
               </p>
             </div>
 

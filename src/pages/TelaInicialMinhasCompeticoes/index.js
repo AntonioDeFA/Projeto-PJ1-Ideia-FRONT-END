@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Grid from '@mui/material/Grid';
-
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from '../../components/AsideFiltragem';
 import CardMinhasCompeticoes from "../../components/CardMinhasCompeticoes";

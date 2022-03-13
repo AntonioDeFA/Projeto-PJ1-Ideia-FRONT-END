@@ -28,7 +28,7 @@ function DefaultHeader() {
               <a
                 className="nav-link active bg-light p-0"
                 aria-current="page"
-                href="#">
+                href="google.com">
 
                 <img
                   src={Trofeu}
@@ -41,7 +41,7 @@ function DefaultHeader() {
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
-                href="#">
+                href="google.com">
 
                 <img
                   src={Confirma}
@@ -54,7 +54,7 @@ function DefaultHeader() {
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
-                href="#">
+                href="google.com">
                 <img
                   src={Confirma}
                   alt="navegacao_confirma"
@@ -66,7 +66,7 @@ function DefaultHeader() {
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
-                href="#">
+                href="google.com">
 
                 <img
                   src={Grupo}
@@ -79,7 +79,7 @@ function DefaultHeader() {
               <a
                 className="nav-link active bg-warning p-0"
                 aria-current="page"
-                href="#">
+                href="google.com">
 
                 <img
                   src={Grupo}
@@ -110,13 +110,13 @@ function DefaultHeader() {
               <div className="dropdown-menu ms-5 p-0">
                 <ul className="list-group ms-3 p-0" aria-labelledby="navbarDropdownMenu">
                   <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="#" className="nav-link text-dark">
+                    <a href="google.com" className="nav-link text-dark">
                       <h6>Meus dados</h6>
                     </a>
                   </li>
 
                   <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="#" className="nav-link text-dark pt-0">
+                    <a href="google.com" className="nav-link text-dark pt-0">
                       <h6>Sair</h6>
                     </a>
                   </li>

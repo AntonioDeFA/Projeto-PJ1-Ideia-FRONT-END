@@ -12,6 +12,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 
 import "./styles.css";
+import Botao from "../Botao";
 
 const mesesDoAno = [
   {
@@ -65,8 +66,13 @@ const mesesDoAno = [
 ];
 
 function AsideFiltragem(props) {
+  const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState('');
+  const [mensagemCampoObrigatorio, setMensagemCampoObrigatorio] = useState("");
+  const [errorNomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem] = useState(false);
+  
   const [mesDoAno, setMesDoAno] = useState('');
-
+  const [anoFiltragem, setAnoFiltragem] = useState(undefined);
+  
   const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('');
   const [isCompeticoesAbertas, setIsCompeticoesAbertas] = useState(false);
 
@@ -80,16 +86,8 @@ function AsideFiltragem(props) {
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
 
-  const handleSelectMeses = (event) => {
-    setMesDoAno(event.target.value);
-    // let mesSelecionado = event.target.value;
-  };
-
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
-
-    // let opcaoCompeticoesSelecionada = event.target.value;
-
     if (isCompeticoesAbertas) {
       setIsCompeticoesAbertas(true);
       console.log(rdButtonCompeticoesAbertas.current);
@@ -99,36 +97,19 @@ function AsideFiltragem(props) {
     }
   };
 
-  const handleCheckboxAquecimento = (event) => {
-    setCheckboxAquecimento(event.target.checked);
-    console.log(`Aquecimento: ${event.target.checked}`);
-  };
-
-  const handleCheckboxImersao = (event) => {
-    setCheckboxImersao(event.target.checked);
-    console.log(`Imersão: ${event.target.checked}`);
-  };
-
-  const handleCheckboxPitch = (event) => {
-    setCheckboxPitch(event.target.checked);
-    console.log(`Pitch: ${event.target.checked}`);
-  };
-
-  const handleCheckboxEncerrada = (event) => {
-    setCheckboxEncerrada(event.target.checked);
-    console.log(`Encerrada: ${event.target.checked}`);
-  };
-
   const checkboxes = () => {
     if (props.hasCheckboxes) {
       return (
         <div className="margem-personalizada">
           <FormGroup
             value={etapasFiltragem}
+            onChange={setEtapasFiltragem}
           >
 
             <FormControlLabel
-              onChange={handleCheckboxAquecimento}
+              onChange={(e) => {
+                setCheckboxAquecimento(e.target.checked);
+              }}
               control={
                 <Checkbox
                   sx={{
@@ -139,10 +120,13 @@ function AsideFiltragem(props) {
                 />
               }
               label="Aquecimento"
+              value={checkboxAquecimento}
             />
 
             <FormControlLabel
-              onChange={handleCheckboxImersao}
+              onChange={(e) => {
+                setCheckboxImersao(e.target.checked);
+              }}
               control={
                 <Checkbox
                   sx=
@@ -154,10 +138,13 @@ function AsideFiltragem(props) {
                 />
               }
               label="Imersão"
+              value={checkboxImersao}
             />
 
             <FormControlLabel
-              onChange={handleCheckboxPitch}
+              onChange={(e) => {
+                setCheckboxPitch(e.target.checked);
+              }}
               control={
                 <Checkbox
                   sx={{
@@ -168,10 +155,13 @@ function AsideFiltragem(props) {
                 />
               }
               label="Pitch"
+              value={checkboxPitch}
             />
 
             <FormControlLabel
-              onChange={handleCheckboxEncerrada}
+              onChange={(e) => {
+                setCheckboxEncerrada(e.target.checked);
+              }}
               control={
                 <Checkbox
                   sx={{
@@ -182,6 +172,7 @@ function AsideFiltragem(props) {
                 />
               }
               label="Encerrada"
+              value={checkboxEncerrada}
             />
           </FormGroup>
 
@@ -191,6 +182,30 @@ function AsideFiltragem(props) {
 
   }
 
+  const adicionar = () => {
+    alert('adicionar');
+  }
+
+  const realizarFiltragem = (event) => {
+    event.preventDefault();
+
+    if(validarCamposEntradaObrigatorios(nomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio)) {
+      console.log('Pode filtrar');
+    }
+  }
+  
+  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
+    if(value.length === 0) {
+      functionSetError(true);
+      functionSetMensagem("Campo obrigatório");
+      return false;
+    } else {
+      functionSetError(false);
+      functionSetMensagem("");
+      return true;
+    }
+  }
+
   return (
     <div className="aside-filtragem-tela-inicial">
       <div className="elementos-centralizados" id="titulo-competicoes">
@@ -198,13 +213,15 @@ function AsideFiltragem(props) {
       </div>
 
       <div className="elementos-centralizados">
-        <button className="btn btn-warning botao-personalizado" id="botao-adicionar">
-          adicionar
-        </button>
+        <Botao
+          titulo="adicionar"
+          classes="btn btn-warning botao-personalizado"
+          onClick={adicionar}
+        />
       </div>
 
       <div className="form-filtragem">
-        <div className="elementos-centralizados">
+        <div>
           <Box
             component="form"
             sx={{
@@ -213,62 +230,63 @@ function AsideFiltragem(props) {
             noValidate
             autoComplete="off"
           >
-            <div>
-              <TextField
-                id="filled-search"
-                label="Buscar"
-                type="search"
-                variant="filled"
-                color="warning"
-                size="small"
+            <TextField
+              error={errorNomeCompeticaoFiltragem}
+              helperText={mensagemCampoObrigatorio}
+              value={nomeCompeticaoFiltragem}
+              onChange={(e) => {
+                setNomeCompeticaoFiltragem(e.target.value);
+                validarCamposEntradaObrigatorios(e.target.value, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio);
+              }}
+              id="filled-search"
+              label="Buscar"
+              type="search"
+              variant="filled"
+              color="warning"
+              size="small"
+              required
+            />
+
+            <TextField
+              id="filled-select-mesDoAno"
+              select
+              label="Mês"
+              value={mesDoAno}
+              onChange={(e) => {
+                setMesDoAno(e.target.value);
+              }}
+              variant="filled"
+              color="warning"
+              style={{ maxWidth: "13.5ch" }}
+            >
+              {mesesDoAno.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              id="filled-number"
+              label="Ano"
+              value={anoFiltragem}
+              onChange={(e) => {
+                setAnoFiltragem(e.target.value);
+              }}
+              type="number"
+              variant="filled"
+              color="warning"
+              style={{ maxWidth: "13.5ch" }}
+            />
+
+            <div className="margem-personalizada">
+              <Botao
+                titulo="filtrar"
+                classes="btn btn-warning botao-menor-personalizado"
+                onClick={realizarFiltragem}
               />
             </div>
           </Box>
-        </div>
-
-        <div className="elementos-justificados">
-          <Box
-            component="form"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '13.5ch' },
-            }}
-            autoComplete="off"
-          >
-            <div>
-              <TextField
-                id="filled-select-mesDoAno"
-                select
-                label="Mês"
-                value={mesDoAno}
-                onChange={handleSelectMeses}
-                variant="filled"
-                color="warning"
-                size="small"
-              >
-                {mesesDoAno.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div>
-              <TextField
-                id="filled-number"
-                label="Ano"
-                type="number"
-                variant="filled"
-                color="warning"
-                size="small"
-              />
-            </div>
-          </Box>
-        </div>
-
-        <div className="margem-personalizada">
-          <button className="btn btn-warning botao-menor-personalizado" id="botao-filtrar">
-            filtrar
-          </button>
         </div>
 
         <div className="margem-personalizada" id="radio-buttons-competicoes">

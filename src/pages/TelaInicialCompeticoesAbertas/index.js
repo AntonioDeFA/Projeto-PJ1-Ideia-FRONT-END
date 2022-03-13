@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Grid from '@mui/material/Grid';
-
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from "../../components/AsideFiltragem";
 import CardCompeticao from "../../components/CardCompeticao";
@@ -36,7 +34,7 @@ function TelaInicialCompeticoesAbertas() {
           <div className="listagem-cards-competicoes">
             <ul>
               {cards.map((card) => {
-                return <li><CardCompeticao card={card} /></li>;
+                return <li key={card.id}><CardCompeticao card={card} /></li>;
               })}
             </ul>
           </div>
