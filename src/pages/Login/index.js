@@ -3,13 +3,6 @@ import React, { useState } from "react";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import FilledInput from '@mui/material/FilledInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 
 // import { Link } from "react-router-dom";
 
@@ -18,28 +11,36 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ImgLogo from '../../assets/images/Imagem1.png';
 
 import "./styles.css";
+import Botao from "../../components/Botao";
 
 function Login() {
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-    showPassword: false,
-  })
+  const [email, setEmail] = useState("");
+  const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] = useState("");
+  const [errorInputEmail, setErrorInputEmail] = useState(false);
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const [password, setPassword] = useState("");
+  const [mensagemCampoObrigatorioPassword, setMensagemCampoObrigatorioPassword] = useState("");
+  const [errorInputPassword, setErrorInputPassword] = useState(false);
+  
+  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
+    if(value.length === 0) {
+      functionSetError(true);
+      functionSetMensagem("Campo obrigatório");
+      return false;
+    } else {
+      functionSetError(false);
+      functionSetMensagem("");
+      return true;
+    }
   }
 
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
+  const fazerLogin = () => {
+    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
+    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
+    if(statusInputEmail && statusInputPassword) {
+      console.log('Pode fazer login');
+    }
   }
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <div id="page-login">
@@ -66,9 +67,14 @@ function Login() {
               >
                 <div className="input">
                   <TextField
-                    id="filled-search"
-                    value={values.email}
-                    onChange={handleChange('email')}
+                    error={errorInputEmail}
+                    helperText={mensagemCampoObrigatorioEmail}
+                    id="filled-search-email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
+                    }}
                     label="E-mail"
                     type="email"
                     variant="filled"
@@ -79,24 +85,20 @@ function Login() {
 
                 <div className="input">
                   <FormControl color="warning" sx={{ m: 0, width: '550px', }} variant="filled">
-                    <InputLabel htmlFor="filled-adornment-password">Sua senha</InputLabel>
-                    <FilledInput
-                      id="filled-adornment-password"
-                      type={values.showPassword ? 'text' : 'password'}
-                      value={values.password}
-                      onChange={handleChange('password')}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
+                    <TextField
+                      error={errorInputPassword}
+                      helperText={mensagemCampoObrigatorioPassword}
+                      id="filled-search"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
+                      }}
+                      label="Senha"
+                      type="password"
+                      variant="filled"
+                      color="warning"
+                      size="small"
                     />
                   </FormControl>
                 </div>
@@ -111,9 +113,11 @@ function Login() {
             </div>
 
             <div className="elementos-centralizados" id="botao-login">
-              <button className="btn btn-warning botao-personalizado">
-                LOGIN
-              </button>
+              <Botao
+                titulo="login"
+                classes="btn btn-warning botao-personalizado"
+                onClick={fazerLogin}
+              />
             </div>
 
             <div className="elementos-alinhados-esquerda" id="link-criar-conta">
