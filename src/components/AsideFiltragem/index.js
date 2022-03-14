@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -73,8 +72,7 @@ function AsideFiltragem(props) {
   const [mesDoAno, setMesDoAno] = useState('');
   const [anoFiltragem, setAnoFiltragem] = useState(undefined);
   
-  const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('');
-  const [isCompeticoesAbertas, setIsCompeticoesAbertas] = useState(false);
+  const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('competicoesAbertas');
 
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
@@ -86,19 +84,20 @@ function AsideFiltragem(props) {
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
 
+  const [hasCheckboxes, setHasCheckBoxes] = useState(false);
+
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
-    if (isCompeticoesAbertas) {
-      setIsCompeticoesAbertas(true);
-      console.log(rdButtonCompeticoesAbertas.current);
-    } else {
-      setIsCompeticoesAbertas(false);
-      console.log(rdButtonMinhasCompeticoes.current);
-    }
+    
+    let isCompeticoesAbertas = event.target.value === "competicoesAbertas";
+
+    setHasCheckBoxes(!isCompeticoesAbertas);
+
+    props.verificarTipoCompeticoes(isCompeticoesAbertas);
   };
 
   const checkboxes = () => {
-    if (props.hasCheckboxes) {
+    if (hasCheckboxes) {
       return (
         <div className="margem-personalizada">
           <FormGroup
@@ -296,39 +295,34 @@ function AsideFiltragem(props) {
               value={opcaoCompeticoes}
               onChange={handleRadioButtonsCompeticoes}
             >
-              <Link to="/" className="link-aside">
-                <FormControlLabel
-                  value="competicoesAbertas"
-                  ref={rdButtonCompeticoesAbertas}
-                  control={
-                    <Radio sx={{
+              <FormControlLabel
+                value="competicoesAbertas"
+                ref={rdButtonCompeticoesAbertas}
+                control={
+                  <Radio sx={{
                       color: '#999',
                       '&.Mui-checked': {
                         color: '#FC7A00',
                       },
                     }}
-                    />
-                  }
-                  label="Competições Abertas"
-                />
-              </Link>
-
-              <Link to="/minhasCompeticoes" className="link-aside">
-                <FormControlLabel
-                  value="minhasCompeticoes"
-                  ref={rdButtonMinhasCompeticoes}
-                  control={
-                    <Radio sx={{
-                      color: '#999',
-                      '&.Mui-checked': {
-                        color: '#FC7A00',
-                      },
-                    }}
-                    />
-                  }
-                  label="Minhas Competições"
-                />
-              </Link>
+                  />
+                }
+                label="Competições Abertas"
+              />
+              <FormControlLabel
+                value="minhasCompeticoes"
+                ref={rdButtonMinhasCompeticoes}
+                control={
+                  <Radio sx={{
+                    color: '#999',
+                    '&.Mui-checked': {
+                      color: '#FC7A00',
+                    },
+                  }}
+                  />
+                }
+                label="Minhas Competições"
+              />
             </RadioGroup>
           </FormControl>
         </div>
