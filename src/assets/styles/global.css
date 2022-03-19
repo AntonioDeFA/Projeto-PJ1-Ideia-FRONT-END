@@ -1,5 +1,6 @@
 :root {
-  --color-background: #fff;
+  --color-background: whitesmoke;
+  --color-background-auth: #ffd966;
   --color-button-text: #fff;
   --color-background-button: #ffc107;
   --color-button-hover: #fc7a00;
@@ -54,6 +55,11 @@ body {
   display: flex;
   justify-content: left;
   align-items: center;
+}
+
+.tamanho-maximo {
+  width: 100%;
+  height: 100%;
 }
 
 .titulos-principais {

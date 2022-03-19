@@ -3,8 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./pages/Login";
 import TelaInicial from "./pages/TelaInicial";
-import CompeticoesAbertas from "./pages/TelaInicialCompeticoesAbertas";
-import MinhasCompeticoes from "./pages/TelaInicialMinhasCompeticoes";
+import CadastroUsuario from "./pages/CadastroUsuario";
+// import CompeticoesAbertas from "./pages/TelaInicialCompeticoesAbertas";
+// import MinhasCompeticoes from "./pages/TelaInicialMinhasCompeticoes";
 
 
 function ProjetoRoutes() {
@@ -13,8 +14,9 @@ function ProjetoRoutes() {
       <Routes>
         <Route exact path="/" element={<TelaInicial />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/minhasCompeticoes" element={<MinhasCompeticoes />} />
-        <Route path="/abertas" element={<CompeticoesAbertas />} />
+        <Route path="/cadastro" element={<CadastroUsuario />} />
+        {/* <Route path="/minhasCompeticoes" element={<MinhasCompeticoes />} />
+        <Route path="/abertas" element={<CompeticoesAbertas />} /> */}
       </Routes>
     </BrowserRouter>
   );
