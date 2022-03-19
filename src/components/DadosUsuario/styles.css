@@ -24,3 +24,15 @@ div .botoes-cadastro {
   display: flex;
   justify-content: space-between;
 }
+
+div .mensagem-erro {
+  border: 2px solid var(--color-aquecimento);
+  width: 50%;
+  border-radius: 5px;
+  background-color: var(--color-vermelho-leve);
+  color: whitesmoke;
+}
+
+div #titulo-erro {
+  margin-top: 10px;
+}

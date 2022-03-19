@@ -15,38 +15,32 @@ import Botao from "../../components/Botao";
 
 function DadosUsuario() {
   const [nome, setNome] = useState("");
-  const [mensagemCampoObrigatorioNome, setMensagemCampoObrigatorioNome] = useState("");
   const [errorInputNome, setErrorInputNome] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState(false);
 
   const [password, setPassword] = useState("");
-  const [mensagemCampoObrigatorioPassword, setMensagemCampoObrigatorioPassword] = useState("");
   const [errorInputPassword, setErrorInputPassword] = useState(false);
 
   const [confirmarPassword, setConfirmarPassword] = useState("");
-  const [mensagemCampoObrigatorioConfirmarPassword, setMensagemCampoObrigatorioConfirmarPassword] = useState("");
   const [errorInputConfirmarPassword, setErrorInputConfirmarPassword] = useState(false);
   
-  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
+  const validarCamposEntradaObrigatorios = (value, functionSetError) => {
     if(value.length === 0) {
       functionSetError(true);
-      functionSetMensagem("Campo obrigatório");
       return false;
     } else {
       functionSetError(false);
-      functionSetMensagem("");
       return true;
     }
   }
 
   const fazerLogin = () => {
-    let statusInputNome = validarCamposEntradaObrigatorios(nome, setErrorInputNome, setMensagemCampoObrigatorioNome);
-    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
-    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
-    let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(confirmarPassword, setErrorInputConfirmarPassword, setMensagemCampoObrigatorioConfirmarPassword);
+    let statusInputNome = validarCamposEntradaObrigatorios(nome, setErrorInputNome);
+    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail);
+    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword);
+    let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(confirmarPassword, setErrorInputConfirmarPassword);
     
     if(statusInputNome &&
       statusInputEmail &&
@@ -65,6 +59,17 @@ function DadosUsuario() {
       </div>
 
       <div className="elementos-centralizados">
+        <div className="mensagem-erro">
+          <div id="titulo-erro" className="elementos-centralizados">
+            <h5>Erro!</h5>
+          </div>
+          <div className="elementos-centralizados">
+            <p>Infelizmente, aconteceu um erro. :(</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="elementos-centralizados">
         <div id="form-dados-usuario">
           <div className="elementos-centralizados" id="inputs">
             <Box
@@ -78,12 +83,11 @@ function DadosUsuario() {
               <div className="input">
                 <TextField
                   error={errorInputNome}
-                  helperText={mensagemCampoObrigatorioNome}
                   id="filled-search-Nome"
                   value={nome}
                   onChange={(e) => {
                     setNome(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputNome, setMensagemCampoObrigatorioNome);
+                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputNome);
                   }}
                   label="Nome *"
                   type="text"
@@ -96,12 +100,11 @@ function DadosUsuario() {
               <div className="input">
                 <TextField
                   error={errorInputEmail}
-                  helperText={mensagemCampoObrigatorioEmail}
                   id="filled-search-email"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
+                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputEmail);
                   }}
                   label="E-mail *"
                   type="email"
@@ -115,12 +118,11 @@ function DadosUsuario() {
                 <FormControl color="warning" sx={{ m: 0, width: '450px', }} variant="filled">
                   <TextField
                     error={errorInputPassword}
-                    helperText={mensagemCampoObrigatorioPassword}
                     id="filled-search"
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
-                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
+                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword);
                     }}
                     label="Senha *"
                     type="password"
@@ -135,12 +137,11 @@ function DadosUsuario() {
                 <FormControl color="warning" sx={{ m: 0, width: '450px', }} variant="filled">
                   <TextField
                     error={errorInputConfirmarPassword}
-                    helperText={mensagemCampoObrigatorioConfirmarPassword}
                     id="filled-search"
                     value={confirmarPassword}
                     onChange={(e) => {
                       setConfirmarPassword(e.target.value);
-                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputConfirmarPassword, setMensagemCampoObrigatorioConfirmarPassword);
+                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputConfirmarPassword);
                     }}
                     label="Confirmar senha *"
                     type="password"
