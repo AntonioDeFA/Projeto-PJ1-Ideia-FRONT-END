@@ -2,16 +2,13 @@ import React, { useState } from "react";
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-
-// import { Link } from "react-router-dom";
-
-// import api from "../../services/api";
 
 import ImgLogoLaranja from '../../assets/images/logo-ideia-laranja.png';
 
 import "./styles.css";
 import Botao from "../../components/Botao";
+import MensagemErro from "../../components/MensagemErro";
+import { validarEmail } from "../../services/utils";
 
 function DadosUsuario() {
   const [nome, setNome] = useState("");
@@ -25,6 +22,8 @@ function DadosUsuario() {
 
   const [confirmarPassword, setConfirmarPassword] = useState("");
   const [errorInputConfirmarPassword, setErrorInputConfirmarPassword] = useState(false);
+
+  const [mensagemErro, setMensagemErro] = useState("");
   
   const validarCamposEntradaObrigatorios = (value, functionSetError) => {
     if(value.length === 0) {
@@ -37,6 +36,7 @@ function DadosUsuario() {
   }
 
   const fazerLogin = () => {
+    setMensagemErro("");
     let statusInputNome = validarCamposEntradaObrigatorios(nome, setErrorInputNome);
     let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail);
     let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword);
@@ -46,7 +46,22 @@ function DadosUsuario() {
       statusInputEmail &&
       statusInputPassword &&
       statusInputConfirmarPassword) {
-      console.log('Pode fazer cadastro');
+
+        if(password !== confirmarPassword) {
+          setErrorInputPassword(true);
+          setErrorInputConfirmarPassword(true);
+          setMensagemErro("As senhas não são iguais.");
+        } else {
+          if(!validarEmail(email)) {
+            setErrorInputEmail(true)
+            setMensagemErro("O formato do e-mail não é válido.");
+          } else {
+            console.log("Pode fazer cadastro");
+          }
+        }
+
+    } else {
+      setMensagemErro("Você deve preencher todos os campos.");
     }
   }
 
@@ -59,14 +74,7 @@ function DadosUsuario() {
       </div>
 
       <div className="elementos-centralizados">
-        <div className="mensagem-erro">
-          <div id="titulo-erro" className="elementos-centralizados">
-            <h5>Erro!</h5>
-          </div>
-          <div className="elementos-centralizados">
-            <p>Infelizmente, aconteceu um erro. :(</p>
-          </div>
-        </div>
+        {mensagemErro !== "" ? <MensagemErro mensagem={mensagemErro}/> : null}
       </div>
 
       <div className="elementos-centralizados">
@@ -115,41 +123,37 @@ function DadosUsuario() {
               </div>
 
               <div className="input">
-                <FormControl color="warning" sx={{ m: 0, width: '450px', }} variant="filled">
-                  <TextField
-                    error={errorInputPassword}
-                    id="filled-search"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword);
-                    }}
-                    label="Senha *"
-                    type="password"
-                    variant="filled"
-                    color="warning"
-                    size="small"
-                  />
-                </FormControl>
+                <TextField
+                  error={errorInputPassword}
+                  id="filled-search-password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword);
+                  }}
+                  label="Senha *"
+                  type="password"
+                  variant="filled"
+                  color="warning"
+                  size="small"
+                />
               </div>
 
               <div className="input">
-                <FormControl color="warning" sx={{ m: 0, width: '450px', }} variant="filled">
-                  <TextField
-                    error={errorInputConfirmarPassword}
-                    id="filled-search"
-                    value={confirmarPassword}
-                    onChange={(e) => {
-                      setConfirmarPassword(e.target.value);
-                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputConfirmarPassword);
-                    }}
-                    label="Confirmar senha *"
-                    type="password"
-                    variant="filled"
-                    color="warning"
-                    size="small"
-                  />
-                </FormControl>
+                <TextField
+                  error={errorInputConfirmarPassword}
+                  id="filled-search-confirm-password"
+                  value={confirmarPassword}
+                  onChange={(e) => {
+                    setConfirmarPassword(e.target.value);
+                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputConfirmarPassword);
+                  }}
+                  label="Confirmar senha *"
+                  type="password"
+                  variant="filled"
+                  color="warning"
+                  size="small"
+                />
               </div>
             </Box>
           </div>
