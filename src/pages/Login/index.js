@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import api from '../../services/api'
+import StoreContext from "../../store/context";
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-
-// import { Link } from "react-router-dom";
-
-// import api from "../../services/api";
-
 import ImgLogo from '../../assets/images/Imagem1.png';
-
 import "./styles.css";
 import Botao from "../../components/Botao";
 
 function Login() {
+  // adicionei esse
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] = useState("");
   const [errorInputEmail, setErrorInputEmail] = useState(false);
@@ -21,9 +20,12 @@ function Login() {
   const [password, setPassword] = useState("");
   const [mensagemCampoObrigatorioPassword, setMensagemCampoObrigatorioPassword] = useState("");
   const [errorInputPassword, setErrorInputPassword] = useState(false);
-  
+
+  const { setToken } = useContext(StoreContext);
+  const navigate = useNavigate();
+
   const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
-    if(value.length === 0) {
+    if (value.length === 0) {
       functionSetError(true);
       functionSetMensagem("Campo obrigatório");
       return false;
@@ -35,10 +37,24 @@ function Login() {
   }
 
   const fazerLogin = () => {
+
     let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
     let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
-    if(statusInputEmail && statusInputPassword) {
-      console.log('Pode fazer login');
+  
+    if (statusInputEmail && statusInputPassword) {
+      
+      api.post('/seguranca/token', { login: email, senha: password }).then(response => {
+        api.defaults.headers.post['Authorization'] = `Bearer ${response.data}`;
+        api.post('/seguranca/login', { login: email, senha: password }).then(responseToken => {
+          setToken(responseToken);
+          return navigate('/');
+        }).catch(error => {
+          console.log(error)
+        });
+      }).catch(error => {
+        console.log(error)
+      });
+
     }
   }
 

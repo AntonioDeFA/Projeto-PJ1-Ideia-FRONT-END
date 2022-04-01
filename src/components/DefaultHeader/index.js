@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import StoreContext from "../../store/context";
+import { Navigate } from "react-router-dom";
 
 import ImagemLogo from '../../assets/images/Imagem1.svg';
 import Dropdown from '../../assets/images/Dropdown.svg';
@@ -9,6 +11,14 @@ import Confirma from '../../assets/images/Confirma.svg';
 import "./styles.css";
 
 function DefaultHeader() {
+
+  const { setToken } = useContext(StoreContext);
+
+  const fazerLogoff = () => {
+    setToken('');
+    <Navigate to="/login" />
+  }
+
   return (
     <div id="component-defaultHeader">
       <div className="bg-warning navbar navbar-light text-white pb-0 pt-0">
@@ -110,14 +120,14 @@ function DefaultHeader() {
               <div className="dropdown-menu ms-5 p-0">
                 <ul className="list-group ms-3 p-0" aria-labelledby="navbarDropdownMenu">
                   <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="google.com" className="nav-link text-dark">
+                    <a href="" className="nav-link text-dark">
                       <h6>Meus dados</h6>
                     </a>
                   </li>
 
                   <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="google.com" className="nav-link text-dark pt-0">
-                      <h6>Sair</h6>
+                    <a href="" className="nav-link text-dark pt-0" onClick={fazerLogoff}>
+                      <h6 onClick={fazerLogoff}>Sair</h6>
                     </a>
                   </li>
                 </ul>
