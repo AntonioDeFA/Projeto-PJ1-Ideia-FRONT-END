@@ -65,12 +65,10 @@ const mesesDoAno = [
 ];
 
 function AsideFiltragem(props) {
+  // Dados para filtragem
   const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState('');
-  const [mensagemCampoObrigatorio, setMensagemCampoObrigatorio] = useState("");
-  const [errorNomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem] = useState(false);
-  
   const [mesDoAno, setMesDoAno] = useState('');
-  const [anoFiltragem, setAnoFiltragem] = useState(undefined);
+  const [anoFiltragem, setAnoFiltragem] = useState("");
   
   const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('competicoesAbertas');
 
@@ -80,11 +78,10 @@ function AsideFiltragem(props) {
   const [checkboxImersao, setCheckboxImersao] = useState(false);
   const [checkboxPitch, setCheckboxPitch] = useState(false);
   const [checkboxEncerrada, setCheckboxEncerrada] = useState(false);
+  const [hasCheckboxes, setHasCheckBoxes] = useState(false);
 
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
-
-  const [hasCheckboxes, setHasCheckBoxes] = useState(false);
 
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
@@ -187,22 +184,7 @@ function AsideFiltragem(props) {
 
   const realizarFiltragem = (event) => {
     event.preventDefault();
-
-    if(validarCamposEntradaObrigatorios(nomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio)) {
-      console.log('Pode filtrar');
-    }
-  }
-  
-  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
-    if(value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem("Campo obrigatório");
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem("");
-      return true;
-    }
+    props.realizarFiltragem(nomeCompeticaoFiltragem, mesDoAno, anoFiltragem);
   }
 
   return (
@@ -230,12 +212,9 @@ function AsideFiltragem(props) {
             autoComplete="off"
           >
             <TextField
-              error={errorNomeCompeticaoFiltragem}
-              helperText={mensagemCampoObrigatorio}
               value={nomeCompeticaoFiltragem}
               onChange={(e) => {
                 setNomeCompeticaoFiltragem(e.target.value);
-                validarCamposEntradaObrigatorios(e.target.value, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio);
               }}
               id="filled-search"
               label="Buscar"
@@ -243,7 +222,6 @@ function AsideFiltragem(props) {
               variant="filled"
               color="warning"
               size="small"
-              required
             />
 
             <TextField

@@ -1,19 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import '../../assets/styles/global.css';
 import api from "../../services/api";
 import CardCompeticao from "../CardCompeticao";
+
 import "./styles.css";
+import '../../assets/styles/global.css';
+
+import FiltrosContext from "../../utils/filtrosContext";
 
 function ListaCardsCompeticoesAbertas() {
-  const [cards, setCards] = useState([]);
+  const filtros = useContext(FiltrosContext);
 
+  const [cards, setCards] = useState([]);
+  
   useEffect(() => {
-    api.get("/competicoes/inscricoes?page=1").then((response) => {
-      const { content } = response.data;
-      setCards(content);
+    const { nomeCompeticao, mes, ano } = filtros;
+
+    const params = {}
+    if(nomeCompeticao !== '') {
+      params.nomeCompeticao = nomeCompeticao;
+    }
+    if(mes !== 0 && mes !== '') {
+      params.mes = mes;
+    }
+    if(ano !== 0 && ano !== '') {
+      params.ano = ano;
+    }
+
+    api.get("/competicoes/inscricoes", {params, }).then((response) => {
+      const { data } = response;
+      setCards(data);
     });
-  }, []);
+  }, [filtros]);
 
   return (
     <div className="listagem-cards-competicoes">

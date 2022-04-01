@@ -1,19 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import '../../assets/styles/global.css';
 import api from "../../services/api";
 import CardMinhasCompeticoes from "../CardMinhasCompeticoes";
+
 import "./styles.css";
+import '../../assets/styles/global.css';
+
+import FiltrosContext from "../../utils/filtrosContext";
 
 function ListaCardsMinhasCompeticoes() {
+  const filtros = useContext(FiltrosContext);
+
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.get("/competicoes/usuario/2").then((response) => {
+    const { nomeCompeticao, mes, ano } = filtros;
+
+    const params = {}
+    if(nomeCompeticao !== '') {
+      params.nomeCompeticao = nomeCompeticao;
+    }
+    if(mes !== 0 && mes !== '') {
+      params.mes = mes;
+    }
+    if(ano !== 0 && ano !== '') {
+      params.ano = ano;
+    }
+
+    api.get("/competicoes/usuario-logado", {params, }).then((response) => {
       const { data } = response;
       setCards(data);
     });
-  }, []);
+  }, [filtros]);
 
   let papel = "";
   let cont = 0;
