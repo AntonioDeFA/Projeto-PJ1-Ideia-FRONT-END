@@ -5,7 +5,7 @@ import DadosUsuario from "../../components/DadosUsuario";
 
 function CadastroUsuario() {
   return (
-    <div id="pagina-cadastro" className="tamanho-maximo">
+    <div id="pagina-cadastro" className="tamanho-maximo fundo-amarelo">
       <div className="elementos-centralizados tamanho-maximo">
         <DadosUsuario />
       </div>
