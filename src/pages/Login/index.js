@@ -9,6 +9,7 @@ import ImgLogo from "../../assets/images/Imagem1.png";
 import "./styles.css";
 import Botao from "../../components/Botao";
 import { Link } from "react-router-dom";
+import { MSG000, MSG004 } from "utils/mensagens";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,11 +31,11 @@ function Login() {
   ) => {
     if (value.length === 0) {
       functionSetError(true);
-      functionSetMensagem("Campo obrigatório");
+      functionSetMensagem(MSG004);
       return false;
     } else {
       functionSetError(false);
-      functionSetMensagem("");
+      functionSetMensagem(MSG000);
       return true;
     }
   };
@@ -132,7 +133,7 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="opcoes-links">
               <p>
-                <Link to={"/"}>Esqueceu sua senha?</Link>
+                <Link to={"/resetar-senha"}>Esqueceu sua senha?</Link>
                 <br />
                 <Link to={"/login-token"}>Acesse com seu token de membro!</Link>
               </p>

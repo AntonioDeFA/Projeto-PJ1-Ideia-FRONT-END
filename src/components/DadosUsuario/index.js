@@ -7,9 +7,11 @@ import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
 
 import "./styles.css";
 import Botao from "../../components/Botao";
-import MensagemErro from "../../components/MensagemErro";
+import Mensagem from "../../components/Mensagem";
 import { validarEmail } from "../../services/utils";
 import { Link } from "react-router-dom";
+import { MSG000, MSG001, MSG002, MSG003 } from "utils/mensagens";
+import { MSG006 } from "./../../utils/mensagens";
 
 function DadosUsuario() {
   const [nome, setNome] = useState("");
@@ -38,7 +40,7 @@ function DadosUsuario() {
   };
 
   const fazerLogin = () => {
-    setMensagemErro("");
+    setMensagemErro(MSG000);
     let statusInputNome = validarCamposEntradaObrigatorios(
       nome,
       setErrorInputNome
@@ -65,17 +67,17 @@ function DadosUsuario() {
       if (password !== confirmarPassword) {
         setErrorInputPassword(true);
         setErrorInputConfirmarPassword(true);
-        setMensagemErro("As senhas não são iguais.");
+        setMensagemErro(MSG002);
       } else {
         if (!validarEmail(email)) {
           setErrorInputEmail(true);
-          setMensagemErro("O formato do e-mail não é válido.");
+          setMensagemErro(MSG003);
         } else {
           console.log("Pode fazer cadastro");
         }
       }
     } else {
-      setMensagemErro("Você deve preencher todos os campos.");
+      setMensagemErro(MSG001);
     }
   };
 
@@ -88,7 +90,9 @@ function DadosUsuario() {
       </div>
 
       <div className="elementos-centralizados">
-        {mensagemErro !== "" ? <MensagemErro mensagem={mensagemErro} /> : null}
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
       </div>
 
       <div className="elementos-centralizados">

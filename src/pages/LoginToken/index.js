@@ -1,4 +1,4 @@
-import MensagemErro from "components/MensagemErro";
+import Mensagem from "components/Mensagem";
 import React, { useState } from "react";
 
 import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
@@ -8,8 +8,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Botao from "./../../components/Botao/index";
 import { Link } from "react-router-dom";
+import { MSG000, MSG004, MSG006 } from "./../../utils/mensagens";
 
-function CadastroUsuario() {
+function LoginToken() {
   const [token, setToken] = useState("");
   const [errorInputToken, setErrorInputToken] = useState(false);
   const [mensagemCampoObrigatorioToken, setMensagemCampoObrigatorioToken] =
@@ -24,11 +25,11 @@ function CadastroUsuario() {
   ) => {
     if (value.length === 0) {
       functionSetError(true);
-      functionSetMensagem("Campo obrigatório");
+      functionSetMensagem(MSG004);
       return false;
     } else {
       functionSetError(false);
-      functionSetMensagem("");
+      functionSetMensagem(MSG000);
       return true;
     }
   };
@@ -45,7 +46,7 @@ function CadastroUsuario() {
   };
 
   return (
-    <div id="pagina-cadastro" className="tamanho-maximo">
+    <div id="pagina-login-token" className="tamanho-maximo fundo-amarelo">
       <div className="elementos-centralizados tamanho-maximo">
         <div id="componente-conteudo">
           <div className="elementos-centralizados">
@@ -56,7 +57,7 @@ function CadastroUsuario() {
 
           <div className="elementos-centralizados">
             {mensagemErro !== "" ? (
-              <MensagemErro mensagem={mensagemErro} />
+              <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
             ) : null}
           </div>
 
@@ -85,7 +86,7 @@ function CadastroUsuario() {
                           setMensagemCampoObrigatorioToken
                         );
                       }}
-                      label="Token *"
+                      label="Insira seu token de acesso"
                       type="text"
                       variant="filled"
                       color="warning"
@@ -117,4 +118,4 @@ function CadastroUsuario() {
   );
 }
 
-export default CadastroUsuario;
+export default LoginToken;
