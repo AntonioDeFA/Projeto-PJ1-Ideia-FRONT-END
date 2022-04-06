@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
-import ImgLogoLaranja from '../../assets/images/logo-ideia-laranja.png';
+import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
 
 import "./styles.css";
 import Botao from "../../components/Botao";
 import MensagemErro from "../../components/MensagemErro";
 import { validarEmail } from "../../services/utils";
+import { Link } from "react-router-dom";
 
 function DadosUsuario() {
   const [nome, setNome] = useState("");
@@ -21,49 +22,62 @@ function DadosUsuario() {
   const [errorInputPassword, setErrorInputPassword] = useState(false);
 
   const [confirmarPassword, setConfirmarPassword] = useState("");
-  const [errorInputConfirmarPassword, setErrorInputConfirmarPassword] = useState(false);
+  const [errorInputConfirmarPassword, setErrorInputConfirmarPassword] =
+    useState(false);
 
   const [mensagemErro, setMensagemErro] = useState("");
-  
+
   const validarCamposEntradaObrigatorios = (value, functionSetError) => {
-    if(value.length === 0) {
+    if (value.length === 0) {
       functionSetError(true);
       return false;
     } else {
       functionSetError(false);
       return true;
     }
-  }
+  };
 
   const fazerLogin = () => {
     setMensagemErro("");
-    let statusInputNome = validarCamposEntradaObrigatorios(nome, setErrorInputNome);
-    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail);
-    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword);
-    let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(confirmarPassword, setErrorInputConfirmarPassword);
-    
-    if(statusInputNome &&
+    let statusInputNome = validarCamposEntradaObrigatorios(
+      nome,
+      setErrorInputNome
+    );
+    let statusInputEmail = validarCamposEntradaObrigatorios(
+      email,
+      setErrorInputEmail
+    );
+    let statusInputPassword = validarCamposEntradaObrigatorios(
+      password,
+      setErrorInputPassword
+    );
+    let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(
+      confirmarPassword,
+      setErrorInputConfirmarPassword
+    );
+
+    if (
+      statusInputNome &&
       statusInputEmail &&
       statusInputPassword &&
-      statusInputConfirmarPassword) {
-
-        if(password !== confirmarPassword) {
-          setErrorInputPassword(true);
-          setErrorInputConfirmarPassword(true);
-          setMensagemErro("As senhas não são iguais.");
+      statusInputConfirmarPassword
+    ) {
+      if (password !== confirmarPassword) {
+        setErrorInputPassword(true);
+        setErrorInputConfirmarPassword(true);
+        setMensagemErro("As senhas não são iguais.");
+      } else {
+        if (!validarEmail(email)) {
+          setErrorInputEmail(true);
+          setMensagemErro("O formato do e-mail não é válido.");
         } else {
-          if(!validarEmail(email)) {
-            setErrorInputEmail(true)
-            setMensagemErro("O formato do e-mail não é válido.");
-          } else {
-            console.log("Pode fazer cadastro");
-          }
+          console.log("Pode fazer cadastro");
         }
-
+      }
     } else {
       setMensagemErro("Você deve preencher todos os campos.");
     }
-  }
+  };
 
   return (
     <div id="componente-conteudo">
@@ -74,7 +88,7 @@ function DadosUsuario() {
       </div>
 
       <div className="elementos-centralizados">
-        {mensagemErro !== "" ? <MensagemErro mensagem={mensagemErro}/> : null}
+        {mensagemErro !== "" ? <MensagemErro mensagem={mensagemErro} /> : null}
       </div>
 
       <div className="elementos-centralizados">
@@ -83,7 +97,7 @@ function DadosUsuario() {
             <Box
               component="form"
               sx={{
-                '& .MuiTextField-root': { m: 0, width: '500px' },
+                "& .MuiTextField-root": { m: 0, width: "500px" },
               }}
               noValidate
               autoComplete="off"
@@ -95,7 +109,10 @@ function DadosUsuario() {
                   value={nome}
                   onChange={(e) => {
                     setNome(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputNome);
+                    validarCamposEntradaObrigatorios(
+                      e.target.value,
+                      setErrorInputNome
+                    );
                   }}
                   label="Nome *"
                   type="text"
@@ -112,7 +129,10 @@ function DadosUsuario() {
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputEmail);
+                    validarCamposEntradaObrigatorios(
+                      e.target.value,
+                      setErrorInputEmail
+                    );
                   }}
                   label="E-mail *"
                   type="email"
@@ -129,7 +149,10 @@ function DadosUsuario() {
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword);
+                    validarCamposEntradaObrigatorios(
+                      e.target.value,
+                      setErrorInputPassword
+                    );
                   }}
                   label="Senha *"
                   type="password"
@@ -146,7 +169,10 @@ function DadosUsuario() {
                   value={confirmarPassword}
                   onChange={(e) => {
                     setConfirmarPassword(e.target.value);
-                    validarCamposEntradaObrigatorios(e.target.value, setErrorInputConfirmarPassword);
+                    validarCamposEntradaObrigatorios(
+                      e.target.value,
+                      setErrorInputConfirmarPassword
+                    );
                   }}
                   label="Confirmar senha *"
                   type="password"
@@ -164,15 +190,15 @@ function DadosUsuario() {
               classes="btn btn-warning botao-menor-personalizado"
               onClick={fazerLogin}
             />
-            <Botao
-              titulo="voltar"
-              classes="btn btn-secondary botao-menor-personalizado"
-              onClick={fazerLogin}
-            />
+            <Link to={"/login"}>
+              <Botao
+                titulo="voltar"
+                classes="btn btn-secondary botao-menor-personalizado"
+              />
+            </Link>
           </div>
         </div>
       </div>
-
     </div>
   );
 }

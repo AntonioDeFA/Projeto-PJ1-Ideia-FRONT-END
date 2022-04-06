@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
 
-// import { Link } from "react-router-dom";
-
-// import api from "../../services/api";
-
-import ImgLogo from '../../assets/images/Imagem1.png';
+import ImgLogo from "../../assets/images/Imagem1.png";
 
 import "./styles.css";
 import Botao from "../../components/Botao";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
-  const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] = useState("");
+  const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] =
+    useState("");
   const [errorInputEmail, setErrorInputEmail] = useState(false);
 
   const [password, setPassword] = useState("");
-  const [mensagemCampoObrigatorioPassword, setMensagemCampoObrigatorioPassword] = useState("");
+  const [
+    mensagemCampoObrigatorioPassword,
+    setMensagemCampoObrigatorioPassword,
+  ] = useState("");
   const [errorInputPassword, setErrorInputPassword] = useState(false);
-  
-  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
-    if(value.length === 0) {
+
+  const validarCamposEntradaObrigatorios = (
+    value,
+    functionSetError,
+    functionSetMensagem
+  ) => {
+    if (value.length === 0) {
       functionSetError(true);
       functionSetMensagem("Campo obrigatório");
       return false;
@@ -32,15 +37,23 @@ function Login() {
       functionSetMensagem("");
       return true;
     }
-  }
+  };
 
   const fazerLogin = () => {
-    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
-    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
-    if(statusInputEmail && statusInputPassword) {
-      console.log('Pode fazer login');
+    let statusInputEmail = validarCamposEntradaObrigatorios(
+      email,
+      setErrorInputEmail,
+      setMensagemCampoObrigatorioEmail
+    );
+    let statusInputPassword = validarCamposEntradaObrigatorios(
+      password,
+      setErrorInputPassword,
+      setMensagemCampoObrigatorioPassword
+    );
+    if (statusInputEmail && statusInputPassword) {
+      console.log("Pode fazer login");
     }
-  }
+  };
 
   return (
     <div id="page-login">
@@ -60,7 +73,7 @@ function Login() {
               <Box
                 component="form"
                 sx={{
-                  '& .MuiTextField-root': { m: 0, width: '550px' },
+                  "& .MuiTextField-root": { m: 0, width: "550px" },
                 }}
                 noValidate
                 autoComplete="off"
@@ -73,7 +86,11 @@ function Login() {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      validarCamposEntradaObrigatorios(e.target.value, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
+                      validarCamposEntradaObrigatorios(
+                        e.target.value,
+                        setErrorInputEmail,
+                        setMensagemCampoObrigatorioEmail
+                      );
                     }}
                     label="E-mail"
                     type="email"
@@ -84,7 +101,11 @@ function Login() {
                 </div>
 
                 <div className="input">
-                  <FormControl color="warning" sx={{ m: 0, width: '550px', }} variant="filled">
+                  <FormControl
+                    color="warning"
+                    sx={{ m: 0, width: "550px" }}
+                    variant="filled"
+                  >
                     <TextField
                       error={errorInputPassword}
                       helperText={mensagemCampoObrigatorioPassword}
@@ -92,7 +113,11 @@ function Login() {
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
-                        validarCamposEntradaObrigatorios(e.target.value, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
+                        validarCamposEntradaObrigatorios(
+                          e.target.value,
+                          setErrorInputPassword,
+                          setMensagemCampoObrigatorioPassword
+                        );
                       }}
                       label="Senha"
                       type="password"
@@ -107,8 +132,9 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="opcoes-links">
               <p>
-                <a href="google.com">Esqueceu sua senha?</a><br />
-                <a href="google.com">Acesse com seu token de membro!</a>
+                <Link to={"/"}>Esqueceu sua senha?</Link>
+                <br />
+                <Link to={"/login-token"}>Acesse com seu token de membro!</Link>
               </p>
             </div>
 
@@ -122,10 +148,9 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="link-criar-conta">
               <p>
-                Não tem conta? <a href="google.com">Crie a sua aqui!</a>
+                Não tem conta? <Link to={"/cadastro"}>Crie a sua aqui!</Link>
               </p>
             </div>
-
           </div>
         </div>
 
