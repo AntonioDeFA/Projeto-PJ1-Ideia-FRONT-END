@@ -1,0 +1,24 @@
+div .erro {
+  border: 2px solid var(--color-aquecimento);
+  background-color: var(--color-vermelho-leve);
+  color: var(--color-background);
+}
+
+div .sucesso {
+  border: 2px solid var(--color-inscricoes);
+  background-color: var(--color-verde-leve);
+  color: var(--color-verde-forte);
+}
+
+div .mensagem {
+  width: 70%;
+  border-radius: 5px;
+}
+
+div #titulo {
+  margin-top: 10px;
+}
+
+p #mensagem-texto {
+  text-align: center;
+}
