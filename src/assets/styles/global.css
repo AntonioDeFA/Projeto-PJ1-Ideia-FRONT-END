@@ -1,5 +1,9 @@
 :root {
-  --color-background: #fff;
+  --color-background: whitesmoke;
+  --color-background-auth: #ffd966;
+  --color-vermelho-leve: #ff8282;
+  --color-verde-leve: #91ff82;
+  --color-verde-forte: rgb(0, 107, 14);
   --color-button-text: #fff;
   --color-background-button: #ffc107;
   --color-button-hover: #fc7a00;
@@ -44,6 +48,10 @@ body {
   text-align: center;
 }
 
+.fundo-amarelo {
+  background-color: var(--color-background-auth);
+}
+
 .elementos-centralizados {
   display: flex;
   justify-content: center;
@@ -54,6 +62,11 @@ body {
   display: flex;
   justify-content: left;
   align-items: center;
+}
+
+.tamanho-maximo {
+  width: 100%;
+  height: 100%;
 }
 
 .titulos-principais {
@@ -87,14 +100,7 @@ body {
 div .tamanho-card-personalizado {
   width: 255px;
   min-height: 240px;
-
-  /* Verificar se não vai dar erro em CardMinhasCompeticoes */
   margin-top: 75px;
-}
-
-div .margem-personalizada-card {
-  /* margin-top: 75px;
-  margin-left: 50px; */
 }
 
 div .listagem-cards-competicoes ul {

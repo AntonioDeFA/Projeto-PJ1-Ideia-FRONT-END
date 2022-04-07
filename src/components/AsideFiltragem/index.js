@@ -1,15 +1,14 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import FormGroup from '@mui/material/FormGroup';
-import Checkbox from '@mui/material/Checkbox';
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import FormGroup from "@mui/material/FormGroup";
+import Checkbox from "@mui/material/Checkbox";
 
 import "./styles.css";
 import Botao from "../Botao";
@@ -17,64 +16,62 @@ import Botao from "../Botao";
 const mesesDoAno = [
   {
     value: 1,
-    label: "Janeiro"
+    label: "Janeiro",
   },
   {
     value: 2,
-    label: "Fevereiro"
+    label: "Fevereiro",
   },
   {
     value: 3,
-    label: "Março"
+    label: "Março",
   },
   {
     value: 4,
-    label: "Abril"
+    label: "Abril",
   },
   {
     value: 5,
-    label: "Maio"
+    label: "Maio",
   },
   {
     value: 6,
-    label: "Junho"
+    label: "Junho",
   },
   {
     value: 7,
-    label: "Julho"
+    label: "Julho",
   },
   {
     value: 8,
-    label: "Agosto"
+    label: "Agosto",
   },
   {
     value: 9,
-    label: "Setembro"
+    label: "Setembro",
   },
   {
     value: 10,
-    label: "Outubro"
+    label: "Outubro",
   },
   {
     value: 11,
-    label: "Novembro"
+    label: "Novembro",
   },
   {
     value: 12,
-    label: "Dezembro"
-  }
+    label: "Dezembro",
+  },
 ];
 
 function AsideFiltragem(props) {
-  const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState('');
-  const [mensagemCampoObrigatorio, setMensagemCampoObrigatorio] = useState("");
-  const [errorNomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem] = useState(false);
-  
-  const [mesDoAno, setMesDoAno] = useState('');
-  const [anoFiltragem, setAnoFiltragem] = useState(undefined);
-  
-  const [opcaoCompeticoes, setOpcaoCompeticoes] = useState('');
-  const [isCompeticoesAbertas, setIsCompeticoesAbertas] = useState(false);
+  // Dados para filtragem
+  const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState("");
+  const [mesDoAno, setMesDoAno] = useState("");
+  const [anoFiltragem, setAnoFiltragem] = useState("");
+
+  const [opcaoCompeticoes, setOpcaoCompeticoes] =
+    useState("competicoesAbertas");
 
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
@@ -82,30 +79,26 @@ function AsideFiltragem(props) {
   const [checkboxImersao, setCheckboxImersao] = useState(false);
   const [checkboxPitch, setCheckboxPitch] = useState(false);
   const [checkboxEncerrada, setCheckboxEncerrada] = useState(false);
+  const [hasCheckboxes, setHasCheckBoxes] = useState(false);
 
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
 
   const handleRadioButtonsCompeticoes = (event) => {
     setOpcaoCompeticoes(event.target.value);
-    if (isCompeticoesAbertas) {
-      setIsCompeticoesAbertas(true);
-      console.log(rdButtonCompeticoesAbertas.current);
-    } else {
-      setIsCompeticoesAbertas(false);
-      console.log(rdButtonMinhasCompeticoes.current);
-    }
+
+    let isCompeticoesAbertas = event.target.value === "competicoesAbertas";
+
+    setHasCheckBoxes(!isCompeticoesAbertas);
+
+    props.verificarTipoCompeticoes(isCompeticoesAbertas);
   };
 
   const checkboxes = () => {
-    if (props.hasCheckboxes) {
+    if (hasCheckboxes) {
       return (
         <div className="margem-personalizada">
-          <FormGroup
-            value={etapasFiltragem}
-            onChange={setEtapasFiltragem}
-          >
-
+          <FormGroup value={etapasFiltragem} onChange={setEtapasFiltragem}>
             <FormControlLabel
               onChange={(e) => {
                 setCheckboxAquecimento(e.target.checked);
@@ -113,8 +106,8 @@ function AsideFiltragem(props) {
               control={
                 <Checkbox
                   sx={{
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
                     },
                   }}
                 />
@@ -129,10 +122,9 @@ function AsideFiltragem(props) {
               }}
               control={
                 <Checkbox
-                  sx=
-                  {{
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
                     },
                   }}
                 />
@@ -148,8 +140,8 @@ function AsideFiltragem(props) {
               control={
                 <Checkbox
                   sx={{
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
                     },
                   }}
                 />
@@ -165,8 +157,8 @@ function AsideFiltragem(props) {
               control={
                 <Checkbox
                   sx={{
-                    '&.Mui-checked': {
-                      color: '#FC7A00',
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
                     },
                   }}
                 />
@@ -175,36 +167,19 @@ function AsideFiltragem(props) {
               value={checkboxEncerrada}
             />
           </FormGroup>
-
         </div>
       );
     }
-
-  }
+  };
 
   const adicionar = () => {
-    alert('adicionar');
-  }
+    alert("adicionar");
+  };
 
   const realizarFiltragem = (event) => {
     event.preventDefault();
-
-    if(validarCamposEntradaObrigatorios(nomeCompeticaoFiltragem, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio)) {
-      console.log('Pode filtrar');
-    }
-  }
-  
-  const validarCamposEntradaObrigatorios = (value, functionSetError, functionSetMensagem) => {
-    if(value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem("Campo obrigatório");
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem("");
-      return true;
-    }
-  }
+    props.realizarFiltragem(nomeCompeticaoFiltragem, mesDoAno, anoFiltragem);
+  };
 
   return (
     <div className="aside-filtragem-tela-inicial">
@@ -225,18 +200,15 @@ function AsideFiltragem(props) {
           <Box
             component="form"
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '27ch' },
+              "& .MuiTextField-root": { m: 1, width: "27ch" },
             }}
             noValidate
             autoComplete="off"
           >
             <TextField
-              error={errorNomeCompeticaoFiltragem}
-              helperText={mensagemCampoObrigatorio}
               value={nomeCompeticaoFiltragem}
               onChange={(e) => {
                 setNomeCompeticaoFiltragem(e.target.value);
-                validarCamposEntradaObrigatorios(e.target.value, setErrorNomeCompeticaoFiltragem, setMensagemCampoObrigatorio);
               }}
               id="filled-search"
               label="Buscar"
@@ -244,7 +216,6 @@ function AsideFiltragem(props) {
               variant="filled"
               color="warning"
               size="small"
-              required
             />
 
             <TextField
@@ -290,51 +261,47 @@ function AsideFiltragem(props) {
         </div>
 
         <div className="margem-personalizada" id="radio-buttons-competicoes">
-          <FormControl component="fieldset" >
+          <FormControl component="fieldset">
             <RadioGroup
               name="controlled-radio-buttons-group"
               value={opcaoCompeticoes}
               onChange={handleRadioButtonsCompeticoes}
             >
-              <Link to="/" className="link-aside">
-                <FormControlLabel
-                  value="competicoesAbertas"
-                  ref={rdButtonCompeticoesAbertas}
-                  control={
-                    <Radio sx={{
-                      color: '#999',
-                      '&.Mui-checked': {
-                        color: '#FC7A00',
+              <FormControlLabel
+                value="competicoesAbertas"
+                ref={rdButtonCompeticoesAbertas}
+                control={
+                  <Radio
+                    sx={{
+                      color: "#999",
+                      "&.Mui-checked": {
+                        color: "#FC7A00",
                       },
                     }}
-                    />
-                  }
-                  label="Competições Abertas"
-                />
-              </Link>
-
-              <Link to="/minhasCompeticoes" className="link-aside">
-                <FormControlLabel
-                  value="minhasCompeticoes"
-                  ref={rdButtonMinhasCompeticoes}
-                  control={
-                    <Radio sx={{
-                      color: '#999',
-                      '&.Mui-checked': {
-                        color: '#FC7A00',
+                  />
+                }
+                label="Competições Abertas"
+              />
+              <FormControlLabel
+                value="minhasCompeticoes"
+                ref={rdButtonMinhasCompeticoes}
+                control={
+                  <Radio
+                    sx={{
+                      color: "#999",
+                      "&.Mui-checked": {
+                        color: "#FC7A00",
                       },
                     }}
-                    />
-                  }
-                  label="Minhas Competições"
-                />
-              </Link>
+                  />
+                }
+                label="Minhas Competições"
+              />
             </RadioGroup>
           </FormControl>
         </div>
 
         {checkboxes()}
-
       </div>
     </div>
   );
