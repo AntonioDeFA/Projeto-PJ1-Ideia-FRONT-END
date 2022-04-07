@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Route } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
 import storeContext from "../context";
 
