@@ -1,4 +1,3 @@
-import Mensagem from "components/Mensagem";
 import React, { useState } from "react";
 
 import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
@@ -9,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Botao from "./../../components/Botao/index";
 import { Link } from "react-router-dom";
 import { MSG000, MSG004, MSG006 } from "./../../utils/mensagens";
+import Mensagem from "./../../components/Mensagem/index";
 
 function LoginToken() {
   const [token, setToken] = useState("");
@@ -16,7 +16,7 @@ function LoginToken() {
   const [mensagemCampoObrigatorioToken, setMensagemCampoObrigatorioToken] =
     useState("");
 
-  const [mensagemErro, setMensagemErro] = useState("");
+  const [mensagemErro /*, setMensagemErro*/] = useState("");
 
   const validarCamposObrigatorios = (
     value,

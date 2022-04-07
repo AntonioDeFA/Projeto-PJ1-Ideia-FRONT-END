@@ -1,29 +1,27 @@
 import React, { useContext } from "react";
 import StoreContext from "../../store/context";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
-import ImagemLogo from '../../assets/images/Imagem1.svg';
-import Dropdown from '../../assets/images/Dropdown.svg';
-import Grupo from '../../assets/images/Grupo.svg';
-import Trofeu from '../../assets/images/Trofeu.svg';
-import Confirma from '../../assets/images/Confirma.svg';
+import Grupo from "../../assets/images/Grupo.svg";
+import Trofeu from "../../assets/images/Trofeu.svg";
+import Confirma from "../../assets/images/Confirma.svg";
+import Dropdown from "../../assets/images/Dropdown.svg";
+import ImagemLogo from "../../assets/images/Imagem1.svg";
 
 import "./styles.css";
 
 function DefaultHeader() {
-
   const { setToken } = useContext(StoreContext);
 
   const fazerLogoff = () => {
-    setToken('');
-    <Navigate to="/login" />
-  }
+    setToken("");
+    <Navigate to="/login" />;
+  };
 
   return (
     <div id="component-defaultHeader">
       <div className="bg-warning navbar navbar-light text-white pb-0 pt-0">
         <div className="container-fluid ">
-
           <img
             src={ImagemLogo}
             alt="imagem logo"
@@ -33,71 +31,34 @@ function DefaultHeader() {
           />
 
           <ul className="nav nav-pills justify-content-center ">
-
             <li className="nav-item bg-light mt-0 pt-3 pb-3 px-2">
-              <a
-                className="nav-link active bg-light p-0"
-                aria-current="page"
-                href="google.com">
-
-                <img
-                  src={Trofeu}
-                  alt="navegacao_trofeu"
-                />
-              </a>
+              <Link to={"/"}>
+                <img src={Trofeu} alt="navegacao_trofeu" />
+              </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <a
-                className="nav-link active bg-warning p-0"
-                aria-current="page"
-                href="google.com">
-
-                <img
-                  src={Confirma}
-                  alt="navegacao_confirma"
-                />
-              </a>
+              <Link to={"/"}>
+                <img src={Confirma} alt="navegacao_confirma" />
+              </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <a
-                className="nav-link active bg-warning p-0"
-                aria-current="page"
-                href="google.com">
-                <img
-                  src={Confirma}
-                  alt="navegacao_confirma"
-                />
-              </a>
+              <Link to={"/"}>
+                <img src={Confirma} alt="navegacao_confirma" />
+              </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <a
-                className="nav-link active bg-warning p-0"
-                aria-current="page"
-                href="google.com">
-
-                <img
-                  src={Grupo}
-                  alt="navegacao_grupo"
-                />
-              </a>
+              <Link to={"/"}>
+                <img src={Grupo} alt="navegacao_grupo" />
+              </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <a
-                className="nav-link active bg-warning p-0"
-                aria-current="page"
-                href="google.com">
-
-                <img
-                  src={Grupo}
-                  alt="navegacao_grupo"
-                  className="img-fluid"
-                />
-
-              </a>
+              <Link to={"/"}>
+                <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
+              </Link>
             </li>
           </ul>
 
@@ -105,7 +66,7 @@ function DefaultHeader() {
             <div className="col elementos-alinhados-esquerda">
               <h6 className="fw-bold nome-usuario">nome do usuário</h6>
             </div>
-            <div className="col ">
+            <div id="dropdown-div" className="col">
               <img
                 src={Dropdown}
                 alt="imagem_logo_2"
@@ -117,19 +78,29 @@ function DefaultHeader() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               />
-              <div className="dropdown-menu ms-5 p-0">
-                <ul className="list-group ms-3 p-0" aria-labelledby="navbarDropdownMenu">
-                  <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="" className="nav-link text-dark">
+              <div className="dropdown-menu p-0">
+                <ul
+                  className="list-group p-0"
+                  aria-labelledby="navbarDropdownMenu"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-link nav-link text-dark pt-0"
+                  >
+                    <li className="list-group-item m-0 p-0 mt-2 border border-0">
                       <h6>Meus dados</h6>
-                    </a>
-                  </li>
+                    </li>
+                  </button>
 
-                  <li className="list-group-item m-0 p-0 border border-0">
-                    <a href="" className="nav-link text-dark pt-0" onClick={fazerLogoff}>
-                      <h6 onClick={fazerLogoff}>Sair</h6>
-                    </a>
-                  </li>
+                  <button
+                    type="button"
+                    onClick={fazerLogoff}
+                    class="btn btn-link nav-link text-dark pt-0"
+                  >
+                    <li className="list-group-item m-0 p-0 border border-0">
+                      <h6>Sair</h6>
+                    </li>
+                  </button>
                 </ul>
               </div>
             </div>

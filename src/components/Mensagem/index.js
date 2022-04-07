@@ -1,5 +1,5 @@
 import React from "react";
-import { MSG005 } from "utils/mensagens";
+import { MSG005 } from "../../utils/mensagens";
 
 import "./styles.css";
 

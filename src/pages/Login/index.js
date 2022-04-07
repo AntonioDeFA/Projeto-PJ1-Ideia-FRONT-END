@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import api from '../../services/api'
+import api from "../../services/api";
 import StoreContext from "../../store/context";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -12,11 +12,9 @@ import ImgLogo from "../../assets/images/Imagem1.png";
 import "./styles.css";
 import Botao from "../../components/Botao";
 import { Link } from "react-router-dom";
-import { MSG000, MSG004 } from "utils/mensagens";
+import { MSG000, MSG004 } from "../../utils/mensagens";
 
 function Login() {
-  // adicionei esse
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] =
     useState("");
@@ -31,7 +29,7 @@ function Login() {
 
   const { setToken } = useContext(StoreContext);
   const navigate = useNavigate();
-  
+
   const validarCamposEntradaObrigatorios = (
     value,
     functionSetError,
@@ -49,23 +47,37 @@ function Login() {
   };
 
   const fazerLogin = () => {
+    let statusInputEmail = validarCamposEntradaObrigatorios(
+      email,
+      setErrorInputEmail,
+      setMensagemCampoObrigatorioEmail
+    );
+    let statusInputPassword = validarCamposEntradaObrigatorios(
+      password,
+      setErrorInputPassword,
+      setMensagemCampoObrigatorioPassword
+    );
 
-    let statusInputEmail = validarCamposEntradaObrigatorios(email, setErrorInputEmail, setMensagemCampoObrigatorioEmail);
-    let statusInputPassword = validarCamposEntradaObrigatorios(password, setErrorInputPassword, setMensagemCampoObrigatorioPassword);
-  
     if (statusInputEmail && statusInputPassword) {
-      
-      api.post('/seguranca/token', { login: email, senha: password }).then(response => {
-        api.defaults.headers.post['Authorization'] = `Bearer ${response.data}`;
-        api.post('/seguranca/login', { login: email, senha: password }).then(responseToken => {
-          setToken(responseToken);
-          return navigate('/');
-        }).catch(error => {
-          console.log(error)
+      api
+        .post("/seguranca/token", { login: email, senha: password })
+        .then((response) => {
+          api.defaults.headers.post[
+            "Authorization"
+          ] = `Bearer ${response.data}`;
+          api
+            .post("/seguranca/login", { login: email, senha: password })
+            .then((responseToken) => {
+              setToken(responseToken);
+              return navigate("/");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      }).catch(error => {
-        console.log(error)
-      });
     }
   };
 

@@ -10,8 +10,13 @@ import Botao from "../../components/Botao";
 import Mensagem from "../../components/Mensagem";
 import { validarEmail } from "../../services/utils";
 import { Link } from "react-router-dom";
-import { MSG000, MSG001, MSG002, MSG003 } from "utils/mensagens";
-import { MSG006 } from "./../../utils/mensagens";
+import {
+  MSG000,
+  MSG001,
+  MSG002,
+  MSG003,
+  MSG006,
+} from "./../../utils/mensagens";
 
 function DadosUsuario() {
   const [nome, setNome] = useState("");

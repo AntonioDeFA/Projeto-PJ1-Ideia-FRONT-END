@@ -8,7 +8,8 @@ import TextField from "@mui/material/TextField";
 import Botao from "./../../components/Botao/index";
 import Mensagem from "./../../components/Mensagem/index";
 import { Link } from "react-router-dom";
-import { validarEmail } from "services/utils";
+
+import { validarEmail } from "./../../services/utils";
 import {
   MSG000,
   MSG003,
