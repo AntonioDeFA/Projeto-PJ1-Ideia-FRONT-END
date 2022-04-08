@@ -1,0 +1,33 @@
+
+div #dados-equipe {
+  width: 94.5%;
+  margin-top: 2%;
+}
+
+div #nome-botoes {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2%;
+}
+
+div #botoes {
+  display: flex;
+}
+
+div #btn-confirmar {
+  margin-right: 20px;
+}
+
+div #nome-equipe {
+  margin-bottom: 2%;
+}
+
+/* CARD MEMBRO */
+div #membros ul #lista-membros {
+  list-style: none;
+  
+}
+
+ul #lista-membros li div{
+  display: inline-block;background-color: black;
+}

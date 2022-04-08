@@ -80,6 +80,7 @@ body {
   font-size: 16pt;
   transition: 0.5s all;
   padding: 5px;
+  border: none;
 }
 
 .botao-menor-personalizado {
@@ -89,6 +90,7 @@ body {
   font-size: 13pt;
   transition: 0.5s all;
   padding: 5px;
+  border: none;
 }
 
 .botao-personalizado:hover,

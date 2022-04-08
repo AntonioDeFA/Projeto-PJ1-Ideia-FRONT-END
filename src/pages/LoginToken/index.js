@@ -11,12 +11,12 @@ import { MSG000, MSG004, MSG006 } from "./../../utils/mensagens";
 import Mensagem from "./../../components/Mensagem/index";
 
 function LoginToken() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(MSG000);
   const [errorInputToken, setErrorInputToken] = useState(false);
   const [mensagemCampoObrigatorioToken, setMensagemCampoObrigatorioToken] =
-    useState("");
+    useState(MSG000);
 
-  const [mensagemErro /*, setMensagemErro*/] = useState("");
+  const [mensagemErro /*, setMensagemErro*/] = useState(MSG000);
 
   const validarCamposObrigatorios = (
     value,
