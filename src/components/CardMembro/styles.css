@@ -18,6 +18,15 @@ header.card-normal {
   background-color: var(--color-background-auth);
 }
 
+header#cabecalho div {
+  display: flex;
+  justify-content: space-between;
+}
+
+header#cabecalho div div#icone-lixeira {
+  margin-top: -4%;
+}
+
 .padding {
   padding: 7%;
 }
