@@ -23,11 +23,16 @@ div #nome-equipe {
 }
 
 /* CARD MEMBRO */
-div #membros ul #lista-membros {
+ul#lista-membros {
   list-style: none;
-  
+  padding: 0;
+  margin-top: 4%;
+  width: 102%;
 }
 
-ul #lista-membros li div{
-  display: inline-block;background-color: black;
+ul#lista-membros li {
+  width: 23%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  display: inline-block;
 }

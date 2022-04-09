@@ -1,0 +1,23 @@
+div #card-membro {
+  height: 13rem; 
+}
+
+div .card-lider {
+  border: 1px solid var(--color-pitch);
+}
+
+div .card-normal {
+  border: 1px solid var(--color-background-auth);
+}
+
+header.card-lider {
+  background-color: var(--color-pitch);
+}
+
+header.card-normal {
+  background-color: var(--color-background-auth);
+}
+
+.padding {
+  padding: 7%;
+}

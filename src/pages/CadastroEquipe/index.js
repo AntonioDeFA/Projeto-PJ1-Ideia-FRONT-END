@@ -1,12 +1,14 @@
 import { Box, TextField } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import DefaultHeader from "../../components/DefaultHeader";
 
-import "./styles.css";
-import { MSG000, MSG004 } from "./../../utils/mensagens";
 import Botao from "./../../components/Botao/index";
-import { Link } from "react-router-dom";
+import CardMembro from "./../../components/CardMembro/index";
+import { MSG000, MSG004 } from "./../../utils/mensagens";
+
+import "./styles.css";
 
 function CadastroEquipe() {
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
@@ -103,32 +105,36 @@ function CadastroEquipe() {
           <div id="membros">
             <ul id="lista-membros">
               <li>
-                <div>
-                  <div>
-                    <h1>aaaa</h1>
-                  </div>
-                </div>
+                <CardMembro
+                  isLider={true}
+                  nome="Fulano"
+                  email="fulano@gmail.com"
+                  sequencial={1}
+                />
               </li>
               <li>
-                <div>
-                  <div>
-                    <h1>aaaa</h1>
-                  </div>
-                </div>
+                <CardMembro
+                  isLider={false}
+                  nome="Fulano"
+                  email="fulano@gmail.com"
+                  sequencial={2}
+                />
               </li>
               <li>
-                <div>
-                  <div>
-                    <h1>aaaa</h1>
-                  </div>
-                </div>
+                <CardMembro
+                  isLider={false}
+                  nome="Fulano"
+                  email="fulano@gmail.com"
+                  sequencial={3}
+                />
               </li>
               <li>
-                <div>
-                  <div>
-                    <h1>aaaa</h1>
-                  </div>
-                </div>
+                <CardMembro
+                  isLider={false}
+                  nome="Fulano"
+                  email="fulano@gmail.com"
+                  sequencial={4}
+                />
               </li>
             </ul>
           </div>

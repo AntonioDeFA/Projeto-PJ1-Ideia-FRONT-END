@@ -85,7 +85,7 @@ function DefaultHeader() {
                 >
                   <button
                     type="button"
-                    class="btn btn-link nav-link text-dark pt-0"
+                    className="btn btn-link nav-link text-dark pt-0"
                   >
                     <li className="list-group-item m-0 p-0 mt-2 border border-0">
                       <h6>Meus dados</h6>
@@ -95,7 +95,7 @@ function DefaultHeader() {
                   <button
                     type="button"
                     onClick={fazerLogoff}
-                    class="btn btn-link nav-link text-dark pt-0"
+                    className="btn btn-link nav-link text-dark pt-0"
                   >
                     <li className="list-group-item m-0 p-0 border border-0">
                       <h6>Sair</h6>
