@@ -9,8 +9,9 @@ div #nome-botoes {
   margin-bottom: 2%;
 }
 
-div #botoes {
+div .botoes {
   display: flex;
+  justify-content: space-between;
 }
 
 div #btn-confirmar {

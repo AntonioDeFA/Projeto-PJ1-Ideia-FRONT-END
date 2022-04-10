@@ -34,9 +34,16 @@ function CadastroEquipe() {
     setMensagemCampoObrigatorioEmailMembro,
   ] = useState(MSG000);
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openModalCriarMembro, setOpenModalCriarMembro] = React.useState(false);
+  const handleOpenModalCriarMembro = () => setOpenModalCriarMembro(true);
+  const handleCloseModalCriarMembro = () => setOpenModalCriarMembro(false);
+
+  const [openModalConfirmarInscricao, setOpenModalConfirmarInscricao] =
+    React.useState(false);
+  const handleOpenModalConfirmarInscricao = () =>
+    setOpenModalConfirmarInscricao(true);
+  const handleCloseModalConfirmarInscricao = () =>
+    setOpenModalConfirmarInscricao(false);
 
   const validarCamposObrigatorios = (
     value,
@@ -62,8 +69,12 @@ function CadastroEquipe() {
         setMensagemCampoObrigatorioNomeEquipe
       )
     ) {
-      console.log("Pode criar equipe");
+      handleOpenModalConfirmarInscricao();
     }
+  };
+
+  const finalizarInscricao = () => {
+    console.log("Finalizando a inscrição...");
   };
 
   const adicionarMembro = () => {
@@ -90,7 +101,7 @@ function CadastroEquipe() {
   const cancelarCriacaoMembro = () => {
     setEmailMembro(MSG000);
     setNomeMembro(MSG000);
-    handleClose();
+    handleCloseModalCriarMembro();
   };
 
   return (
@@ -103,7 +114,7 @@ function CadastroEquipe() {
               Nova Inscrição - Competição {"<Nome da competição>"}
             </h2>
 
-            <div id="botoes">
+            <div id="botoes" className="botoes">
               <div id="btn-confirmar">
                 <Botao
                   titulo="confirmar"
@@ -152,7 +163,7 @@ function CadastroEquipe() {
             <Botao
               titulo="adicionar membro"
               classes="btn btn-warning botao-menor-personalizado"
-              onClick={handleOpen}
+              onClick={handleOpenModalCriarMembro}
             />
           </div>
 
@@ -196,7 +207,7 @@ function CadastroEquipe() {
       </div>
 
       <Modal
-        open={open}
+        open={openModalCriarMembro}
         onClose={cancelarCriacaoMembro}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -273,6 +284,41 @@ function CadastroEquipe() {
               classes="btn btn-secondary botao-menor-personalizado"
               onClick={cancelarCriacaoMembro}
             />
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openModalConfirmarInscricao}
+        onClose={handleCloseModalConfirmarInscricao}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px" }}
+          >
+            Ao confirmar, você aceita os termos e condições atribuidos a cada
+            membro da equipe.
+          </Typography>
+          <div className="botoes">
+            <div id="btn-confirmar">
+              <Botao
+                titulo="confirmar inscrição"
+                classes="btn btn-warning botao-menor-personalizado"
+                onClick={finalizarInscricao}
+              />
+            </div>
+            <div id="btn-cancelar-confirmacao">
+              <Botao
+                titulo="cancelar"
+                classes="btn btn-secondary botao-menor-personalizado"
+                onClick={handleCloseModalConfirmarInscricao}
+              />
+            </div>
           </div>
         </Box>
       </Modal>
