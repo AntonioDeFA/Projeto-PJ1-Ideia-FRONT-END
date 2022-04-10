@@ -44,7 +44,7 @@ function DadosUsuario() {
     }
   };
 
-  const fazerLogin = () => {
+  const fazerCadastro = () => {
     setMensagemErro(MSG000);
     let statusInputNome = validarCamposEntradaObrigatorios(
       nome,
@@ -197,7 +197,7 @@ function DadosUsuario() {
             <Botao
               titulo="salvar"
               classes="btn btn-warning botao-menor-personalizado"
-              onClick={fazerLogin}
+              onClick={fazerCadastro}
             />
             <Link to={"/login"}>
               <Botao
