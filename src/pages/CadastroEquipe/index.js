@@ -3,24 +3,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import DefaultHeader from "../../components/DefaultHeader";
+import { styleModals } from "../../utils/constantes";
 
 import Botao from "./../../components/Botao/index";
 import CardMembro from "./../../components/CardMembro/index";
-import { MSG000, MSG004 } from "./../../utils/mensagens";
+import { MSG000, MSG003, MSG004 } from "./../../utils/mensagens";
 
 import "./styles.css";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { validarEmail } from "./../../services/utils";
 
 function CadastroEquipe() {
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
@@ -28,6 +18,20 @@ function CadastroEquipe() {
   const [
     mensagemCampoObrigatorioNomeEquipe,
     setMensagemCampoObrigatorioNomeEquipe,
+  ] = useState(MSG000);
+
+  const [nomeMembro, setNomeMembro] = useState("");
+  const [errorInputNomeMembro, setErrorInputNomeMembro] = useState(false);
+  const [
+    mensagemCampoObrigatorioNomeMembro,
+    setMensagemCampoObrigatorioNomeMembro,
+  ] = useState(MSG000);
+
+  const [emailMembro, setEmailMembro] = useState("");
+  const [errorInputEmailMembro, setErrorInputEmailMembro] = useState(false);
+  const [
+    mensagemCampoObrigatorioEmailMembro,
+    setMensagemCampoObrigatorioEmailMembro,
   ] = useState(MSG000);
 
   const [open, setOpen] = React.useState(false);
@@ -50,6 +54,45 @@ function CadastroEquipe() {
     }
   };
 
+  const confirmarCriacaoEquipe = () => {
+    if (
+      validarCamposObrigatorios(
+        nomeEquipe,
+        setErrorInputNomeEquipe,
+        setMensagemCampoObrigatorioNomeEquipe
+      )
+    ) {
+      console.log("Pode criar equipe");
+    }
+  };
+
+  const adicionarMembro = () => {
+    let statusNomeMembro = validarCamposObrigatorios(
+      nomeMembro,
+      setErrorInputNomeMembro,
+      setMensagemCampoObrigatorioNomeMembro
+    );
+    let statusEmailMembro = validarCamposObrigatorios(
+      emailMembro,
+      setErrorInputEmailMembro,
+      setMensagemCampoObrigatorioEmailMembro
+    );
+    if (statusNomeMembro && statusEmailMembro) {
+      if (validarEmail(emailMembro)) {
+        console.log("Pode adicionar membro");
+      } else {
+        setErrorInputEmailMembro(true);
+        setMensagemCampoObrigatorioEmailMembro(MSG003);
+      }
+    }
+  };
+
+  const cancelarCriacaoMembro = () => {
+    setEmailMembro(MSG000);
+    setNomeMembro(MSG000);
+    handleClose();
+  };
+
   return (
     <div id="cadastro-equipe">
       <DefaultHeader />
@@ -65,6 +108,7 @@ function CadastroEquipe() {
                 <Botao
                   titulo="confirmar"
                   classes="btn btn-warning botao-menor-personalizado"
+                  onClick={confirmarCriacaoEquipe}
                 />
               </div>
               <div id="btn-voltar">
@@ -153,17 +197,83 @@ function CadastroEquipe() {
 
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={cancelarCriacaoMembro}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Box sx={styleModals}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px" }}
+          >
             Informe os dados do novo membro
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <Box
+            component="form"
+            sx={{
+              "& .MuiTextField-root": { m: 0, width: "500px" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <div className="input">
+              <TextField
+                error={errorInputNomeMembro}
+                helperText={mensagemCampoObrigatorioNomeMembro}
+                id="filled-search-nome-membro"
+                value={nomeMembro}
+                onChange={(e) => {
+                  setNomeMembro(e.target.value);
+                  validarCamposObrigatorios(
+                    e.target.value,
+                    setErrorInputNomeMembro,
+                    setMensagemCampoObrigatorioNomeMembro
+                  );
+                }}
+                label="Nome *"
+                type="text"
+                variant="filled"
+                color="warning"
+                size="small"
+              />
+            </div>
+
+            <div className="input">
+              <TextField
+                error={errorInputEmailMembro}
+                helperText={mensagemCampoObrigatorioEmailMembro}
+                id="filled-search-email"
+                value={emailMembro}
+                onChange={(e) => {
+                  setEmailMembro(e.target.value);
+                  validarCamposObrigatorios(
+                    e.target.value,
+                    setErrorInputEmailMembro,
+                    setMensagemCampoObrigatorioEmailMembro
+                  );
+                }}
+                label="E-mail *"
+                type="email"
+                variant="filled"
+                color="warning"
+                size="small"
+              />
+            </div>
+          </Box>
+          <div className="botoes-cadastro">
+            <Botao
+              titulo="adicionar"
+              classes="btn btn-warning botao-menor-personalizado"
+              onClick={adicionarMembro}
+            />
+            <Botao
+              titulo="cancelar"
+              classes="btn btn-secondary botao-menor-personalizado"
+              onClick={cancelarCriacaoMembro}
+            />
+          </div>
         </Box>
       </Modal>
     </div>
