@@ -104,6 +104,10 @@ function CadastroEquipe() {
     handleCloseModalCriarMembro();
   };
 
+  const baixarRegulamento = () => {
+    console.log("Baixando regulamento...");
+  };
+
   return (
     <div id="cadastro-equipe">
       <DefaultHeader />
@@ -299,11 +303,20 @@ function CadastroEquipe() {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: "20px", textAlign: "center" }}
           >
             Ao confirmar, você aceita os termos e condições atribuidos a cada
             membro da equipe.
           </Typography>
+          <div id="regulamento">
+            <Botao
+              classes="btn btn-warning botao-menor-personalizado"
+              titulo="Regulamento da competição"
+              onClick={baixarRegulamento}
+            >
+              <i className="fa-solid fa-download"></i>
+            </Botao>
+          </div>
           <div className="botoes">
             <div id="btn-confirmar">
               <Botao

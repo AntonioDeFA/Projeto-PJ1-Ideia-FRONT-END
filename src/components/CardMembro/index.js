@@ -1,7 +1,5 @@
 import React from "react";
 
-import IconTrash from "../../assets/images/trash-can-solid.svg";
-
 import "../../assets/styles/global.css";
 import "./styles.css";
 
@@ -19,17 +17,7 @@ function CardMembro(props) {
               MEMBRO nº {props.sequencial} {props.isLider ? "(LIDER)" : ""}
             </h5>
           </div>
-          {props.isLider ? null : (
-            <div id="icone-lixeira">
-              <img
-                src={IconTrash}
-                alt="trash"
-                className="img-fluid"
-                width="20"
-                height="20"
-              ></img>
-            </div>
-          )}
+          {props.isLider ? null : <i className="fa-solid fa-trash-can"></i>}
         </div>
       </header>
 

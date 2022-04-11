@@ -40,3 +40,13 @@ ul#lista-membros li {
 #filled-search-nomeEquipe {
   width: 385px;
 }
+
+i {
+  font-size: 15pt;
+}
+
+div #regulamento {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
