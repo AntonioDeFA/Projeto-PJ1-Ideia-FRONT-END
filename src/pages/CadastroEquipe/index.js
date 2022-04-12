@@ -7,7 +7,7 @@ import { styleModals } from "../../utils/constantes";
 
 import Botao from "./../../components/Botao/index";
 import CardMembro from "./../../components/CardMembro/index";
-import { MSG000, MSG003, MSG004 } from "./../../utils/mensagens";
+import { MSG000, MSG003, MSG004, MSG007 } from "./../../utils/mensagens";
 
 import "./styles.css";
 import { validarEmail } from "./../../services/utils";
@@ -44,6 +44,14 @@ function CadastroEquipe() {
     setOpenModalConfirmarInscricao(true);
   const handleCloseModalConfirmarInscricao = () =>
     setOpenModalConfirmarInscricao(false);
+
+  const [membros] = useState([
+    {
+      nomeMembro: "Nycolas",
+      emailMembro: "nycolasramon3@gmail.com",
+      isLider: true,
+    },
+  ]);
 
   const validarCamposObrigatorios = (
     value,
@@ -90,7 +98,18 @@ function CadastroEquipe() {
     );
     if (statusNomeMembro && statusEmailMembro) {
       if (validarEmail(emailMembro)) {
-        console.log("Pode adicionar membro");
+        if (confirmarUnicidadeEmail()) {
+          let membro = {
+            nomeMembro,
+            emailMembro,
+            isLider: false,
+          };
+          membros.push(membro);
+          cancelarCriacaoMembro();
+        } else {
+          setErrorInputEmailMembro(true);
+          setMensagemCampoObrigatorioEmailMembro(MSG007);
+        }
       } else {
         setErrorInputEmailMembro(true);
         setMensagemCampoObrigatorioEmailMembro(MSG003);
@@ -106,6 +125,14 @@ function CadastroEquipe() {
 
   const baixarRegulamento = () => {
     console.log("Baixando regulamento...");
+  };
+
+  const confirmarUnicidadeEmail = () => {
+    let res = membros.find((membro) => {
+      return membro.emailMembro === emailMembro;
+    });
+
+    return !res;
   };
 
   return (
@@ -173,38 +200,18 @@ function CadastroEquipe() {
 
           <div id="membros">
             <ul id="lista-membros">
-              <li>
-                <CardMembro
-                  isLider={true}
-                  nome="Fulano"
-                  email="fulano@gmail.com"
-                  sequencial={1}
-                />
-              </li>
-              <li>
-                <CardMembro
-                  isLider={false}
-                  nome="Fulano"
-                  email="fulano@gmail.com"
-                  sequencial={2}
-                />
-              </li>
-              <li>
-                <CardMembro
-                  isLider={false}
-                  nome="Fulano"
-                  email="fulano@gmail.com"
-                  sequencial={3}
-                />
-              </li>
-              <li>
-                <CardMembro
-                  isLider={false}
-                  nome="Fulano"
-                  email="fulano@gmail.com"
-                  sequencial={4}
-                />
-              </li>
+              {membros.map((membro, index) => {
+                return (
+                  <li>
+                    <CardMembro
+                      isLider={membro.isLider}
+                      nome={membro.nomeMembro}
+                      email={membro.emailMembro}
+                      sequencial={index + 1}
+                    />
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
