@@ -8,8 +8,8 @@ import "../../assets/styles/global.css";
 import "./styles.css";
 
 function CardMinhasCompeticoes(props) {
-  let dataInicio = props.card.etapa.dataInicio;
-  let dataTermino = props.card.etapa.dataTermino;
+  let dataInicio = props.card.etapaVigente.dataInicio;
+  let dataTermino = props.card.etapaVigente.dataTermino;
 
   const handlePapelUsuario = () => {
     let element = null;
@@ -33,7 +33,7 @@ function CardMinhasCompeticoes(props) {
 
   const handleEtapaCompeticao = () => {
     let element = null;
-    let tipoEtapa = props.card.etapa.tipoEtapa;
+    let tipoEtapa = props.card.etapaVigente.tipoEtapa;
 
     switch (tipoEtapa) {
       case "AQUECIMENTO":
