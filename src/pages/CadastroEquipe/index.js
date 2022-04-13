@@ -6,11 +6,11 @@ import DefaultHeader from "../../components/DefaultHeader";
 import { styleModals } from "../../utils/constantes";
 
 import Botao from "./../../components/Botao/index";
-import CardMembro from "./../../components/CardMembro/index";
 import { MSG000, MSG003, MSG004, MSG007 } from "./../../utils/mensagens";
 
 import "./styles.css";
 import { validarEmail } from "./../../services/utils";
+import CardMembro from "../../components/CardMembro";
 
 function CadastroEquipe() {
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
@@ -20,14 +20,14 @@ function CadastroEquipe() {
     setMensagemCampoObrigatorioNomeEquipe,
   ] = useState(MSG000);
 
-  const [nomeMembro, setNomeMembro] = useState("");
+  const [nomeMembro, setNomeMembro] = useState(MSG000);
   const [errorInputNomeMembro, setErrorInputNomeMembro] = useState(false);
   const [
     mensagemCampoObrigatorioNomeMembro,
     setMensagemCampoObrigatorioNomeMembro,
   ] = useState(MSG000);
 
-  const [emailMembro, setEmailMembro] = useState("");
+  const [emailMembro, setEmailMembro] = useState(MSG000);
   const [errorInputEmailMembro, setErrorInputEmailMembro] = useState(false);
   const [
     mensagemCampoObrigatorioEmailMembro,
@@ -45,7 +45,7 @@ function CadastroEquipe() {
   const handleCloseModalConfirmarInscricao = () =>
     setOpenModalConfirmarInscricao(false);
 
-  const [membros] = useState([
+  const [membros, setMembros] = useState([
     {
       nomeMembro: "Nycolas",
       emailMembro: "nycolasramon3@gmail.com",
@@ -135,6 +135,20 @@ function CadastroEquipe() {
     return !res;
   };
 
+  const [mudou, setMudou] = useState(true);
+
+  const removerMembro = async (index) => {
+    membros.splice(index - 1, 1);
+    let membrosAtt = membros;
+
+    await setTimeout(() => {
+      setMembros(membrosAtt);
+    }, 400);
+
+    setMudou(false);
+    setMudou(true);
+  };
+
   return (
     <div id="cadastro-equipe">
       <DefaultHeader />
@@ -200,18 +214,21 @@ function CadastroEquipe() {
 
           <div id="membros">
             <ul id="lista-membros">
-              {membros.map((membro, index) => {
-                return (
-                  <li>
-                    <CardMembro
-                      isLider={membro.isLider}
-                      nome={membro.nomeMembro}
-                      email={membro.emailMembro}
-                      sequencial={index + 1}
-                    />
-                  </li>
-                );
-              })}
+              {mudou
+                ? membros.map((membro, index) => {
+                    return (
+                      <li key={membro.email}>
+                        <CardMembro
+                          nome={membro.nomeMembro}
+                          email={membro.emailMembro}
+                          isLider={membro.isLider}
+                          sequencial={index + 1}
+                          removerMembro={removerMembro}
+                        />
+                      </li>
+                    );
+                  })
+                : null}
             </ul>
           </div>
         </div>

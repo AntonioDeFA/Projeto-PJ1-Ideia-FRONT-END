@@ -30,3 +30,12 @@ header#cabecalho div div#icone-lixeira {
 .padding {
   padding: 7%;
 }
+
+i {
+  cursor: pointer;
+  transition: 0.5s all;
+}
+
+i:hover {
+  color: var(--color-aquecimento);
+}

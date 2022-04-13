@@ -8,6 +8,10 @@ function CardMembro(props) {
     return props.isLider ? "card-lider" : "card-normal";
   };
 
+  const removerMembro = () => {
+    props.removerMembro(props.sequencial);
+  };
+
   return (
     <div id="card-membro" className={gerarClasses()}>
       <header id="cabecalho" className={"padding " + gerarClasses()}>
@@ -17,7 +21,9 @@ function CardMembro(props) {
               MEMBRO nº {props.sequencial} {props.isLider ? "(LIDER)" : ""}
             </h5>
           </div>
-          {props.isLider ? null : <i className="fa-solid fa-trash-can"></i>}
+          {props.isLider ? null : (
+            <i onClick={removerMembro} className="fa-solid fa-trash-can"></i>
+          )}
         </div>
       </header>
 
