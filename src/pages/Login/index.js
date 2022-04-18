@@ -59,24 +59,16 @@ function Login() {
     );
 
     if (statusInputEmail && statusInputPassword) {
+
       api
-        .post("/seguranca/token", { login: email, senha: password })
+        .post("/seguranca/login", { login: email, senha: password })
         .then((response) => {
-          api.defaults.headers.post[
-            "Authorization"
-          ] = `Bearer ${response.data}`;
-          api
-            .post("/seguranca/login", { login: email, senha: password })
-            .then((responseToken) => {
-              setToken(responseToken);
-              return navigate("/");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          setToken(response.data.token);
+          return navigate("/");
         })
         .catch((error) => {
           console.log(error);
+          return navigate("/login");
         });
     }
   };
