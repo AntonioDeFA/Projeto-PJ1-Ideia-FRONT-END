@@ -29,8 +29,7 @@ function ListaCardsCompeticoesAbertas() {
     if (ano !== 0 && ano !== "") {
       params.ano = ano;
     }
-
-    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/competicoes/inscricoes", { params: filtros }).then((response) => {
       const { data } = response;
       setCards(data);
