@@ -4,8 +4,7 @@ import storeContext from "../context";
 
 const RoutesPrivate = ({ children }) => {
   const { token } = useContext(storeContext);
-
-  if (!token.data) {
+  if (!token) {
     return <Navigate to="/login" replace />
   }
   return children;
