@@ -13,17 +13,30 @@ function CardMinhasCompeticoes(props) {
 
   const handlePapelUsuario = () => {
     let element = null;
+    console.log(props.card);
 
-    if (props.userRole === "ORGANIZADOR") {
+    if (props.card.papelUsuario === "ORGANIZADOR") {
       element = (
         <div className="justify-content-center text-center border border-success mb-5">
           <h6 className="text-success m-0">ORGANIZADOR</h6>
         </div>
       );
-    } else if (props.userRole === "COMPETIDOR") {
+    } else if (props.card.papelUsuario === "COMPETIDOR") {
       element = (
         <div className="justify-content-center text-center border border-danger mb-5">
           <h6 className="text-danger m-0">COMPETIDOR</h6>
+        </div>
+      );
+    } else if (props.card.papelUsuario === "CONSULTOR") {
+      element = (
+        <div className="justify-content-center text-center border border-primary mb-5">
+          <h6 className="text-primary m-0">CONSULTOR</h6>
+        </div>
+      );
+    } else if (props.card.papelUsuario === "AVALIADOR") {
+      element = (
+        <div className="justify-content-center text-center border border-warning mb-5">
+          <h6 className="text-warning m-0">AVALIADOR</h6>
         </div>
       );
     }
