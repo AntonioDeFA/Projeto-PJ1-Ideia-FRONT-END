@@ -9,7 +9,8 @@ import "./styles.css";
 import Botao from "../../components/Botao";
 import Mensagem from "../../components/Mensagem";
 import { validarEmail } from "../../services/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/api";
 import {
   MSG000,
   MSG001,
@@ -33,6 +34,8 @@ function DadosUsuario() {
     useState(false);
 
   const [mensagemErro, setMensagemErro] = useState("");
+
+  const navigate = useNavigate();
 
   const validarCamposEntradaObrigatorios = (value, functionSetError) => {
     if (value.length === 0) {
@@ -78,7 +81,23 @@ function DadosUsuario() {
           setErrorInputEmail(true);
           setMensagemErro(MSG003);
         } else {
-          console.log("Pode fazer cadastro");
+          let user = {
+            nomeUsuario: nome,
+            email,
+            senha: password,
+          };
+
+          console.log(user);
+
+          api
+            .post("/usuario", user)
+            .then((response) => {
+              console.log(response);
+              return navigate("/");
+            })
+            .catch((error) => {
+              setMensagemErro(error.response.data.motivosErros.join("\n"));
+            });
         }
       }
     } else {
