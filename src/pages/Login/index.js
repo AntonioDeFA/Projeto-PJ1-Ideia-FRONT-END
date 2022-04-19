@@ -59,7 +59,6 @@ function Login() {
     );
 
     if (statusInputEmail && statusInputPassword) {
-
       api
         .post("/seguranca/login", { login: email, senha: password })
         .then((response) => {
@@ -166,7 +165,8 @@ function Login() {
 
             <div className="elementos-alinhados-esquerda" id="link-criar-conta">
               <p>
-                Não tem conta? <Link to={"/cadastro"}>Crie a sua aqui!</Link>
+                Não tem conta?{" "}
+                <Link to={"/cadastro-usuario"}>Crie a sua aqui!</Link>
               </p>
             </div>
           </div>
