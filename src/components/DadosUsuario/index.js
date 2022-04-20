@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
+
+import StoreContext from "../../store/context";
 
 import "./styles.css";
 import Botao from "../../components/Botao";
@@ -20,20 +22,38 @@ import {
 } from "./../../utils/mensagens";
 
 function DadosUsuario() {
-  const [nome, setNome] = useState("");
+  const [nome, setNome] = useState(MSG000);
   const [errorInputNome, setErrorInputNome] = useState(false);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(MSG000);
   const [errorInputEmail, setErrorInputEmail] = useState(false);
 
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(MSG000);
   const [errorInputPassword, setErrorInputPassword] = useState(false);
 
-  const [confirmarPassword, setConfirmarPassword] = useState("");
+  const [confirmarPassword, setConfirmarPassword] = useState(MSG000);
   const [errorInputConfirmarPassword, setErrorInputConfirmarPassword] =
     useState(false);
 
-  const [mensagemErro, setMensagemErro] = useState("");
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
+
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+
+  const { token } = useContext(StoreContext);
+
+  useEffect(() => {
+    console.log(token);
+
+    if (token !== null) {
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api.get("/usuario-logado").then((response) => {
+        const { data } = response;
+        setNome(data.nomeUsuario);
+        setEmail(data.email);
+        setUsuarioLogado(data);
+      });
+    }
+  }, []);
 
   const navigate = useNavigate();
 
@@ -89,15 +109,19 @@ function DadosUsuario() {
 
           console.log(user);
 
-          api
-            .post("/usuario", user)
-            .then((response) => {
-              console.log(response);
-              return navigate("/");
-            })
-            .catch((error) => {
-              setMensagemErro(error.response.data.motivosErros.join("\n"));
-            });
+          if (usuarioLogado === null) {
+            api
+              .post("/usuario", user)
+              .then((response) => {
+                console.log(response);
+                return navigate("/");
+              })
+              .catch((error) => {
+                setMensagemErro(error.response.data.motivosErros.join("\n"));
+              });
+          } else {
+            // PARTE DE ATUALIZAR USUARIO LOGADO
+          }
         }
       }
     } else {
@@ -167,6 +191,7 @@ function DadosUsuario() {
                   variant="filled"
                   color="warning"
                   size="small"
+                  disabled={usuarioLogado !== null}
                 />
               </div>
 
@@ -218,7 +243,7 @@ function DadosUsuario() {
               classes="btn btn-warning botao-menor-personalizado"
               onClick={fazerCadastro}
             />
-            <Link to={"/login"}>
+            <Link to={usuarioLogado !== null ? "/" : "/login"}>
               <Botao
                 titulo="voltar"
                 classes="btn btn-secondary botao-menor-personalizado"
