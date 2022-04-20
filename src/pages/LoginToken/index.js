@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import StoreContext from "../../store/context";
 
 import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
+import api from "../../services/api";
 
 import "./styles.css";
 import Box from "@mui/material/Box";
@@ -11,7 +13,7 @@ import { MSG000, MSG004, MSG006 } from "./../../utils/mensagens";
 import Mensagem from "./../../components/Mensagem/index";
 
 function LoginToken() {
-  const [token, setToken] = useState(MSG000);
+  const [token, setInputToken] = useState(MSG000);
   const [errorInputToken, setErrorInputToken] = useState(false);
   const [mensagemCampoObrigatorioToken, setMensagemCampoObrigatorioToken] =
     useState(MSG000);
@@ -34,6 +36,7 @@ function LoginToken() {
     }
   };
 
+  const { setToken } = useContext(StoreContext);
   const entrar = () => {
     let statusInputToken = validarCamposObrigatorios(
       token,
@@ -42,6 +45,17 @@ function LoginToken() {
     );
     if (statusInputToken) {
       console.log("Pode fazer login com token");
+      api
+        .post("/seguranca/token", { token: token })
+        .then((response) => {
+          console.log(response.data.token);
+          setToken(response.data.token);
+          console.log("Bem vindo a tea de equipe");
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("Erro ao tentar logar");
+        });
     }
   };
 
@@ -79,7 +93,7 @@ function LoginToken() {
                       id="filled-search-token"
                       value={token}
                       onChange={(e) => {
-                        setToken(e.target.value);
+                        setInputToken(e.target.value);
                         validarCamposObrigatorios(
                           e.target.value,
                           setErrorInputToken,
