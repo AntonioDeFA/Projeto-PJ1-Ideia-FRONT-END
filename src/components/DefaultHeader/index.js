@@ -88,7 +88,12 @@ function DefaultHeader() {
                     className="btn btn-link nav-link text-dark pt-0"
                   >
                     <li className="list-group-item m-0 p-0 mt-2 border border-0">
-                      <h6>Meus dados</h6>
+                      <Link
+                        to={"/cadastro-usuario"}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <h6 style={{ color: "black" }}>Meus dados</h6>
+                      </Link>
                     </li>
                   </button>
 
