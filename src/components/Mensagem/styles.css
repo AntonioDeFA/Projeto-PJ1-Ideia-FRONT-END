@@ -10,6 +10,12 @@ div .sucesso {
   color: var(--color-verde-forte);
 }
 
+div .loading {
+  border: 2px solid var(--color-cinza-escuro);
+  background-color: var(--color-cinza);
+  color: var(--color-background);
+}
+
 div .mensagem {
   width: 70%;
   border-radius: 5px;
@@ -21,4 +27,14 @@ div #titulo {
 
 p#mensagem-texto {
   text-align: center;
+}
+
+div ._index__spinnerText {
+  display: none;
+}
+
+div ._index__viewBox {
+  width: 25%;
+  height: 25%;
+  margin: auto;
 }
