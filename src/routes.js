@@ -22,7 +22,7 @@ function ProjetoRoutes() {
           <Route path="/resetar-senha" element={<ResetarSenha />} />
           <Route path="/cadastro-usuario" element={<CadastroUsuario />} />
           <Route
-            path="/cadastro-equipe"
+            path="/cadastro-equipe/:idCompeticao"
             element={
               <RoutesPrivate>
                 <CadastroEquipe />

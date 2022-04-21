@@ -42,8 +42,6 @@ function DadosUsuario() {
   const { token } = useContext(StoreContext);
 
   useEffect(() => {
-    console.log(token);
-
     if (token !== null) {
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
       api.get("/usuario-logado").then((response) => {
@@ -53,7 +51,7 @@ function DadosUsuario() {
         setUsuarioLogado(data);
       });
     }
-  }, []);
+  }, [token]);
 
   const navigate = useNavigate();
 

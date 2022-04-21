@@ -1,16 +1,26 @@
 import { Box, TextField, Typography, Modal } from "@mui/material";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { Link, useParams } from "react-router-dom";
+
+import StoreContext from "../../store/context";
 
 import DefaultHeader from "../../components/DefaultHeader";
 import { styleModals } from "../../utils/constantes";
 
 import Botao from "./../../components/Botao/index";
-import { MSG000, MSG003, MSG004, MSG007 } from "./../../utils/mensagens";
+import {
+  MSG000,
+  MSG003,
+  MSG004,
+  MSG006,
+  MSG007,
+} from "./../../utils/mensagens";
 
 import "./styles.css";
 import { validarEmail } from "./../../services/utils";
 import CardMembro from "../../components/CardMembro";
+import api from "../../services/api";
+import Mensagem from "../../components/Mensagem";
 
 function CadastroEquipe() {
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
@@ -26,6 +36,8 @@ function CadastroEquipe() {
     mensagemCampoObrigatorioNomeMembro,
     setMensagemCampoObrigatorioNomeMembro,
   ] = useState(MSG000);
+
+  const [mensagem, setMensagem] = useState(MSG000);
 
   const [emailMembro, setEmailMembro] = useState(MSG000);
   const [errorInputEmailMembro, setErrorInputEmailMembro] = useState(false);
@@ -45,13 +57,33 @@ function CadastroEquipe() {
   const handleCloseModalConfirmarInscricao = () =>
     setOpenModalConfirmarInscricao(false);
 
-  const [membros, setMembros] = useState([
-    {
-      nomeMembro: "Nycolas",
-      emailMembro: "nycolasramon3@gmail.com",
-      isLider: true,
-    },
-  ]);
+  const [, setUsuarioLogado] = useState(null);
+  const [competicao, setCompeticao] = useState(null);
+
+  const { token } = useContext(StoreContext);
+
+  const [membros, setMembros] = useState([]);
+  const { idCompeticao } = useParams();
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get("/usuario-logado").then((response) => {
+      const { data } = response;
+      setUsuarioLogado(data);
+      setMembros([
+        {
+          nomeMembro: data.nomeUsuario,
+          emailMembro: data.email,
+          isLider: true,
+        },
+      ]);
+    });
+
+    api.get(`/competicao/${idCompeticao}`).then((response) => {
+      const { data } = response;
+      setCompeticao(data);
+    });
+  }, [token, idCompeticao]);
 
   const validarCamposObrigatorios = (
     value,
@@ -77,7 +109,17 @@ function CadastroEquipe() {
         setMensagemCampoObrigatorioNomeEquipe
       )
     ) {
-      handleOpenModalConfirmarInscricao();
+      if (
+        membros.length < competicao.qntdMinimaMembrosPorEquipe ||
+        membros.length > competicao.qntdMaximaMembrosPorEquipe
+      ) {
+        setMensagem(
+          `Esta competição exige um mínimo de ${competicao.qntdMinimaMembrosPorEquipe} e um máximo de ${competicao.qntdMaximaMembrosPorEquipe} membros por equipe.`
+        );
+      } else {
+        setMensagem(MSG000);
+        handleOpenModalConfirmarInscricao();
+      }
     }
   };
 
@@ -156,7 +198,7 @@ function CadastroEquipe() {
         <div id="dados-equipe">
           <div id="nome-botoes">
             <h2 id="nome-pagina">
-              Nova Inscrição - Competição {"<Nome da competição>"}
+              Nova Inscrição - Competição {competicao?.nomeCompeticao}
             </h2>
 
             <div id="botoes" className="botoes">
@@ -204,6 +246,12 @@ function CadastroEquipe() {
             </Box>
           </div>
 
+          <div style={{ width: "52%", marginBottom: "2%" }}>
+            {mensagem !== "" ? (
+              <Mensagem mensagem={mensagem} tipoMensagem={MSG006} />
+            ) : null}
+          </div>
+
           <div id="btn-add-membro">
             <Botao
               titulo="adicionar membro"
@@ -217,7 +265,7 @@ function CadastroEquipe() {
               {mudou
                 ? membros.map((membro, index) => {
                     return (
-                      <li key={membro.email}>
+                      <li key={index}>
                         <CardMembro
                           nome={membro.nomeMembro}
                           email={membro.emailMembro}
