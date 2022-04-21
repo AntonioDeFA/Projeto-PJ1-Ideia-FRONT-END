@@ -8,3 +8,4 @@ export const MSG006 = "erro";
 export const MSG007 = "Já existe um membro com este e-mail";
 export const MSG008 = "loading";
 export const MSG009 = "Uma senha provisória foi enviada para o seu e-mail!";
+export const MSG010 = "Aguarde alguns estantes";
