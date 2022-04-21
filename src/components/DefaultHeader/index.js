@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
-import StoreContext from "../../store/context";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import StoreContext from "../../store/context";
 
+import api from "./../../services/api";
 import Grupo from "../../assets/images/Grupo.svg";
 import Trofeu from "../../assets/images/Trofeu.svg";
 import Confirma from "../../assets/images/Confirma.svg";
@@ -11,12 +12,21 @@ import ImagemLogo from "../../assets/images/Imagem1.svg";
 import "./styles.css";
 
 function DefaultHeader() {
-  const { setToken } = useContext(StoreContext);
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const { token, setToken } = useContext(StoreContext);
 
   const fazerLogoff = () => {
     setToken("");
     <Navigate to="/login" />;
   };
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get("/usuario-logado").then((response) => {
+      const { data } = response;
+      setUsuarioLogado(data);
+    });
+  }, [token]);
 
   return (
     <div id="component-defaultHeader">
@@ -30,7 +40,10 @@ function DefaultHeader() {
             width="150"
           />
 
-          <ul className="nav nav-pills justify-content-center ">
+          <ul
+            className="nav nav-pills justify-content-center"
+            style={{ width: "30.2%" }}
+          >
             <li className="nav-item bg-light mt-0 pt-3 pb-3 px-2">
               <Link to={"/"}>
                 <img src={Trofeu} alt="navegacao_trofeu" />
@@ -64,7 +77,9 @@ function DefaultHeader() {
 
           <div className="row dropdown">
             <div className="col elementos-alinhados-esquerda">
-              <h6 className="fw-bold nome-usuario">nome do usuário</h6>
+              <h6 className="fw-bold nome-usuario">
+                {usuarioLogado?.nomeUsuario}
+              </h6>
             </div>
             <div id="dropdown-div" className="col">
               <img
