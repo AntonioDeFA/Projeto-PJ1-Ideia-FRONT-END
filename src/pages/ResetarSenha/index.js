@@ -16,7 +16,11 @@ import {
   MSG004,
   MSG005,
   MSG006,
+  MSG008,
+  MSG009,
+  MSG010,
 } from "./../../utils/mensagens";
+import api from "../../services/api";
 
 function ResetarSenha() {
   const [email, setEmail] = useState(MSG000);
@@ -58,12 +62,20 @@ function ResetarSenha() {
         setMensagemAlerta(MSG003);
         setTipoMensagem(MSG006);
       } else {
-        console.log("Enviando código...");
-        setTipoMensagem(MSG005);
-        setMensagemAlerta(
-          "Uma senha provisória foi enviada para o seu e-mail!"
-        );
-        setEnviouSenha(true);
+        setTipoMensagem(MSG008);
+        setMensagemAlerta(MSG010);
+        api
+          .put("/usuario/resetar-senha", { email })
+          .then((response) => {
+            console.log(response);
+            setTipoMensagem(MSG005);
+            setMensagemAlerta(MSG009);
+            setEnviouSenha(true);
+          })
+          .catch((error) => {
+            setTipoMensagem(MSG006);
+            setMensagemAlerta(error.response.data.motivosErros[0]);
+          });
       }
     }
   };
@@ -129,7 +141,7 @@ function ResetarSenha() {
               <div className="botoes-cadastro">
                 {enviouSenha ? null : (
                   <Botao
-                    titulo="enviar código"
+                    titulo="resetar senha"
                     classes="btn btn-warning botao-menor-personalizado"
                     onClick={enviarSenha}
                   />
