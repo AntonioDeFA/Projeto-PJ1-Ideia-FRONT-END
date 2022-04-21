@@ -67,7 +67,6 @@ function ResetarSenha() {
         api
           .put("/usuario/resetar-senha", { email })
           .then((response) => {
-            console.log(response);
             setTipoMensagem(MSG005);
             setMensagemAlerta(MSG009);
             setEnviouSenha(true);
