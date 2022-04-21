@@ -39,7 +39,7 @@ function DefaultHeader() {
             height="100"
             width="150"
           />
-
+          <div></div>
           <ul
             className="nav nav-pills justify-content-center"
             style={{ width: "30.2%" }}
@@ -75,12 +75,13 @@ function DefaultHeader() {
             </li>
           </ul>
 
+          <div className="elementos-alinhados-esquerda">
+            <h6 className="fw-bold nome-usuario">
+              {usuarioLogado?.nomeUsuario}
+            </h6>
+          </div>
+
           <div className="row dropdown">
-            <div className="col elementos-alinhados-esquerda">
-              <h6 className="fw-bold nome-usuario">
-                {usuarioLogado?.nomeUsuario}
-              </h6>
-            </div>
             <div id="dropdown-div" className="col">
               <img
                 src={Dropdown}
@@ -95,14 +96,14 @@ function DefaultHeader() {
               />
               <div className="dropdown-menu p-0">
                 <ul
-                  className="list-group p-0"
+                  className="list-group p-0 lista-dropdown"
                   aria-labelledby="navbarDropdownMenu"
                 >
                   <button
                     type="button"
                     className="btn btn-link nav-link text-dark pt-0"
                   >
-                    <li className="list-group-item m-0 p-0 mt-2 border border-0">
+                    <li className="list-group-item m-0 p-0 mt-3 border border-0">
                       <Link
                         to={"/cadastro-usuario"}
                         style={{ textDecoration: "none" }}

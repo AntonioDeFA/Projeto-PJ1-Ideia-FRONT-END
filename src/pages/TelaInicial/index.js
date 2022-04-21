@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 
 import DefaultHeader from "../../components/DefaultHeader";
-import AsideFiltragem from '../../components/AsideFiltragem';
+import AsideFiltragem from "../../components/AsideFiltragem";
 import { FiltrosProvider } from "../../utils/filtrosContext";
 
-import ListaCardsCompeticoesAbertas from '../../components/ListaCardsCompeticoesAbertas';
-import ListaCardsMinhasCompeticoes from '../../components/ListaCardsMinhasCompeticoes';
+import ListaCardsCompeticoesAbertas from "../../components/ListaCardsCompeticoesAbertas";
+import ListaCardsMinhasCompeticoes from "../../components/ListaCardsMinhasCompeticoes";
 
 function TelaInicial() {
   const [isCompeticoesAbertas, setCompeticoesAbertas] = useState(true);
-  
+
   const [filtros, setFiltros] = useState({
-    nomeCompeticao: '',
+    nomeCompeticao: "",
     mes: 0,
     ano: 0,
   });
 
   const verificarTipoCompeticoes = (isCompeticoesAbertas) => {
     setCompeticoesAbertas(isCompeticoesAbertas);
-  }
+  };
 
   const realizarFiltragem = (nomeCompeticao, mes, ano) => {
     setFiltros({
@@ -26,7 +26,7 @@ function TelaInicial() {
       mes,
       ano,
     });
-  }
+  };
 
   return (
     <div id="minhas-competicoes">
@@ -38,15 +38,15 @@ function TelaInicial() {
             realizarFiltragem={realizarFiltragem}
           />
         </div>
-          <div className="col p-0">
-            <FiltrosProvider value={filtros}>
-              {
-                isCompeticoesAbertas
-                  ? <ListaCardsCompeticoesAbertas />
-                  : <ListaCardsMinhasCompeticoes />
-              }
-            </FiltrosProvider>
-          </div>
+        <div className="col-9 p-0">
+          <FiltrosProvider value={filtros}>
+            {isCompeticoesAbertas ? (
+              <ListaCardsCompeticoesAbertas />
+            ) : (
+              <ListaCardsMinhasCompeticoes />
+            )}
+          </FiltrosProvider>
+        </div>
       </div>
     </div>
   );

@@ -1,16 +1,11 @@
+
 div .dropdown-menu {
-  margin-left: 67px;
+  margin-left: -35px;
 }
 
-div h6 .nome-usuario {
-  right: 100px;
+h6.nome-usuario {
+  font-size: 16pt;
+  margin: 0;
 }
 
-h6 .nome-usuario {
-  font-size: 20pt;
-}
-
-ul .margem-dropdown{
-  margin-left: 150px;
-}
 
