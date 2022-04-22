@@ -44,13 +44,13 @@ function LoginToken() {
       setMensagemCampoObrigatorioToken
     );
     if (statusInputToken) {
-      console.log("Pode fazer login com token");
+      // Pode fazer login com token
       api
         .post("/seguranca/token", { token: token })
         .then((response) => {
           console.log(response.data.token);
           setToken(response.data.token);
-          console.log("Bem vindo a tea de equipe");
+          console.log("Bem vindo a tela de equipe");
         })
         .catch((error) => {
           console.log(error);

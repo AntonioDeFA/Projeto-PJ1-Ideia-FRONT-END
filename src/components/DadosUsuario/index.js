@@ -105,8 +105,6 @@ function DadosUsuario() {
             senha: password,
           };
 
-          console.log(user);
-
           if (usuarioLogado === null) {
             api
               .post("/usuario", user)
