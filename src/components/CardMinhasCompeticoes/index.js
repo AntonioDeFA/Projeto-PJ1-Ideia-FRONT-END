@@ -13,7 +13,6 @@ function CardMinhasCompeticoes(props) {
 
   const handlePapelUsuario = () => {
     let element = null;
-    console.log(props.card);
 
     if (props.card.papelUsuario === "ORGANIZADOR") {
       element = (
@@ -49,6 +48,9 @@ function CardMinhasCompeticoes(props) {
     let tipoEtapa = props.card.etapaVigente.tipoEtapa;
 
     switch (tipoEtapa) {
+      case "INSCRICAO":
+        element = <h6 className="text-success fw-bold m-0">INSCRIÇÃO</h6>;
+        break;
       case "AQUECIMENTO":
         element = <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>;
         break;
