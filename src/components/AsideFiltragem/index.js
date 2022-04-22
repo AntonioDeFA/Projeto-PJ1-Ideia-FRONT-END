@@ -75,6 +75,7 @@ function AsideFiltragem(props) {
 
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
+  const [checkboxInscricao, setCheckboxInscricao] = useState(false);
   const [checkboxAquecimento, setCheckboxAquecimento] = useState(false);
   const [checkboxImersao, setCheckboxImersao] = useState(false);
   const [checkboxPitch, setCheckboxPitch] = useState(false);
@@ -99,6 +100,23 @@ function AsideFiltragem(props) {
       return (
         <div className="margem-personalizada">
           <FormGroup value={etapasFiltragem} onChange={setEtapasFiltragem}>
+            <FormControlLabel
+              onChange={(e) => {
+                setCheckboxImersao(e.target.checked);
+              }}
+              control={
+                <Checkbox
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
+                    },
+                  }}
+                />
+              }
+              label="Imersão"
+              value={checkboxImersao}
+            />
+
             <FormControlLabel
               onChange={(e) => {
                 setCheckboxAquecimento(e.target.checked);
