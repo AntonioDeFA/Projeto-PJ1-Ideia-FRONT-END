@@ -31,14 +31,14 @@ function TelaInicial() {
   return (
     <div id="minhas-competicoes">
       <DefaultHeader />
-      <div className="row">
-        <div className="col-3">
+      <div id="content">
+        <div id="aside-filtragem">
           <AsideFiltragem
             verificarTipoCompeticoes={verificarTipoCompeticoes}
             realizarFiltragem={realizarFiltragem}
           />
         </div>
-        <div className="col-9 p-0">
+        <div id="listagem-cards">
           <FiltrosProvider value={filtros}>
             {isCompeticoesAbertas ? (
               <ListaCardsCompeticoesAbertas />
