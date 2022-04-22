@@ -1,9 +1,5 @@
 import React from "react";
 
-import Lixo from "../../assets/images/lixo.svg";
-import Entrar from "../../assets/images/entrar.svg";
-import Editar from "../../assets/images/Editar.svg";
-
 import "../../assets/styles/global.css";
 import "./styles.css";
 
@@ -71,22 +67,6 @@ function CardMinhasCompeticoes(props) {
     return element;
   };
 
-  const iconEditarCompeticao = () => {
-    if (props.userRole === "ORGANIZADOR") {
-      return (
-        <a href="www.google.com">
-          <img
-            src={Editar}
-            alt="editar"
-            className="img-fluid"
-            width="20"
-            height="20"
-          />
-        </a>
-      );
-    }
-  };
-
   return (
     <div
       id="component-cardCompeticao"
@@ -115,26 +95,16 @@ function CardMinhasCompeticoes(props) {
           <div className="navbar p-0 etapa-atual">
             {handleEtapaCompeticao()}
 
-            <div>
-              {iconEditarCompeticao()}
-              <a href="www.google.com">
-                <img
-                  src={Entrar}
-                  alt="lixo"
-                  className="img-fluid"
-                  width="20"
-                  height="20"
-                />
-              </a>
-              <a href="www.google.com">
-                <img
-                  src={Lixo}
-                  alt="lixo"
-                  className="img-fluid"
-                  width="20"
-                  height="20"
-                />
-              </a>
+            <div id="icons">
+              {props.card.papelUsuario === "ORGANIZADOR" ? (
+                <i className="fa-solid fa-pen-to-square hover-azul"></i>
+              ) : null}
+
+              <i
+                onClick={null}
+                className="fa-solid fa-arrow-right-to-bracket hover-azul"
+              ></i>
+              <i onClick={null} className="fa-solid fa-trash-can"></i>
             </div>
           </div>
         </div>

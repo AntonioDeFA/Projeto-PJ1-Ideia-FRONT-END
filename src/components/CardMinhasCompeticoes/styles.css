@@ -5,3 +5,15 @@ div .card-header {
 div .datas-etapa-bottom {
 margin-top: 15%;
 }
+
+div .etapa-atual {
+  margin-bottom: 4%;
+}
+
+i {
+  padding-left: 7px;
+}
+
+i.hover-azul:hover {
+  color: var(--color-imersao);
+}
