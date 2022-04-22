@@ -1,3 +1,7 @@
-div .etapa-atual {
-  top: 50px;
+div .card-header {
+  height: 88px;
+}
+
+div .datas-etapa-bottom {
+margin-top: 15%;
 }
