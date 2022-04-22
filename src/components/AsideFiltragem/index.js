@@ -102,7 +102,7 @@ function AsideFiltragem(props) {
           <FormGroup value={etapasFiltragem} onChange={setEtapasFiltragem}>
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxImersao(e.target.checked);
+                setCheckboxInscricao(e.target.checked);
               }}
               control={
                 <Checkbox
@@ -113,8 +113,8 @@ function AsideFiltragem(props) {
                   }}
                 />
               }
-              label="Imersão"
-              value={checkboxImersao}
+              label="Inscrição"
+              value={checkboxInscricao}
             />
 
             <FormControlLabel
