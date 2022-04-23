@@ -68,11 +68,11 @@ function Login() {
           .post("/seguranca/login", { login: email, senha: password })
           .then((response) => {
             setToken(response.data.token);
-            return navigate("/");
+            return navigate("/inicio");
           })
           .catch((error) => {
             setMensagem(MSG011);
-            return navigate("/login");
+            return navigate("/");
           });
       } else {
         setErrorInputEmail(true);
@@ -177,7 +177,14 @@ function Login() {
               />
             </div>
 
-            <div className="elementos-alinhados-esquerda" id="link-criar-conta">
+            <div
+              className={
+                mensagem !== ""
+                  ? "elementos-alinhados-esquerda link-criar-conta-com-mensagem"
+                  : "elementos-alinhados-esquerda link-criar-conta-sem-mensagem"
+              }
+              id="link-criar-conta"
+            >
               <p>
                 Não tem conta?{" "}
                 <Link to={"/cadastro-usuario"}>Crie a sua aqui!</Link>
