@@ -17,7 +17,7 @@ function ListaCardsMinhasCompeticoes() {
   const { token } = useContext(StoreContext);
 
   useEffect(() => {
-    const { nomeCompeticao, mes, ano } = filtros;
+    const { nomeCompeticao, mes, ano, etapasSelecionadas } = filtros;
 
     const params = {};
     if (nomeCompeticao !== "") {
@@ -32,26 +32,30 @@ function ListaCardsMinhasCompeticoes() {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/competicoes/usuario-logado", { params }).then((response) => {
       const { data } = response;
-      setCards(data);
+      let cardsFiltrados = [];
+
+      if (etapasSelecionadas && etapasSelecionadas.length > 0) {
+        etapasSelecionadas.forEach((etapa) => {
+          data.forEach((card) => {
+            if (card.etapaVigente.tipoEtapa === etapa) {
+              cardsFiltrados.push(card);
+            }
+          });
+        });
+        setCards(cardsFiltrados);
+      } else {
+        setCards(data);
+      }
     });
   }, [filtros, token]);
-
-  let papel = "";
-  let cont = 0;
-
-  function identificarPapelUsuario() {
-    papel = cont % 2 === 0 ? "COMPETIDOR" : "ORGANIZADOR";
-    cont++;
-  }
 
   return (
     <div className="listagem-cards-competicoes">
       <ul>
         {cards.map((card) => {
-          identificarPapelUsuario();
           return (
-            <li>
-              <CardMinhasCompeticoes card={card} userRole={papel} />
+            <li key={card.id}>
+              <CardMinhasCompeticoes card={card} />
             </li>
           );
         })}

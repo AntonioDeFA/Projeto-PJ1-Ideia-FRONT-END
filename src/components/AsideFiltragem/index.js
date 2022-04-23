@@ -81,6 +81,7 @@ function AsideFiltragem(props) {
   const [checkboxPitch, setCheckboxPitch] = useState(false);
   const [checkboxEncerrada, setCheckboxEncerrada] = useState(false);
   const [hasCheckboxes, setHasCheckBoxes] = useState(false);
+  const [etapasSelecionadas] = useState([]);
 
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
@@ -102,7 +103,15 @@ function AsideFiltragem(props) {
           <FormGroup value={etapasFiltragem} onChange={setEtapasFiltragem}>
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxInscricao(e.target.checked);
+                if (e.target.checked) {
+                  etapasSelecionadas.push("INSCRICAO");
+                } else {
+                  let index = etapasSelecionadas.indexOf("INSCRICAO");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(e, setCheckboxInscricao, "INSCRICAO");
               }}
               control={
                 <Checkbox
@@ -119,7 +128,19 @@ function AsideFiltragem(props) {
 
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxAquecimento(e.target.checked);
+                if (e.target.checked) {
+                  etapasSelecionadas.push("AQUECIMENTO");
+                } else {
+                  let index = etapasSelecionadas.indexOf("AQUECIMENTO");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(
+                  e,
+                  setCheckboxAquecimento,
+                  "AQUECIMENTO"
+                );
               }}
               control={
                 <Checkbox
@@ -136,7 +157,15 @@ function AsideFiltragem(props) {
 
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxImersao(e.target.checked);
+                if (e.target.checked) {
+                  etapasSelecionadas.push("IMERSAO");
+                } else {
+                  let index = etapasSelecionadas.indexOf("IMERSAO");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(e, setCheckboxImersao, "IMERSAO");
               }}
               control={
                 <Checkbox
@@ -153,7 +182,15 @@ function AsideFiltragem(props) {
 
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxPitch(e.target.checked);
+                if (e.target.checked) {
+                  etapasSelecionadas.push("PITCH");
+                } else {
+                  let index = etapasSelecionadas.indexOf("PITCH");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(e, setCheckboxPitch, "PITCH");
               }}
               control={
                 <Checkbox
@@ -170,7 +207,15 @@ function AsideFiltragem(props) {
 
             <FormControlLabel
               onChange={(e) => {
-                setCheckboxEncerrada(e.target.checked);
+                if (e.target.checked) {
+                  etapasSelecionadas.push("ENCERRADA");
+                } else {
+                  let index = etapasSelecionadas.indexOf("ENCERRADA");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(e, setCheckboxEncerrada, "ENCERRADA");
               }}
               control={
                 <Checkbox
@@ -196,7 +241,22 @@ function AsideFiltragem(props) {
 
   const realizarFiltragem = (event) => {
     event.preventDefault();
-    props.realizarFiltragem(nomeCompeticaoFiltragem, mesDoAno, anoFiltragem);
+    props.realizarFiltragem(
+      nomeCompeticaoFiltragem,
+      mesDoAno,
+      anoFiltragem,
+      etapasSelecionadas
+    );
+  };
+
+  const realizarFiltragemEtapas = (event, setCheckbox) => {
+    setCheckbox(event.target.checked);
+    props.realizarFiltragem(
+      nomeCompeticaoFiltragem,
+      mesDoAno,
+      anoFiltragem,
+      etapasSelecionadas
+    );
   };
 
   return (

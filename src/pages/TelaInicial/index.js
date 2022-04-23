@@ -20,11 +20,12 @@ function TelaInicial() {
     setCompeticoesAbertas(isCompeticoesAbertas);
   };
 
-  const realizarFiltragem = (nomeCompeticao, mes, ano) => {
+  const realizarFiltragem = (nomeCompeticao, mes, ano, etapasSelecionadas) => {
     setFiltros({
       nomeCompeticao,
       mes,
       ano,
+      etapasSelecionadas,
     });
   };
 
