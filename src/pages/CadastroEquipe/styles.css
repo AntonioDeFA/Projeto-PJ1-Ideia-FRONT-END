@@ -12,6 +12,7 @@ div #nome-botoes {
 div .botoes {
   display: flex;
   justify-content: space-between;
+  margin-right: 10px;
 }
 
 div #btn-confirmar {
