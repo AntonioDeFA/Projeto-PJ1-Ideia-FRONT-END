@@ -146,7 +146,7 @@ function ResetarSenha() {
                   />
                 )}
 
-                <Link to={"/login"}>
+                <Link to={"/"}>
                   <Botao
                     titulo={
                       enviouSenha ? "voltar para tela de login" : "voltar"

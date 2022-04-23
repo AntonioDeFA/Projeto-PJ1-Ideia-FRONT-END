@@ -6,7 +6,6 @@ import api from "./../../services/api";
 import Grupo from "../../assets/images/Grupo.svg";
 import Trofeu from "../../assets/images/Trofeu.svg";
 import Confirma from "../../assets/images/Confirma.svg";
-import Dropdown from "../../assets/images/Dropdown.svg";
 import ImagemLogo from "../../assets/images/Imagem1.svg";
 
 import "./styles.css";
@@ -17,7 +16,7 @@ function DefaultHeader() {
 
   const fazerLogoff = () => {
     setToken("");
-    <Navigate to="/login" />;
+    <Navigate to="/" />;
   };
 
   useEffect(() => {
@@ -45,31 +44,31 @@ function DefaultHeader() {
             style={{ width: "30.2%" }}
           >
             <li className="nav-item bg-light mt-0 pt-3 pb-3 px-2">
-              <Link to={"/"}>
+              <Link to={"/inicio"}>
                 <img src={Trofeu} alt="navegacao_trofeu" />
               </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/"}>
+              <Link to={"/inicio"}>
                 <img src={Confirma} alt="navegacao_confirma" />
               </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/"}>
+              <Link to={"/inicio"}>
                 <img src={Confirma} alt="navegacao_confirma" />
               </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/"}>
+              <Link to={"/inicio"}>
                 <img src={Grupo} alt="navegacao_grupo" />
               </Link>
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/"}>
+              <Link to={"/inicio"}>
                 <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
               </Link>
             </li>

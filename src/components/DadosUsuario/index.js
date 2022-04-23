@@ -44,12 +44,17 @@ function DadosUsuario() {
   useEffect(() => {
     if (token !== null) {
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-      api.get("/usuario-logado").then((response) => {
-        const { data } = response;
-        setNome(data.nomeUsuario);
-        setEmail(data.email);
-        setUsuarioLogado(data);
-      });
+      api
+        .get("/usuario-logado")
+        .then((response) => {
+          const { data } = response;
+          setNome(data.nomeUsuario);
+          setEmail(data.email);
+          setUsuarioLogado(data);
+        })
+        .catch((error) => {
+          // validarErroUnauthorized(error.response);
+        });
     }
   }, [token]);
 
@@ -110,7 +115,7 @@ function DadosUsuario() {
               .post("/usuario", user)
               .then((response) => {
                 console.log(response);
-                return navigate("/");
+                return navigate("/inicio");
               })
               .catch((error) => {
                 setMensagemErro(error.response.data.motivosErros.join("\n"));
@@ -239,7 +244,7 @@ function DadosUsuario() {
               classes="btn btn-warning botao-menor-personalizado"
               onClick={fazerCadastro}
             />
-            <Link to={usuarioLogado !== null ? "/" : "/login"}>
+            <Link to={usuarioLogado !== null ? "/inicio" : "/"}>
               <Botao
                 titulo="voltar"
                 classes="btn btn-secondary botao-menor-personalizado"

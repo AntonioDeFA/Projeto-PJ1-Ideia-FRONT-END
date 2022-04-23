@@ -17,7 +17,7 @@ function ProjetoRoutes() {
     <BrowserRouter>
       <StoreProvider>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/login-token" element={<LoginToken />} />
           <Route path="/resetar-senha" element={<ResetarSenha />} />
           <Route path="/cadastro-usuario" element={<CadastroUsuario />} />
@@ -30,7 +30,7 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/"
+            path="/inicio"
             element={
               <RoutesPrivate>
                 <TelaInicial />

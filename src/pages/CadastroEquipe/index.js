@@ -210,7 +210,7 @@ function CadastroEquipe() {
                 />
               </div>
               <div id="btn-voltar">
-                <Link to={"/"}>
+                <Link to={"/inicio"}>
                   <Botao
                     titulo="voltar"
                     classes="btn btn-secondary botao-menor-personalizado"

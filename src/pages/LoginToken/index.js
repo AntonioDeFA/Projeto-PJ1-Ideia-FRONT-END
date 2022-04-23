@@ -117,7 +117,7 @@ function LoginToken() {
                   onClick={entrar}
                 />
 
-                <Link to={"/login"}>
+                <Link to={"/"}>
                   <Botao
                     titulo="voltar"
                     classes="btn btn-secondary botao-menor-personalizado"
