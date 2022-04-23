@@ -18,7 +18,7 @@ function LoginToken() {
   const [mensagemCampoObrigatorioToken, setMensagemCampoObrigatorioToken] =
     useState(MSG000);
 
-  const [mensagemErro /*, setMensagemErro*/] = useState(MSG000);
+  const [mensagem, setMensagem] = useState(MSG000);
 
   const validarCamposObrigatorios = (
     value,
@@ -53,7 +53,7 @@ function LoginToken() {
           console.log("Bem vindo a tela de equipe");
         })
         .catch((error) => {
-          console.log(error);
+          setMensagem(error.response.data.message);
           console.log("Erro ao tentar logar");
         });
     }
@@ -70,8 +70,8 @@ function LoginToken() {
           </div>
 
           <div className="elementos-centralizados">
-            {mensagemErro !== "" ? (
-              <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+            {mensagem !== "" ? (
+              <Mensagem mensagem={mensagem} tipoMensagem={MSG006} />
             ) : null}
           </div>
 
