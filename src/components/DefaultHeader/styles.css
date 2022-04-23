@@ -1,6 +1,11 @@
 
 div .dropdown-menu {
-  margin-left: -35px;
+  margin-left: -45px;
+  margin-top: 5px !important;
+}
+
+div #dropdown-div {
+  margin-right: 20px;
 }
 
 h6.nome-usuario {
@@ -8,4 +13,14 @@ h6.nome-usuario {
   margin: 0;
 }
 
+div #navbarDropdownMenu::after {
+  display: none;
+}
 
+i.fa-address-card {
+font-size: 50px;
+}
+
+i.fa-address-card:hover {
+  color: var(--color-button-hover);
+}

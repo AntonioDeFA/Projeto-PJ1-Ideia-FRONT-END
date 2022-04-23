@@ -82,18 +82,16 @@ function DefaultHeader() {
           </div>
 
           <div className="row dropdown">
-            <div id="dropdown-div" className="col">
-              <img
-                src={Dropdown}
-                alt="imagem_logo_2"
-                className="img-fluid dropdown-toggle m-3 "
-                height="70"
-                width="70"
+            <div id="dropdown-div">
+              <div
                 id="navbarDropdownMenu"
                 role="button"
-                data-bs-toggle="dropdown"
+                className="img-fluid dropdown-toggle m-3 "
                 aria-expanded="false"
-              />
+                data-bs-toggle="dropdown"
+              >
+                <i className="fa-solid fa-address-card"></i>
+              </div>
               <div className="dropdown-menu p-0">
                 <ul
                   className="list-group p-0 lista-dropdown"
