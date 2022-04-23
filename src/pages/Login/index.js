@@ -12,19 +12,23 @@ import ImgLogo from "../../assets/images/Imagem1.png";
 import "./styles.css";
 import Botao from "../../components/Botao";
 import { Link } from "react-router-dom";
-import { MSG000, MSG004 } from "../../utils/mensagens";
+import { MSG000, MSG003, MSG004, MSG006, MSG011 } from "../../utils/mensagens";
+import { validarEmail } from "../../services/utils";
+import Mensagem from "../../components/Mensagem";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(MSG000);
   const [mensagemCampoObrigatorioEmail, setMensagemCampoObrigatorioEmail] =
-    useState("");
+    useState(MSG000);
   const [errorInputEmail, setErrorInputEmail] = useState(false);
 
-  const [password, setPassword] = useState("");
+  const [mensagem, setMensagem] = useState(MSG000);
+
+  const [password, setPassword] = useState(MSG000);
   const [
     mensagemCampoObrigatorioPassword,
     setMensagemCampoObrigatorioPassword,
-  ] = useState("");
+  ] = useState(MSG000);
   const [errorInputPassword, setErrorInputPassword] = useState(false);
 
   const { setToken } = useContext(StoreContext);
@@ -59,16 +63,21 @@ function Login() {
     );
 
     if (statusInputEmail && statusInputPassword) {
-      api
-        .post("/seguranca/login", { login: email, senha: password })
-        .then((response) => {
-          setToken(response.data.token);
-          return navigate("/");
-        })
-        .catch((error) => {
-          console.log(error);
-          return navigate("/login");
-        });
+      if (validarEmail(email)) {
+        api
+          .post("/seguranca/login", { login: email, senha: password })
+          .then((response) => {
+            setToken(response.data.token);
+            return navigate("/");
+          })
+          .catch((error) => {
+            setMensagem(MSG011);
+            return navigate("/login");
+          });
+      } else {
+        setErrorInputEmail(true);
+        setMensagemCampoObrigatorioEmail(MSG003);
+      }
     }
   };
 
@@ -82,6 +91,11 @@ function Login() {
             </div>
             <div className="elementos-centralizados">
               <h4>Faça seu Login</h4>
+            </div>
+            <div className="elementos-centralizados">
+              {mensagem !== "" ? (
+                <Mensagem mensagem={mensagem} tipoMensagem={MSG006} />
+              ) : null}
             </div>
           </div>
 
