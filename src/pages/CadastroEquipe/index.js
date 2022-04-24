@@ -14,6 +14,7 @@ import {
   MSG004,
   MSG006,
   MSG007,
+  MSG014,
 } from "./../../utils/mensagens";
 
 import "./styles.css";
@@ -141,13 +142,18 @@ function CadastroEquipe() {
     if (statusNomeMembro && statusEmailMembro) {
       if (validarEmail(emailMembro)) {
         if (confirmarUnicidadeEmail()) {
-          let membro = {
-            nomeMembro,
-            emailMembro,
-            isLider: false,
-          };
-          membros.push(membro);
-          cancelarCriacaoMembro();
+          if (emailPossuiDominioCorreto()) {
+            let membro = {
+              nomeMembro,
+              emailMembro,
+              isLider: false,
+            };
+            membros.push(membro);
+            cancelarCriacaoMembro();
+          } else {
+            setErrorInputEmailMembro(true);
+            setMensagemCampoObrigatorioEmailMembro(MSG014);
+          }
         } else {
           setErrorInputEmailMembro(true);
           setMensagemCampoObrigatorioEmailMembro(MSG007);
@@ -177,6 +183,14 @@ function CadastroEquipe() {
     return !res;
   };
 
+  const emailPossuiDominioCorreto = () => {
+    let dominioCompeticao = competicao.dominioCompeticao;
+    if (dominioCompeticao !== "") {
+      return emailMembro.split("@")[1] === dominioCompeticao;
+    }
+    return true;
+  };
+
   const [mudou, setMudou] = useState(true);
 
   const removerMembro = async (index) => {
@@ -189,6 +203,12 @@ function CadastroEquipe() {
 
     setMudou(false);
     setMudou(true);
+  };
+  const handlePlaceHolder = () => {
+    let dominioCompeticao = competicao?.dominioCompeticao;
+    return dominioCompeticao === ""
+      ? ""
+      : `Deve possuir o domínio ${dominioCompeticao}`;
   };
 
   return (
@@ -346,6 +366,7 @@ function CadastroEquipe() {
                 variant="filled"
                 color="warning"
                 size="small"
+                placeholder={handlePlaceHolder()}
               />
             </div>
           </Box>
