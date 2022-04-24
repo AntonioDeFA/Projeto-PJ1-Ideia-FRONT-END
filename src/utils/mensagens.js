@@ -11,3 +11,7 @@ export const MSG009 = "Uma senha provisória foi enviada para o seu e-mail!";
 export const MSG010 = "Aguarde alguns estantes";
 export const MSG011 =
   "Não foi possível fazer login. Verifique suas credenciais e tente novamente.";
+export const MSG012 =
+  "Caso deseje atualizar sua senha, é necessário que preencha o campo de confirmação de senha.";
+export const MSG013 =
+  "Para atualizar seus dados, é necessário que novos sejam informados.";
