@@ -15,3 +15,5 @@ export const MSG012 =
   "Caso deseje atualizar sua senha, é necessário que preencha o campo de confirmação de senha.";
 export const MSG013 =
   "Para atualizar seus dados, é necessário que novos sejam informados.";
+export const MSG014 =
+  "Este email não possui o domínio correto para esta competição";
