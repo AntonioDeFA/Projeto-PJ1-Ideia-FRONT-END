@@ -83,8 +83,8 @@ function Login() {
 
   return (
     <div id="page-login">
-      <div className="row m-0">
-        <div className="col">
+      <div className="page-login-content m-0">
+        <div className="left">
           <div id="saudacoes">
             <div className="elementos-centralizados">
               <h2>Seja bem vindo!</h2>
@@ -193,7 +193,7 @@ function Login() {
           </div>
         </div>
 
-        <div className="col bg-warning elementos-centralizados">
+        <div className="right bg-warning elementos-centralizados">
           <img id="logo-img" src={ImgLogo} alt="Ideia" />
         </div>
       </div>
