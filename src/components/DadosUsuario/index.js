@@ -19,6 +19,8 @@ import {
   MSG002,
   MSG003,
   MSG006,
+  MSG012,
+  MSG013,
 } from "./../../utils/mensagens";
 
 function DadosUsuario() {
@@ -109,24 +111,69 @@ function DadosUsuario() {
             email,
             senha: password,
           };
-
-          if (usuarioLogado === null) {
-            api
-              .post("/usuario", user)
-              .then((response) => {
-                console.log(response);
-                return navigate("/inicio");
-              })
-              .catch((error) => {
-                setMensagemErro(error.response.data.motivosErros.join("\n"));
-              });
-          } else {
-            // PARTE DE ATUALIZAR USUARIO LOGADO
-          }
+          api
+            .post("/usuario", user)
+            .then((response) => {
+              console.log(response);
+              return navigate("/inicio");
+            })
+            .catch((error) => {
+              setMensagemErro(error.response.data.motivosErros.join("\n"));
+            });
         }
       }
     } else {
       setMensagemErro(MSG001);
+    }
+  };
+
+  const atualizarCadastro = () => {
+    let dadosAtualizados = {};
+    let senhaIsOk = true;
+
+    if (nome === "" && password === "") {
+      setMensagemErro(MSG013);
+    } else {
+      setMensagemErro(MSG000);
+
+      if (nome !== "") {
+        Object.assign(dadosAtualizados, { nomeUsuario: nome });
+      }
+      if (password !== "") {
+        let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(
+          confirmarPassword,
+          setErrorInputConfirmarPassword
+        );
+
+        if (statusInputConfirmarPassword) {
+          if (password !== confirmarPassword) {
+            setErrorInputPassword(true);
+            setErrorInputConfirmarPassword(true);
+            setMensagemErro(MSG002);
+            senhaIsOk = false;
+          } else {
+            Object.assign(dadosAtualizados, { senha: password });
+            setMensagemErro(MSG000);
+          }
+        } else {
+          setMensagemErro(MSG012);
+          senhaIsOk = false;
+        }
+      }
+
+      if (Object.keys(dadosAtualizados).length !== 0 && senhaIsOk) {
+        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+        api
+          .patch("/usuario/update", dadosAtualizados)
+          .then((response) => {
+            console.log(response);
+            return navigate("/inicio");
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+            // setMensagemErro(error.response.data.motivosErros.join("\n"));
+          });
+      }
     }
   };
 
@@ -157,7 +204,7 @@ function DadosUsuario() {
             >
               <div className="input">
                 <TextField
-                  error={errorInputNome}
+                  error={usuarioLogado === null ? errorInputNome : null}
                   id="filled-search-Nome"
                   value={nome}
                   onChange={(e) => {
@@ -167,7 +214,7 @@ function DadosUsuario() {
                       setErrorInputNome
                     );
                   }}
-                  label="Nome *"
+                  label={usuarioLogado === null ? "Nome *" : "Nome"}
                   type="text"
                   variant="filled"
                   color="warning"
@@ -198,7 +245,7 @@ function DadosUsuario() {
 
               <div className="input">
                 <TextField
-                  error={errorInputPassword}
+                  error={usuarioLogado === null ? errorInputPassword : null}
                   id="filled-search-password"
                   value={password}
                   onChange={(e) => {
@@ -208,7 +255,7 @@ function DadosUsuario() {
                       setErrorInputPassword
                     );
                   }}
-                  label="Senha *"
+                  label={usuarioLogado === null ? "Senha *" : "Senha"}
                   type="password"
                   variant="filled"
                   color="warning"
@@ -218,7 +265,9 @@ function DadosUsuario() {
 
               <div className="input">
                 <TextField
-                  error={errorInputConfirmarPassword}
+                  error={
+                    usuarioLogado === null ? errorInputConfirmarPassword : null
+                  }
                   id="filled-search-confirm-password"
                   value={confirmarPassword}
                   onChange={(e) => {
@@ -228,7 +277,11 @@ function DadosUsuario() {
                       setErrorInputConfirmarPassword
                     );
                   }}
-                  label="Confirmar senha *"
+                  label={
+                    usuarioLogado === null
+                      ? "Confirmar senha *"
+                      : "Confirmar senha"
+                  }
                   type="password"
                   variant="filled"
                   color="warning"
@@ -242,7 +295,9 @@ function DadosUsuario() {
             <Botao
               titulo="salvar"
               classes="btn btn-warning botao-menor-personalizado"
-              onClick={fazerCadastro}
+              onClick={
+                usuarioLogado === null ? fazerCadastro : atualizarCadastro
+              }
             />
             <Link to={usuarioLogado !== null ? "/inicio" : "/"}>
               <Botao
