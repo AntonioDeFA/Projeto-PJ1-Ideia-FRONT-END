@@ -1,6 +1,7 @@
 import { Box, TextField, Typography, Modal } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import StoreContext from "../../store/context";
 
@@ -62,6 +63,7 @@ function CadastroEquipe() {
   const [competicao, setCompeticao] = useState(null);
 
   const { token } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const [membros, setMembros] = useState([]);
   const { idCompeticao } = useParams();
@@ -125,7 +127,30 @@ function CadastroEquipe() {
   };
 
   const finalizarInscricao = () => {
-    console.log("Finalizando a inscrição...");
+    let membrosFormatados = membros.map((membro) => {
+      return {
+        nomeUsuario: membro.nomeMembro,
+        email: membro.emailMembro,
+      };
+    });
+
+    let dadosEquipe = {
+      nomeEquipe,
+      idCompeticao: competicao.id,
+      usuarios: membrosFormatados,
+    };
+
+    console.log(dadosEquipe);
+
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api
+      .post("/equipe", dadosEquipe)
+      .then((response) => {
+        return navigate("/inicio");
+      })
+      .catch((error) => {
+        return navigate("/");
+      });
   };
 
   const adicionarMembro = () => {
