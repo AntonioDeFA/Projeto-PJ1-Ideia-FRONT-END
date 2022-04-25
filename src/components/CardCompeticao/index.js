@@ -8,7 +8,7 @@ import "./styles.css";
 import "../../assets/styles/global.css";
 import { Box, Modal, Typography } from "@mui/material";
 import { styleModals } from "../../utils/constantes";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CardCompeticao(props) {
   let dataInicio = props.card.etapaVigente.dataInicio;
