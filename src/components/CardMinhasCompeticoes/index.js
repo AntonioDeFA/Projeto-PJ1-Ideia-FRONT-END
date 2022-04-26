@@ -95,7 +95,16 @@ function CardMinhasCompeticoes(props) {
   };
 
   const handleDeletarCompeticao = () => {
-    console.log("Removendo competição...");
+    api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
+    api
+      .delete(`/competicao/delete/${props.card.id}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+
     handleCloseModalDeletarCompeticao();
   };
 
