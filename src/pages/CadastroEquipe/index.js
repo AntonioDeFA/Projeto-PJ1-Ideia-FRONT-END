@@ -127,6 +127,7 @@ function CadastroEquipe() {
   };
 
   const finalizarInscricao = () => {
+    setMembros(membros.splice(0, 1));
     let membrosFormatados = membros.map((membro) => {
       return {
         nomeUsuario: membro.nomeMembro,
@@ -149,7 +150,7 @@ function CadastroEquipe() {
         return navigate("/inicio");
       })
       .catch((error) => {
-        return navigate("/");
+        console.log(error.response.data.motivosErros);
       });
   };
 
