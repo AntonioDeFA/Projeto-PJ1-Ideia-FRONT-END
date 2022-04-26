@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "../../assets/styles/global.css";
 import "./styles.css";
 import { Box, Modal, Typography } from "@mui/material";
 import { styleModals } from "../../utils/constantes";
 import Botao from "../Botao";
+import StoreContext from "../../store/context";
+import api from "../../services/api";
 
 function CardMinhasCompeticoes(props) {
   let dataInicio = props.card.etapaVigente.dataInicio;
   let dataTermino = props.card.etapaVigente.dataTermino;
+
+  const { token } = useContext(StoreContext);
 
   const [openModalDeletarCompeticao, setOpenModalDeletarCompeticao] =
     React.useState(false);
