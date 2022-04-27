@@ -252,6 +252,7 @@ function CadastroEquipe() {
               <div id="btn-confirmar">
                 <Botao
                   titulo="confirmar"
+                  id="btn-confirmar-para-teste"
                   classes="btn btn-warning botao-menor-personalizado"
                   onClick={confirmarCriacaoEquipe}
                 />
@@ -260,6 +261,7 @@ function CadastroEquipe() {
                 <Link to={"/inicio"}>
                   <Botao
                     titulo="voltar"
+                    id="btn-voltar-para-teste"
                     classes="btn btn-secondary botao-menor-personalizado"
                   />
                 </Link>
@@ -302,6 +304,7 @@ function CadastroEquipe() {
           <div id="btn-add-membro">
             <Botao
               titulo="adicionar membro"
+              id="btn-add-membro-para-teste"
               classes="btn btn-warning botao-menor-personalizado"
               onClick={handleOpenModalCriarMembro}
             />
@@ -432,6 +435,7 @@ function CadastroEquipe() {
           </Typography>
           <div id="regulamento">
             <Botao
+              id="btn-regulamento-para-teste"
               classes="btn btn-warning botao-menor-personalizado"
               titulo="Regulamento da competição"
               onClick={baixarRegulamento}
@@ -442,6 +446,7 @@ function CadastroEquipe() {
           <div className="botoes">
             <div id="btn-confirmar">
               <Botao
+                id="btn-confirmar-para-teste"
                 titulo="confirmar inscrição"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={finalizarInscricao}
@@ -450,6 +455,7 @@ function CadastroEquipe() {
             <div id="btn-cancelar-confirmacao">
               <Botao
                 titulo="cancelar"
+                id="btn-cancelar-confirmacao-inscricao-para-teste"
                 classes="btn btn-secondary botao-menor-personalizado"
                 onClick={handleCloseModalConfirmarInscricao}
               />
