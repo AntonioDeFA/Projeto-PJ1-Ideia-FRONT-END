@@ -127,7 +127,6 @@ function CadastroEquipe() {
   };
 
   const finalizarInscricao = () => {
-    setMembros(membros.splice(0, 1));
     let membrosFormatados = membros.map((membro) => {
       return {
         nomeUsuario: membro.nomeMembro,
@@ -135,12 +134,13 @@ function CadastroEquipe() {
       };
     });
 
+    membrosFormatados.splice(0, 1);
+
     let dadosEquipe = {
       nomeEquipe,
       idCompeticao: competicao.id,
       usuarios: membrosFormatados,
     };
-
     console.log(dadosEquipe);
 
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
@@ -150,7 +150,8 @@ function CadastroEquipe() {
         return navigate("/inicio");
       })
       .catch((error) => {
-        console.log(error.response.data.motivosErros);
+        setMensagem(error.response.data.motivosErros.join("\n"));
+        handleCloseModalConfirmarInscricao();
       });
   };
 
@@ -400,11 +401,13 @@ function CadastroEquipe() {
             <Botao
               titulo="adicionar"
               classes="btn btn-warning botao-menor-personalizado"
+              id="btn-adicionar-membro"
               onClick={adicionarMembro}
             />
             <Botao
               titulo="cancelar"
               classes="btn btn-secondary botao-menor-personalizado"
+              id="btn-cancelar"
               onClick={cancelarCriacaoMembro}
             />
           </div>
