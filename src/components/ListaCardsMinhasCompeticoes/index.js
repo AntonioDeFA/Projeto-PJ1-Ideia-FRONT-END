@@ -51,7 +51,7 @@ function ListaCardsMinhasCompeticoes() {
 
   return (
     <div className="listagem-cards-competicoes">
-      <ul>
+      <ul id="lista-minhas-competicoes">
         {cards.map((card) => {
           return (
             <li key={card.id}>
