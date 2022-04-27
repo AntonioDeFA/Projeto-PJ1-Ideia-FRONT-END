@@ -4,6 +4,7 @@ import "../../assets/styles/global.css";
 import "./styles.css";
 import { Box, Modal, Typography } from "@mui/material";
 import { styleModals } from "../../utils/constantes";
+import { useNavigate } from "react-router-dom";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
 import api from "../../services/api";
@@ -13,6 +14,7 @@ function CardMinhasCompeticoes(props) {
   let dataTermino = props.card.etapaVigente.dataTermino;
 
   const { token } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const [openModalDeletarCompeticao, setOpenModalDeletarCompeticao] =
     React.useState(false);
@@ -104,6 +106,7 @@ function CardMinhasCompeticoes(props) {
       .delete(`/competicao/delete/${props.card.id}`)
       .then((response) => {
         console.log(response.data);
+        navigate("/inicio");
       })
       .catch((error) => {
         console.log(error.response.data);
