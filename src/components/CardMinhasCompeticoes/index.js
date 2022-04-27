@@ -4,17 +4,12 @@ import "../../assets/styles/global.css";
 import "./styles.css";
 import { Box, Modal, Typography } from "@mui/material";
 import { styleModals } from "../../utils/constantes";
-import { useNavigate } from "react-router-dom";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
 import api from "../../services/api";
 
 function CardMinhasCompeticoes(props) {
-  let dataInicio = props.card.etapaVigente.dataInicio;
-  let dataTermino = props.card.etapaVigente.dataTermino;
-
   const { token } = useContext(StoreContext);
-  const navigate = useNavigate();
 
   const [openModalDeletarCompeticao, setOpenModalDeletarCompeticao] =
     React.useState(false);
@@ -25,7 +20,7 @@ function CardMinhasCompeticoes(props) {
 
   const handlePapelUsuario = () => {
     let element = null;
-    let papelUsuario = props.card.papelUsuario;
+    let papelUsuario = props.card?.papelUsuario;
 
     if (papelUsuario === "ORGANIZADOR") {
       element = (
@@ -58,7 +53,7 @@ function CardMinhasCompeticoes(props) {
 
   const handleEtapaCompeticao = () => {
     let element = null;
-    let tipoEtapa = props.card.etapaVigente.tipoEtapa;
+    let tipoEtapa = props.card?.etapaVigente?.tipoEtapa;
 
     switch (tipoEtapa) {
       case "INSCRICAO":
@@ -100,13 +95,34 @@ function CardMinhasCompeticoes(props) {
     return mensagem;
   };
 
+  const handleDatas = () => {
+    let dataInicio = props.card?.etapaVigente?.dataInicio;
+    let dataTermino = props.card?.etapaVigente?.dataTermino;
+
+    if (
+      dataInicio &&
+      dataInicio.length > 0 &&
+      dataTermino &&
+      dataTermino.length > 0
+    ) {
+      return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${
+        dataInicio[0]
+      } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${
+        dataTermino[0]
+      }`;
+    }
+  };
+
+  const adicionarZero = (numero) => {
+    return Number(numero) < 10 ? `0${numero}` : numero;
+  };
+
   const handleDeletarCompeticao = () => {
     api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
     api
       .delete(`/competicao/delete/${props.card.id}`)
       .then((response) => {
         console.log(response.data);
-        navigate("/inicio");
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -130,10 +146,7 @@ function CardMinhasCompeticoes(props) {
                 : null
             }
           >
-            <h6 className="card-subtitle">
-              {dataInicio[2]}/{dataInicio[1]}/{dataInicio[0]} - {dataTermino[2]}
-              /{dataTermino[1]}/{dataTermino[0]}
-            </h6>
+            <h6 className="card-subtitle">{handleDatas()}</h6>
           </div>
         </div>
 

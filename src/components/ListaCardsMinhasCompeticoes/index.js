@@ -47,7 +47,7 @@ function ListaCardsMinhasCompeticoes() {
         setCards(data);
       }
     });
-  }, [filtros, token]);
+  }, [filtros, token, cards]);
 
   return (
     <div className="listagem-cards-competicoes">
