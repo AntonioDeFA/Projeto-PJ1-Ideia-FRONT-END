@@ -295,6 +295,7 @@ function DadosUsuario() {
             <Botao
               titulo="salvar"
               classes="btn btn-warning botao-menor-personalizado"
+              id="btn-salvar-usuario"
               onClick={
                 usuarioLogado === null ? fazerCadastro : atualizarCadastro
               }
@@ -302,6 +303,7 @@ function DadosUsuario() {
             <Link to={usuarioLogado !== null ? "/inicio" : "/"}>
               <Botao
                 titulo="voltar"
+                id="btn-voltar"
                 classes="btn btn-secondary botao-menor-personalizado"
               />
             </Link>
