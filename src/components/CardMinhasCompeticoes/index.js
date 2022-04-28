@@ -201,6 +201,7 @@ function CardMinhasCompeticoes(props) {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Botao
               titulo="confirmar"
+              id="btn-confirmar-deletar"
               classes="btn btn-warning botao-menor-personalizado"
               onClick={handleDeletarCompeticao}
             />
