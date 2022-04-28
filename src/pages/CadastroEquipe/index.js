@@ -446,7 +446,7 @@ function CadastroEquipe() {
           <div className="botoes">
             <div id="btn-confirmar">
               <Botao
-                id="btn-confirmar-para-teste"
+                id="btn-confirmar-inscricao-para-teste"
                 titulo="confirmar inscrição"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={finalizarInscricao}
