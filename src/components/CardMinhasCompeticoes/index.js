@@ -122,6 +122,7 @@ function CardMinhasCompeticoes(props) {
     api
       .delete(`/competicao/delete/${props.card.id}`)
       .then((response) => {
+        props.atualizarCards();
         console.log(response.data);
       })
       .catch((error) => {

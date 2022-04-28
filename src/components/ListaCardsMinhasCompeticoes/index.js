@@ -16,6 +16,10 @@ function ListaCardsMinhasCompeticoes() {
 
   const { token } = useContext(StoreContext);
 
+  const atualizarCards = () => {
+    obterCards();
+  };
+
   useEffect(() => {
     const { nomeCompeticao, mes, ano, etapasSelecionadas } = filtros;
 
@@ -29,6 +33,10 @@ function ListaCardsMinhasCompeticoes() {
     if (ano !== 0 && ano !== "") {
       params.ano = ano;
     }
+    obterCards(params, etapasSelecionadas);
+  }, [filtros, token]);
+
+  const obterCards = (params, etapasSelecionadas) => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/competicoes/usuario-logado", { params }).then((response) => {
       const { data } = response;
@@ -47,7 +55,7 @@ function ListaCardsMinhasCompeticoes() {
         setCards(data);
       }
     });
-  }, [filtros, token, cards]);
+  };
 
   return (
     <div className="listagem-cards-competicoes">
@@ -55,7 +63,7 @@ function ListaCardsMinhasCompeticoes() {
         {cards.map((card) => {
           return (
             <li key={card.id}>
-              <CardMinhasCompeticoes card={card} />
+              <CardMinhasCompeticoes card={card} atualizarCards={obterCards} />
             </li>
           );
         })}
