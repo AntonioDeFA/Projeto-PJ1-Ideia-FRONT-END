@@ -75,7 +75,7 @@ function DefaultHeader() {
           </ul>
 
           <div className="elementos-alinhados-esquerda">
-            <h6 className="fw-bold nome-usuario">
+            <h6 className="fw-bold nome-usuario" id="nome-usuario-para-teste">
               {usuarioLogado?.nomeUsuario}
             </h6>
           </div>
