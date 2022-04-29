@@ -91,8 +91,8 @@ function ResetarSenha() {
 
           <div className="elementos-centralizados">
             <p id="mensagem-email">
-              Informe o e-mail que você usou para se cadastrar no Ideia. Nós
-              enviaremos um código que você poderá usar para resetar sua senha.
+              Informe o e-mail que você usou para se cadastrar no Ideia. Nós te
+              enviaremos uma nova senha por lá.
             </p>
           </div>
 
