@@ -9,6 +9,7 @@ import "../../assets/styles/global.css";
 import { Box, Modal, Typography } from "@mui/material";
 import { styleModals } from "../../utils/constantes";
 import { useNavigate } from "react-router-dom";
+import { handleDatas } from "../../services/utils";
 
 function CardCompeticao(props) {
   let dataInicio = props.card.etapaVigente.dataInicio;
@@ -65,16 +66,12 @@ function CardCompeticao(props) {
       <div className="card border border-warning tamanho-card-personalizado">
         <div className="card-header bg-warning">
           <h5 className="card-title fw-bold">{props.card.nomeCompeticao}</h5>
-          <div
-            className={
-              props.card.nomeCompeticao.length <= 15
-                ? "datas-etapa-bottom"
-                : null
-            }
-          >
+          <div className="datas-etapa-bottom">
             <h6 className="card-subtitle">
-              {dataInicio[2]}/{dataInicio[1]}/{dataInicio[0]} - {dataTermino[2]}
-              /{dataTermino[1]}/{dataTermino[0]}
+              {handleDatas(
+                props.card?.etapaVigente?.dataInicio,
+                props.card?.etapaVigente?.dataTermino
+              )}
             </h6>
           </div>
         </div>

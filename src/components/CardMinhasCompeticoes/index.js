@@ -7,6 +7,7 @@ import { styleModals } from "../../utils/constantes";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
 import api from "../../services/api";
+import { handleDatas } from "../../services/utils";
 
 function CardMinhasCompeticoes(props) {
   const { token } = useContext(StoreContext);
@@ -95,28 +96,6 @@ function CardMinhasCompeticoes(props) {
     return mensagem;
   };
 
-  const handleDatas = () => {
-    let dataInicio = props.card?.etapaVigente?.dataInicio;
-    let dataTermino = props.card?.etapaVigente?.dataTermino;
-
-    if (
-      dataInicio &&
-      dataInicio.length > 0 &&
-      dataTermino &&
-      dataTermino.length > 0
-    ) {
-      return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${
-        dataInicio[0]
-      } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${
-        dataTermino[0]
-      }`;
-    }
-  };
-
-  const adicionarZero = (numero) => {
-    return Number(numero) < 10 ? `0${numero}` : numero;
-  };
-
   const handleDeletarCompeticao = () => {
     api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
     api
@@ -142,12 +121,17 @@ function CardMinhasCompeticoes(props) {
           <h5 className="card-title fw-bold">{props.card.nomeCompeticao}</h5>
           <div
             className={
-              props.card.nomeCompeticao.length <= 15
+              props.card.nomeCompeticao.length < 20
                 ? "datas-etapa-bottom"
                 : null
             }
           >
-            <h6 className="card-subtitle">{handleDatas()}</h6>
+            <h6 className="card-subtitle">
+              {handleDatas(
+                props.card?.etapaVigente?.dataInicio,
+                props.card?.etapaVigente?.dataTermino
+              )}
+            </h6>
           </div>
         </div>
 
