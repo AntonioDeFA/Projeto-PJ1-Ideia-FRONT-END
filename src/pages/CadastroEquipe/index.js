@@ -391,12 +391,15 @@ function CadastroEquipe() {
                     setMensagemCampoObrigatorioEmailMembro
                   );
                 }}
-                label="E-mail *"
+                label={
+                  competicao?.dominioCompeticao === ""
+                    ? "E-mail *"
+                    : `E-mail * (deve possuir o domínio ${competicao?.dominioCompeticao})`
+                }
                 type="email"
                 variant="filled"
                 color="warning"
                 size="small"
-                placeholder={handlePlaceHolder()}
               />
             </div>
           </Box>
