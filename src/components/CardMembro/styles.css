@@ -1,5 +1,7 @@
 div #card-membro {
-  height: 13rem; 
+  height: 13rem;
+  margin-top: 0;
+  top: 0;
 }
 
 div .card-lider {
@@ -29,6 +31,7 @@ header#cabecalho div div#icone-lixeira {
 
 .padding {
   padding: 7%;
+  padding-left: 4%;
 }
 
 i {
@@ -39,3 +42,13 @@ i {
 i:hover {
   color: var(--color-aquecimento);
 }
+
+div #email {
+  height: 70px;
+}
+
+p#email-content {
+  margin-top: -15px;
+  padding: 0;
+}
+

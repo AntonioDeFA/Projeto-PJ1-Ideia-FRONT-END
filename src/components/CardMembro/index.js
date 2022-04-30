@@ -29,7 +29,10 @@ function CardMembro(props) {
 
       <div id="dados" className="padding">
         <h6 id="nome">Nome: {props.nome}</h6>
-        <h6 id="email">E-mail: {props.email}</h6>
+        <div id="email">
+          <p id="email-label">E-mail:</p>
+          <p id="email-content">{props.email}</p>
+        </div>
       </div>
     </div>
   );
