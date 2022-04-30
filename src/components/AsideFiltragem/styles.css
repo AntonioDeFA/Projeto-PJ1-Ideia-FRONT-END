@@ -29,3 +29,7 @@ div #radio-buttons-competicoes {
   text-decoration: none;
   color: var(--color-titles);
 }
+
+.largura-total {
+  width: 93%;
+}

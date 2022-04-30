@@ -268,7 +268,7 @@ function AsideFiltragem(props) {
       <div className="elementos-centralizados">
         <Botao
           titulo="adicionar"
-          classes="btn btn-warning botao-personalizado"
+          classes="btn btn-warning botao-personalizado largura-total"
           onClick={adicionar}
         />
       </div>
