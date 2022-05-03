@@ -11,6 +11,7 @@ import TelaInicial from "./pages/TelaInicial";
 import ResetarSenha from "./pages/ResetarSenha/index";
 import CadastroEquipe from "./pages/CadastroEquipe/index";
 import CadastroUsuario from "./pages/CadastroUsuario";
+import CadastroCompeticao from "./pages/CadastroCompeticao";
 
 function ProjetoRoutes() {
   return (
@@ -34,6 +35,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <TelaInicial />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/cadastro-competicao"
+            element={
+              <RoutesPrivate>
+                <CadastroCompeticao />
               </RoutesPrivate>
             }
           />

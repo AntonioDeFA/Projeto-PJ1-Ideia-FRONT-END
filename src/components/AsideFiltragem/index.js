@@ -12,6 +12,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 import "./styles.css";
 import Botao from "../Botao";
+import { useNavigate } from "react-router-dom";
 
 const mesesDoAno = [
   {
@@ -95,6 +96,8 @@ function AsideFiltragem(props) {
 
     props.verificarTipoCompeticoes(isCompeticoesAbertas);
   };
+
+  const navigate = useNavigate();
 
   const checkboxes = () => {
     if (hasCheckboxes) {
@@ -236,7 +239,7 @@ function AsideFiltragem(props) {
   };
 
   const adicionar = () => {
-    alert("adicionar");
+    navigate("/cadastro-competicao");
   };
 
   const realizarFiltragem = (event) => {

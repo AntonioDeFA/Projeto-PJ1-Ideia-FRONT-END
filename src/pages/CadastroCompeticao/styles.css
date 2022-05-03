@@ -1,0 +1,16 @@
+svg.MuiSvgIcon-root {
+  color: white;
+  width: 40px;
+  height: 40px;
+  transition: 0.5s all;
+}
+
+svg.MuiSvgIcon-root:hover {
+  color: #fc7a00;
+}
+
+#botoes-competicao {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
