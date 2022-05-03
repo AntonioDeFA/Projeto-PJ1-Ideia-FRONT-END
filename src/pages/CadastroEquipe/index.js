@@ -231,12 +231,6 @@ function CadastroEquipe() {
     setMudou(false);
     setMudou(true);
   };
-  const handlePlaceHolder = () => {
-    let dominioCompeticao = competicao?.dominioCompeticao;
-    return dominioCompeticao === ""
-      ? ""
-      : `Deve possuir o domínio ${dominioCompeticao}`;
-  };
 
   return (
     <div id="cadastro-equipe">

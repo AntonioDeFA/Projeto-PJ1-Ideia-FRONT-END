@@ -138,7 +138,7 @@ function CardMinhasCompeticoes(props) {
         <div className="card-body">
           {handlePapelUsuario()}
 
-          <div className="navbar p-0 etapa-atual">
+          <div className="navbar pt-3 etapa-atual">
             {handleEtapaCompeticao()}
 
             <div id="icons">

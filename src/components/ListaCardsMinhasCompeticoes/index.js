@@ -16,10 +16,6 @@ function ListaCardsMinhasCompeticoes() {
 
   const { token } = useContext(StoreContext);
 
-  const atualizarCards = () => {
-    obterCards();
-  };
-
   useEffect(() => {
     const { nomeCompeticao, mes, ano, etapasSelecionadas } = filtros;
 

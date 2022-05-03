@@ -12,9 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { handleDatas } from "../../services/utils";
 
 function CardCompeticao(props) {
-  let dataInicio = props.card.etapaVigente.dataInicio;
-  let dataTermino = props.card.etapaVigente.dataTermino;
-
   const [usuarioLogado, setUsuarioLogado] = useState(null);
 
   const { token } = useContext(StoreContext);
