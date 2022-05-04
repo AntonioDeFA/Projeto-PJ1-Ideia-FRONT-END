@@ -53,7 +53,7 @@ function DadosGeraisCompeticao() {
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
-                label="Inicio das inscrições"
+                label="Inicio das inscrições *"
                 value={dataInicioInscricoes}
                 onChange={(dataInicioInscricoes) => {
                   setDataInicioInscricoes(dataInicioInscricoes);
@@ -79,7 +79,7 @@ function DadosGeraisCompeticao() {
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
-                label="Término das inscrições"
+                label="Término das inscrições *"
                 value={dataTerminoInscricoes}
                 onChange={(dataTerminoInscricoes) => {
                   setDataTerminoInscricoes(dataTerminoInscricoes);
@@ -109,7 +109,7 @@ function DadosGeraisCompeticao() {
             onChange={(e) => {
               setNome(e.target.value);
             }}
-            label="Nome da competição"
+            label="Nome da competição *"
             type="text"
             variant="filled"
             color="warning"
@@ -128,7 +128,7 @@ function DadosGeraisCompeticao() {
               onChange={(e) => {
                 setQntdMinMembros(e.target.value);
               }}
-              label="Qntd mín. de membros"
+              label="Qntd mín. de membros *"
               type="number"
               variant="filled"
               color="warning"
@@ -145,7 +145,7 @@ function DadosGeraisCompeticao() {
               onChange={(e) => {
                 setQntdMaxMembros(e.target.value);
               }}
-              label="Qntd máx. de membros"
+              label="Qntd máx. de membros *"
               type="number"
               variant="filled"
               color="warning"
@@ -203,7 +203,7 @@ function DadosGeraisCompeticao() {
             onChange={(e) => {
               setTempoMaxPitch(e.target.value);
             }}
-            label="Tempo máx. pitch (min)"
+            label="Tempo máx. pitch (min) *"
             type="number"
             variant="filled"
             color="warning"
