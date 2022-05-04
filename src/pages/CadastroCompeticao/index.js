@@ -45,7 +45,7 @@ function CadastroCompeticao() {
                 Dados Gerais
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ paddingTop: "20px" }}>
               <DadosGeraisCompeticao />
             </AccordionDetails>
           </Accordion>

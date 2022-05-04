@@ -1,0 +1,17 @@
+.input-irmao {
+  width: 215px !important;
+}
+
+.inputs-lado-a-lado {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.input-irmao-direito {
+  margin-left: 20px;
+}
+
+.input-cadastro-competicao {
+  width: 450px;
+  margin-bottom: 15px !important;
+}
