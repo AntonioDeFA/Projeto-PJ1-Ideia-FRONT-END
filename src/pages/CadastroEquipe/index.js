@@ -19,7 +19,10 @@ import {
 } from "./../../utils/mensagens";
 
 import "./styles.css";
-import { validarEmail } from "./../../services/utils";
+import {
+  validarCamposObrigatorios,
+  validarEmail,
+} from "./../../services/utils";
 import CardMembro from "../../components/CardMembro";
 import api from "../../services/api";
 import Mensagem from "../../components/Mensagem";
@@ -87,22 +90,6 @@ function CadastroEquipe() {
       setCompeticao(data);
     });
   }, [token, idCompeticao]);
-
-  const validarCamposObrigatorios = (
-    value,
-    functionSetError,
-    functionSetMensagem
-  ) => {
-    if (value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem(MSG004);
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem(MSG000);
-      return true;
-    }
-  };
 
   const confirmarCriacaoEquipe = () => {
     if (

@@ -30,7 +30,7 @@ export const validarCamposObrigatorios = (
   functionSetError,
   functionSetMensagem = null
 ) => {
-  if (value.length === 0) {
+  if (value === null || value?.length === 0) {
     functionSetError(true);
 
     if (functionSetMensagem) {
