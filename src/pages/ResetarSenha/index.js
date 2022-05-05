@@ -9,7 +9,10 @@ import Botao from "./../../components/Botao/index";
 import Mensagem from "./../../components/Mensagem/index";
 import { Link } from "react-router-dom";
 
-import { validarEmail } from "./../../services/utils";
+import {
+  validarCamposObrigatorios,
+  validarEmail,
+} from "./../../services/utils";
 import {
   MSG000,
   MSG003,
@@ -33,22 +36,6 @@ function ResetarSenha() {
   const [tipoMensagem, setTipoMensagem] = useState(MSG000);
 
   const [enviouSenha, setEnviouSenha] = useState(false);
-
-  const validarCamposObrigatorios = (
-    value,
-    functionSetError,
-    functionSetMensagem
-  ) => {
-    if (value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem(MSG004);
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem(MSG000);
-      return true;
-    }
-  };
 
   const enviarSenha = () => {
     let statusInputToken = validarCamposObrigatorios(

@@ -12,8 +12,8 @@ import ImgLogo from "../../assets/images/Imagem1.png";
 import "./styles.css";
 import Botao from "../../components/Botao";
 import { Link } from "react-router-dom";
-import { MSG000, MSG003, MSG004, MSG006, MSG011 } from "../../utils/mensagens";
-import { validarEmail } from "../../services/utils";
+import { MSG000, MSG003, MSG006, MSG011 } from "../../utils/mensagens";
+import { validarCamposObrigatorios, validarEmail } from "../../services/utils";
 import Mensagem from "../../components/Mensagem";
 
 function Login() {
@@ -34,29 +34,13 @@ function Login() {
   const { setToken } = useContext(StoreContext);
   const navigate = useNavigate();
 
-  const validarCamposEntradaObrigatorios = (
-    value,
-    functionSetError,
-    functionSetMensagem
-  ) => {
-    if (value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem(MSG004);
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem(MSG000);
-      return true;
-    }
-  };
-
   const fazerLogin = () => {
-    let statusInputEmail = validarCamposEntradaObrigatorios(
+    let statusInputEmail = validarCamposObrigatorios(
       email,
       setErrorInputEmail,
       setMensagemCampoObrigatorioEmail
     );
-    let statusInputPassword = validarCamposEntradaObrigatorios(
+    let statusInputPassword = validarCamposObrigatorios(
       password,
       setErrorInputPassword,
       setMensagemCampoObrigatorioPassword
@@ -117,7 +101,7 @@ function Login() {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      validarCamposEntradaObrigatorios(
+                      validarCamposObrigatorios(
                         e.target.value,
                         setErrorInputEmail,
                         setMensagemCampoObrigatorioEmail
@@ -144,7 +128,7 @@ function Login() {
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
-                        validarCamposEntradaObrigatorios(
+                        validarCamposObrigatorios(
                           e.target.value,
                           setErrorInputPassword,
                           setMensagemCampoObrigatorioPassword

@@ -10,7 +10,7 @@ import StoreContext from "../../store/context";
 import "./styles.css";
 import Botao from "../../components/Botao";
 import Mensagem from "../../components/Mensagem";
-import { validarEmail } from "../../services/utils";
+import { validarCamposObrigatorios, validarEmail } from "../../services/utils";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import {
@@ -62,31 +62,15 @@ function DadosUsuario() {
 
   const navigate = useNavigate();
 
-  const validarCamposEntradaObrigatorios = (value, functionSetError) => {
-    if (value.length === 0) {
-      functionSetError(true);
-      return false;
-    } else {
-      functionSetError(false);
-      return true;
-    }
-  };
-
   const fazerCadastro = () => {
     setMensagemErro(MSG000);
-    let statusInputNome = validarCamposEntradaObrigatorios(
-      nome,
-      setErrorInputNome
-    );
-    let statusInputEmail = validarCamposEntradaObrigatorios(
-      email,
-      setErrorInputEmail
-    );
-    let statusInputPassword = validarCamposEntradaObrigatorios(
+    let statusInputNome = validarCamposObrigatorios(nome, setErrorInputNome);
+    let statusInputEmail = validarCamposObrigatorios(email, setErrorInputEmail);
+    let statusInputPassword = validarCamposObrigatorios(
       password,
       setErrorInputPassword
     );
-    let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(
+    let statusInputConfirmarPassword = validarCamposObrigatorios(
       confirmarPassword,
       setErrorInputConfirmarPassword
     );
@@ -140,7 +124,7 @@ function DadosUsuario() {
         Object.assign(dadosAtualizados, { nomeUsuario: nome });
       }
       if (password !== "") {
-        let statusInputConfirmarPassword = validarCamposEntradaObrigatorios(
+        let statusInputConfirmarPassword = validarCamposObrigatorios(
           confirmarPassword,
           setErrorInputConfirmarPassword
         );
@@ -209,7 +193,7 @@ function DadosUsuario() {
                   value={nome}
                   onChange={(e) => {
                     setNome(e.target.value);
-                    validarCamposEntradaObrigatorios(
+                    validarCamposObrigatorios(
                       e.target.value,
                       setErrorInputNome
                     );
@@ -229,7 +213,7 @@ function DadosUsuario() {
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    validarCamposEntradaObrigatorios(
+                    validarCamposObrigatorios(
                       e.target.value,
                       setErrorInputEmail
                     );
@@ -250,7 +234,7 @@ function DadosUsuario() {
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
-                    validarCamposEntradaObrigatorios(
+                    validarCamposObrigatorios(
                       e.target.value,
                       setErrorInputPassword
                     );
@@ -272,7 +256,7 @@ function DadosUsuario() {
                   value={confirmarPassword}
                   onChange={(e) => {
                     setConfirmarPassword(e.target.value);
-                    validarCamposEntradaObrigatorios(
+                    validarCamposObrigatorios(
                       e.target.value,
                       setErrorInputConfirmarPassword
                     );

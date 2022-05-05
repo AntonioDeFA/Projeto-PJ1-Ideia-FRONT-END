@@ -9,8 +9,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Botao from "./../../components/Botao/index";
 import { Link } from "react-router-dom";
-import { MSG000, MSG004, MSG006 } from "./../../utils/mensagens";
+import { MSG000, MSG006 } from "./../../utils/mensagens";
 import Mensagem from "./../../components/Mensagem/index";
+import { validarCamposObrigatorios } from "../../services/utils";
 
 function LoginToken() {
   const [token, setInputToken] = useState(MSG000);
@@ -19,22 +20,6 @@ function LoginToken() {
     useState(MSG000);
 
   const [mensagem, setMensagem] = useState(MSG000);
-
-  const validarCamposObrigatorios = (
-    value,
-    functionSetError,
-    functionSetMensagem
-  ) => {
-    if (value.length === 0) {
-      functionSetError(true);
-      functionSetMensagem(MSG004);
-      return false;
-    } else {
-      functionSetError(false);
-      functionSetMensagem(MSG000);
-      return true;
-    }
-  };
 
   const { setToken } = useContext(StoreContext);
   const entrar = () => {
@@ -100,7 +85,7 @@ function LoginToken() {
                           setMensagemCampoObrigatorioToken
                         );
                       }}
-                      label="Insira seu token de acesso"
+                      label="Insira seu token de acesso *"
                       type="text"
                       variant="filled"
                       color="warning"
