@@ -12,7 +12,6 @@ import Botao from "./../../components/Botao/index";
 import {
   MSG000,
   MSG003,
-  MSG004,
   MSG006,
   MSG007,
   MSG014,
