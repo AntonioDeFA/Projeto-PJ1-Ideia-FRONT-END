@@ -10,8 +10,10 @@ import { MSG000 } from "../../../utils/mensagens";
 
 import "./styles.css";
 import { UploadFile } from "@mui/icons-material";
+import Botao from "../../Botao";
+import { validarCamposObrigatorios } from "./../../../services/utils";
 
-function DadosGeraisCompeticao() {
+function DadosGeraisCompeticao(props) {
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
   const [regulamento, setRegulamento] = useState(MSG000);
@@ -21,19 +23,17 @@ function DadosGeraisCompeticao() {
   const [dataInicioInscricoes, setDataInicioInscricoes] = useState(null);
   const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(null);
 
-  const [errorNome, setErrorNome] = useState(MSG000);
-  const [errorDominio, setErrorDominio] = useState(MSG000);
-  const [errorRegulamento, setErrorRegulamento] = useState(MSG000);
-  const [errorTempoMaxPitch, setErrorTempoMaxPitch] = useState(MSG000);
-  const [errorQntdMinMembros, setErrorQntdMinMembros] = useState(MSG000);
-  const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(MSG000);
+  const [errorNome, setErrorNome] = useState(false);
+  const [errorRegulamento, setErrorRegulamento] = useState(false);
+  const [errorTempoMaxPitch, setErrorTempoMaxPitch] = useState(false);
+  const [errorQntdMinMembros, setErrorQntdMinMembros] = useState(false);
+  const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(false);
   const [errorDataInicioInscricoes, setErrorDataInicioInscricoes] =
-    useState(MSG000);
+    useState(false);
   const [errorDataTerminoInscricoes, setErrorDataTerminoInscricoes] =
-    useState(MSG000);
+    useState(false);
 
   const [mensagemNome, setMensagemNome] = useState(MSG000);
-  const [mensagemDominio, setMensagemDominio] = useState(MSG000);
   const [mensagemRegulamento, setMensagemRegulamento] = useState(MSG000);
   const [mensagemTempoMaxPitch, setMensagemTempoMaxPitch] = useState(MSG000);
   const [mensagemQntdMinMembros, setMensagemQntdMinMembros] = useState(MSG000);
@@ -42,6 +42,66 @@ function DadosGeraisCompeticao() {
     useState(MSG000);
   const [mensagemDataTerminoInscricoes, setMensagemDataTerminoInscricoes] =
     useState(MSG000);
+
+  const salvarDadosGerais = () => {
+    let statusNome = validarCamposObrigatorios(
+      nome,
+      setErrorNome,
+      setMensagemNome
+    );
+
+    let statusTempoMaxPitch = validarCamposObrigatorios(
+      tempoMaxPitch,
+      setErrorTempoMaxPitch,
+      setMensagemTempoMaxPitch
+    );
+
+    let statusQntdMinMembros = validarCamposObrigatorios(
+      qntdMinMembros,
+      setErrorQntdMinMembros,
+      setMensagemQntdMinMembros
+    );
+
+    let statusQntdMaxMembros = validarCamposObrigatorios(
+      qntdMaxMembros,
+      setErrorQntdMaxMembros,
+      setMensagemQntdMaxMembros
+    );
+
+    let statusDataInicioInscricoes = validarCamposObrigatorios(
+      dataInicioInscricoes,
+      setErrorDataInicioInscricoes,
+      setMensagemDataInicioInscricoes
+    );
+    let statusDataTerminoInscricoes = validarCamposObrigatorios(
+      dataTerminoInscricoes,
+      setErrorDataTerminoInscricoes,
+      setMensagemDataTerminoInscricoes
+    );
+
+    if (
+      statusNome &&
+      statusTempoMaxPitch &&
+      statusQntdMinMembros &&
+      statusQntdMaxMembros &&
+      statusDataInicioInscricoes &&
+      statusDataTerminoInscricoes
+    ) {
+      const dadosGerais = {
+        nome,
+        dominio,
+        regulamento,
+        tempoMaxPitch,
+        qntdMinMembros,
+        qntdMaxMembros,
+        dataInicioInscricoes,
+        dataTerminoInscricoes,
+      };
+      props.handleDadosGerais(dadosGerais);
+    } else {
+      props.handleDadosGerais();
+    }
+  };
 
   return (
     <div id="dados-gerais-content">
@@ -65,7 +125,6 @@ function DadosGeraisCompeticao() {
                     color="warning"
                     variant="filled"
                     id="input-data-inicio-inscricoes"
-                    error={errorDataInicioInscricoes}
                     helperText={mensagemDataInicioInscricoes}
                     {...params}
                   />
@@ -91,6 +150,7 @@ function DadosGeraisCompeticao() {
                     color="warning"
                     variant="filled"
                     id="input-data-termino-inscricoes"
+                    helperText={mensagemDataTerminoInscricoes}
                     {...params}
                   />
                 )}
@@ -158,8 +218,6 @@ function DadosGeraisCompeticao() {
         <div>
           <TextField
             className="input-cadastro-competicao"
-            error={errorDominio}
-            helperText={mensagemDominio}
             id="input-dominio-competicao"
             value={dominio}
             onChange={(e) => {
@@ -193,7 +251,7 @@ function DadosGeraisCompeticao() {
           </label>
         </div>
 
-        <div id="tempoMaximoPitch">
+        <div id="tempoMaximoPitch" className="input-cadastro-competicao">
           <TextField
             className="input-irmao"
             error={errorTempoMaxPitch}
@@ -211,6 +269,14 @@ function DadosGeraisCompeticao() {
           />
         </div>
       </Box>
+      <div className="input-cadastro-competicao">
+        <Botao
+          titulo="salvar dados gerais"
+          classes="btn btn-warning botao-menor-personalizado"
+          id="btn-salvar-dados-gerais-competicao"
+          onClick={salvarDadosGerais}
+        />
+      </div>
     </div>
   );
 }

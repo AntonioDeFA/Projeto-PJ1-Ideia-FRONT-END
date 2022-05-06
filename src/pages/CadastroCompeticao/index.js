@@ -22,6 +22,14 @@ function CadastroCompeticao() {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleDadosGerais = (dadosGerais = null) => {
+    if (dadosGerais === null) {
+      console.log("err");
+    } else {
+      console.log(dadosGerais);
+    }
+  };
+
   return (
     <div id="cadastro-equipe">
       <DefaultHeader />
@@ -45,8 +53,8 @@ function CadastroCompeticao() {
                 Dados Gerais
               </Typography>
             </AccordionSummary>
-            <AccordionDetails sx={{ paddingTop: "20px" }}>
-              <DadosGeraisCompeticao />
+            <AccordionDetails sx={{ padding: "20px" }}>
+              <DadosGeraisCompeticao handleDadosGerais={handleDadosGerais} />
             </AccordionDetails>
           </Accordion>
           <Accordion
@@ -67,7 +75,7 @@ function CadastroCompeticao() {
                 Questões Avaliativas dos Pitches
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ padding: "20px" }}>
               <QuestoesAvaliativasPitches />
             </AccordionDetails>
           </Accordion>
@@ -89,7 +97,7 @@ function CadastroCompeticao() {
                 Etapa de Aquecimento
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ padding: "20px" }}>
               <EtapaAquecimento />
             </AccordionDetails>
           </Accordion>
@@ -111,7 +119,7 @@ function CadastroCompeticao() {
                 Etapa de Imersão
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ padding: "20px" }}>
               <EtapaImersao />
             </AccordionDetails>
           </Accordion>
@@ -133,7 +141,7 @@ function CadastroCompeticao() {
                 Etapa de Pitch
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ padding: "20px" }}>
               <EtapaPitch />
             </AccordionDetails>
           </Accordion>
