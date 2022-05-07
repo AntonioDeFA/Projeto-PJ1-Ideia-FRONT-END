@@ -18,7 +18,10 @@ import { Box } from "@mui/material";
 
 function CadastroCompeticao() {
   const [dadosGerais, setDadosGerais] = useState(null);
+
   const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
+  const [etapaImersaoOk, setEtapaImersaoOk] = useState(false);
+  const [etapaPitchOk, setEtapaPitchOk] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -127,7 +130,14 @@ function CadastroCompeticao() {
                 variant="h5"
                 sx={{ width: "33%", flexShrink: 0, color: "white" }}
               >
-                Etapa de Imersão
+                <Box sx={{ display: "flex" }}>
+                  {etapaImersaoOk ? (
+                    <div className="icone-ok">
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  ) : null}
+                  Etapa de Imersão
+                </Box>
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: "20px" }}>
@@ -149,7 +159,14 @@ function CadastroCompeticao() {
                 variant="h5"
                 sx={{ width: "33%", flexShrink: 0, color: "white" }}
               >
-                Etapa de Pitch
+                <Box sx={{ display: "flex" }}>
+                  {etapaPitchOk ? (
+                    <div className="icone-ok">
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  ) : null}
+                  Etapa de Pitch
+                </Box>
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: "20px" }}>
