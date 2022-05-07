@@ -14,8 +14,12 @@ import QuestoesAvaliativasPitches from "./../../components/AccordionComponentesC
 import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
 import EtapaImersao from "./../../components/AccordionComponentesCompeticao/EtapaImersao/index";
 import EtapaPitch from "./../../components/AccordionComponentesCompeticao/EtapaPitch/index";
+import { Box } from "@mui/material";
 
 function CadastroCompeticao() {
+  const [dadosGerais, setDadosGerais] = useState(null);
+  const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
+
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -23,7 +27,8 @@ function CadastroCompeticao() {
   };
 
   const handleDadosGerais = (dadosGerais) => {
-    console.log(dadosGerais);
+    setDadosGerais(dadosGerais);
+    setDadosGeraisOk(true);
   };
 
   return (
@@ -46,11 +51,21 @@ function CadastroCompeticao() {
                 variant="h5"
                 sx={{ width: "33%", flexShrink: 0, color: "white" }}
               >
-                Dados Gerais
+                <Box sx={{ display: "flex" }}>
+                  {dadosGeraisOk ? (
+                    <div className="icone-ok">
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  ) : null}
+                  Dados Gerais
+                </Box>
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: "20px" }}>
-              <DadosGeraisCompeticao handleDadosGerais={handleDadosGerais} />
+              <DadosGeraisCompeticao
+                handleDadosGerais={handleDadosGerais}
+                setDadosGeraisOk={setDadosGeraisOk}
+              />
             </AccordionDetails>
           </Accordion>
           <Accordion

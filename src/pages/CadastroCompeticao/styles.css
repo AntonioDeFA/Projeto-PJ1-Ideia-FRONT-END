@@ -14,3 +14,12 @@ div #accordion-id .MuiAccordionSummary-expandIconWrapper svg.MuiSvgIcon-root:hov
   justify-content: space-between;
   margin: 30px auto 30px auto;
 }
+
+div .icone-ok {
+  margin-right: 5px;
+}
+
+div .icone-ok i {
+  padding: 0;
+  cursor: default;
+}

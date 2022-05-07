@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { format, parseISO } from "date-fns";
 
 import {
   MSG000,
@@ -52,6 +51,7 @@ function DadosGeraisCompeticao(props) {
     useState(MSG000);
 
   const salvarDadosGerais = () => {
+    props.setDadosGeraisOk(false);
     let statusNome = validarCamposObrigatorios(
       nome,
       setErrorNome,
