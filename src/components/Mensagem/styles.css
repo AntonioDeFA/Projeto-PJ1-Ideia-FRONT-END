@@ -38,3 +38,9 @@ div ._index__viewBox {
   height: 25%;
   margin: auto;
 }
+
+div #componente-mensagem .MuiCircularProgress-root {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 10px;
+}

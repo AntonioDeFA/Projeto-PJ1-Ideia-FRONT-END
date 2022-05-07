@@ -1,9 +1,13 @@
 import React from "react";
 import "./styles.css";
 
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import { MSG005, MSG006, MSG008 } from "./../../utils/mensagens";
 
-import { Spinner } from "loading-animations-react";
+import { Box } from "@mui/material";
 
 function Mensagem(props) {
   const handleTitulo = () => {
@@ -11,30 +15,25 @@ function Mensagem(props) {
     let tipoMensagem = props.tipoMensagem;
 
     if (tipoMensagem === MSG005) {
-      titulo = <h5>Sucesso!</h5>;
+      titulo = "Sucesso!";
     } else if (tipoMensagem === MSG006) {
-      titulo = <h5>Houve um erro!</h5>;
+      titulo = "Houve um erro!";
     } else if (tipoMensagem === MSG008) {
-      titulo = <h5>Aguarde...</h5>;
+      titulo = "Aguarde...";
     }
 
     return titulo;
   };
 
   return (
-    <div className={props.tipoMensagem + " mensagem"}>
-      <div id="titulo" className="elementos-centralizados">
-        {handleTitulo()}
-      </div>
-      {props.tipoMensagem === MSG008 ? (
-        <div className="elementos-centralizados">
-          <Spinner color1="gray" color2="#fff" />
-        </div>
-      ) : null}
-
-      <div className="elementos-centralizados">
-        <p id="mensagem-texto">{props.mensagem}</p>
-      </div>
+    <div id="componente-mensagem" className={props.tipoMensagem + " mensagem"}>
+      <Alert variant="outlined" severity={props.tipoMensagem}>
+        <AlertTitle>{handleTitulo()}</AlertTitle>
+        <Box sx={{ display: "flex" }}>
+          {props.tipoMensagem === MSG008 ? <CircularProgress /> : null}
+          <p>{props.mensagem}</p>
+        </Box>
+      </Alert>
     </div>
   );
 }

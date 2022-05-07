@@ -3,12 +3,12 @@ export const MSG001 = "Você deve preencher todos os campos.";
 export const MSG002 = "As senhas não são iguais.";
 export const MSG003 = "O formato do e-mail não é válido.";
 export const MSG004 = "Campo obrigatório";
-export const MSG005 = "sucesso";
-export const MSG006 = "erro";
+export const MSG005 = "success";
+export const MSG006 = "error";
 export const MSG007 = "Já existe um membro com este e-mail";
-export const MSG008 = "loading";
+export const MSG008 = "info";
 export const MSG009 = "Uma senha provisória foi enviada para o seu e-mail!";
-export const MSG010 = "Aguarde alguns instantes";
+export const MSG010 = "Estamos te enviando um e-mail com sua nova senha.";
 export const MSG011 =
   "Não foi possível fazer login. Verifique suas credenciais e tente novamente.";
 export const MSG012 =
