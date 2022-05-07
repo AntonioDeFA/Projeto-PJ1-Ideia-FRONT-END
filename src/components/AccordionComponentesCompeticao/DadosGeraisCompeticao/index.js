@@ -5,8 +5,16 @@ import Button from "@mui/material/Button";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { format, parseISO } from "date-fns";
 
-import { MSG000 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG015,
+  MSG016,
+  MSG017,
+  MSG018,
+  MSG019,
+} from "../../../utils/mensagens";
 
 import "./styles.css";
 import { UploadFile } from "@mui/icons-material";
@@ -87,19 +95,34 @@ function DadosGeraisCompeticao(props) {
       statusDataInicioInscricoes &&
       statusDataTerminoInscricoes
     ) {
-      const dadosGerais = {
-        nome,
-        dominio,
-        regulamento,
-        tempoMaxPitch,
-        qntdMinMembros,
-        qntdMaxMembros,
-        dataInicioInscricoes,
-        dataTerminoInscricoes,
-      };
-      props.handleDadosGerais(dadosGerais);
-    } else {
-      props.handleDadosGerais();
+      if (tempoMaxPitch < 3) {
+        setErrorTempoMaxPitch(true);
+        setMensagemTempoMaxPitch(MSG015);
+      } else if (qntdMinMembros < 1) {
+        setErrorQntdMinMembros(true);
+        setMensagemQntdMinMembros(MSG016);
+      } else if (qntdMaxMembros <= qntdMinMembros) {
+        setErrorQntdMaxMembros(true);
+        setMensagemQntdMaxMembros(MSG017);
+      } else if (dataInicioInscricoes > dataTerminoInscricoes) {
+        setErrorDataTerminoInscricoes(true);
+        setMensagemDataTerminoInscricoes(MSG018);
+      } else if (nome.length < 3 || nome.length > 16) {
+        setErrorNome(true);
+        setMensagemNome(MSG019);
+      } else {
+        const dadosGerais = {
+          nome,
+          dominio,
+          regulamento,
+          tempoMaxPitch,
+          qntdMinMembros,
+          qntdMaxMembros,
+          dataInicioInscricoes,
+          dataTerminoInscricoes,
+        };
+        props.handleDadosGerais(dadosGerais);
+      }
     }
   };
 
@@ -116,7 +139,7 @@ function DadosGeraisCompeticao(props) {
                 label="Inicio das inscrições *"
                 value={dataInicioInscricoes}
                 onChange={(dataInicioInscricoes) => {
-                  setDataInicioInscricoes(dataInicioInscricoes);
+                  setDataInicioInscricoes(new Date(dataInicioInscricoes));
                 }}
                 inputFormat="dd/MM/yyyy"
                 renderInput={(params) => (
@@ -138,10 +161,11 @@ function DadosGeraisCompeticao(props) {
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
+                minDate={dataInicioInscricoes}
                 label="Término das inscrições *"
                 value={dataTerminoInscricoes}
                 onChange={(dataTerminoInscricoes) => {
-                  setDataTerminoInscricoes(dataTerminoInscricoes);
+                  setDataTerminoInscricoes(new Date(dataTerminoInscricoes));
                 }}
                 inputFormat="dd/MM/yyyy"
                 renderInput={(params) => (

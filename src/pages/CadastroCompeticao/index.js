@@ -22,12 +22,8 @@ function CadastroCompeticao() {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const handleDadosGerais = (dadosGerais = null) => {
-    if (dadosGerais === null) {
-      console.log("err");
-    } else {
-      console.log(dadosGerais);
-    }
+  const handleDadosGerais = (dadosGerais) => {
+    console.log(dadosGerais);
   };
 
   return (
