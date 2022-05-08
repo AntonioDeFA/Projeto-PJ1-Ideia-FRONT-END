@@ -5,19 +5,52 @@ import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
+import Botao from "../../Botao";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
-import { MSG000 } from "../../../utils/mensagens";
+import { MSG000, MSG018 } from "../../../utils/mensagens";
 
 import "./styles.css";
+import { validarCamposObrigatorios } from "../../../services/utils";
 
-function EtapaImersao() {
+function EtapaImersao(props) {
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
+
+  const [errorDataInicioImersao, setErrorDataInicioImersao] = useState(false);
+  const [errorDataTerminoImersao, setErrorDataTerminoImersao] = useState(false);
 
   const [mensagemDataInicioImersao, setMensagemDataInicioImersao] =
     useState(MSG000);
   const [mensagemDataTerminoImersao, setMensagemDataTerminoImersao] =
     useState(MSG000);
+
+  const salvarEtapaImersao = () => {
+    props.setEtapaImersaoOk(false);
+
+    let statusDataInicioImersao = validarCamposObrigatorios(
+      dataInicioImersao,
+      setErrorDataInicioImersao,
+      setMensagemDataInicioImersao
+    );
+    let statusDataTerminoImersao = validarCamposObrigatorios(
+      dataTerminoImersao,
+      setErrorDataTerminoImersao,
+      setMensagemDataTerminoImersao
+    );
+
+    if (statusDataInicioImersao && statusDataTerminoImersao) {
+      if (dataInicioImersao > dataTerminoImersao) {
+        setErrorDataTerminoImersao(true);
+        setMensagemDataTerminoImersao(MSG018);
+      } else {
+        const dadosImersao = {
+          dataInicioImersao,
+          dataTerminoImersao,
+        };
+        props.handleEtapaImersao(dadosImersao);
+      }
+    }
+  };
 
   return (
     <div id="etapa-imersao-content">
@@ -80,6 +113,15 @@ function EtapaImersao() {
       <h5 className="mt-5 mb-4">Consultores</h5>
 
       <TabelaAddConsultorAvaliador />
+
+      <div className="input-cadastro-competicao mt-4">
+        <Botao
+          titulo="salvar dados"
+          classes="btn btn-warning botao-menor-personalizado"
+          id="btn-salvar-dados-etapa-imersao"
+          onClick={salvarEtapaImersao}
+        />
+      </div>
     </div>
   );
 }

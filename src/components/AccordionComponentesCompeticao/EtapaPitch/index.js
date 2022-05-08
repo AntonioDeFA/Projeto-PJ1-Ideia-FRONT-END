@@ -5,19 +5,52 @@ import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { MSG000 } from "./../../../utils/mensagens";
+import { MSG000, MSG018 } from "./../../../utils/mensagens";
 
 import "./styles.css";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
+import { validarCamposObrigatorios } from "./../../../services/utils";
+import Botao from "../../Botao";
 
-function EtapaPitch() {
+function EtapaPitch(props) {
   const [dataInicioPitch, setDataInicioPitch] = useState(null);
   const [dataTerminoPitch, setDataTerminoPitch] = useState(null);
+
+  const [, setErrorDataInicioPitch] = useState(false);
+  const [, setErrorDataTerminoPitch] = useState(false);
 
   const [mensagemDataInicioPitch, setMensagemDataInicioPitch] =
     useState(MSG000);
   const [mensagemDataTerminoPitch, setMensagemDataTerminoPitch] =
     useState(MSG000);
+
+  const salvarEtapaPitch = () => {
+    props.setEtapaPitchOk(false);
+
+    let statusDataInicioPitch = validarCamposObrigatorios(
+      dataInicioPitch,
+      setErrorDataInicioPitch,
+      setMensagemDataInicioPitch
+    );
+    let statusDataTerminoPitch = validarCamposObrigatorios(
+      dataTerminoPitch,
+      setErrorDataTerminoPitch,
+      setMensagemDataTerminoPitch
+    );
+
+    if (statusDataInicioPitch && statusDataTerminoPitch) {
+      if (dataInicioPitch > dataTerminoPitch) {
+        setErrorDataTerminoPitch(true);
+        setMensagemDataTerminoPitch(MSG018);
+      } else {
+        const dadosPitch = {
+          dataInicioPitch,
+          dataTerminoPitch,
+        };
+        props.handleEtapaPitch(dadosPitch);
+      }
+    }
+  };
 
   return (
     <div id="etapa-pitch-content">
@@ -80,6 +113,15 @@ function EtapaPitch() {
       <h5 className="mt-5 mb-4">Avaliadores</h5>
 
       <TabelaAddConsultorAvaliador />
+
+      <div className="input-cadastro-competicao mt-4">
+        <Botao
+          titulo="salvar dados"
+          classes="btn btn-warning botao-menor-personalizado"
+          id="btn-salvar-dados-etapa-pitch"
+          onClick={salvarEtapaPitch}
+        />
+      </div>
     </div>
   );
 }

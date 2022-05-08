@@ -18,6 +18,8 @@ import { Box } from "@mui/material";
 
 function CadastroCompeticao() {
   const [dadosGerais, setDadosGerais] = useState(null);
+  const [dadosImersao, setDadosImersao] = useState(null);
+  const [dadosPitch, setDadosPitch] = useState(null);
 
   const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
   const [etapaImersaoOk, setEtapaImersaoOk] = useState(false);
@@ -32,6 +34,16 @@ function CadastroCompeticao() {
   const handleDadosGerais = (dadosGerais) => {
     setDadosGerais(dadosGerais);
     setDadosGeraisOk(true);
+  };
+
+  const handleEtapaImersao = (dadosImersao) => {
+    setDadosImersao(dadosImersao);
+    setEtapaImersaoOk(true);
+  };
+
+  const handleEtapaPitch = (dadosPitch) => {
+    setDadosPitch(dadosPitch);
+    setEtapaPitchOk(true);
   };
 
   return (
@@ -141,7 +153,10 @@ function CadastroCompeticao() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: "20px" }}>
-              <EtapaImersao />
+              <EtapaImersao
+                handleEtapaImersao={handleEtapaImersao}
+                setEtapaImersaoOk={setEtapaImersaoOk}
+              />
             </AccordionDetails>
           </Accordion>
           <Accordion
@@ -170,7 +185,10 @@ function CadastroCompeticao() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: "20px" }}>
-              <EtapaPitch />
+              <EtapaPitch
+                handleEtapaPitch={handleEtapaPitch}
+                setEtapaPitchOk={setEtapaPitchOk}
+              />
             </AccordionDetails>
           </Accordion>
           <div id="botoes-competicao">
