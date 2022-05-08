@@ -16,8 +16,8 @@ function EtapaImersao(props) {
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
 
-  const [errorDataInicioImersao, setErrorDataInicioImersao] = useState(false);
-  const [errorDataTerminoImersao, setErrorDataTerminoImersao] = useState(false);
+  const [, setErrorDataInicioImersao] = useState(false);
+  const [, setErrorDataTerminoImersao] = useState(false);
 
   const [mensagemDataInicioImersao, setMensagemDataInicioImersao] =
     useState(MSG000);

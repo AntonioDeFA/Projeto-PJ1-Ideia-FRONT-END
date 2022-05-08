@@ -24,7 +24,7 @@ import { validarCamposObrigatorios } from "./../../../services/utils";
 function DadosGeraisCompeticao(props) {
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
-  const [regulamento, setRegulamento] = useState(MSG000);
+  const [regulamento] = useState(MSG000);
   const [tempoMaxPitch, setTempoMaxPitch] = useState(MSG000);
   const [qntdMinMembros, setQntdMinMembros] = useState(MSG000);
   const [qntdMaxMembros, setQntdMaxMembros] = useState(MSG000);
@@ -32,17 +32,15 @@ function DadosGeraisCompeticao(props) {
   const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(null);
 
   const [errorNome, setErrorNome] = useState(false);
-  const [errorRegulamento, setErrorRegulamento] = useState(false);
+  // const [errorRegulamento, setErrorRegulamento] = useState(false);
   const [errorTempoMaxPitch, setErrorTempoMaxPitch] = useState(false);
   const [errorQntdMinMembros, setErrorQntdMinMembros] = useState(false);
   const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(false);
-  const [errorDataInicioInscricoes, setErrorDataInicioInscricoes] =
-    useState(false);
-  const [errorDataTerminoInscricoes, setErrorDataTerminoInscricoes] =
-    useState(false);
+  const [, setErrorDataInicioInscricoes] = useState(false);
+  const [, setErrorDataTerminoInscricoes] = useState(false);
 
   const [mensagemNome, setMensagemNome] = useState(MSG000);
-  const [mensagemRegulamento, setMensagemRegulamento] = useState(MSG000);
+  // const [mensagemRegulamento, setMensagemRegulamento] = useState(MSG000);
   const [mensagemTempoMaxPitch, setMensagemTempoMaxPitch] = useState(MSG000);
   const [mensagemQntdMinMembros, setMensagemQntdMinMembros] = useState(MSG000);
   const [mensagemQntdMaxMembros, setMensagemQntdMaxMembros] = useState(MSG000);
