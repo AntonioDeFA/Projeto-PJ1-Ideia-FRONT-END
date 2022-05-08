@@ -13,6 +13,7 @@ import {
   MSG017,
   MSG018,
   MSG019,
+  MSG021,
 } from "../../../utils/mensagens";
 
 import "./styles.css";
@@ -95,6 +96,7 @@ function DadosGeraisCompeticao(props) {
       statusDataInicioInscricoes &&
       statusDataTerminoInscricoes
     ) {
+      let hoje = new Date();
       if (tempoMaxPitch < 3) {
         setErrorTempoMaxPitch(true);
         setMensagemTempoMaxPitch(MSG015);
@@ -104,6 +106,9 @@ function DadosGeraisCompeticao(props) {
       } else if (qntdMaxMembros <= qntdMinMembros) {
         setErrorQntdMaxMembros(true);
         setMensagemQntdMaxMembros(MSG017);
+      } else if (dataInicioInscricoes <= hoje) {
+        setErrorDataInicioInscricoes(true);
+        setMensagemDataInicioInscricoes(MSG021);
       } else if (dataInicioInscricoes > dataTerminoInscricoes) {
         setErrorDataTerminoInscricoes(true);
         setMensagemDataTerminoInscricoes(MSG018);
