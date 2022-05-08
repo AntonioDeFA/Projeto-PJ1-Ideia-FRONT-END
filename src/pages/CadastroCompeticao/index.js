@@ -15,6 +15,7 @@ import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/
 import EtapaImersao from "./../../components/AccordionComponentesCompeticao/EtapaImersao/index";
 import EtapaPitch from "./../../components/AccordionComponentesCompeticao/EtapaPitch/index";
 import { Box } from "@mui/material";
+import { MSG022, MSG023 } from "../../utils/mensagens";
 
 function CadastroCompeticao() {
   const [dadosGerais, setDadosGerais] = useState(null);
@@ -46,158 +47,180 @@ function CadastroCompeticao() {
     setEtapaPitchOk(true);
   };
 
+  const handleAccordionImersao = () => {
+    return dadosGeraisOk === false;
+  };
+  const handleAccordionPitch = () => {
+    return etapaImersaoOk === false;
+  };
+
   return (
     <div id="cadastro-equipe">
       <DefaultHeader />
       <div className="elementos-centralizados mt-5">
         <div className="accordion" id="accordion-id">
-          <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
-            sx={{ border: "1px solid #ffc107", width: "1050px" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              sx={{ backgroundColor: "#ffc107" }}
-              id="panel1bh-header"
+          <div>
+            <Accordion
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+              sx={{ border: "1px solid #ffc107", width: "1050px" }}
             >
-              <Typography
-                variant="h5"
-                sx={{ width: "33%", flexShrink: 0, color: "white" }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                sx={{ backgroundColor: "#ffc107" }}
+                id="panel1bh-header"
               >
-                <Box sx={{ display: "flex" }}>
-                  {dadosGeraisOk ? (
-                    <div className="icone-ok">
-                      <i className="fa-solid fa-circle-check"></i>
-                    </div>
-                  ) : null}
-                  Dados Gerais
-                </Box>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: "20px" }}>
-              <DadosGeraisCompeticao
-                handleDadosGerais={handleDadosGerais}
-                setDadosGeraisOk={setDadosGeraisOk}
-              />
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-            sx={{ border: "1px solid #ffc107" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              sx={{ backgroundColor: "#ffc107" }}
-              id="panel1bh-header"
+                <Typography
+                  variant="h5"
+                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                >
+                  <Box sx={{ display: "flex" }}>
+                    {dadosGeraisOk ? (
+                      <div className="icone-ok">
+                        <i className="fa-solid fa-circle-check"></i>
+                      </div>
+                    ) : null}
+                    Dados Gerais
+                  </Box>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: "20px" }}>
+                <DadosGeraisCompeticao
+                  handleDadosGerais={handleDadosGerais}
+                  setDadosGeraisOk={setDadosGeraisOk}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+          <div>
+            <Accordion
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+              sx={{ border: "1px solid #ffc107" }}
             >
-              <Typography
-                variant="h5"
-                sx={{ width: "43%", flexShrink: 0, color: "white" }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                sx={{ backgroundColor: "#ffc107" }}
+                id="panel1bh-header"
               >
-                Questões Avaliativas dos Pitches
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: "20px" }}>
-              <QuestoesAvaliativasPitches />
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel3"}
-            onChange={handleChange("panel3")}
-            sx={{ border: "1px solid #ffc107" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              sx={{ backgroundColor: "#ffc107" }}
-              id="panel1bh-header"
+                <Typography
+                  variant="h5"
+                  sx={{ width: "43%", flexShrink: 0, color: "white" }}
+                >
+                  Questões Avaliativas dos Pitches
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: "20px" }}>
+                <QuestoesAvaliativasPitches />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+          <div>
+            <Accordion
+              expanded={expanded === "panel3"}
+              onChange={handleChange("panel3")}
+              sx={{ border: "1px solid #ffc107" }}
             >
-              <Typography
-                variant="h5"
-                sx={{ width: "33%", flexShrink: 0, color: "white" }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                sx={{ backgroundColor: "#ffc107" }}
+                id="panel1bh-header"
               >
-                Etapa de Aquecimento
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: "20px" }}>
-              <EtapaAquecimento />
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel4"}
-            onChange={handleChange("panel4")}
-            sx={{ border: "1px solid #ffc107" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              sx={{ backgroundColor: "#ffc107" }}
-              id="panel1bh-header"
+                <Typography
+                  variant="h5"
+                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                >
+                  Etapa de Aquecimento
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: "20px" }}>
+                <EtapaAquecimento />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+
+          <div title={handleAccordionImersao() ? MSG022 : null}>
+            <Accordion
+              disabled={handleAccordionImersao()}
+              expanded={expanded === "panel4"}
+              onChange={handleChange("panel4")}
+              sx={{ border: "1px solid #ffc107" }}
             >
-              <Typography
-                variant="h5"
-                sx={{ width: "33%", flexShrink: 0, color: "white" }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                sx={{ backgroundColor: "#ffc107" }}
+                id="panel1bh-header"
               >
-                <Box sx={{ display: "flex" }}>
-                  {etapaImersaoOk ? (
-                    <div className="icone-ok">
-                      <i className="fa-solid fa-circle-check"></i>
-                    </div>
-                  ) : null}
-                  Etapa de Imersão
-                </Box>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: "20px" }}>
-              <EtapaImersao
-                handleEtapaImersao={handleEtapaImersao}
-                setEtapaImersaoOk={setEtapaImersaoOk}
-              />
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel5"}
-            onChange={handleChange("panel5")}
-            sx={{ border: "1px solid #ffc107" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              sx={{ backgroundColor: "#ffc107" }}
-              id="panel1bh-header"
+                <Typography
+                  variant="h5"
+                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                >
+                  <Box sx={{ display: "flex" }}>
+                    {etapaImersaoOk ? (
+                      <div className="icone-ok">
+                        <i className="fa-solid fa-circle-check"></i>
+                      </div>
+                    ) : null}
+                    Etapa de Imersão
+                  </Box>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: "20px" }}>
+                <EtapaImersao
+                  handleEtapaImersao={handleEtapaImersao}
+                  setEtapaImersaoOk={setEtapaImersaoOk}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+
+          <div title={handleAccordionPitch() ? MSG022 : null}>
+            <Accordion
+              disabled={handleAccordionPitch()}
+              expanded={expanded === "panel5"}
+              onChange={handleChange("panel5")}
+              sx={{ border: "1px solid #ffc107" }}
             >
-              <Typography
-                variant="h5"
-                sx={{ width: "33%", flexShrink: 0, color: "white" }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                sx={{ backgroundColor: "#ffc107" }}
+                id="panel1bh-header"
               >
-                <Box sx={{ display: "flex" }}>
-                  {etapaPitchOk ? (
-                    <div className="icone-ok">
-                      <i className="fa-solid fa-circle-check"></i>
-                    </div>
-                  ) : null}
-                  Etapa de Pitch
-                </Box>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: "20px" }}>
-              <EtapaPitch
-                handleEtapaPitch={handleEtapaPitch}
-                setEtapaPitchOk={setEtapaPitchOk}
-              />
-            </AccordionDetails>
-          </Accordion>
+                <Typography
+                  variant="h5"
+                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                >
+                  <Box sx={{ display: "flex" }}>
+                    {etapaPitchOk ? (
+                      <div className="icone-ok">
+                        <i className="fa-solid fa-circle-check"></i>
+                      </div>
+                    ) : null}
+                    Etapa de Pitch
+                  </Box>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: "20px" }}>
+                <EtapaPitch
+                  handleEtapaPitch={handleEtapaPitch}
+                  setEtapaPitchOk={setEtapaPitchOk}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </div>
           <div id="botoes-competicao">
-            <div id="btn-confirmar">
+            <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>
               <Botao
                 id="btn-confirmar-inscricao-para-teste"
                 titulo="salvar"
-                classes="btn btn-warning botao-menor-personalizado"
                 onClick={null}
+                disabled={!etapaPitchOk}
+                classes="btn btn-warning botao-menor-personalizado"
               />
             </div>
             <div id="btn-cancelar-confirmacao">
