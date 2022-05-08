@@ -134,7 +134,7 @@ function TabelaAddConsultorAvaliador(props) {
         createData("nunes.mateus@hotmail.com.br", null, "convidado"),
       ]);
     }
-  }, []);
+  }, [props.idCompeticao, token]);
 
   return (
     <div id="tabela-add-consultor-avaliador">
