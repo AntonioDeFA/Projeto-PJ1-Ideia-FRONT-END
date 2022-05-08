@@ -3,3 +3,15 @@ div #tabela-usuarios {
   max-width: 503px;
   overflow-y: scroll;
 }
+
+i.icone-tabela {
+  cursor: pointer;
+}
+
+i.fa-trash-can:hover {
+  color: var(--color-aquecimento);
+}
+
+i.fa-envelope:hover {
+  color: var(--color-imersao);
+}

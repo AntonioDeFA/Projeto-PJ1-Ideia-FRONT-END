@@ -61,6 +61,38 @@ function TabelaAddConsultorAvaliador(props) {
     }
   };
 
+  const handleIcone = (status, email) => {
+    if (status === "convidado" || status === "aceito") {
+      return (
+        <i
+          onClick={() => {
+            removerUsuario(email);
+          }}
+          className="fa-solid fa-trash-can icone-tabela"
+          title="Remover este usuário"
+        ></i>
+      );
+    } else {
+      return (
+        <i
+          onClick={() => {
+            convidarUsuario(email);
+          }}
+          className="fa-solid fa-envelope icone-tabela"
+          title="Convidar este usuário"
+        ></i>
+      );
+    }
+  };
+
+  const removerUsuario = (email) => {
+    console.log(email);
+  };
+
+  const convidarUsuario = (email) => {
+    console.log(email);
+  };
+
   useEffect(() => {
     if (props.idCompeticao) {
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -97,8 +129,8 @@ function TabelaAddConsultorAvaliador(props) {
       setRows([
         createData("nycolas.ramon@academico.ifpb.edu.br", null, "convidado"),
         createData("antonio@gmail.com", null, "aceito"),
-        createData("gabryel@hotmail.com.br", null, "convidado"),
-        createData("gabriel.jose@hotmail.com.br", null, "aceito"),
+        createData("gabryel@hotmail.com.br", null, ""),
+        createData("gabriel.jose@hotmail.com.br", null, ""),
         createData("nunes.mateus@hotmail.com.br", null, "convidado"),
       ]);
     }
@@ -141,7 +173,9 @@ function TabelaAddConsultorAvaliador(props) {
               {rows.map((row) => (
                 <StyledTableRow key={row.email}>
                   <StyledTableCell align="left">{row.email}</StyledTableCell>
-                  <StyledTableCell align="center">{row.icone}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {handleIcone(row.statusConvite, row.email)}
+                  </StyledTableCell>
                   <StyledTableCell align="left">
                     {handleStatusConvite(row.statusConvite)}
                   </StyledTableCell>
