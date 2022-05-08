@@ -25,3 +25,6 @@ export const MSG018 =
   "A data de término deve ser a mesma ou vir após a data de início.";
 export const MSG019 = "O nome competição deve ter entre 3 e 16 caracteres.";
 export const MSG021 = "A data de início deve ser pelo menos a partir de amanhã";
+export const MSG022 =
+  "Preencha os campos das etapas anteriores para poder habilitar este.";
+export const MSG023 = "Preencha os campos das etapas para poder salvar.";
