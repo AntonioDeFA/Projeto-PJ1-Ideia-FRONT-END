@@ -21,5 +21,7 @@ export const MSG015 = "O valor mínimo possível é 3min.";
 export const MSG016 = "O valor deve ser positivo não nulo.";
 export const MSG017 =
   "Não pode ser inferior nem igual a quantidade mínima de membros.";
-export const MSG018 = "A data de término deve vir após a data de início.";
+export const MSG018 =
+  "A data de término deve ser a mesma ou vir após a data de início.";
 export const MSG019 = "O nome competição deve ter entre 3 e 16 caracteres.";
+export const MSG021 = "A data de início deve ser pelo menos a partir de amanhã";
