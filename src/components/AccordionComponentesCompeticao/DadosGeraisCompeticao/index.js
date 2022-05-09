@@ -250,7 +250,7 @@ function DadosGeraisCompeticao(props) {
             onChange={(e) => {
               setDominio(e.target.value);
             }}
-            label="Domínio restrito para inscritos"
+            label="Domínio restrito para participantes"
             type="text"
             variant="filled"
             color="warning"
