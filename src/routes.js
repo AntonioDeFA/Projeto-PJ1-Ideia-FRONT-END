@@ -39,7 +39,15 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/cadastro-competicao"
+            path="/cadastro-competicao/"
+            element={
+              <RoutesPrivate>
+                <CadastroCompeticao />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/atualizar-competicao/:idCompeticao"
             element={
               <RoutesPrivate>
                 <CadastroCompeticao />
