@@ -1,23 +1,28 @@
-import DefaultHeader from "../../components/DefaultHeader";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import "./styles.css";
-
-import React, { useState } from "react";
+import { Box } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+
 import Botao from "../../components/Botao";
+import EtapaPitch from "./../../components/AccordionComponentesCompeticao/EtapaPitch/index";
+import EtapaImersao from "./../../components/AccordionComponentesCompeticao/EtapaImersao/index";
+import DefaultHeader from "../../components/DefaultHeader";
+import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
+import { MSG022, MSG023 } from "../../utils/mensagens";
 import DadosGeraisCompeticao from "./../../components/AccordionComponentesCompeticao/DadosGeraisCompeticao/index";
 import QuestoesAvaliativasPitches from "./../../components/AccordionComponentesCompeticao/QuestoesAvaliativasPitches/index";
-import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
-import EtapaImersao from "./../../components/AccordionComponentesCompeticao/EtapaImersao/index";
-import EtapaPitch from "./../../components/AccordionComponentesCompeticao/EtapaPitch/index";
-import { Box } from "@mui/material";
-import { MSG022, MSG023 } from "../../utils/mensagens";
+
+import "./styles.css";
+import { DadosGeraisProvider } from "../../utils/dadosGeraisContext";
 
 function CadastroCompeticao() {
+  const { idCompeticao } = useParams();
+
   const [dadosGerais, setDadosGerais] = useState(null);
   const [dadosImersao, setDadosImersao] = useState(null);
   const [dadosPitch, setDadosPitch] = useState(null);
@@ -27,6 +32,8 @@ function CadastroCompeticao() {
   const [etapaPitchOk, setEtapaPitchOk] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
+
+  const [idCompeticaoHook, setIdCompeticaoHook] = useState(0);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -53,6 +60,12 @@ function CadastroCompeticao() {
   const handleAccordionPitch = () => {
     return etapaImersaoOk === false;
   };
+
+  useEffect(() => {
+    if (idCompeticao) {
+      setIdCompeticaoHook(idCompeticao);
+    }
+  }, []);
 
   return (
     <div id="cadastro-equipe">
@@ -143,75 +156,81 @@ function CadastroCompeticao() {
           </div>
 
           <div title={handleAccordionImersao() ? MSG022 : null}>
-            <Accordion
-              disabled={handleAccordionImersao()}
-              expanded={expanded === "panel4"}
-              onChange={handleChange("panel4")}
-              sx={{ border: "1px solid #ffc107" }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                sx={{ backgroundColor: "#ffc107" }}
-                id="panel1bh-header"
+            <DadosGeraisProvider value={dadosGerais}>
+              <Accordion
+                disabled={handleAccordionImersao()}
+                expanded={expanded === "panel4"}
+                onChange={handleChange("panel4")}
+                sx={{ border: "1px solid #ffc107" }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  sx={{ backgroundColor: "#ffc107" }}
+                  id="panel1bh-header"
                 >
-                  <Box sx={{ display: "flex" }}>
-                    {etapaImersaoOk ? (
-                      <div className="icone-ok">
-                        <i className="fa-solid fa-circle-check"></i>
-                      </div>
-                    ) : null}
-                    Etapa de Imersão
-                  </Box>
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: "20px" }}>
-                <EtapaImersao
-                  handleEtapaImersao={handleEtapaImersao}
-                  setEtapaImersaoOk={setEtapaImersaoOk}
-                />
-              </AccordionDetails>
-            </Accordion>
+                  <Typography
+                    variant="h5"
+                    sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                  >
+                    <Box sx={{ display: "flex" }}>
+                      {etapaImersaoOk ? (
+                        <div className="icone-ok">
+                          <i className="fa-solid fa-circle-check"></i>
+                        </div>
+                      ) : null}
+                      Etapa de Imersão
+                    </Box>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: "20px" }}>
+                  <EtapaImersao
+                    handleEtapaImersao={handleEtapaImersao}
+                    setEtapaImersaoOk={setEtapaImersaoOk}
+                    dominioCompeticao={dadosGerais?.dominioCompeticao}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            </DadosGeraisProvider>
           </div>
 
           <div title={handleAccordionPitch() ? MSG022 : null}>
-            <Accordion
-              disabled={handleAccordionPitch()}
-              expanded={expanded === "panel5"}
-              onChange={handleChange("panel5")}
-              sx={{ border: "1px solid #ffc107" }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                sx={{ backgroundColor: "#ffc107" }}
-                id="panel1bh-header"
+            <DadosGeraisProvider value={dadosGerais}>
+              <Accordion
+                disabled={handleAccordionPitch()}
+                expanded={expanded === "panel5"}
+                onChange={handleChange("panel5")}
+                sx={{ border: "1px solid #ffc107" }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  sx={{ backgroundColor: "#ffc107" }}
+                  id="panel1bh-header"
                 >
-                  <Box sx={{ display: "flex" }}>
-                    {etapaPitchOk ? (
-                      <div className="icone-ok">
-                        <i className="fa-solid fa-circle-check"></i>
-                      </div>
-                    ) : null}
-                    Etapa de Pitch
-                  </Box>
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: "20px" }}>
-                <EtapaPitch
-                  handleEtapaPitch={handleEtapaPitch}
-                  setEtapaPitchOk={setEtapaPitchOk}
-                />
-              </AccordionDetails>
-            </Accordion>
+                  <Typography
+                    variant="h5"
+                    sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                  >
+                    <Box sx={{ display: "flex" }}>
+                      {etapaPitchOk ? (
+                        <div className="icone-ok">
+                          <i className="fa-solid fa-circle-check"></i>
+                        </div>
+                      ) : null}
+                      Etapa de Pitch
+                    </Box>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: "20px" }}>
+                  <EtapaPitch
+                    handleEtapaPitch={handleEtapaPitch}
+                    setEtapaPitchOk={setEtapaPitchOk}
+                    dominioCompeticao={dadosGerais?.dominioCompeticao}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            </DadosGeraisProvider>
           </div>
           <div id="botoes-competicao">
             <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>

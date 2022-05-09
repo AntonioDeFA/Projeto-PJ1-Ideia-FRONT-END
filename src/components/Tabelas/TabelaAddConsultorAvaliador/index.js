@@ -1,4 +1,3 @@
-import { Autocomplete, TextField } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 
 import Table from "@mui/material/Table";
@@ -8,10 +7,15 @@ import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import { styled } from "@mui/material/styles";
 import TableContainer from "@mui/material/TableContainer";
+import { styleModals } from "../../../utils/constantes";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { Autocomplete, Modal, TextField, Box, Typography } from "@mui/material";
 
 import api from "./../../../services/api";
+import Botao from "./../../Botao/index";
+import { MSG000, MSG026 } from "../../../utils/mensagens";
 import StoreContext from "./../../../store/context";
+import DadosGeraisContext from "../../../utils/dadosGeraisContext";
 
 import "./styles.css";
 
@@ -42,9 +46,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function TabelaAddConsultorAvaliador(props) {
+  const dadosGerais = useContext(DadosGeraisContext);
+
   const [rows, setRows] = useState([]);
-  const [value, setValue] = useState(null);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
   const [usuarios, setUsuarios] = useState([]);
+
+  const [openModalConvidarUsuario, setOpenModalConvidarUsuario] =
+    React.useState(false);
+  const handleOpenModalConvidarUsuario = () =>
+    setOpenModalConvidarUsuario(true);
+  const handleCloseModalConvidarUsuario = () =>
+    setOpenModalConvidarUsuario(false);
 
   const { token } = useContext(StoreContext);
 
@@ -89,8 +102,79 @@ function TabelaAddConsultorAvaliador(props) {
     console.log(email);
   };
 
-  const convidarUsuario = (email) => {
-    console.log(email);
+  const handleMensagemConvidarUsuario = () => {
+    let tipoUsuario = props.tipoUsuario;
+
+    if (
+      dadosGerais &&
+      dadosGerais?.dominio &&
+      dadosGerais?.dominio !== MSG000
+    ) {
+      let dominioCompeticao = dadosGerais?.dominio;
+
+      if (
+        dominioCompeticao &&
+        dominioCompeticao !== MSG000 &&
+        usuarioSelecionado?.email?.split("@")[1] !== dominioCompeticao
+      ) {
+        return MSG026;
+      }
+    }
+
+    return `Deseja convidar o usuário ${usuarioSelecionado?.nome} <${usuarioSelecionado?.email}> para participar da competição como ${tipoUsuario}?`;
+  };
+
+  const handleBotoesConvidarUsuario = () => {
+    if (
+      dadosGerais &&
+      dadosGerais?.dominio &&
+      dadosGerais?.dominio !== MSG000
+    ) {
+      let dominioCompeticao = dadosGerais?.dominio;
+
+      if (
+        dominioCompeticao &&
+        dominioCompeticao !== MSG000 &&
+        usuarioSelecionado?.email?.split("@")[1] !== dominioCompeticao
+      ) {
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div>
+              <div>
+                <Botao
+                  titulo="ok"
+                  classes="btn btn-warning botao-menor-personalizado"
+                  onClick={handleCloseModalConvidarUsuario}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      }
+    }
+    return (
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <Botao
+            titulo="convidar"
+            classes="btn btn-warning botao-menor-personalizado"
+            onClick={convidarUsuario}
+          />
+        </div>
+        <div>
+          <Botao
+            titulo="cancelar"
+            classes="btn btn-secondary botao-menor-personalizado"
+            onClick={handleCloseModalConvidarUsuario}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const convidarUsuario = () => {
+    console.log(usuarioSelecionado.email);
+    handleCloseModalConvidarUsuario();
   };
 
   useEffect(() => {
@@ -111,12 +195,12 @@ function TabelaAddConsultorAvaliador(props) {
         },
         {
           nome: "Antonio de Farias Amorim",
-          email: "antonio.amorim@academico.ifpb.edu.br",
+          email: "antonio.amorim@academico.ifpb.edu.br.com",
           id: 2,
         },
         {
           nome: "José Gabriel da Silva Lima",
-          email: "ze.lima@academico.ifpb.edu.br",
+          email: "ze.lima@gmail.com",
           id: 3,
         },
         {
@@ -142,11 +226,13 @@ function TabelaAddConsultorAvaliador(props) {
         {...defaultProps}
         sx={{ width: 503 }}
         id="controlled-demo"
-        value={value}
+        value={usuarioSelecionado}
         isOptionEqualToValue={(usuario, value) => usuario.email === value.email}
         onChange={(event, novoUsuario) => {
-          setValue(novoUsuario);
-          console.log(novoUsuario);
+          setUsuarioSelecionado(novoUsuario);
+          if (novoUsuario) {
+            handleOpenModalConvidarUsuario();
+          }
         }}
         renderInput={(params) => (
           <TextField
@@ -185,6 +271,25 @@ function TabelaAddConsultorAvaliador(props) {
           </Table>
         </TableContainer>
       </div>
+
+      <Modal
+        open={openModalConvidarUsuario}
+        onClose={handleCloseModalConvidarUsuario}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px", textAlign: "center" }}
+          >
+            {handleMensagemConvidarUsuario()}
+          </Typography>
+          {handleBotoesConvidarUsuario()}
+        </Box>
+      </Modal>
     </div>
   );
 }
