@@ -28,3 +28,7 @@ export const MSG021 = "A data de início deve ser pelo menos a partir de amanhã
 export const MSG022 =
   "Preencha os campos das etapas anteriores para poder habilitar este.";
 export const MSG023 = "Preencha os campos das etapas para poder salvar.";
+export const MSG024 = "consultor";
+export const MSG025 = "avaliador";
+export const MSG026 =
+  "O usuário selecionado não possui o email com o domínio apropriado. Por favor, escolha outro usuário.";
