@@ -5,7 +5,7 @@ import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { MSG000, MSG018 } from "./../../../utils/mensagens";
+import { MSG000, MSG018, MSG025 } from "./../../../utils/mensagens";
 
 import "./styles.css";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
@@ -112,7 +112,10 @@ function EtapaPitch(props) {
 
       <h5 className="mt-5 mb-4">Avaliadores</h5>
 
-      <TabelaAddConsultorAvaliador />
+      <TabelaAddConsultorAvaliador
+        dominioCompeticao={props.dominioCompeticao}
+        tipoUsuario={MSG025}
+      />
 
       <div className="input-cadastro-competicao mt-4">
         <Botao

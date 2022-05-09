@@ -7,7 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
-import { MSG000, MSG018 } from "../../../utils/mensagens";
+import { MSG000, MSG018, MSG024 } from "../../../utils/mensagens";
 
 import "./styles.css";
 import { validarCamposObrigatorios } from "../../../services/utils";
@@ -112,7 +112,10 @@ function EtapaImersao(props) {
 
       <h5 className="mt-5 mb-4">Consultores</h5>
 
-      <TabelaAddConsultorAvaliador />
+      <TabelaAddConsultorAvaliador
+        dominioCompeticao={props.dominioCompeticao}
+        tipoUsuario={MSG024}
+      />
 
       <div className="input-cadastro-competicao mt-4">
         <Botao
