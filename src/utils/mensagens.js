@@ -32,3 +32,9 @@ export const MSG024 = "consultor";
 export const MSG025 = "avaliador";
 export const MSG026 =
   "O usuário selecionado não possui o email com o domínio apropriado. Por favor, escolha outro usuário.";
+export const MSG027 =
+  "A data de início não pode ser a mesma nem vir antes da data de término da etapa de inscrições";
+export const MSG028 =
+  "A data de início não pode ser a mesma nem vir antes da data de término da etapa de aquecimento";
+export const MSG029 =
+  "A data de início não pode ser a mesma nem vir antes da data de término da etapa de imersão";
