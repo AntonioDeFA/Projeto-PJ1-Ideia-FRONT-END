@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import { Box, Input, TextField } from "@mui/material";
+
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { MSG000 } from "../../../utils/mensagens";
+import { Box, Input, TextField } from "@mui/material";
+
+import Table from "@mui/material/Table";
 import Botao from "../../Botao";
+import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import { MSG000 } from "../../../utils/mensagens";
+import IconButton from "@mui/material/IconButton";
+import TableContainer from "@mui/material/TableContainer";
+
 import "./styles.css";
 
 function EtapaAquecimento() {
-
   const [dataInicioInscricoes, setDataInicioInscricoes] = useState(null);
   const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(null);
   const [mensagemDataInicioInscricoes, setMensagemDataInicioInscricoes] =
@@ -31,16 +33,51 @@ function EtapaAquecimento() {
 
   const [arquivo, setArquivo] = useState(MSG000);
 
-
   const [links, setLinks] = useState([]);
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
 
-  const Tables = () => {
+  const adicionarLink = async () => {
+    if (link) {
+      links.push(link);
+    }
+    await setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 100);
+  };
 
+  const adicionarArquivo = () => {
+    if (arquivo) {
+      arquivos.push(arquivo);
+    }
+  };
+
+  const removerLink = async (index) => {
+    links.splice(index, 1);
+    let linksAtt = links;
+
+    await setTimeout(() => {
+      setLinks(linksAtt);
+    }, 400);
+
+    setMudou(false);
+    setMudou(true);
+  };
+
+  const removerArquivo = async (index) => {
+    arquivos.splice(index - 1, 1);
+    let arquivosAtt = arquivos;
+
+    await setTimeout(() => {
+      setArquivos(arquivosAtt);
+    }, 400);
+  };
+
+  const Tables = () => {
     return (
-      < div className="inputs-lado-a-lado mt-4" >
+      <div className="inputs-lado-a-lado mt-4">
         <TableContainer component={Paper} className="me-2 ms-2">
           <Table sx={{ minWidth: 170 }} size="small" aria-label="a dense table">
             <TableHead>
@@ -50,22 +87,28 @@ function EtapaAquecimento() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {links.map((url, index) => (
-                <TableRow
-                  key={url}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {url}
-                  </TableCell>
-                  <TableCell align="right">
-                    <IconButton edge="end" aria-label="delete" className="me-2" onClick={removerLink}>
-                      <i className="fa-solid fa-trash-can p-0"></i>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-
-              ))}
+              {mudou
+                ? links.map((url, index) => (
+                    <TableRow
+                      key={url}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {url}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-2"
+                          onClick={() => removerLink(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : null}
             </TableBody>
           </Table>
         </TableContainer>
@@ -81,13 +124,18 @@ function EtapaAquecimento() {
               {arquivos.map((documento) => (
                 <TableRow
                   key={documento}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     {documento}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton edge="end" aria-label="delete" className="me-2" onClick={removerArquivo}>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      className="me-2"
+                      onClick={removerArquivo}
+                    >
                       <i className="fa-solid fa-trash-can p-0"></i>
                     </IconButton>
                   </TableCell>
@@ -96,43 +144,9 @@ function EtapaAquecimento() {
             </TableBody>
           </Table>
         </TableContainer>
-      </div >
+      </div>
     );
-  }
-
-  const adicionarLink = () => {
-    if (link) {
-      links.push(link);
-    }
-  }
-
-  const adicionarArquivo = () => {
-    if (arquivo) {
-      arquivos.push(arquivo);
-    }
-  }
-
-  const removerLink = async (index) => {
-
-    links.splice(index - 1, 1);
-    let linksAtt = links;
-
-    await setTimeout(() => {
-      setLinks(linksAtt);
-    }, 400);
-
-  }
-
-  const removerArquivo = async (index) => {
-
-    arquivos.splice(index - 1, 1);
-    let arquivosAtt = arquivos;
-
-    await setTimeout(() => {
-      setArquivos(arquivosAtt);
-    }, 400);
-
-  }
+  };
 
   return (
     <div id="etapa-aquecimento-content">
