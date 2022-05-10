@@ -31,11 +31,12 @@ function CadastroCompeticao() {
   const [dadosPitch, setDadosPitch] = useState(null);
 
   const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
+  const [questoesAvaliativasOk, setQuestoesAvaliativasOk] = useState(false);
   const [etapaAquecimentoOk, setEtapaAquecimentoOk] = useState(false);
   const [etapaImersaoOk, setEtapaImersaoOk] = useState(false);
   const [etapaPitchOk, setEtapaPitchOk] = useState(false);
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState("panel1");
 
   const [idCompeticaoHook, setIdCompeticaoHook] = useState(0);
 
@@ -118,8 +119,9 @@ function CadastroCompeticao() {
               </AccordionDetails>
             </Accordion>
           </div>
-          <div>
+          <div title={handleAccordionAquecimento() ? MSG022 : null}>
             <Accordion
+              disabled={handleAccordionAquecimento()}
               expanded={expanded === "panel2"}
               onChange={handleChange("panel2")}
               sx={{ border: "1px solid #ffc107" }}
@@ -134,7 +136,14 @@ function CadastroCompeticao() {
                   variant="h5"
                   sx={{ width: "43%", flexShrink: 0, color: "white" }}
                 >
-                  Questões Avaliativas dos Pitches
+                  <Box sx={{ display: "flex" }}>
+                    {questoesAvaliativasOk ? (
+                      <div className="icone-ok">
+                        <i className="fa-solid fa-circle-check"></i>
+                      </div>
+                    ) : null}
+                    Questões Avaliativas dos Pitches
+                  </Box>
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ padding: "20px" }}>
