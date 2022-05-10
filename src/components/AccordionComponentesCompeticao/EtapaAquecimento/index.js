@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -13,18 +13,29 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
-import { MSG000 } from "../../../utils/mensagens";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
+import { MSG000, MSG018, MSG027 } from "../../../utils/mensagens";
+import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
+import {
+  saoDuasDatasIguais,
+  validarCamposObrigatorios,
+} from "../../../services/utils";
 
 import "./styles.css";
 
-function EtapaAquecimento() {
-  const [dataInicioInscricoes, setDataInicioInscricoes] = useState(null);
-  const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(null);
-  const [mensagemDataInicioInscricoes, setMensagemDataInicioInscricoes] =
+function EtapaAquecimento(props) {
+  const dadosGerais = useContext(DadosGeraisContext);
+
+  const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
+  const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
+
+  const [, setErrorDataInicioAquecimento] = useState(false);
+  const [, setErrorDataTerminoAquecimento] = useState(false);
+
+  const [mensagemDataInicioAquecimento, setMensagemDataInicioAquecimento] =
     useState(MSG000);
-  const [mensagemDataTerminoInscricoes, setMensagemDataTerminoInscricoes] =
+  const [mensagemDataTerminoAquecimento, setMensagemDataTerminoAquecimento] =
     useState(MSG000);
 
   const [mensagemLink, setMensagemLink] = useState(MSG000);
@@ -37,6 +48,45 @@ function EtapaAquecimento() {
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
+
+  const salvarEtapaAquecimento = () => {
+    props.setEtapaAquecimentoOk(false);
+
+    let statusDataInicioAquecimento = validarCamposObrigatorios(
+      dataInicioAquecimento,
+      setErrorDataInicioAquecimento,
+      setMensagemDataInicioAquecimento
+    );
+    let statusDataTerminoAquecimento = validarCamposObrigatorios(
+      dataTerminoAquecimento,
+      setErrorDataTerminoAquecimento,
+      setMensagemDataTerminoAquecimento
+    );
+
+    if (statusDataInicioAquecimento && statusDataTerminoAquecimento) {
+      console.log(dadosGerais.dataTerminoInscricoes);
+      console.log(dataInicioAquecimento);
+      if (dataInicioAquecimento > dataTerminoAquecimento) {
+        setErrorDataTerminoAquecimento(true);
+        setMensagemDataTerminoAquecimento(MSG018);
+      } else if (
+        dadosGerais.dataTerminoInscricoes > dataInicioAquecimento ||
+        saoDuasDatasIguais(
+          dadosGerais.dataTerminoInscricoes,
+          dataInicioAquecimento
+        )
+      ) {
+        setErrorDataInicioAquecimento(true);
+        setMensagemDataInicioAquecimento(MSG027);
+      } else {
+        const dadosAquecimento = {
+          dataInicioAquecimento,
+          dataTerminoAquecimento,
+        };
+        props.handleEtapaAquecimento(dadosAquecimento);
+      }
+    }
+  };
 
   const adicionarLink = async () => {
     if (link) {
@@ -78,7 +128,7 @@ function EtapaAquecimento() {
   const Tables = () => {
     return (
       <div className="inputs-lado-a-lado mt-4">
-        <TableContainer component={Paper} className="me-2 ms-2">
+        <TableContainer component={Paper} className="me-2">
           <Table sx={{ minWidth: 170 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
@@ -158,10 +208,10 @@ function EtapaAquecimento() {
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
-                label="Inicio das inscrições *"
-                value={dataInicioInscricoes}
-                onChange={(dataInicioInscricoes) => {
-                  setDataInicioInscricoes(new Date(dataInicioInscricoes));
+                label="Inicio da etapa *"
+                value={dataInicioAquecimento}
+                onChange={(dataInicioAquecimento) => {
+                  setDataInicioAquecimento(new Date(dataInicioAquecimento));
                 }}
                 inputFormat="dd/MM/yyyy"
                 renderInput={(params) => (
@@ -169,8 +219,8 @@ function EtapaAquecimento() {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-inicio-inscricoes"
-                    helperText={mensagemDataInicioInscricoes}
+                    id="input-data-inicio-Aquecimento"
+                    helperText={mensagemDataInicioAquecimento}
                     {...params}
                   />
                 )}
@@ -183,11 +233,11 @@ function EtapaAquecimento() {
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
-                minDate={dataInicioInscricoes}
-                label="Término das inscrições *"
-                value={dataTerminoInscricoes}
-                onChange={(dataTerminoInscricoes) => {
-                  setDataTerminoInscricoes(new Date(dataTerminoInscricoes));
+                minDate={dataInicioAquecimento}
+                label="Término da etapa *"
+                value={dataTerminoAquecimento}
+                onChange={(dataTerminoAquecimento) => {
+                  setDataTerminoAquecimento(new Date(dataTerminoAquecimento));
                 }}
                 inputFormat="dd/MM/yyyy"
                 renderInput={(params) => (
@@ -195,8 +245,8 @@ function EtapaAquecimento() {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-termino-inscricoes"
-                    helperText={mensagemDataTerminoInscricoes}
+                    id="input-data-termino-Aquecimento"
+                    helperText={mensagemDataTerminoAquecimento}
                     {...params}
                   />
                 )}
@@ -225,7 +275,7 @@ function EtapaAquecimento() {
       <div className="inputs-lado-a-lado">
         <div className="w-50">
           <Botao
-            titulo="ADICIONAR"
+            titulo="adicionar"
             classes="btn btn-warning botao-menor-personalizado "
             onClick={adicionarLink}
           />
@@ -256,6 +306,15 @@ function EtapaAquecimento() {
         </div>
       </div>
       <Tables />
+
+      <div className="input-cadastro-competicao mt-4">
+        <Botao
+          titulo="salvar dados"
+          classes="btn btn-warning botao-menor-personalizado"
+          id="btn-salvar-dados-etapa-aquecimento"
+          onClick={salvarEtapaAquecimento}
+        />
+      </div>
     </div>
   );
 }

@@ -18,16 +18,20 @@ import DadosGeraisCompeticao from "./../../components/AccordionComponentesCompet
 import QuestoesAvaliativasPitches from "./../../components/AccordionComponentesCompeticao/QuestoesAvaliativasPitches/index";
 
 import "./styles.css";
-import { DadosGeraisProvider } from "../../utils/dadosGeraisContext";
+import { DadosGeraisProvider } from "../../utils/context/dadosGeraisContext";
+import { EtapaAquecimentoProvider } from "./../../utils/context/etapaAquecimentoContext";
+import { EtapaImersaoProvider } from "./../../utils/context/etapaImersaoContext";
 
 function CadastroCompeticao() {
   const { idCompeticao } = useParams();
 
   const [dadosGerais, setDadosGerais] = useState(null);
+  const [dadosAquecimento, setDadosAquecimento] = useState(null);
   const [dadosImersao, setDadosImersao] = useState(null);
   const [dadosPitch, setDadosPitch] = useState(null);
 
   const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
+  const [etapaAquecimentoOk, setEtapaAquecimentoOk] = useState(false);
   const [etapaImersaoOk, setEtapaImersaoOk] = useState(false);
   const [etapaPitchOk, setEtapaPitchOk] = useState(false);
 
@@ -44,6 +48,11 @@ function CadastroCompeticao() {
     setDadosGeraisOk(true);
   };
 
+  const handleEtapaAquecimento = (dadosAquecimento) => {
+    setDadosAquecimento(dadosAquecimento);
+    setEtapaAquecimentoOk(true);
+  };
+
   const handleEtapaImersao = (dadosImersao) => {
     setDadosImersao(dadosImersao);
     setEtapaImersaoOk(true);
@@ -54,8 +63,11 @@ function CadastroCompeticao() {
     setEtapaPitchOk(true);
   };
 
-  const handleAccordionImersao = () => {
+  const handleAccordionAquecimento = () => {
     return dadosGeraisOk === false;
+  };
+  const handleAccordionImersao = () => {
+    return etapaAquecimentoOk === false;
   };
   const handleAccordionPitch = () => {
     return etapaImersaoOk === false;
@@ -130,33 +142,46 @@ function CadastroCompeticao() {
               </AccordionDetails>
             </Accordion>
           </div>
-          <div>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-              sx={{ border: "1px solid #ffc107" }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                sx={{ backgroundColor: "#ffc107" }}
-                id="panel1bh-header"
+          <div title={handleAccordionAquecimento() ? MSG022 : null}>
+            <DadosGeraisProvider value={dadosGerais}>
+              <Accordion
+                disabled={handleAccordionAquecimento()}
+                expanded={expanded === "panel3"}
+                onChange={handleChange("panel3")}
+                sx={{ border: "1px solid #ffc107" }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1bh-content"
+                  sx={{ backgroundColor: "#ffc107" }}
+                  id="panel1bh-header"
                 >
-                  Etapa de Aquecimento
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: "20px" }}>
-                <EtapaAquecimento />
-              </AccordionDetails>
-            </Accordion>
+                  <Typography
+                    variant="h5"
+                    sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                  >
+                    <Box sx={{ display: "flex" }}>
+                      {etapaAquecimentoOk ? (
+                        <div className="icone-ok">
+                          <i className="fa-solid fa-circle-check"></i>
+                        </div>
+                      ) : null}
+                      Etapa de Aquecimento
+                    </Box>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: "20px" }}>
+                  <EtapaAquecimento
+                    handleEtapaAquecimento={handleEtapaAquecimento}
+                    setEtapaAquecimentoOk={setEtapaAquecimentoOk}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            </DadosGeraisProvider>
           </div>
 
           <div title={handleAccordionImersao() ? MSG022 : null}>
-            <DadosGeraisProvider value={dadosGerais}>
+            <EtapaAquecimentoProvider value={dadosAquecimento}>
               <Accordion
                 disabled={handleAccordionImersao()}
                 expanded={expanded === "panel4"}
@@ -191,11 +216,11 @@ function CadastroCompeticao() {
                   />
                 </AccordionDetails>
               </Accordion>
-            </DadosGeraisProvider>
+            </EtapaAquecimentoProvider>
           </div>
 
           <div title={handleAccordionPitch() ? MSG022 : null}>
-            <DadosGeraisProvider value={dadosGerais}>
+            <EtapaImersaoProvider value={dadosImersao}>
               <Accordion
                 disabled={handleAccordionPitch()}
                 expanded={expanded === "panel5"}
@@ -230,7 +255,7 @@ function CadastroCompeticao() {
                   />
                 </AccordionDetails>
               </Accordion>
-            </DadosGeraisProvider>
+            </EtapaImersaoProvider>
           </div>
           <div id="botoes-competicao">
             <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>
