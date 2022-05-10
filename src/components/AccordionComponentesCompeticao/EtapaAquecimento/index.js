@@ -64,8 +64,6 @@ function EtapaAquecimento(props) {
     );
 
     if (statusDataInicioAquecimento && statusDataTerminoAquecimento) {
-      console.log(dadosGerais.dataTerminoInscricoes);
-      console.log(dataInicioAquecimento);
       if (dataInicioAquecimento > dataTerminoAquecimento) {
         setErrorDataTerminoAquecimento(true);
         setMensagemDataTerminoAquecimento(MSG018);
