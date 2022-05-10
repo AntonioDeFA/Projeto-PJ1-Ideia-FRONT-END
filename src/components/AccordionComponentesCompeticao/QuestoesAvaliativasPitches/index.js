@@ -58,7 +58,7 @@ function QuestoesAvaliativasPitches() {
   const [tipo, setTipo] = useState(MSG000);
   const [questao, setQuestao] = useState(MSG000);
   const [pontosMax, setPontosMax] = useState(MSG000);
-  const [questaoObj, setQuestaoObj] = useState(null);
+  const [indexQuestao, setindexQuestao] = useState(-1);
 
   const [errorPontosMax, setErrorPontosMax] = useState(false);
   const [errorQuestao, setErrorQuestao] = useState(false);
@@ -105,14 +105,14 @@ function QuestoesAvaliativasPitches() {
                       aria-label="upload"
                       className="me-1"
                       id="botao-atualizar-questao"
-                      onClick={() => preencherQuestaoAvaliativa(questao)}
+                      onClick={() => preencherQuestaoAvaliativa(questao, index)}
                     >
                       <i className="fa-solid fa-pen-to-square hover-azul p-0"></i>
                     </IconButton>
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={removerQuestaoAvaliativa}
+                      onClick={() => removerQuestaoAvaliativa(index)}
                     >
                       <i className="fa-solid fa-trash-can p-0"></i>
                     </IconButton>
@@ -141,14 +141,13 @@ function QuestoesAvaliativasPitches() {
         lista = questoesUtilidade;
       }
 
-      // if (isAtualizarQuestao) {
-      //   lista.splice(indexQuestao - 1, 1);
-      // }
+      if (isAtualizarQuestao) {
+        lista.splice(indexQuestao, 1);
+      }
 
       lista.push({
         questao,
-        pontosMax,
-        // index: lista.length - 1,
+        pontosMax
       });
 
       setQuestao(MSG000);
@@ -159,13 +158,13 @@ function QuestoesAvaliativasPitches() {
     }
   };
 
-  const atualizarQuestaoAvaliativa = () => {
-    setQuestaoObj({
-      questao,
-      pontosMax,
-    });
-    setIsAtualizarQuestao(false);
-  };
+  // const atualizarQuestaoAvaliativa = () => {
+  //   setQuestaoObj({
+  //     questao,
+  //     pontosMax,
+  //   });
+  //   setIsAtualizarQuestao(false);
+  // };
 
   const removerQuestaoAvaliativa = async (index) => {
     let lista = questoesSustentabilidade;
@@ -177,7 +176,7 @@ function QuestoesAvaliativasPitches() {
     } else if (tipo === "Utilidade") {
       lista = questoesUtilidade;
     }
-    lista.splice(index - 1, 1);
+    lista.splice(index, 1);
 
     let questoesAtt = lista;
 
@@ -196,8 +195,11 @@ function QuestoesAvaliativasPitches() {
     ListPanel(tipo);
   };
 
-  const preencherQuestaoAvaliativa = async (questao) => {
+  const preencherQuestaoAvaliativa = async (questao, index) => {
     setIsAtualizarQuestao(true);
+
+    console.log(questao);
+
     let lista = questoesSustentabilidade;
 
     if (tipo === "Adaptabilidade") {
@@ -210,7 +212,7 @@ function QuestoesAvaliativasPitches() {
 
     setQuestao(questao.questao);
     setPontosMax(questao.pontosMax);
-    setQuestaoObj(questao);
+    setindexQuestao(index);
 
     handleOpenModalCriarQuestao();
 
@@ -304,11 +306,7 @@ function QuestoesAvaliativasPitches() {
             <Botao
               titulo="salvar"
               classes="btn btn-warning botao-menor-personalizado"
-              onClick={
-                isAtualizarQuestao
-                  ? atualizarQuestaoAvaliativa
-                  : cadastrarNovaQuestaoAvaliativa
-              }
+              onClick={() => cadastrarNovaQuestaoAvaliativa()}
             />
 
             <Botao
