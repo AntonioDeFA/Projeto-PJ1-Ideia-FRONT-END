@@ -15,7 +15,7 @@ import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
 import { MSG000, MSG026 } from "../../../utils/mensagens";
 import StoreContext from "./../../../store/context";
-import DadosGeraisContext from "../../../utils/dadosGeraisContext";
+import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 
 import "./styles.css";
 

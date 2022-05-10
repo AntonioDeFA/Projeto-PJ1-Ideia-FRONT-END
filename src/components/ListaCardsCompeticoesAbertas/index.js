@@ -6,7 +6,7 @@ import CardCompeticao from "../CardCompeticao";
 import "./styles.css";
 import "../../assets/styles/global.css";
 
-import FiltrosContext from "../../utils/filtrosContext";
+import FiltrosContext from "../../utils/context/filtrosContext";
 import StoreContext from "../../store/context";
 
 function ListaCardsCompeticoesAbertas() {

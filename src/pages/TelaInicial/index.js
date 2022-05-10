@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from "../../components/AsideFiltragem";
-import { FiltrosProvider } from "../../utils/filtrosContext";
+import { FiltrosProvider } from "../../utils/context/filtrosContext";
 
 import ListaCardsCompeticoesAbertas from "../../components/ListaCardsCompeticoesAbertas";
 import ListaCardsMinhasCompeticoes from "../../components/ListaCardsMinhasCompeticoes";
