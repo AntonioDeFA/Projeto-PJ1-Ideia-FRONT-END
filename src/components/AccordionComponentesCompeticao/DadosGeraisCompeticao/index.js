@@ -101,7 +101,7 @@ function DadosGeraisCompeticao(props) {
       } else if (qntdMinMembros < 1) {
         setErrorQntdMinMembros(true);
         setMensagemQntdMinMembros(MSG016);
-      } else if (qntdMaxMembros <= qntdMinMembros) {
+      } else if (Number(qntdMaxMembros) <= Number(qntdMinMembros)) {
         setErrorQntdMaxMembros(true);
         setMensagemQntdMaxMembros(MSG017);
       } else if (dataInicioInscricoes <= hoje) {
