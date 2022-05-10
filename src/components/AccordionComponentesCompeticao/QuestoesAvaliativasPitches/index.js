@@ -1,62 +1,71 @@
 import React, { useEffect, useState } from "react";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import { Box, Modal, TextField, TextareaAutosize } from '@mui/material';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
+
+import Tab from "@mui/material/Tab";
+import List from "@mui/material/List";
+import Tabs from "@mui/material/Tabs";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import { Box, Modal, TextField, TextareaAutosize } from "@mui/material";
+
 import Botao from "../../Botao";
-import { styleModals } from "../../../utils/constantes";
 import { MSG000 } from "../../../utils/mensagens";
+import { styleModals } from "../../../utils/constantes";
 
 import "./styles.css";
 
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 0 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
+
+const valueProps = (index) => {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+};
+
 function QuestoesAvaliativasPitches() {
   const [value, setValue] = React.useState(0);
+
   const [questoesAdaptabilidade, setQuestaoAdaptabilidade] = useState([]);
   const [questoesInovacao, setQuestaoInovacao] = useState([]);
   const [questoesUtilidade, setQuestaoUtilidade] = useState([]);
   const [questoesSustentabilidade, setQuestaoSustentabilidade] = useState([]);
-  const [openModalCriarQuestao, setOpenModalCriarQuestao] = React.useState(false);
+
+  const [openModalCriarQuestao, setOpenModalCriarQuestao] =
+    React.useState(false);
   const handleOpenModalCriarQuestao = () => setOpenModalCriarQuestao(true);
   const handleCloseModalCriarQuestao = () => setOpenModalCriarQuestao(false);
-  const [pontosMax, setPontosMax] = useState(MSG000);
-  const [questao, setQuestao] = useState(MSG000);
+
   const [tipo, setTipo] = useState(MSG000);
+  const [questao, setQuestao] = useState(MSG000);
+  const [pontosMax, setPontosMax] = useState(MSG000);
+  const [questaoObj, setQuestaoObj] = useState(null);
+
   const [errorPontosMax, setErrorPontosMax] = useState(false);
   const [errorQuestao, setErrorQuestao] = useState(false);
 
-  const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 0 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  const valueProps = (index) => {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
+  const [isAtualizarQuestao, setIsAtualizarQuestao] = useState(false);
 
   const ListPanel = (props) => {
-
     const { opcao } = props;
 
     let lista = questoesSustentabilidade;
@@ -76,12 +85,12 @@ function QuestoesAvaliativasPitches() {
     return (
       <List
         sx={{
-          width: '100%',
-          bgcolor: 'background.paper',
-          position: 'relative',
-          overflow: 'auto',
+          width: "100%",
+          bgcolor: "background.paper",
+          position: "relative",
+          overflow: "auto",
           maxHeight: 300,
-          '& ul': { padding: 0 },
+          "& ul": { padding: 0 },
         }}
         subheader={<li />}
       >
@@ -91,16 +100,26 @@ function QuestoesAvaliativasPitches() {
               <ListItem
                 secondaryAction={
                   <div>
-                    <IconButton edge="end" aria-label="upload" className="me-1" id="botao-atualizar-questao"
-                      onClick={preencherQuestaoAvaliativa}>
+                    <IconButton
+                      edge="end"
+                      aria-label="upload"
+                      className="me-1"
+                      id="botao-atualizar-questao"
+                      onClick={() => preencherQuestaoAvaliativa(questao)}
+                    >
                       <i className="fa-solid fa-pen-to-square hover-azul p-0"></i>
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={removerQuestaoAvaliativa}>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={removerQuestaoAvaliativa}
+                    >
                       <i className="fa-solid fa-trash-can p-0"></i>
                     </IconButton>
                   </div>
                 }
-                key={questao.questao}>
+                key={questao.questao}
+              >
                 <ListItemText primary={questao.questao} />
               </ListItem>
             </ul>
@@ -108,14 +127,9 @@ function QuestoesAvaliativasPitches() {
         ))}
       </List>
     );
-  }
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
   };
 
   const cadastrarNovaQuestaoAvaliativa = () => {
-
     if (questao && pontosMax) {
       let lista = questoesSustentabilidade;
 
@@ -127,20 +141,33 @@ function QuestoesAvaliativasPitches() {
         lista = questoesUtilidade;
       }
 
+      // if (isAtualizarQuestao) {
+      //   lista.splice(indexQuestao - 1, 1);
+      // }
+
       lista.push({
-        questao: questao,
-        quantidade: pontosMax,
-        id: 10,
+        questao,
+        pontosMax,
+        // index: lista.length - 1,
       });
 
+      setQuestao(MSG000);
+      setPontosMax(null);
+      setIsAtualizarQuestao(false);
+
       handleCloseModalCriarQuestao();
-
     }
+  };
 
-  }
+  const atualizarQuestaoAvaliativa = () => {
+    setQuestaoObj({
+      questao,
+      pontosMax,
+    });
+    setIsAtualizarQuestao(false);
+  };
 
   const removerQuestaoAvaliativa = async (index) => {
-
     let lista = questoesSustentabilidade;
 
     if (tipo === "Adaptabilidade") {
@@ -155,25 +182,22 @@ function QuestoesAvaliativasPitches() {
     let questoesAtt = lista;
 
     await setTimeout(() => {
-
       if (tipo === "Adaptabilidade") {
-        setQuestaoAdaptabilidade(questoesAtt)
+        setQuestaoAdaptabilidade(questoesAtt);
       } else if (tipo === "Inovação") {
-        setQuestaoInovacao(questoesAtt)
+        setQuestaoInovacao(questoesAtt);
       } else if (tipo === "Utilidade") {
-        setQuestaoUtilidade(questoesAtt)
+        setQuestaoUtilidade(questoesAtt);
       } else {
-        setQuestaoSustentabilidade(questoesAtt)
+        setQuestaoSustentabilidade(questoesAtt);
       }
     }, 400);
 
     ListPanel(tipo);
+  };
 
-  }
-
-  //para preencher o modal quando o cara for atualizar
-  const preencherQuestaoAvaliativa = async (index) => {
-
+  const preencherQuestaoAvaliativa = async (questao) => {
+    setIsAtualizarQuestao(true);
     let lista = questoesSustentabilidade;
 
     if (tipo === "Adaptabilidade") {
@@ -184,13 +208,18 @@ function QuestoesAvaliativasPitches() {
       lista = questoesUtilidade;
     }
 
-    console.log(index);
+    setQuestao(questao.questao);
+    setPontosMax(questao.pontosMax);
+    setQuestaoObj(questao);
 
-  }
+    handleOpenModalCriarQuestao();
 
+    // console.log(index);
+    console.log(questao);
+  };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       <div className="text-end">
         <Botao
           titulo="ADICIONAR"
@@ -199,14 +228,21 @@ function QuestoesAvaliativasPitches() {
           onClick={handleOpenModalCriarQuestao}
         />
       </div>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          aria-label="basic tabs example"
+        >
           <Tab label="Adaptabilidade" {...valueProps(0)} />
           <Tab label="Inovação" {...valueProps(1)} />
           <Tab label="Utilidade" {...valueProps(2)} />
           <Tab label="Sustentabilidade" {...valueProps(3)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
         <ListPanel opcao="Adaptabilidade" />
       </TabPanel>
@@ -219,6 +255,7 @@ function QuestoesAvaliativasPitches() {
       <TabPanel value={value} index={3}>
         <ListPanel opcao="Sustentabilidade" />
       </TabPanel>
+
       <Modal
         open={openModalCriarQuestao}
         onClose={handleCloseModalCriarQuestao}
@@ -261,23 +298,26 @@ function QuestoesAvaliativasPitches() {
             aria-label="minimum height"
             minRows={2}
             placeholder="O que você deseja que seja avaliado ?"
-            style={{ width: 200, height: 200 }}
+            style={{ width: 200, height: 200, resize: "none" }}
           />
           <div className="botoes-cadastro mt-2">
             <Botao
-              titulo="SALVAR"
+              titulo="salvar"
               classes="btn btn-warning botao-menor-personalizado"
-              onClick={cadastrarNovaQuestaoAvaliativa}
+              onClick={
+                isAtualizarQuestao
+                  ? atualizarQuestaoAvaliativa
+                  : cadastrarNovaQuestaoAvaliativa
+              }
             />
 
             <Botao
-              titulo="VOLTAR"
+              titulo="voltar"
               classes="btn btn-secondary botao-menor-personalizado"
               onClick={handleCloseModalCriarQuestao}
             />
           </div>
         </Box>
-
       </Modal>
     </Box>
   );
