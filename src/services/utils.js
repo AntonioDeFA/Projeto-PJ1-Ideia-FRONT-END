@@ -46,3 +46,11 @@ export const validarCamposObrigatorios = (
     return true;
   }
 };
+
+export const saoDuasDatasIguais = (data1, data2) => {
+  return (
+    data1.getDate() === data2.getDate() &&
+    data1.getMonth() === data2.getMonth() &&
+    data1.getYear() === data2.getYear()
+  );
+};
