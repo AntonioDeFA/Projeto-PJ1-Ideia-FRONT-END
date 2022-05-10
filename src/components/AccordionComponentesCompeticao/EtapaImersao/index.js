@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { DatePicker } from "@mui/x-date-pickers";
 import { Box, TextField } from "@mui/material";
@@ -7,12 +7,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
-import { MSG000, MSG018, MSG024 } from "../../../utils/mensagens";
+import { MSG000, MSG018, MSG024, MSG028 } from "../../../utils/mensagens";
 
 import "./styles.css";
-import { validarCamposObrigatorios } from "../../../services/utils";
+import {
+  saoDuasDatasIguais,
+  validarCamposObrigatorios,
+} from "../../../services/utils";
+import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
 
 function EtapaImersao(props) {
+  const dadosAquecimento = useContext(EtapaAquecimentoContext);
+
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
 
@@ -42,6 +48,15 @@ function EtapaImersao(props) {
       if (dataInicioImersao > dataTerminoImersao) {
         setErrorDataTerminoImersao(true);
         setMensagemDataTerminoImersao(MSG018);
+      } else if (
+        dadosAquecimento?.dataTerminoAquecimento > dataInicioImersao ||
+        saoDuasDatasIguais(
+          dadosAquecimento.dataTerminoAquecimento,
+          dataInicioImersao
+        )
+      ) {
+        setErrorDataInicioImersao(true);
+        setMensagemDataInicioImersao(MSG028);
       } else {
         const dadosImersao = {
           dataInicioImersao,

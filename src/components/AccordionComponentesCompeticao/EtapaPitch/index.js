@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { DatePicker } from "@mui/x-date-pickers";
 import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { MSG000, MSG018, MSG025 } from "./../../../utils/mensagens";
+import Botao from "../../Botao";
+import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
+import { MSG000, MSG018, MSG025, MSG029 } from "./../../../utils/mensagens";
+import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
+import {
+  saoDuasDatasIguais,
+  validarCamposObrigatorios,
+} from "./../../../services/utils";
 
 import "./styles.css";
-import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
-import { validarCamposObrigatorios } from "./../../../services/utils";
-import Botao from "../../Botao";
 
 function EtapaPitch(props) {
+  const dadosImersao = useContext(EtapaImersaoContext);
+
   const [dataInicioPitch, setDataInicioPitch] = useState(null);
   const [dataTerminoPitch, setDataTerminoPitch] = useState(null);
 
@@ -42,6 +48,12 @@ function EtapaPitch(props) {
       if (dataInicioPitch > dataTerminoPitch) {
         setErrorDataTerminoPitch(true);
         setMensagemDataTerminoPitch(MSG018);
+      } else if (
+        dadosImersao?.dataTerminoImersao > dataInicioPitch ||
+        saoDuasDatasIguais(dadosImersao.dataTerminoImersao, dataInicioPitch)
+      ) {
+        setErrorDataInicioPitch(true);
+        setMensagemDataInicioPitch(MSG029);
       } else {
         const dadosPitch = {
           dataInicioPitch,
