@@ -15,7 +15,14 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
-import { MSG000, MSG018, MSG027 } from "../../../utils/mensagens";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import {
+  MSG000,
+  MSG006,
+  MSG018,
+  MSG027,
+  MSG031,
+} from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
   saoDuasDatasIguais,
@@ -23,9 +30,11 @@ import {
 } from "../../../services/utils";
 
 import "./styles.css";
+import Mensagem from "../../Mensagem";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -48,6 +57,7 @@ function EtapaAquecimento(props) {
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const salvarEtapaAquecimento = () => {
     props.setEtapaAquecimentoOk(false);
@@ -76,7 +86,10 @@ function EtapaAquecimento(props) {
       ) {
         setErrorDataInicioAquecimento(true);
         setMensagemDataInicioAquecimento(MSG027);
+      } else if (links.length === 0 && arquivos.length === 0) {
+        setMensagemErro(MSG031);
       } else {
+        setMensagemErro(MSG000);
         const dadosAquecimento = {
           dataInicioAquecimento,
           dataTerminoAquecimento,
@@ -94,6 +107,8 @@ function EtapaAquecimento(props) {
       setMudou(false);
       setMudou(true);
     }, 100);
+
+    setLink(MSG000);
   };
 
   const adicionarArquivo = () => {
@@ -198,6 +213,11 @@ function EtapaAquecimento(props) {
 
   return (
     <div id="etapa-aquecimento-content">
+      <div style={{ width: "50%", marginBottom: "20px" }}>
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
+      </div>
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioDiv">

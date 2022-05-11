@@ -6,18 +6,28 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
-import { MSG000, MSG018, MSG024, MSG028 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG006,
+  MSG018,
+  MSG024,
+  MSG028,
+} from "../../../utils/mensagens";
+import Mensagem from "../../Mensagem";
+import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
 
-import "./styles.css";
 import {
   saoDuasDatasIguais,
   validarCamposObrigatorios,
 } from "../../../services/utils";
-import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
+
+import "./styles.css";
 
 function EtapaImersao(props) {
   const dadosAquecimento = useContext(EtapaAquecimentoContext);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
@@ -29,6 +39,8 @@ function EtapaImersao(props) {
     useState(MSG000);
   const [mensagemDataTerminoImersao, setMensagemDataTerminoImersao] =
     useState(MSG000);
+
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const salvarEtapaImersao = () => {
     props.setEtapaImersaoOk(false);
@@ -57,6 +69,7 @@ function EtapaImersao(props) {
       ) {
         setErrorDataInicioImersao(true);
         setMensagemDataInicioImersao(MSG028);
+        // } else if () { <--- PARA VALIDAR SE A LISTA DE USUÁRIOS TÁ VAZIA
       } else {
         const dadosImersao = {
           dataInicioImersao,
@@ -69,6 +82,11 @@ function EtapaImersao(props) {
 
   return (
     <div id="etapa-imersao-content">
+      <div style={{ width: "50%", marginBottom: "20px" }}>
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
+      </div>
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioImersaoDiv">
