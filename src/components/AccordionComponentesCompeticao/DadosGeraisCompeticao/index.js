@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Box, Input, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -14,14 +14,23 @@ import {
   MSG018,
   MSG019,
   MSG021,
+  MSG032,
+  MSG033,
+  MSG034,
+  MSG035,
 } from "../../../utils/mensagens";
 
 import "./styles.css";
 import { UploadFile } from "@mui/icons-material";
 import Botao from "../../Botao";
 import { validarCamposObrigatorios } from "./../../../services/utils";
+import api from "./../../../services/api";
+import StoreContext from "../../../store/context";
+import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 
 function DadosGeraisCompeticao(props) {
+  const idCompeticaoHook = useContext(idCompeticaoContext);
+
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
   const [regulamento] = useState(MSG000);
@@ -48,6 +57,8 @@ function DadosGeraisCompeticao(props) {
     useState(MSG000);
   const [mensagemDataTerminoInscricoes, setMensagemDataTerminoInscricoes] =
     useState(MSG000);
+
+  const { token } = useContext(StoreContext);
 
   const salvarDadosGerais = () => {
     props.setDadosGeraisOk(false);
@@ -124,9 +135,70 @@ function DadosGeraisCompeticao(props) {
           dataInicioInscricoes,
           dataTerminoInscricoes,
         };
+
+        console.log(idCompeticaoHook);
+        if (idCompeticaoHook === 0) {
+          criarCompeticaoEmElaboracao();
+        } else {
+          console.log("atualizando...");
+        }
+
         props.handleDadosGerais(dadosGerais);
       }
     }
+  };
+
+  const criarCompeticaoEmElaboracao = () => {
+    let novaCompeticao = {
+      nomeCompeticao: nome,
+      qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
+      qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
+      tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
+      arquivoRegulamentoCompeticao: "regulamento",
+      dominioCompeticao: dominio,
+      etapas: [
+        {
+          dataInicio: [
+            Number(dataInicioInscricoes.getFullYear()),
+            Number(dataInicioInscricoes.getMonth()),
+            Number(dataInicioInscricoes.getDay()),
+          ],
+          dataTermino: [
+            Number(dataTerminoInscricoes.getFullYear()),
+            Number(dataTerminoInscricoes.getMonth()),
+            Number(dataTerminoInscricoes.getDay()),
+          ],
+          tipoEtapa: MSG032,
+        },
+        {
+          dataInicio: [2000, 1, 1],
+          dataTermino: [2000, 1, 1],
+          tipoEtapa: MSG033,
+        },
+        {
+          dataInicio: [2000, 1, 1],
+          dataTermino: [2000, 1, 1],
+          tipoEtapa: MSG034,
+        },
+        {
+          dataInicio: [2000, 1, 1],
+          dataTermino: [2000, 1, 1],
+          tipoEtapa: MSG035,
+        },
+      ],
+    };
+    console.log(novaCompeticao);
+
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api
+      .post("/competicao", novaCompeticao)
+      .then((response) => {
+        console.log(response.data.idCompeticao);
+        props.setIdCompeticaoHook(response.data.idCompeticao);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   return (

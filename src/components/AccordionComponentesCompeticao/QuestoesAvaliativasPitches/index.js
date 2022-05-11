@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -10,8 +10,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { Box, Modal, TextField, TextareaAutosize } from "@mui/material";
 
 import Botao from "../../Botao";
-import { MSG000 } from "../../../utils/mensagens";
+import Mensagem from "../../Mensagem";
 import { styleModals } from "../../../utils/constantes";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import { MSG000, MSG006, MSG030 } from "../../../utils/mensagens";
 
 import "./styles.css";
 
@@ -28,7 +30,7 @@ const TabPanel = (props) => {
     >
       {value === index && (
         <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
@@ -42,8 +44,9 @@ const valueProps = (index) => {
   };
 };
 
-function QuestoesAvaliativasPitches() {
+function QuestoesAvaliativasPitches(props) {
   const [value, setValue] = React.useState(0);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [questoesAdaptabilidade, setQuestaoAdaptabilidade] = useState([]);
   const [questoesInovacao, setQuestaoInovacao] = useState([]);
@@ -64,6 +67,8 @@ function QuestoesAvaliativasPitches() {
   const [errorQuestao, setErrorQuestao] = useState(false);
 
   const [isAtualizarQuestao, setIsAtualizarQuestao] = useState(false);
+
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const ListPanel = (props) => {
     const { opcao } = props;
@@ -147,7 +152,7 @@ function QuestoesAvaliativasPitches() {
 
       lista.push({
         questao,
-        pontosMax
+        pontosMax,
       });
 
       setQuestao(MSG000);
@@ -220,104 +225,156 @@ function QuestoesAvaliativasPitches() {
     console.log(questao);
   };
 
+  const confirmarQuestoesAvaliativas = () => {
+    props.setQuestoesAvaliativasOk(false);
+    if (
+      questoesSustentabilidade.length === 0 &&
+      questoesAdaptabilidade.length === 0 &&
+      questoesInovacao.length === 0 &&
+      questoesUtilidade.length === 0
+    ) {
+      setMensagemErro(MSG030);
+    } else {
+      setMensagemErro(MSG000);
+      props.handleQuestoesAvaliativas(formatarArrayQuestoes());
+    }
+  };
+
+  const formatarArrayQuestoes = () => {
+    let questoes = [];
+
+    atribuirQuestoes(questoes, questoesAdaptabilidade, "ADAPTABILIDADE");
+    atribuirQuestoes(questoes, questoesInovacao, "INOVACAO");
+    atribuirQuestoes(questoes, questoesUtilidade, "UTILIDADE");
+    atribuirQuestoes(questoes, questoesSustentabilidade, "SUSTENTABILIDADE");
+
+    return questoes;
+  };
+
+  const atribuirQuestoes = (questoes, array, tipoQuestaoAvaliativa) => {
+    array.forEach((questao) =>
+      questoes.push({
+        notaMax: Number(questao.pontosMax),
+        questao: questao.questao,
+        enumeracao: Number(questoes.length + 1),
+        tipoQuestaoAvaliativa,
+      })
+    );
+  };
+
   return (
-    <Box sx={{ width: "100%" }}>
-      <div className="text-end">
-        <Botao
-          titulo="ADICIONAR"
-          classes="btn btn-warning botao-menor-personalizado "
-          id="btn-adicionar-questao-avaliativa"
-          onClick={handleOpenModalCriarQuestao}
-        />
+    <div>
+      <div style={{ width: "50%" }}>
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
       </div>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Adaptabilidade" {...valueProps(0)} />
-          <Tab label="Inovação" {...valueProps(1)} />
-          <Tab label="Utilidade" {...valueProps(2)} />
-          <Tab label="Sustentabilidade" {...valueProps(3)} />
-        </Tabs>
-      </Box>
-
-      <TabPanel value={value} index={0}>
-        <ListPanel opcao="Adaptabilidade" />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ListPanel opcao="Inovação" />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <ListPanel opcao="Utilidade" />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <ListPanel opcao="Sustentabilidade" />
-      </TabPanel>
-
-      <Modal
-        open={openModalCriarQuestao}
-        onClose={handleCloseModalCriarQuestao}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={styleModals} style={{ width: 600 }}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            style={{ marginBottom: "20px" }}
-          >
-            Dimensão Avaliativa
-          </Typography>
-          <div id="pontosMaximos" className="input-quantidade-pontos-max">
-            <TextField
-              className="input-irmao"
-              error={errorPontosMax}
-              helperText="Quantidade máxima de pontos que essa questão vale"
-              id="input-quantidade-max-pontos"
-              value={pontosMax}
-              onChange={(e) => {
-                setPontosMax(e.target.value);
-              }}
-              label="Pontos máx"
-              type="number"
-              variant="filled"
-              color="warning"
-              size="small"
-            />
-          </div>
-          <TextareaAutosize
-            value={questao}
-            error={errorQuestao}
-            onChange={(e) => {
-              setQuestao(e.target.value);
-            }}
-            className="border rounded p-3 mt-4 w-100"
-            aria-label="minimum height"
-            minRows={2}
-            placeholder="O que você deseja que seja avaliado ?"
-            style={{ width: 200, height: 200, resize: "none" }}
+      <Box sx={{ width: "100%" }}>
+        <div className="text-end">
+          <Botao
+            titulo="adicionar"
+            classes="btn btn-warning botao-menor-personalizado "
+            id="btn-adicionar-questao-avaliativa"
+            onClick={handleOpenModalCriarQuestao}
           />
-          <div className="botoes-cadastro mt-2">
-            <Botao
-              titulo="salvar"
-              classes="btn btn-warning botao-menor-personalizado"
-              onClick={() => cadastrarNovaQuestaoAvaliativa()}
-            />
-
-            <Botao
-              titulo="voltar"
-              classes="btn btn-secondary botao-menor-personalizado"
-              onClick={handleCloseModalCriarQuestao}
-            />
-          </div>
+        </div>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Adaptabilidade" {...valueProps(0)} />
+            <Tab label="Inovação" {...valueProps(1)} />
+            <Tab label="Utilidade" {...valueProps(2)} />
+            <Tab label="Sustentabilidade" {...valueProps(3)} />
+          </Tabs>
         </Box>
-      </Modal>
-    </Box>
+
+        <TabPanel value={value} index={0}>
+          <ListPanel opcao="Adaptabilidade" />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ListPanel opcao="Inovação" />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <ListPanel opcao="Utilidade" />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <ListPanel opcao="Sustentabilidade" />
+        </TabPanel>
+
+        <Modal
+          open={openModalCriarQuestao}
+          onClose={handleCloseModalCriarQuestao}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={styleModals} style={{ width: 600 }}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              style={{ marginBottom: "20px" }}
+            >
+              Questão Avaliativa
+            </Typography>
+            <div id="pontosMaximos" className="input-quantidade-pontos-max">
+              {/* helperText="Quantidade máxima de pontos que essa questão vale" */}
+              <TextField
+                error={errorPontosMax}
+                id="input-quantidade-max-pontos"
+                value={pontosMax}
+                onChange={(e) => {
+                  setPontosMax(e.target.value);
+                }}
+                label="Pontuação máxima da questão *"
+                type="number"
+                variant="filled"
+                color="warning"
+                size="small"
+                style={{ width: "270px" }}
+              />
+            </div>
+            <TextareaAutosize
+              value={questao}
+              onChange={(e) => {
+                setQuestao(e.target.value);
+              }}
+              className="border rounded p-3 mt-4 w-100"
+              aria-label="minimum height"
+              minRows={2}
+              placeholder="Digite aqui a questão avaliativa"
+              style={{ width: 200, height: 200, resize: "none" }}
+            />
+            <div className="botoes-cadastro mt-2">
+              <Botao
+                titulo="salvar"
+                classes="btn btn-warning botao-menor-personalizado"
+                onClick={() => cadastrarNovaQuestaoAvaliativa()}
+              />
+
+              <Botao
+                titulo="voltar"
+                classes="btn btn-secondary botao-menor-personalizado"
+                onClick={handleCloseModalCriarQuestao}
+              />
+            </div>
+          </Box>
+        </Modal>
+
+        <div className="input-cadastro-competicao mt-4">
+          <Botao
+            titulo="confirmar questões avaliativas"
+            classes="btn btn-warning botao-menor-personalizado"
+            id="btn-confirmar-questoes-avaliativas"
+            onClick={confirmarQuestoesAvaliativas}
+          />
+        </div>
+      </Box>
+    </div>
   );
 }
 
