@@ -149,56 +149,78 @@ function DadosGeraisCompeticao(props) {
   };
 
   const criarCompeticaoEmElaboracao = () => {
-    let novaCompeticao = {
-      nomeCompeticao: nome,
-      qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
-      qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
-      tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
-      arquivoRegulamentoCompeticao: "regulamento",
-      dominioCompeticao: dominio,
-      etapas: [
-        {
-          dataInicio: [
-            Number(dataInicioInscricoes.getFullYear()),
-            Number(dataInicioInscricoes.getMonth()),
-            Number(dataInicioInscricoes.getDay()),
-          ],
-          dataTermino: [
-            Number(dataTerminoInscricoes.getFullYear()),
-            Number(dataTerminoInscricoes.getMonth()),
-            Number(dataTerminoInscricoes.getDay()),
-          ],
-          tipoEtapa: MSG032,
-        },
-        {
-          dataInicio: [2000, 1, 1],
-          dataTermino: [2000, 1, 1],
-          tipoEtapa: MSG033,
-        },
-        {
-          dataInicio: [2000, 1, 1],
-          dataTermino: [2000, 1, 1],
-          tipoEtapa: MSG034,
-        },
-        {
-          dataInicio: [2000, 1, 1],
-          dataTermino: [2000, 1, 1],
-          tipoEtapa: MSG035,
-        },
-      ],
-    };
-    console.log(novaCompeticao);
 
-    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
-    api
-      .post("/competicao", novaCompeticao)
-      .then((response) => {
-        console.log(response.data.idCompeticao);
-        props.setIdCompeticaoHook(response.data.idCompeticao);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+    let arquivoInput = document.getElementById('contained-button-file').files[0];
+
+    if (!arquivoInput) {
+
+      var reader = new FileReader();
+      var fileByteArray = [];
+      reader.readAsArrayBuffer(arquivoInput);
+      reader.onloadend = function (evt) {
+        if (evt.target.readyState == FileReader.DONE) {
+          var arrayBuffer = evt.target.result,
+            array = new Uint8Array(arrayBuffer);
+          for (var i = 0; i < array.length; i++) {
+            fileByteArray.push(array[i]);
+          }
+        }
+      }
+
+      let novaCompeticao = {
+        nomeCompeticao: nome,
+        qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
+        qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
+        tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
+        arquivoRegulamentoCompeticao: fileByteArray,
+        dominioCompeticao: dominio,
+        etapas: [
+          {
+            dataInicio: [
+              Number(dataInicioInscricoes.getFullYear()),
+              Number(dataInicioInscricoes.getMonth()),
+              Number(dataInicioInscricoes.getDay()),
+            ],
+            dataTermino: [
+              Number(dataTerminoInscricoes.getFullYear()),
+              Number(dataTerminoInscricoes.getMonth()),
+              Number(dataTerminoInscricoes.getDay()),
+            ],
+            tipoEtapa: MSG032,
+          },
+          {
+            dataInicio: [2000, 1, 1],
+            dataTermino: [2000, 1, 1],
+            tipoEtapa: MSG033,
+          },
+          {
+            dataInicio: [2000, 1, 1],
+            dataTermino: [2000, 1, 1],
+            tipoEtapa: MSG034,
+          },
+          {
+            dataInicio: [2000, 1, 1],
+            dataTermino: [2000, 1, 1],
+            tipoEtapa: MSG035,
+          },
+        ],
+      };
+      console.log(novaCompeticao);
+
+      api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+      api
+        .post("/competicao", novaCompeticao)
+        .then((response) => {
+          console.log(response.data.idCompeticao);
+          props.setIdCompeticaoHook(response.data.idCompeticao);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+
+
+
+    }
   };
 
   return (
@@ -335,7 +357,6 @@ function DadosGeraisCompeticao(props) {
           <label htmlFor="contained-button-file">
             <Input
               id="contained-button-file"
-              multiple
               type="file"
               style={{ display: "none" }}
             />
