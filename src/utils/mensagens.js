@@ -27,7 +27,8 @@ export const MSG019 = "O nome competição deve ter entre 3 e 16 caracteres.";
 export const MSG021 = "A data de início deve ser pelo menos a partir de amanhã";
 export const MSG022 =
   "Preencha os campos das etapas anteriores para poder habilitar este.";
-export const MSG023 = "Preencha os campos das etapas para poder salvar.";
+export const MSG023 =
+  "Preencha os campos de todas as etapas para poder salvar.";
 export const MSG024 = "consultor";
 export const MSG025 = "avaliador";
 export const MSG026 =
@@ -38,3 +39,10 @@ export const MSG028 =
   "A data de início não pode ser a mesma nem vir antes da data de término da etapa de aquecimento";
 export const MSG029 =
   "A data de início não pode ser a mesma nem vir antes da data de término da etapa de imersão";
+export const MSG030 =
+  "Nesta etapa, é necessário que sejam informadas questões avaliativas para sua competição.";
+export const MSG031 = "Você deve fornecer ao menos um material de estudo.";
+export const MSG032 = "INSCRICAO";
+export const MSG033 = "AQUECIMENTO";
+export const MSG034 = "IMERSAO";
+export const MSG035 = "PITCH";
