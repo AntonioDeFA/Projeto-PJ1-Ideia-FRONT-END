@@ -3,10 +3,11 @@ import React, { useContext, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, Input, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 import Table from "@mui/material/Table";
 import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TableRow from "@mui/material/TableRow";
@@ -15,14 +16,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
-import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import {
-  MSG000,
-  MSG006,
-  MSG018,
-  MSG027,
-  MSG031,
-} from "../../../utils/mensagens";
+import { MSG000, MSG018, MSG027, MSG036, MSG006 } from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
   saoDuasDatasIguais,
@@ -30,11 +24,9 @@ import {
 } from "../../../services/utils";
 
 import "./styles.css";
-import Mensagem from "../../Mensagem";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
-  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -46,18 +38,16 @@ function EtapaAquecimento(props) {
     useState(MSG000);
   const [mensagemDataTerminoAquecimento, setMensagemDataTerminoAquecimento] =
     useState(MSG000);
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const [mensagemLink, setMensagemLink] = useState(MSG000);
   const [errorLink, setErrorLink] = useState(false);
   const [link, setLink] = useState(MSG000);
 
-  const [arquivo, setArquivo] = useState(MSG000);
-
   const [links, setLinks] = useState([]);
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
-  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const salvarEtapaAquecimento = () => {
     props.setEtapaAquecimentoOk(false);
@@ -74,6 +64,8 @@ function EtapaAquecimento(props) {
     );
 
     if (statusDataInicioAquecimento && statusDataTerminoAquecimento) {
+      console.log(dadosGerais.dataTerminoInscricoes);
+      console.log(dataInicioAquecimento);
       if (dataInicioAquecimento > dataTerminoAquecimento) {
         setErrorDataTerminoAquecimento(true);
         setMensagemDataTerminoAquecimento(MSG018);
@@ -86,10 +78,7 @@ function EtapaAquecimento(props) {
       ) {
         setErrorDataInicioAquecimento(true);
         setMensagemDataInicioAquecimento(MSG027);
-      } else if (links.length === 0 && arquivos.length === 0) {
-        setMensagemErro(MSG031);
       } else {
-        setMensagemErro(MSG000);
         const dadosAquecimento = {
           dataInicioAquecimento,
           dataTerminoAquecimento,
@@ -101,20 +90,42 @@ function EtapaAquecimento(props) {
 
   const adicionarLink = async () => {
     if (link) {
-      links.push(link);
+      links.push({
+        link,
+        tipo: "LINK"
+      });
     }
     await setTimeout(() => {
       setMudou(false);
       setMudou(true);
     }, 100);
 
-    setLink(MSG000);
+    console.log(links)
   };
 
-  const adicionarArquivo = () => {
-    if (arquivo) {
-      arquivos.push(arquivo);
+  const adicionarArquivo = async () => {
+
+    let arquivoInput = document.getElementById('id-arquivo').files[0];
+
+    if (arquivoInput) {
+
+      let tipo = "VIDEO";
+      let extensaoPdf = /(.pdf)$/i;
+
+      if (extensaoPdf.exec(arquivoInput.name)) {
+        tipo = "PDF";
+      }
+
+      arquivos.push({
+        arquivoInput,
+        tipo
+      });
     }
+
+    await setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 100);
   };
 
   const removerLink = async (index) => {
@@ -130,13 +141,71 @@ function EtapaAquecimento(props) {
   };
 
   const removerArquivo = async (index) => {
-    arquivos.splice(index - 1, 1);
+    arquivos.splice(index, 1);
     let arquivosAtt = arquivos;
 
     await setTimeout(() => {
       setArquivos(arquivosAtt);
     }, 400);
+
+    setMudou(false);
+    setMudou(true);
   };
+
+  const confirmarMateriaisDeEstudo = () => {
+    props.setEtapaAquecimentoOk(false);
+
+    if (links.length === 0 && arquivos.length === 0) {
+      setMensagemErro(MSG036);
+    } else {
+      setMensagemErro(MSG000);
+      props.handleEtapaAquecimento(formatarArrayMateriaisDeEstudo());
+    }
+  }
+
+  const formatarArrayMateriaisDeEstudo = () => {
+
+    let materiais = [];
+
+    atribuirMaterialLink(materiais, links);
+    atribuirMaterialEstudo(materiais, arquivos);
+
+    console.log(materiais)
+    return materiais;
+  }
+
+  const atribuirMaterialLink = (materiais, array) => {
+    array.forEach((material) =>
+      materiais.push({
+        link: material.link,
+        tipoMaterialEstudo: material.tipo
+      })
+    );
+  }
+
+  const atribuirMaterialEstudo = (materiais, array) => {
+
+    array.forEach((material) => {
+
+      var reader = new FileReader();
+      var fileByteArray = [];
+      reader.readAsArrayBuffer(material.arquivoInput);
+      reader.onloadend = function (evt) {
+        if (evt.target.readyState == FileReader.DONE) {
+          var arrayBuffer = evt.target.result,
+            array = new Uint8Array(arrayBuffer);
+          for (var i = 0; i < array.length; i++) {
+            fileByteArray.push(array[i]);
+          }
+        }
+      }
+
+      materiais.push({
+        arquivoEstudo: fileByteArray,
+        tipoMaterialEstudo: material.tipo
+      })
+    });
+  }
 
   const Tables = () => {
     return (
@@ -152,25 +221,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                    <TableRow
-                      key={url}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {url}
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          className="me-2"
-                          onClick={() => removerLink(index)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {url.link}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-2"
+                        onClick={() => removerLink(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
                 : null}
             </TableBody>
           </Table>
@@ -184,26 +253,28 @@ function EtapaAquecimento(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {arquivos.map((documento) => (
-                <TableRow
-                  key={documento}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {documento}
-                  </TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      className="me-2"
-                      onClick={removerArquivo}
-                    >
-                      <i className="fa-solid fa-trash-can p-0"></i>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {mudou
+                ? arquivos.map((documento, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {documento.arquivoInput.name}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-2"
+                        onClick={() => removerArquivo(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+                : null}
             </TableBody>
           </Table>
         </TableContainer>
@@ -213,7 +284,7 @@ function EtapaAquecimento(props) {
 
   return (
     <div id="etapa-aquecimento-content">
-      <div style={{ width: "50%", marginBottom: "20px" }}>
+      <div style={{ width: "50%" }} className="mb-3">
         {mensagemErro !== "" ? (
           <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
         ) : null}
@@ -300,7 +371,7 @@ function EtapaAquecimento(props) {
         </div>
         <div className="w-50 me-2">
           <div className="inputs-lado-a-lado justify-content-end">
-            <label htmlFor="contained-button-file">
+            {/* <label htmlFor="contained-button-file">
               <Input
                 id="contained-button-file"
                 type="file"
@@ -310,7 +381,14 @@ function EtapaAquecimento(props) {
               <h6 className="border rounded p-2 mb-0 mt-2">
                 Upload de arquivos
               </h6>
-            </label>
+            </label> */}
+            <input
+              type="file"
+              id="id-arquivo"
+              name="avatar"
+              accept="video/*,.pdf"
+            />
+
             <Button
               className="rounded-pill ms-3"
               variant="contained"
@@ -330,7 +408,7 @@ function EtapaAquecimento(props) {
           titulo="salvar dados"
           classes="btn btn-warning botao-menor-personalizado"
           id="btn-salvar-dados-etapa-aquecimento"
-          onClick={salvarEtapaAquecimento}
+          onClick={confirmarMateriaisDeEstudo}
         />
       </div>
     </div>
