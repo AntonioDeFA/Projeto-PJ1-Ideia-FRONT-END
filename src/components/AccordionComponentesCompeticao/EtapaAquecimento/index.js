@@ -20,9 +20,9 @@ import {
   MSG000,
   MSG018,
   MSG027,
-  MSG036,
   MSG006,
   MSG004,
+  MSG031,
 } from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
@@ -31,7 +31,6 @@ import {
 } from "../../../services/utils";
 
 import "./styles.css";
-import { MSG031 } from "./../../../utils/mensagens";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
