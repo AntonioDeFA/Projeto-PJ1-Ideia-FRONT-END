@@ -18,6 +18,7 @@ import StoreContext from "./../../../store/context";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 
 import "./styles.css";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,6 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function TabelaAddConsultorAvaliador(props) {
   const dadosGerais = useContext(DadosGeraisContext);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [rows, setRows] = useState([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);

@@ -6,7 +6,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
-import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
 import {
   MSG000,
@@ -27,7 +26,6 @@ import "./styles.css";
 
 function EtapaImersao(props) {
   const dadosAquecimento = useContext(EtapaAquecimentoContext);
-  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);

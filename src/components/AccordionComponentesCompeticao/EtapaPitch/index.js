@@ -7,7 +7,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
 import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
-import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
 import { MSG000, MSG018, MSG025, MSG029 } from "./../../../utils/mensagens";
 import {
@@ -19,7 +18,6 @@ import "./styles.css";
 
 function EtapaPitch(props) {
   const dadosImersao = useContext(EtapaImersaoContext);
-  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioPitch, setDataInicioPitch] = useState(null);
   const [dataTerminoPitch, setDataTerminoPitch] = useState(null);
