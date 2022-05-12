@@ -16,7 +16,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
-import { MSG000, MSG018, MSG027, MSG036, MSG006 } from "../../../utils/mensagens";
+import { MSG000, MSG018, MSG027, MSG036, MSG006, MSG004 } from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
   saoDuasDatasIguais,
@@ -89,16 +89,23 @@ function EtapaAquecimento(props) {
   };
 
   const adicionarLink = async () => {
-    if (link) {
+    setErrorLink(false);
+    setMensagemLink(MSG000);
+
+    if (!!link) {
       links.push({
         link,
         tipo: "LINK"
       });
+
+      await setTimeout(() => {
+        setMudou(false);
+        setMudou(true);
+      }, 100);
+    } else {
+      setErrorLink(true);
+      setMensagemLink(MSG004);
     }
-    await setTimeout(() => {
-      setMudou(false);
-      setMudou(true);
-    }, 100);
 
     console.log(links)
   };
@@ -175,10 +182,15 @@ function EtapaAquecimento(props) {
   }
 
   const atribuirMaterialLink = (materiais, array) => {
+
     array.forEach((material) =>
       materiais.push({
         link: material.link,
-        tipoMaterialEstudo: material.tipo
+        tipoMaterialEstudo: material.tipo,
+        categoriaMaterialEstudo: {
+          enumeracao: 1,
+          nome: "Categoria 1"
+        }
       })
     );
   }
@@ -202,7 +214,11 @@ function EtapaAquecimento(props) {
 
       materiais.push({
         arquivoEstudo: fileByteArray,
-        tipoMaterialEstudo: material.tipo
+        tipoMaterialEstudo: material.tipo,
+        categoriaMaterialEstudo: {
+          enumeracao: 2,
+          nome: "Categoria 2"
+        }
       })
     });
   }
