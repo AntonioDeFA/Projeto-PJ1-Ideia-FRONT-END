@@ -47,3 +47,5 @@ export const MSG033 = "AQUECIMENTO";
 export const MSG034 = "IMERSAO";
 export const MSG035 = "PITCH";
 export const MSG036 = "Adicione um material de estudo a competição";
+export const MSG037 =
+  "É necessário que um PDF com o regulamento da competição seja anexado.";
