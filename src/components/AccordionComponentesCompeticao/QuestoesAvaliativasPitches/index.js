@@ -13,9 +13,10 @@ import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import { styleModals } from "../../../utils/constantes";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import { MSG000, MSG006, MSG030 } from "../../../utils/mensagens";
+import { MSG000, MSG006, MSG030, MSG036 } from "../../../utils/mensagens";
 
 import "./styles.css";
+import { MSG004 } from "./../../../utils/mensagens";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -59,6 +60,8 @@ function QuestoesAvaliativasPitches(props) {
   const handleCloseModalCriarQuestao = () => {
     setQuestao(MSG000);
     setPontosMax(null);
+    setErrorPontosMax(false);
+    setMensagemPontosMax(MSG000);
     setOpenModalCriarQuestao(false);
   };
 
@@ -68,6 +71,7 @@ function QuestoesAvaliativasPitches(props) {
   const [indexQuestao, setindexQuestao] = useState(-1);
 
   const [errorPontosMax, setErrorPontosMax] = useState(false);
+  const [mensagemPontosMax, setMensagemPontosMax] = useState(MSG000);
   const [errorQuestao, setErrorQuestao] = useState(false);
 
   const [isAtualizarQuestao, setIsAtualizarQuestao] = useState(false);
@@ -139,7 +143,16 @@ function QuestoesAvaliativasPitches(props) {
   };
 
   const cadastrarNovaQuestaoAvaliativa = () => {
-    if (questao && pontosMax) {
+    setErrorPontosMax(false);
+    setMensagemPontosMax(MSG000);
+
+    if (!pontosMax) {
+      setErrorPontosMax(true);
+      setMensagemPontosMax(MSG004);
+    } else if (pontosMax <= 4) {
+      setErrorPontosMax(true);
+      setMensagemPontosMax(MSG036);
+    } else if (questao && pontosMax) {
       let lista = questoesSustentabilidade;
 
       if (tipo === "Adaptabilidade") {
@@ -326,6 +339,7 @@ function QuestoesAvaliativasPitches(props) {
               {/* helperText="Quantidade máxima de pontos que essa questão vale" */}
               <TextField
                 error={errorPontosMax}
+                helperText={mensagemPontosMax}
                 id="input-quantidade-max-pontos"
                 value={pontosMax}
                 onChange={(e) => {

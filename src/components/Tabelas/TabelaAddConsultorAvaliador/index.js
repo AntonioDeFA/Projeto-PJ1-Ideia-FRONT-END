@@ -19,6 +19,7 @@ import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 
 import "./styles.css";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import Mensagem from "../../Mensagem";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,8 +33,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(email, icone, statusConvite) {
-  return { email, icone, statusConvite };
+function createData(email, statusConvite) {
+  return { email, statusConvite };
 }
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -58,8 +59,13 @@ function TabelaAddConsultorAvaliador(props) {
     React.useState(false);
   const handleOpenModalConvidarUsuario = () =>
     setOpenModalConvidarUsuario(true);
-  const handleCloseModalConvidarUsuario = () =>
+  const handleCloseModalConvidarUsuario = () => {
+    setMensagemAlerta(MSG000);
     setOpenModalConvidarUsuario(false);
+  };
+
+  const [mensagemAlerta, setMensagemAlerta] = useState(MSG000);
+  const [mudou, setMudou] = useState(true);
 
   const { token } = useContext(StoreContext);
 
@@ -73,30 +79,6 @@ function TabelaAddConsultorAvaliador(props) {
       return <p className="text-warning fw-bold m-0">convidado</p>;
     } else if (status === "aceito") {
       return <p className="text-success fw-bold m-0">aceito</p>;
-    }
-  };
-
-  const handleIcone = (status, email) => {
-    if (status === "convidado" || status === "aceito") {
-      return (
-        <i
-          onClick={() => {
-            removerUsuario(email);
-          }}
-          className="fa-solid fa-trash-can icone-tabela"
-          title="Remover este usuário"
-        ></i>
-      );
-    } else {
-      return (
-        <i
-          onClick={() => {
-            convidarUsuario(email);
-          }}
-          className="fa-solid fa-envelope icone-tabela"
-          title="Convidar este usuário"
-        ></i>
-      );
     }
   };
 
@@ -175,52 +157,50 @@ function TabelaAddConsultorAvaliador(props) {
   };
 
   const convidarUsuario = () => {
-    console.log(usuarioSelecionado.email);
-    handleCloseModalConvidarUsuario();
+    const convite = {
+      emailDoUsuario: usuarioSelecionado.email,
+      idCompeticao: idCompeticaoHook,
+      tipoConvite: props.tipoUsuario.toUpperCase(),
+    };
+
+    setMensagemAlerta(
+      `Estamos enviando um e-mail convidando o usuário ${usuarioSelecionado.nome}`
+    );
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api.post("/competicao/convidar-usuario", convite).then((response) => {
+      console.log(response.data);
+      handleCloseModalConvidarUsuario();
+    });
   };
 
   useEffect(() => {
-    if (props.idCompeticao) {
+    const tipoUsuario =
+      props.tipoUsuario === "consultor" ? "consultores" : "avaliadores";
+
+    if (idCompeticaoHook !== 0) {
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
       api
-        .get(`/competicao/${props.idCompeticao}/usuarios-nao-relacionados`)
+        .get(`/competicao/${idCompeticaoHook}/usuarios-nao-relacionados`)
         .then((response) => {
-          const { data } = response;
-          setUsuarios(data);
+          setUsuarios(response.data.usuarios);
         });
-    } else {
-      setUsuarios([
-        {
-          nome: "Nycolas Ramon Alves da Silva",
-          email: "nycolas.ramon@academico.ifpb.edu.br",
-          id: 1,
-        },
-        {
-          nome: "Antonio de Farias Amorim",
-          email: "antonio.amorim@academico.ifpb.edu.br.com",
-          id: 2,
-        },
-        {
-          nome: "José Gabriel da Silva Lima",
-          email: "ze.lima@gmail.com",
-          id: 3,
-        },
-        {
-          nome: "Gabryel Alexandre",
-          email: "gabryel.alex@academico.ifpb.edu.br",
-          id: 4,
-        },
-      ]);
+      api
+        .get(`/competicao/${idCompeticaoHook}/${tipoUsuario}`)
+        .then((response) => {
+          setRows([]);
+          response.data.forEach((user) => {
+            rows.push({
+              email: user.emaiConsultor,
+              statusConvite: user.statusConvite.toLowerCase(),
+            });
+          });
+          setMudou(false);
 
-      setRows([
-        createData("nycolas.ramon@academico.ifpb.edu.br", null, "convidado"),
-        createData("antonio@gmail.com", null, "aceito"),
-        createData("gabryel@hotmail.com.br", null, ""),
-        createData("gabriel.jose@hotmail.com.br", null, ""),
-        createData("nunes.mateus@hotmail.com.br", null, "convidado"),
-      ]);
+          console.log(rows);
+        });
+      setMudou(true);
     }
-  }, [props.idCompeticao, token]);
+  }, [idCompeticaoHook, token, openModalConvidarUsuario]);
 
   return (
     <div id="tabela-add-consultor-avaliador">
@@ -262,7 +242,13 @@ function TabelaAddConsultorAvaliador(props) {
                 <StyledTableRow key={row.email}>
                   <StyledTableCell align="left">{row.email}</StyledTableCell>
                   <StyledTableCell align="center">
-                    {handleIcone(row.statusConvite, row.email)}
+                    <i
+                      onClick={() => {
+                        removerUsuario(row.email);
+                      }}
+                      className="fa-solid fa-trash-can icone-tabela"
+                      title="Remover este usuário"
+                    ></i>
                   </StyledTableCell>
                   <StyledTableCell align="left">
                     {handleStatusConvite(row.statusConvite)}
@@ -288,6 +274,13 @@ function TabelaAddConsultorAvaliador(props) {
             style={{ marginBottom: "20px", textAlign: "center" }}
           >
             {handleMensagemConvidarUsuario()}
+            <div>
+              <div className="elementos-centralizados mt-2 mb-2">
+                {mensagemAlerta !== "" ? (
+                  <Mensagem mensagem={mensagemAlerta} tipoMensagem={"info"} />
+                ) : null}
+              </div>
+            </div>
           </Typography>
           {handleBotoesConvidarUsuario()}
         </Box>
