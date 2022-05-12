@@ -56,7 +56,11 @@ function QuestoesAvaliativasPitches(props) {
   const [openModalCriarQuestao, setOpenModalCriarQuestao] =
     React.useState(false);
   const handleOpenModalCriarQuestao = () => setOpenModalCriarQuestao(true);
-  const handleCloseModalCriarQuestao = () => setOpenModalCriarQuestao(false);
+  const handleCloseModalCriarQuestao = () => {
+    setQuestao(MSG000);
+    setPontosMax(null);
+    setOpenModalCriarQuestao(false);
+  };
 
   const [tipo, setTipo] = useState(MSG000);
   const [questao, setQuestao] = useState(MSG000);
@@ -220,9 +224,6 @@ function QuestoesAvaliativasPitches(props) {
     setindexQuestao(index);
 
     handleOpenModalCriarQuestao();
-
-    // console.log(index);
-    console.log(questao);
   };
 
   const confirmarQuestoesAvaliativas = () => {

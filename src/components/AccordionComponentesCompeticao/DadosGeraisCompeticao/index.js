@@ -8,6 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import {
   MSG000,
+  MSG006,
   MSG015,
   MSG016,
   MSG017,
@@ -18,6 +19,7 @@ import {
   MSG033,
   MSG034,
   MSG035,
+  MSG037,
 } from "../../../utils/mensagens";
 
 import "./styles.css";
@@ -27,6 +29,7 @@ import { validarCamposObrigatorios } from "./../../../services/utils";
 import api from "./../../../services/api";
 import StoreContext from "../../../store/context";
 import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import Mensagem from "../../Mensagem";
 
 function DadosGeraisCompeticao(props) {
   const idCompeticaoHook = useContext(idCompeticaoContext);
@@ -57,6 +60,8 @@ function DadosGeraisCompeticao(props) {
     useState(MSG000);
   const [mensagemDataTerminoInscricoes, setMensagemDataTerminoInscricoes] =
     useState(MSG000);
+
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const { token } = useContext(StoreContext);
 
@@ -106,6 +111,9 @@ function DadosGeraisCompeticao(props) {
       statusDataTerminoInscricoes
     ) {
       let hoje = new Date();
+      let arquivoInput = document.getElementById("contained-button-file")
+        .files[0];
+
       if (tempoMaxPitch < 3) {
         setErrorTempoMaxPitch(true);
         setMensagemTempoMaxPitch(MSG015);
@@ -124,11 +132,28 @@ function DadosGeraisCompeticao(props) {
       } else if (nome.length < 3 || nome.length > 16) {
         setErrorNome(true);
         setMensagemNome(MSG019);
+      } else if (!arquivoInput) {
+        setMensagemErro(MSG037);
       } else {
+        setMensagemErro(MSG000);
+
+        var reader = new FileReader();
+        var fileByteArray = [];
+        reader.readAsArrayBuffer(arquivoInput);
+        reader.onloadend = function (evt) {
+          if (evt.target.readyState == FileReader.DONE) {
+            var arrayBuffer = evt.target.result,
+              array = new Uint8Array(arrayBuffer);
+            for (var i = 0; i < array.length; i++) {
+              fileByteArray.push(array[i]);
+            }
+          }
+        };
+
         const dadosGerais = {
           nome,
           dominio,
-          regulamento,
+          regulamento: fileByteArray,
           tempoMaxPitch,
           qntdMinMembros,
           qntdMaxMembros,
@@ -136,80 +161,58 @@ function DadosGeraisCompeticao(props) {
           dataTerminoInscricoes,
         };
 
-        console.log(idCompeticaoHook);
-        if (idCompeticaoHook === 0) {
-          criarCompeticaoEmElaboracao();
-        } else {
-          console.log("atualizando...");
-        }
+        let novaCompeticao = {
+          nomeCompeticao: nome,
+          qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
+          qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
+          tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
+          arquivoRegulamentoCompeticao: fileByteArray,
+          dominioCompeticao: dominio,
+          etapas: [
+            {
+              dataInicio: [
+                Number(dataInicioInscricoes.getFullYear()),
+                Number(dataInicioInscricoes.getMonth()) + 1,
+                Number(dataInicioInscricoes.getDate()),
+              ],
+              dataTermino: [
+                Number(dataTerminoInscricoes.getFullYear()),
+                Number(dataTerminoInscricoes.getMonth()) + 1,
+                Number(dataTerminoInscricoes.getDate()),
+              ],
+              tipoEtapa: MSG032,
+            },
+            {
+              dataInicio: [2000, 1, 1],
+              dataTermino: [2000, 1, 1],
+              tipoEtapa: MSG033,
+            },
+            {
+              dataInicio: [2000, 1, 1],
+              dataTermino: [2000, 1, 1],
+              tipoEtapa: MSG034,
+            },
+            {
+              dataInicio: [2000, 1, 1],
+              dataTermino: [2000, 1, 1],
+              tipoEtapa: MSG035,
+            },
+          ],
+        };
 
+        salvarCompeticaoEmElaboracao(novaCompeticao);
         props.handleDadosGerais(dadosGerais);
       }
     }
   };
 
-  const criarCompeticaoEmElaboracao = () => {
+  const salvarCompeticaoEmElaboracao = (competicao) => {
+    console.log(competicao);
 
-    let arquivoInput = document.getElementById('contained-button-file').files[0];
-
-    if (!arquivoInput) {
-
-      var reader = new FileReader();
-      var fileByteArray = [];
-      reader.readAsArrayBuffer(arquivoInput);
-      reader.onloadend = function (evt) {
-        if (evt.target.readyState == FileReader.DONE) {
-          var arrayBuffer = evt.target.result,
-            array = new Uint8Array(arrayBuffer);
-          for (var i = 0; i < array.length; i++) {
-            fileByteArray.push(array[i]);
-          }
-        }
-      }
-
-      let novaCompeticao = {
-        nomeCompeticao: nome,
-        qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
-        qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
-        tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
-        arquivoRegulamentoCompeticao: fileByteArray,
-        dominioCompeticao: dominio,
-        etapas: [
-          {
-            dataInicio: [
-              Number(dataInicioInscricoes.getFullYear()),
-              Number(dataInicioInscricoes.getMonth()),
-              Number(dataInicioInscricoes.getDay()),
-            ],
-            dataTermino: [
-              Number(dataTerminoInscricoes.getFullYear()),
-              Number(dataTerminoInscricoes.getMonth()),
-              Number(dataTerminoInscricoes.getDay()),
-            ],
-            tipoEtapa: MSG032,
-          },
-          {
-            dataInicio: [2000, 1, 1],
-            dataTermino: [2000, 1, 1],
-            tipoEtapa: MSG033,
-          },
-          {
-            dataInicio: [2000, 1, 1],
-            dataTermino: [2000, 1, 1],
-            tipoEtapa: MSG034,
-          },
-          {
-            dataInicio: [2000, 1, 1],
-            dataTermino: [2000, 1, 1],
-            tipoEtapa: MSG035,
-          },
-        ],
-      };
-      console.log(novaCompeticao);
-
+    if (idCompeticaoHook === 0) {
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
-        .post("/competicao", novaCompeticao)
+        .post("/competicao", competicao)
         .then((response) => {
           console.log(response.data.idCompeticao);
           props.setIdCompeticaoHook(response.data.idCompeticao);
@@ -217,14 +220,26 @@ function DadosGeraisCompeticao(props) {
         .catch((error) => {
           console.log(error.response.data);
         });
-
-
-
+    } else {
+      api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
+      api
+        .put(`/competicao/update/${idCompeticaoHook}`, competicao)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     }
   };
 
   return (
     <div id="dados-gerais-content">
+      <div style={{ width: "50%" }} className="mb-3">
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
+      </div>
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioDiv">
@@ -355,10 +370,12 @@ function DadosGeraisCompeticao(props) {
 
         <div className="input-cadastro-competicao">
           <label htmlFor="contained-button-file">
-            <Input
-              id="contained-button-file"
+            {/* <Input id="contained-button-file" type="file" accept=".pdf" /> */}
+            <input
               type="file"
-              style={{ display: "none" }}
+              id="contained-button-file"
+              name="avatar"
+              accept=".pdf"
             />
             <Button
               variant="contained"
