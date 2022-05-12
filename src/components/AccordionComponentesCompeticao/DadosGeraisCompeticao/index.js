@@ -36,7 +36,7 @@ function DadosGeraisCompeticao(props) {
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
-  const [regulamento] = useState(MSG000);
+  const [regulamento, setRegulamento] = useState([]);
   const [tempoMaxPitch, setTempoMaxPitch] = useState(MSG000);
   const [qntdMinMembros, setQntdMinMembros] = useState(MSG000);
   const [qntdMaxMembros, setQntdMaxMembros] = useState(MSG000);
@@ -65,7 +65,7 @@ function DadosGeraisCompeticao(props) {
 
   const { token } = useContext(StoreContext);
 
-  const salvarDadosGerais = () => {
+  const salvarDadosGerais = async () => {
     props.setDadosGeraisOk(false);
     let statusNome = validarCamposObrigatorios(
       nome,
@@ -137,23 +137,12 @@ function DadosGeraisCompeticao(props) {
       } else {
         setMensagemErro(MSG000);
 
-        var reader = new FileReader();
-        var fileByteArray = [];
-        reader.readAsArrayBuffer(arquivoInput);
-        reader.onloadend = function (evt) {
-          if (evt.target.readyState == FileReader.DONE) {
-            var arrayBuffer = evt.target.result,
-              array = new Uint8Array(arrayBuffer);
-            for (var i = 0; i < array.length; i++) {
-              fileByteArray.push(array[i]);
-            }
-          }
-        };
+        await handleFormatarDocumento(arquivoInput);
 
         const dadosGerais = {
           nome,
           dominio,
-          regulamento: fileByteArray,
+          regulamento,
           tempoMaxPitch,
           qntdMinMembros,
           qntdMaxMembros,
@@ -166,7 +155,7 @@ function DadosGeraisCompeticao(props) {
           qntdMaximaMembrosPorEquipe: Number(qntdMaxMembros),
           qntdMinimaMembrosPorEquipe: Number(qntdMinMembros),
           tempoMaximoVideoEmSeg: Number(tempoMaxPitch) * 60,
-          arquivoRegulamentoCompeticao: fileByteArray,
+          arquivoRegulamentoCompeticao: regulamento,
           dominioCompeticao: dominio,
           etapas: [
             {
@@ -206,9 +195,30 @@ function DadosGeraisCompeticao(props) {
     }
   };
 
-  const salvarCompeticaoEmElaboracao = (competicao) => {
-    console.log(competicao);
+  const handleFormatarDocumento = async (arquivoInput) => {
+    var reader = new FileReader();
+    var fileByteArray = [];
+    reader.readAsArrayBuffer(arquivoInput);
+    reader.onloadend = await function (evt) {
+      setTimeout(() => {
+        if (evt.target.readyState == FileReader.DONE) {
+          var arrayBuffer = evt.target.result,
+            array = new Uint8Array(arrayBuffer);
+          for (var i = 0; i < array.length; i++) {
+            fileByteArray.push(array[i]);
+          }
+        }
+      }, 2500);
+    };
 
+    setTimeout(() => {
+      setRegulamento(fileByteArray);
+    }, 5000);
+
+    console.log(regulamento);
+  };
+
+  const salvarCompeticaoEmElaboracao = (competicao) => {
     if (idCompeticaoHook === 0) {
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api

@@ -16,7 +16,14 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
-import { MSG000, MSG018, MSG027, MSG036, MSG006, MSG004 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG018,
+  MSG027,
+  MSG036,
+  MSG006,
+  MSG004,
+} from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
   saoDuasDatasIguais,
@@ -24,6 +31,7 @@ import {
 } from "../../../services/utils";
 
 import "./styles.css";
+import { MSG031 } from "./../../../utils/mensagens";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
@@ -64,8 +72,6 @@ function EtapaAquecimento(props) {
     );
 
     if (statusDataInicioAquecimento && statusDataTerminoAquecimento) {
-      console.log(dadosGerais.dataTerminoInscricoes);
-      console.log(dataInicioAquecimento);
       if (dataInicioAquecimento > dataTerminoAquecimento) {
         setErrorDataTerminoAquecimento(true);
         setMensagemDataTerminoAquecimento(MSG018);
@@ -78,11 +84,17 @@ function EtapaAquecimento(props) {
       ) {
         setErrorDataInicioAquecimento(true);
         setMensagemDataInicioAquecimento(MSG027);
+      } else if (links.length === 0 && arquivos.length === 0) {
+        setMensagemErro(MSG031);
       } else {
+        setMensagemErro(MSG000);
+
         const dadosAquecimento = {
           dataInicioAquecimento,
           dataTerminoAquecimento,
+          materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
+
         props.handleEtapaAquecimento(dadosAquecimento);
       }
     }
@@ -95,7 +107,7 @@ function EtapaAquecimento(props) {
     if (!!link) {
       links.push({
         link,
-        tipo: "LINK"
+        tipo: "LINK",
       });
 
       await setTimeout(() => {
@@ -107,15 +119,13 @@ function EtapaAquecimento(props) {
       setMensagemLink(MSG004);
     }
 
-    console.log(links)
+    setLink(MSG000);
   };
 
   const adicionarArquivo = async () => {
-
-    let arquivoInput = document.getElementById('id-arquivo').files[0];
+    let arquivoInput = document.getElementById("id-arquivo").files[0];
 
     if (arquivoInput) {
-
       let tipo = "VIDEO";
       let extensaoPdf = /(.pdf)$/i;
 
@@ -125,7 +135,7 @@ function EtapaAquecimento(props) {
 
       arquivos.push({
         arquivoInput,
-        tipo
+        tipo,
       });
     }
 
@@ -159,46 +169,30 @@ function EtapaAquecimento(props) {
     setMudou(true);
   };
 
-  const confirmarMateriaisDeEstudo = () => {
-    props.setEtapaAquecimentoOk(false);
-
-    if (links.length === 0 && arquivos.length === 0) {
-      setMensagemErro(MSG036);
-    } else {
-      setMensagemErro(MSG000);
-      props.handleEtapaAquecimento(formatarArrayMateriaisDeEstudo());
-    }
-  }
-
   const formatarArrayMateriaisDeEstudo = () => {
-
     let materiais = [];
 
     atribuirMaterialLink(materiais, links);
     atribuirMaterialEstudo(materiais, arquivos);
 
-    console.log(materiais)
     return materiais;
-  }
+  };
 
   const atribuirMaterialLink = (materiais, array) => {
-
     array.forEach((material) =>
       materiais.push({
         link: material.link,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
           enumeracao: 1,
-          nome: "Categoria 1"
-        }
+          nome: "Categoria 1",
+        },
       })
     );
-  }
+  };
 
   const atribuirMaterialEstudo = (materiais, array) => {
-
     array.forEach((material) => {
-
       var reader = new FileReader();
       var fileByteArray = [];
       reader.readAsArrayBuffer(material.arquivoInput);
@@ -210,18 +204,18 @@ function EtapaAquecimento(props) {
             fileByteArray.push(array[i]);
           }
         }
-      }
+      };
 
       materiais.push({
         arquivoEstudo: fileByteArray,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
           enumeracao: 2,
-          nome: "Categoria 2"
-        }
-      })
+          nome: "Categoria 2",
+        },
+      });
     });
-  }
+  };
 
   const Tables = () => {
     return (
@@ -237,25 +231,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {url.link}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        className="me-2"
-                        onClick={() => removerLink(index)}
-                      >
-                        <i className="fa-solid fa-trash-can p-0"></i>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {url.link}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-2"
+                          onClick={() => removerLink(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 : null}
             </TableBody>
           </Table>
@@ -271,25 +265,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? arquivos.map((documento, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {documento.arquivoInput.name}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        className="me-2"
-                        onClick={() => removerArquivo(index)}
-                      >
-                        <i className="fa-solid fa-trash-can p-0"></i>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {documento.arquivoInput.name}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-2"
+                          onClick={() => removerArquivo(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 : null}
             </TableBody>
           </Table>
@@ -413,7 +407,7 @@ function EtapaAquecimento(props) {
           titulo="salvar dados"
           classes="btn btn-warning botao-menor-personalizado"
           id="btn-salvar-dados-etapa-aquecimento"
-          onClick={confirmarMateriaisDeEstudo}
+          onClick={salvarEtapaAquecimento}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Box } from "@mui/material";
@@ -13,7 +13,14 @@ import EtapaPitch from "./../../components/AccordionComponentesCompeticao/EtapaP
 import EtapaImersao from "./../../components/AccordionComponentesCompeticao/EtapaImersao/index";
 import DefaultHeader from "../../components/DefaultHeader";
 import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
-import { MSG022, MSG023 } from "../../utils/mensagens";
+import {
+  MSG022,
+  MSG023,
+  MSG032,
+  MSG033,
+  MSG034,
+  MSG035,
+} from "../../utils/mensagens";
 import DadosGeraisCompeticao from "./../../components/AccordionComponentesCompeticao/DadosGeraisCompeticao/index";
 import { DadosGeraisProvider } from "../../utils/context/dadosGeraisContext";
 import { EtapaImersaoProvider } from "./../../utils/context/etapaImersaoContext";
@@ -22,9 +29,12 @@ import { EtapaAquecimentoProvider } from "./../../utils/context/etapaAquecimento
 
 import "./styles.css";
 import { IdCompeticaoProvider } from "../../utils/context/idCompeticaoContext";
+import api from "../../services/api";
+import StoreContext from "../../store/context";
 
 function CadastroCompeticao() {
   const { idCompeticao } = useParams();
+  const { token } = useContext(StoreContext);
 
   const [dadosGerais, setDadosGerais] = useState(null);
   const [questoesAvaliativas, setQuestoesAvaliativas] = useState(null);
@@ -88,6 +98,78 @@ function CadastroCompeticao() {
 
   const salvarCompeticao = () => {
     if (idCompeticaoHook !== 0) {
+      let competicaoAtualizada = {
+        nomeCompeticao: dadosGerais.nome,
+        tempoMaximoVideoEmSeg: Number(dadosGerais.tempoMaxPitch) * 60,
+        questoesAvaliativas: questoesAvaliativas,
+        materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+        etapas: [
+          {
+            dataInicio: [
+              Number(dadosGerais.dataInicioInscricoes.getFullYear()),
+              Number(dadosGerais.dataInicioInscricoes.getMonth()) + 1,
+              Number(dadosGerais.dataInicioInscricoes.getDate()),
+            ],
+            dataTermino: [
+              Number(dadosGerais.dataTerminoInscricoes.getFullYear()),
+              Number(dadosGerais.dataTerminoInscricoes.getMonth()) + 1,
+              Number(dadosGerais.dataTerminoInscricoes.getDate()),
+            ],
+            tipoEtapa: MSG032,
+          },
+          {
+            dataInicio: [
+              Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+              Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+              Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+            ],
+            dataTermino: [
+              Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+              Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
+              Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+            ],
+            tipoEtapa: MSG033,
+          },
+          {
+            dataInicio: [
+              Number(dadosImersao.dataInicioImersao.getFullYear()),
+              Number(dadosImersao.dataInicioImersao.getMonth()) + 1,
+              Number(dadosImersao.dataInicioImersao.getDate()),
+            ],
+            dataTermino: [
+              Number(dadosImersao.dataTerminoImersao.getFullYear()),
+              Number(dadosImersao.dataTerminoImersao.getMonth()) + 1,
+              Number(dadosImersao.dataTerminoImersao.getDate()),
+            ],
+            tipoEtapa: MSG034,
+          },
+          {
+            dataInicio: [
+              Number(dadosPitch.dataInicioPitch.getFullYear()),
+              Number(dadosPitch.dataInicioPitch.getMonth()) + 1,
+              Number(dadosPitch.dataInicioPitch.getDate()),
+            ],
+            dataTermino: [
+              Number(dadosPitch.dataTerminoPitch.getFullYear()),
+              Number(dadosPitch.dataTerminoPitch.getMonth()) + 1,
+              Number(dadosPitch.dataTerminoPitch.getDate()),
+            ],
+            tipoEtapa: MSG035,
+          },
+        ],
+      };
+
+      console.log(competicaoAtualizada);
+
+      api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+      api
+        .patch(`/competicao/update/${idCompeticaoHook}`, competicaoAtualizada)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     }
   };
 
@@ -294,7 +376,15 @@ function CadastroCompeticao() {
                   id="btn-confirmar-inscricao-para-teste"
                   titulo="salvar"
                   onClick={salvarCompeticao}
-                  disabled={!(etapaPitchOk && questoesAvaliativasOk)}
+                  disabled={
+                    !(
+                      dadosGeraisOk &&
+                      etapaAquecimentoOk &&
+                      etapaImersaoOk &&
+                      etapaPitchOk &&
+                      questoesAvaliativasOk
+                    )
+                  }
                   classes="btn btn-warning botao-menor-personalizado"
                 />
               </div>
