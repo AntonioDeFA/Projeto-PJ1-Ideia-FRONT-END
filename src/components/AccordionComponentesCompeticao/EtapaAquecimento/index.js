@@ -370,25 +370,14 @@ function EtapaAquecimento(props) {
           />
         </div>
         <div className="w-50 me-2">
-          <div className="inputs-lado-a-lado justify-content-end">
-            {/* <label htmlFor="contained-button-file">
-              <Input
-                id="contained-button-file"
-                type="file"
-                value={arquivo}
-                style={{ display: "none" }}
-              />
-              <h6 className="border rounded p-2 mb-0 mt-2">
-                Upload de arquivos
-              </h6>
-            </label> */}
+          <div className="inputs-lado-a-lado d-flex justify-content-between">
             <input
               type="file"
               id="id-arquivo"
               name="avatar"
               accept="video/*,.pdf"
+              className="ms-2"
             />
-
             <Button
               className="rounded-pill ms-3"
               variant="contained"
