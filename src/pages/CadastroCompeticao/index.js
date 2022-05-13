@@ -32,9 +32,12 @@ import { IdCompeticaoProvider } from "../../utils/context/idCompeticaoContext";
 import api from "../../services/api";
 import StoreContext from "../../store/context";
 
+import { useNavigate } from "react-router-dom";
+
 function CadastroCompeticao() {
   const { idCompeticao } = useParams();
   const { token } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const [dadosGerais, setDadosGerais] = useState(null);
   const [questoesAvaliativas, setQuestoesAvaliativas] = useState(null);
@@ -166,6 +169,7 @@ function CadastroCompeticao() {
         .patch(`/competicao/update/${idCompeticaoHook}`, competicaoAtualizada)
         .then((response) => {
           console.log(response.data);
+          return navigate("/inicio");
         })
         .catch((error) => {
           console.log(error.response.data);

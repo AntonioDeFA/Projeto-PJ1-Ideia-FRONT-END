@@ -187,19 +187,27 @@ function TabelaAddConsultorAvaliador(props) {
       api
         .get(`/competicao/${idCompeticaoHook}/${tipoUsuario}`)
         .then((response) => {
-          setRows([]);
-          response.data.forEach((user) => {
-            rows.push({
-              email: user.emaiConsultor,
-              statusConvite: user.statusConvite.toLowerCase(),
-            });
-          });
+          // setRows([]);
+          // response.data.forEach((user) => {
+          //   rows.push({
+          //     email: user.emaiConsultor,
+          //     statusConvite: user.statusConvite.toLowerCase(),
+          //   });
+          // });
           setMudou(false);
 
           console.log(rows);
         });
       setMudou(true);
     }
+
+    setRows([
+      createData("nycolas.ramon@academico.ifpb.edu.br", "convidado"),
+      createData("antonio@gmail.com", "convidado"),
+      createData("gabryel@hotmail.com.br", "convidado"),
+      createData("gabriel.jose@hotmail.com.br", "convidado"),
+      createData("nunes.mateus@hotmail.com.br", "convidado"),
+    ]);
   }, [idCompeticaoHook, token, openModalConvidarUsuario]);
 
   return (
