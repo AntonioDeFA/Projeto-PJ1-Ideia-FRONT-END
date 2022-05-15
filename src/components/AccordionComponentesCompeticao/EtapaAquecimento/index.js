@@ -218,12 +218,12 @@ function EtapaAquecimento(props) {
 
   const Tables = () => {
     return (
-      <div className="inputs-lado-a-lado mt-4">
+      <div className="inputs-lado-a-lado mt-3">
         <TableContainer component={Paper} className="me-2">
           <Table sx={{ minWidth: 170 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell>Nome (links)</TableCell>
+                <TableCell>Links anexados</TableCell>
                 <TableCell align="right">Excluir</TableCell>
               </TableRow>
             </TableHead>
@@ -241,7 +241,7 @@ function EtapaAquecimento(props) {
                         <IconButton
                           edge="end"
                           aria-label="delete"
-                          className="me-2"
+                          className="me-1"
                           onClick={() => removerLink(index)}
                         >
                           <i className="fa-solid fa-trash-can p-0"></i>
@@ -253,11 +253,11 @@ function EtapaAquecimento(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TableContainer component={Paper} className="ms-2 me-2">
+        <TableContainer component={Paper} className="ms-2">
           <Table sx={{ minWidth: 170 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell>Nome (Arquivo)</TableCell>
+                <TableCell>Arquivos anexados</TableCell>
                 <TableCell align="right">Excluir</TableCell>
               </TableRow>
             </TableHead>
@@ -353,57 +353,59 @@ function EtapaAquecimento(props) {
           </div>
         </div>
       </Box>
-      <div>
-        <TextField
-          className="input-cadastro-competicao"
-          error={errorLink}
-          helperText={mensagemLink}
-          id="input-link"
-          value={link}
-          onChange={(e) => {
-            setLink(e.target.value);
-          }}
-          label="Adicione um link da internet *"
-          type="text"
-          variant="filled"
-          color="warning"
-          size="small"
-        />
-      </div>
-      <div className="inputs-lado-a-lado">
-        <div className="w-50">
-          <Botao
-            titulo="adicionar"
-            classes="btn btn-warning botao-menor-personalizado "
-            onClick={adicionarLink}
+
+      <div className="row mt-5">
+        <div className="col d-flex justify-content-between align-items-center">
+          <TextField
+            className="input-cadastro-competicao-icone-plus"
+            error={errorLink}
+            helperText={mensagemLink}
+            id="input-link"
+            value={link}
+            onChange={(e) => {
+              setLink(e.target.value);
+            }}
+            label="Adicione um link da internet *"
+            type="text"
+            variant="filled"
+            color="warning"
+            size="small"
           />
+          <Button
+            className="rounded-pill ms-3"
+            variant="contained"
+            color="warning"
+            component="span"
+            onClick={adicionarLink}
+          >
+            <i className="fa-solid fa-plus icon-plus"></i>
+          </Button>
         </div>
-        <div className="w-50 me-2">
-          <div className="inputs-lado-a-lado d-flex justify-content-between">
-            <input
-              type="file"
-              id="id-arquivo"
-              name="avatar"
-              accept="video/*,.pdf"
-              className="ms-2"
-            />
-            <Button
-              className="rounded-pill ms-3"
-              variant="contained"
-              color="warning"
-              component="span"
-              onClick={adicionarArquivo}
-            >
-              <strong>+</strong>
-            </Button>
-          </div>
+        <div className="col d-flex justify-content-between align-items-center input-group">
+          <input
+            type="file"
+            id="id-arquivo"
+            name="avatar"
+            accept="video/*,.pdf"
+            className="input-file-aquecimento form-control"
+          />
+          <Button
+            className="rounded-pill ms-3"
+            variant="contained"
+            color="warning"
+            component="span"
+            onClick={adicionarArquivo}
+          >
+            <i className="fa-solid fa-plus icon-plus"></i>
+          </Button>
         </div>
       </div>
+
       <Tables />
 
       <div className="input-cadastro-competicao mt-4">
         <Botao
-          titulo="salvar dados"
+          titulo="salvar"
           classes="btn btn-warning botao-menor-personalizado"
           id="btn-salvar-dados-etapa-aquecimento"
           onClick={salvarEtapaAquecimento}
