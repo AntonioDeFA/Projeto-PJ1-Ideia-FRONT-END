@@ -67,8 +67,6 @@ function CadastroCompeticao() {
   const handleQuestoesAvaliativas = (questoesAvaliativas) => {
     setQuestoesAvaliativas(questoesAvaliativas);
     setQuestoesAvaliativasOk(true);
-
-    console.log(questoesAvaliativas);
   };
 
   const handleEtapaAquecimento = (dadosAquecimento) => {
@@ -181,7 +179,7 @@ function CadastroCompeticao() {
     if (idCompeticao) {
       setIdCompeticaoHook(idCompeticao);
     }
-  }, []);
+  }, [idCompeticao]);
 
   return (
     <div id="cadastro-equipe">
@@ -297,83 +295,86 @@ function CadastroCompeticao() {
               </DadosGeraisProvider>
             </div>
 
-            <div title={handleAccordionImersao() ? MSG022 : null}>
-              <EtapaAquecimentoProvider value={dadosAquecimento}>
-                <Accordion
-                  disabled={handleAccordionImersao()}
-                  expanded={expanded === "panel4"}
-                  onChange={handleChange("panel4")}
-                  sx={{ border: "1px solid #ffc107" }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                    sx={{ backgroundColor: "#ffc107" }}
-                    id="panel1bh-header"
+            <DadosGeraisProvider value={dadosGerais}>
+              <div title={handleAccordionImersao() ? MSG022 : null}>
+                <EtapaAquecimentoProvider value={dadosAquecimento}>
+                  <Accordion
+                    disabled={handleAccordionImersao()}
+                    expanded={expanded === "panel4"}
+                    onChange={handleChange("panel4")}
+                    sx={{ border: "1px solid #ffc107" }}
                   >
-                    <Typography
-                      variant="h5"
-                      sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1bh-content"
+                      sx={{ backgroundColor: "#ffc107" }}
+                      id="panel1bh-header"
                     >
-                      <Box sx={{ display: "flex" }}>
-                        {etapaImersaoOk ? (
-                          <div className="icone-ok">
-                            <i className="fa-solid fa-circle-check"></i>
-                          </div>
-                        ) : null}
-                        Etapa de Imersão
-                      </Box>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails sx={{ padding: "20px" }}>
-                    <EtapaImersao
-                      handleEtapaImersao={handleEtapaImersao}
-                      setEtapaImersaoOk={setEtapaImersaoOk}
-                      dominioCompeticao={dadosGerais?.dominioCompeticao}
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              </EtapaAquecimentoProvider>
-            </div>
+                      <Typography
+                        variant="h5"
+                        sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                      >
+                        <Box sx={{ display: "flex" }}>
+                          {etapaImersaoOk ? (
+                            <div className="icone-ok">
+                              <i className="fa-solid fa-circle-check"></i>
+                            </div>
+                          ) : null}
+                          Etapa de Imersão
+                        </Box>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{ padding: "20px" }}>
+                      <EtapaImersao
+                        handleEtapaImersao={handleEtapaImersao}
+                        setEtapaImersaoOk={setEtapaImersaoOk}
+                        dominioCompeticao={dadosGerais?.dominioCompeticao}
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                </EtapaAquecimentoProvider>
+              </div>
 
-            <div title={handleAccordionPitch() ? MSG022 : null}>
-              <EtapaImersaoProvider value={dadosImersao}>
-                <Accordion
-                  disabled={handleAccordionPitch()}
-                  expanded={expanded === "panel5"}
-                  onChange={handleChange("panel5")}
-                  sx={{ border: "1px solid #ffc107" }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                    sx={{ backgroundColor: "#ffc107" }}
-                    id="panel1bh-header"
+              <div title={handleAccordionPitch() ? MSG022 : null}>
+                <EtapaImersaoProvider value={dadosImersao}>
+                  <Accordion
+                    disabled={handleAccordionPitch()}
+                    expanded={expanded === "panel5"}
+                    onChange={handleChange("panel5")}
+                    sx={{ border: "1px solid #ffc107" }}
                   >
-                    <Typography
-                      variant="h5"
-                      sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1bh-content"
+                      sx={{ backgroundColor: "#ffc107" }}
+                      id="panel1bh-header"
                     >
-                      <Box sx={{ display: "flex" }}>
-                        {etapaPitchOk ? (
-                          <div className="icone-ok">
-                            <i className="fa-solid fa-circle-check"></i>
-                          </div>
-                        ) : null}
-                        Etapa de Pitch
-                      </Box>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails sx={{ padding: "20px" }}>
-                    <EtapaPitch
-                      handleEtapaPitch={handleEtapaPitch}
-                      setEtapaPitchOk={setEtapaPitchOk}
-                      dominioCompeticao={dadosGerais?.dominioCompeticao}
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              </EtapaImersaoProvider>
-            </div>
+                      <Typography
+                        variant="h5"
+                        sx={{ width: "33%", flexShrink: 0, color: "white" }}
+                      >
+                        <Box sx={{ display: "flex" }}>
+                          {etapaPitchOk ? (
+                            <div className="icone-ok">
+                              <i className="fa-solid fa-circle-check"></i>
+                            </div>
+                          ) : null}
+                          Etapa de Pitch
+                        </Box>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{ padding: "20px" }}>
+                      <EtapaPitch
+                        handleEtapaPitch={handleEtapaPitch}
+                        setEtapaPitchOk={setEtapaPitchOk}
+                        dominioCompeticao={dadosGerais?.dominioCompeticao}
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                </EtapaImersaoProvider>
+              </div>
+            </DadosGeraisProvider>
+
             <div id="botoes-competicao">
               <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>
                 <Botao
