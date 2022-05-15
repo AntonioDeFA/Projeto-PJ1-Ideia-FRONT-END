@@ -382,7 +382,7 @@ function QuestoesAvaliativasPitches(props) {
 
         <div className="input-cadastro-competicao mt-4">
           <Botao
-            titulo="confirmar questões avaliativas"
+            titulo="salvar"
             classes="btn btn-warning botao-menor-personalizado"
             id="btn-confirmar-questoes-avaliativas"
             onClick={confirmarQuestoesAvaliativas}

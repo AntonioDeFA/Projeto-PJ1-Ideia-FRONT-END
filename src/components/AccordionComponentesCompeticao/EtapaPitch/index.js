@@ -131,7 +131,7 @@ function EtapaPitch(props) {
 
       <div className="input-cadastro-competicao mt-4">
         <Botao
-          titulo="salvar dados"
+          titulo="salvar"
           classes="btn btn-warning botao-menor-personalizado"
           id="btn-salvar-dados-etapa-pitch"
           onClick={salvarEtapaPitch}
