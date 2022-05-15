@@ -1,6 +1,5 @@
 div #tabela-usuarios {
   max-height: 250px;
-  max-width: 503px;
   overflow-y: scroll;
 }
 

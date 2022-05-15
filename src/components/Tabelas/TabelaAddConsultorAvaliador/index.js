@@ -71,7 +71,7 @@ function TabelaAddConsultorAvaliador(props) {
 
   const defaultProps = {
     options: usuarios,
-    getOptionLabel: (usuario) => usuario.nome,
+    getOptionLabel: (usuario) => usuario.email,
   };
 
   const handleStatusConvite = (status) => {
@@ -168,7 +168,6 @@ function TabelaAddConsultorAvaliador(props) {
     );
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
     api.post("/competicao/convidar-usuario", convite).then((response) => {
-      console.log(response.data);
       handleCloseModalConvidarUsuario();
     });
   };
@@ -195,8 +194,6 @@ function TabelaAddConsultorAvaliador(props) {
           //   });
           // });
           setMudou(false);
-
-          console.log(rows);
         });
       setMudou(true);
     }
@@ -236,19 +233,19 @@ function TabelaAddConsultorAvaliador(props) {
 
       <div id="tabela-usuarios" className="mt-3">
         <TableContainer component={Paper}>
-          <Table sx={{ width: 470, height: 300 }} aria-label="customized table">
+          <Table sx={{ height: 300 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell align="left">Email</StyledTableCell>
-                <StyledTableCell align="left">Convidar</StyledTableCell>
-                <StyledTableCell align="left">Status</StyledTableCell>
+                <StyledTableCell align="center">Email</StyledTableCell>
+                <StyledTableCell align="center">Convidar</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {rows.map((row) => (
                 <StyledTableRow key={row.email}>
-                  <StyledTableCell align="left">{row.email}</StyledTableCell>
+                  <StyledTableCell align="center">{row.email}</StyledTableCell>
                   <StyledTableCell align="center">
                     <i
                       onClick={() => {
@@ -258,7 +255,7 @@ function TabelaAddConsultorAvaliador(props) {
                       title="Remover este usuário"
                     ></i>
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="center">
                     {handleStatusConvite(row.statusConvite)}
                   </StyledTableCell>
                 </StyledTableRow>
