@@ -8,6 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import {
   MSG000,
+  MSG005,
   MSG006,
   MSG015,
   MSG016,
@@ -44,7 +45,6 @@ function DadosGeraisCompeticao(props) {
   const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(null);
 
   const [errorNome, setErrorNome] = useState(false);
-  // const [errorRegulamento, setErrorRegulamento] = useState(false);
   const [errorTempoMaxPitch, setErrorTempoMaxPitch] = useState(false);
   const [errorQntdMinMembros, setErrorQntdMinMembros] = useState(false);
   const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(false);
@@ -52,7 +52,6 @@ function DadosGeraisCompeticao(props) {
   const [, setErrorDataTerminoInscricoes] = useState(false);
 
   const [mensagemNome, setMensagemNome] = useState(MSG000);
-  // const [mensagemRegulamento, setMensagemRegulamento] = useState(MSG000);
   const [mensagemTempoMaxPitch, setMensagemTempoMaxPitch] = useState(MSG000);
   const [mensagemQntdMinMembros, setMensagemQntdMinMembros] = useState(MSG000);
   const [mensagemQntdMaxMembros, setMensagemQntdMaxMembros] = useState(MSG000);
@@ -214,8 +213,6 @@ function DadosGeraisCompeticao(props) {
     setTimeout(() => {
       setRegulamento(fileByteArray);
     }, 5000);
-
-    console.log(regulamento);
   };
 
   const salvarCompeticaoEmElaboracao = (competicao) => {
@@ -224,7 +221,6 @@ function DadosGeraisCompeticao(props) {
       api
         .post("/competicao", competicao)
         .then((response) => {
-          console.log(response.data.idCompeticao);
           props.setIdCompeticaoHook(response.data.idCompeticao);
         })
         .catch((error) => {
@@ -380,21 +376,13 @@ function DadosGeraisCompeticao(props) {
 
         <div className="input-cadastro-competicao">
           <label htmlFor="contained-button-file">
-            {/* <Input id="contained-button-file" type="file" accept=".pdf" /> */}
+            Regulamento da competição
             <input
               type="file"
               id="contained-button-file"
-              name="avatar"
               accept=".pdf"
+              className="form-control"
             />
-            <Button
-              variant="contained"
-              color="warning"
-              component="span"
-              startIcon={<UploadFile />}
-            >
-              <strong>Regulamento da competição</strong>
-            </Button>
           </label>
         </div>
 
@@ -418,7 +406,7 @@ function DadosGeraisCompeticao(props) {
       </Box>
       <div className="input-cadastro-competicao">
         <Botao
-          titulo="salvar dados gerais"
+          titulo="salvar"
           classes="btn btn-warning botao-menor-personalizado"
           id="btn-salvar-dados-gerais-competicao"
           onClick={salvarDadosGerais}
