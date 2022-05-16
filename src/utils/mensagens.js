@@ -49,3 +49,5 @@ export const MSG035 = "PITCH";
 export const MSG036 = "O valor mínimo permitido é 5.";
 export const MSG037 =
   "É necessário que um PDF com o regulamento da competição seja anexado.";
+export const MSG038 = "É necessário que a questão avaliativa seja informada.";
+export const MSG039 = "A questão deve ter entre 5 e 80 caracteres.";
