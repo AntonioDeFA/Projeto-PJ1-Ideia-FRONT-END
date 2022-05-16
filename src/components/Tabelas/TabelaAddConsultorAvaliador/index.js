@@ -211,7 +211,7 @@ function TabelaAddConsultorAvaliador(props) {
     <div id="tabela-add-consultor-avaliador">
       <Autocomplete
         {...defaultProps}
-        sx={{ width: 503 }}
+        sx={{ width: 470 }}
         id="controlled-demo"
         value={usuarioSelecionado}
         isOptionEqualToValue={(usuario, value) => usuario.email === value.email}
