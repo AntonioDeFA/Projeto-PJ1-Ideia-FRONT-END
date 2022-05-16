@@ -168,8 +168,19 @@ function TabelaAddConsultorAvaliador(props) {
     );
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
     api.post("/competicao/convidar-usuario", convite).then((response) => {
+      getUsuariosNaoRelacionados();
       handleCloseModalConvidarUsuario();
+      setUsuarioSelecionado(null);
     });
+  };
+
+  const getUsuariosNaoRelacionados = () => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/competicao/${idCompeticaoHook}/usuarios-nao-relacionados`)
+      .then((response) => {
+        setUsuarios(response.data.usuarios);
+      });
   };
 
   useEffect(() => {
@@ -177,12 +188,8 @@ function TabelaAddConsultorAvaliador(props) {
       props.tipoUsuario === "consultor" ? "consultores" : "avaliadores";
 
     if (idCompeticaoHook !== 0) {
+      getUsuariosNaoRelacionados();
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-      api
-        .get(`/competicao/${idCompeticaoHook}/usuarios-nao-relacionados`)
-        .then((response) => {
-          setUsuarios(response.data.usuarios);
-        });
       api
         .get(`/competicao/${idCompeticaoHook}/${tipoUsuario}`)
         .then((response) => {
