@@ -279,7 +279,7 @@ function QuestoesAvaliativasPitches(props) {
   return (
     <div>
       <div style={{ width: "50%" }}>
-        {mensagemErro !== "" ? (
+        {mensagemErro !== MSG000 ? (
           <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
         ) : null}
       </div>
@@ -300,10 +300,22 @@ function QuestoesAvaliativasPitches(props) {
             }}
             aria-label="basic tabs example"
           >
-            <Tab label="Adaptabilidade" {...valueProps(0)} />
-            <Tab label="Inovação" {...valueProps(1)} />
-            <Tab label="Utilidade" {...valueProps(2)} />
-            <Tab label="Sustentabilidade" {...valueProps(3)} />
+            <Tab
+              label={`Adaptabilidade (${questoesAdaptabilidade.length})`}
+              {...valueProps(0)}
+            />
+            <Tab
+              label={`Inovação (${questoesInovacao.length})`}
+              {...valueProps(1)}
+            />
+            <Tab
+              label={`Utilidade (${questoesUtilidade.length})`}
+              {...valueProps(2)}
+            />
+            <Tab
+              label={`Sustentabilidade (${questoesSustentabilidade.length})`}
+              {...valueProps(3)}
+            />
           </Tabs>
         </Box>
 
