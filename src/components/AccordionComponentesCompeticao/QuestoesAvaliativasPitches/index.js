@@ -13,11 +13,17 @@ import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import { styleModals } from "../../../utils/constantes";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import { MSG000, MSG006, MSG030, MSG036 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG004,
+  MSG006,
+  MSG030,
+  MSG036,
+  MSG038,
+  MSG039,
+} from "../../../utils/mensagens";
 
 import "./styles.css";
-import { MSG004 } from "./../../../utils/mensagens";
-
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -62,6 +68,7 @@ function QuestoesAvaliativasPitches(props) {
     setPontosMax(null);
     setErrorPontosMax(false);
     setMensagemPontosMax(MSG000);
+    setMensagemErroQuestao(MSG000);
     setOpenModalCriarQuestao(false);
   };
 
@@ -72,7 +79,7 @@ function QuestoesAvaliativasPitches(props) {
 
   const [errorPontosMax, setErrorPontosMax] = useState(false);
   const [mensagemPontosMax, setMensagemPontosMax] = useState(MSG000);
-  const [errorQuestao, setErrorQuestao] = useState(false);
+  const [mensagemErroQuestao, setMensagemErroQuestao] = useState(MSG000);
 
   const [isAtualizarQuestao, setIsAtualizarQuestao] = useState(false);
 
@@ -152,7 +159,11 @@ function QuestoesAvaliativasPitches(props) {
     } else if (pontosMax <= 4) {
       setErrorPontosMax(true);
       setMensagemPontosMax(MSG036);
-    } else if (questao && pontosMax) {
+    } else if (questao === MSG000) {
+      setMensagemErroQuestao(MSG038);
+    } else if (questao.length < 5 || questao.length > 80) {
+      setMensagemErroQuestao(MSG039);
+    } else {
       let lista = questoesSustentabilidade;
 
       if (tipo === "Adaptabilidade") {
@@ -365,6 +376,16 @@ function QuestoesAvaliativasPitches(props) {
                 style={{ width: "270px" }}
               />
             </div>
+
+            {mensagemErroQuestao !== MSG000 ? (
+              <div className="mt-4">
+                <Mensagem
+                  mensagem={mensagemErroQuestao}
+                  tipoMensagem={MSG006}
+                />
+              </div>
+            ) : null}
+
             <TextareaAutosize
               value={questao}
               onChange={(e) => {
@@ -374,7 +395,7 @@ function QuestoesAvaliativasPitches(props) {
               aria-label="minimum height"
               minRows={2}
               placeholder="Digite aqui a questão avaliativa"
-              style={{ width: 200, height: 200, resize: "none" }}
+              style={{ width: 200, height: 150, resize: "none" }}
             />
             <div className="botoes-cadastro mt-2">
               <Botao
