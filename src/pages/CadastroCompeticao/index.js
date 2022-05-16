@@ -14,6 +14,7 @@ import EtapaImersao from "./../../components/AccordionComponentesCompeticao/Etap
 import DefaultHeader from "../../components/DefaultHeader";
 import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
 import {
+  MSG000,
   MSG022,
   MSG023,
   MSG032,
@@ -62,26 +63,31 @@ function CadastroCompeticao() {
   const handleDadosGerais = (dadosGerais) => {
     setDadosGerais(dadosGerais);
     setDadosGeraisOk(true);
+    setExpanded("panel2");
   };
 
   const handleQuestoesAvaliativas = (questoesAvaliativas) => {
     setQuestoesAvaliativas(questoesAvaliativas);
     setQuestoesAvaliativasOk(true);
+    setExpanded("panel3");
   };
 
   const handleEtapaAquecimento = (dadosAquecimento) => {
     setDadosAquecimento(dadosAquecimento);
     setEtapaAquecimentoOk(true);
+    setExpanded("panel4");
   };
 
   const handleEtapaImersao = (dadosImersao) => {
     setDadosImersao(dadosImersao);
     setEtapaImersaoOk(true);
+    setExpanded("panel5");
   };
 
   const handleEtapaPitch = (dadosPitch) => {
     setDadosPitch(dadosPitch);
     setEtapaPitchOk(true);
+    setExpanded(MSG000);
   };
 
   const handleAccordionQuestoesAvaliativas = () => {
