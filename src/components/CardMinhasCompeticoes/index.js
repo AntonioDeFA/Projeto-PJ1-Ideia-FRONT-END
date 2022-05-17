@@ -56,25 +56,29 @@ function CardMinhasCompeticoes(props) {
     let element = null;
     let tipoEtapa = props.card?.etapaVigente?.tipoEtapa;
 
-    switch (tipoEtapa) {
-      case "INSCRICAO":
-        element = <h6 className="text-success fw-bold m-0">INSCRIÇÃO</h6>;
-        break;
-      case "AQUECIMENTO":
-        element = <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>;
-        break;
-      case "IMERSAO":
-        element = <h6 className="text-primary fw-bold m-0">IMERSAO</h6>;
-        break;
-      case "PITCH":
-        element = <h6 className="text-warning fw-bold m-0">PITCH</h6>;
-        break;
-      case "ENCERRADA":
-        element = <h6 className="text-secondary fw-bold m-0">ENCERRADA</h6>;
-        break;
-      default:
-        element = <h6 className="fw-bold m-0">Etapa não especificada</h6>;
-        break;
+    if (props.card.elaboracao) {
+      element = <h6 className="text-info fw-bold m-0">ELABORAÇÃO</h6>;
+    } else {
+      switch (tipoEtapa) {
+        case "INSCRICAO":
+          element = <h6 className="text-success fw-bold m-0">INSCRIÇÃO</h6>;
+          break;
+        case "AQUECIMENTO":
+          element = <h6 className="text-danger fw-bold m-0">AQUECIMENTO</h6>;
+          break;
+        case "IMERSAO":
+          element = <h6 className="text-primary fw-bold m-0">IMERSAO</h6>;
+          break;
+        case "PITCH":
+          element = <h6 className="text-warning fw-bold m-0">PITCH</h6>;
+          break;
+        case "ENCERRADA":
+          element = <h6 className="text-secondary fw-bold m-0">ENCERRADA</h6>;
+          break;
+        default:
+          element = <h6 className="fw-bold m-0">Etapa não especificada</h6>;
+          break;
+      }
     }
 
     return element;
@@ -129,7 +133,8 @@ function CardMinhasCompeticoes(props) {
             <h6 className="card-subtitle">
               {handleDatas(
                 props.card?.etapaVigente?.dataInicio,
-                props.card?.etapaVigente?.dataTermino
+                props.card?.etapaVigente?.dataTermino,
+                props.card.elaboracao
               )}
             </h6>
           </div>
@@ -146,10 +151,13 @@ function CardMinhasCompeticoes(props) {
                 <i className="fa-solid fa-pen-to-square hover-azul"></i>
               ) : null}
 
-              <i
-                onClick={null}
-                className="fa-solid fa-arrow-right-to-bracket hover-azul"
-              ></i>
+              {!props.card.elaboracao ? (
+                <i
+                  onClick={null}
+                  className="fa-solid fa-arrow-right-to-bracket hover-azul"
+                ></i>
+              ) : null}
+
               <i
                 onClick={handleOpenModalDeletarCompeticao}
                 className="fa-solid fa-trash-can"

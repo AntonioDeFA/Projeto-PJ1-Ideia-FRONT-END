@@ -6,18 +6,20 @@ export function validarEmail(email) {
   return re.test(email);
 }
 
-export function handleDatas(dataInicio, dataTermino) {
-  if (
-    dataInicio &&
-    dataInicio.length > 0 &&
-    dataTermino &&
-    dataTermino.length > 0
-  ) {
-    return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${
-      dataInicio[0]
-    } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${
-      dataTermino[0]
-    }`;
+export function handleDatas(dataInicio, dataTermino, elaboracao = false) {
+  if (!elaboracao) {
+    if (
+      dataInicio &&
+      dataInicio.length > 0 &&
+      dataTermino &&
+      dataTermino.length > 0
+    ) {
+      return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${
+        dataInicio[0]
+      } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${
+        dataTermino[0]
+      }`;
+    }
   }
 }
 
