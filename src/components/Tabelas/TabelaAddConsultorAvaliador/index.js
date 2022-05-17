@@ -13,13 +13,14 @@ import { Autocomplete, Modal, TextField, Box, Typography } from "@mui/material";
 
 import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
-import { MSG000, MSG026 } from "../../../utils/mensagens";
+import Mensagem from "../../Mensagem";
 import StoreContext from "./../../../store/context";
+import { MSG000, MSG026 } from "../../../utils/mensagens";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import ExpandedAccordionContext from "../../../utils/context/expandedAccordionContext";
 
 import "./styles.css";
-import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import Mensagem from "../../Mensagem";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,6 +51,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function TabelaAddConsultorAvaliador(props) {
   const dadosGerais = useContext(DadosGeraisContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
+  const expanded = useContext(ExpandedAccordionContext);
 
   const [rows, setRows] = useState([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
@@ -66,7 +68,6 @@ function TabelaAddConsultorAvaliador(props) {
   };
 
   const [mensagemAlerta, setMensagemAlerta] = useState(MSG000);
-  const [mudou, setMudou] = useState(true);
 
   const { token } = useContext(StoreContext);
 
@@ -76,11 +77,10 @@ function TabelaAddConsultorAvaliador(props) {
   };
 
   const handleStatusConvite = (status) => {
-    if (status === "convidado") {
-      return <p className="text-warning fw-bold m-0">convidado</p>;
-    } else if (status === "aceito") {
+    if (status === "aceito") {
       return <p className="text-success fw-bold m-0">aceito</p>;
     }
+    return <p className="text-warning fw-bold m-0">convidado</p>;
   };
 
   const removerUsuario = (email) => {
@@ -184,36 +184,33 @@ function TabelaAddConsultorAvaliador(props) {
       });
   };
 
-  useEffect(() => {
+  const getConvites = () => {
+    let listaAux = [];
     const tipoUsuario =
       props.tipoUsuario === "consultor" ? "consultores" : "avaliadores";
 
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/competicao/${idCompeticaoHook}/${tipoUsuario}`)
+      .then((response) => {
+        response.data.forEach((user) => {
+          listaAux.push({
+            email: user.email,
+            statusConvite: user.statusConvite.toLowerCase(),
+          });
+        });
+
+        setRows(listaAux);
+        console.log(rows);
+      });
+  };
+
+  useEffect(() => {
     if (idCompeticaoHook !== 0) {
       getUsuariosNaoRelacionados();
-      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-      api
-        .get(`/competicao/${idCompeticaoHook}/${tipoUsuario}`)
-        .then((response) => {
-          // setRows([]);
-          // response.data.forEach((user) => {
-          //   rows.push({
-          //     email: user.emaiConsultor,
-          //     statusConvite: user.statusConvite.toLowerCase(),
-          //   });
-          // });
-          setMudou(false);
-        });
-      setMudou(true);
+      getConvites();
     }
-
-    setRows([
-      createData("nycolas.ramon@academico.ifpb.edu.br", "convidado"),
-      createData("antonio@gmail.com", "convidado"),
-      createData("gabryel@hotmail.com.br", "convidado"),
-      createData("gabriel.jose@hotmail.com.br", "convidado"),
-      createData("nunes.mateus@hotmail.com.br", "convidado"),
-    ]);
-  }, [idCompeticaoHook, token, openModalConvidarUsuario]);
+  }, [idCompeticaoHook, token, openModalConvidarUsuario, expanded]);
 
   return (
     <div id="tabela-add-consultor-avaliador">
