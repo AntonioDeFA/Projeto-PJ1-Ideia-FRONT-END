@@ -309,6 +309,8 @@ function QuestoesAvaliativasPitches(props) {
             onChange={(event, newValue) => {
               setValue(newValue);
             }}
+            textColor="inherit"
+            indicatorColor="inherit"
             aria-label="basic tabs example"
           >
             <Tab
@@ -330,7 +332,7 @@ function QuestoesAvaliativasPitches(props) {
           </Tabs>
         </Box>
 
-        <TabPanel value={value} index={0}>
+        <TabPanel color="warning" value={value} index={0}>
           <ListPanel opcao="Adaptabilidade" />
         </TabPanel>
         <TabPanel value={value} index={1}>
