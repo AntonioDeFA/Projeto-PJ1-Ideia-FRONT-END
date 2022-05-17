@@ -61,6 +61,7 @@ function TabelaAddConsultorAvaliador(props) {
     setOpenModalConvidarUsuario(true);
   const handleCloseModalConvidarUsuario = () => {
     setMensagemAlerta(MSG000);
+    setUsuarioSelecionado(null);
     setOpenModalConvidarUsuario(false);
   };
 
