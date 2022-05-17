@@ -85,6 +85,7 @@ function TabelaAddConsultorAvaliador(props) {
 
   const removerUsuario = (email) => {
     console.log(email);
+    props.handleQntdUsuarios(rows.length);
   };
 
   const handleMensagemConvidarUsuario = () => {
@@ -201,7 +202,9 @@ function TabelaAddConsultorAvaliador(props) {
         });
 
         setRows(listaAux);
-        console.log(rows);
+        setTimeout(() => {
+          props.handleQntdUsuarios(listaAux.length);
+        }, 500);
       });
   };
 

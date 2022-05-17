@@ -13,6 +13,7 @@ import {
   MSG018,
   MSG024,
   MSG028,
+  MSG040,
 } from "../../../utils/mensagens";
 import Mensagem from "../../Mensagem";
 import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
@@ -38,10 +39,18 @@ function EtapaImersao(props) {
   const [mensagemDataTerminoImersao, setMensagemDataTerminoImersao] =
     useState(MSG000);
 
+  const [qntdConsultores, setQntdConsultores] = useState(0);
+
   const [mensagemErro, setMensagemErro] = useState(MSG000);
+
+  const handleQntdUsuarios = (quantidade) => {
+    setQntdConsultores(quantidade);
+    console.log(`CONSULTORES => ${quantidade}`);
+  };
 
   const salvarEtapaImersao = () => {
     props.setEtapaImersaoOk(false);
+    setMensagemErro(MSG000);
 
     let statusDataInicioImersao = validarCamposObrigatorios(
       dataInicioImersao,
@@ -67,7 +76,8 @@ function EtapaImersao(props) {
       ) {
         setErrorDataInicioImersao(true);
         setMensagemDataInicioImersao(MSG028);
-        // } else if () { <--- PARA VALIDAR SE A LISTA DE USUÁRIOS TÁ VAZIA
+      } else if (qntdConsultores === 0) {
+        setMensagemErro(MSG040.replace("{1}", "consultores"));
       } else {
         const dadosImersao = {
           dataInicioImersao,
@@ -146,6 +156,7 @@ function EtapaImersao(props) {
       <TabelaAddConsultorAvaliador
         dominioCompeticao={props.dominioCompeticao}
         tipoUsuario={MSG024}
+        handleQntdUsuarios={handleQntdUsuarios}
       />
 
       <div className="input-cadastro-competicao mt-4">

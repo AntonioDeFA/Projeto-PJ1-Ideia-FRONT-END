@@ -6,9 +6,17 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
 import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
-import { MSG000, MSG018, MSG025, MSG029 } from "./../../../utils/mensagens";
+import {
+  MSG000,
+  MSG006,
+  MSG018,
+  MSG025,
+  MSG029,
+  MSG040,
+} from "./../../../utils/mensagens";
 import {
   saoDuasDatasIguais,
   validarCamposObrigatorios,
@@ -30,8 +38,18 @@ function EtapaPitch(props) {
   const [mensagemDataTerminoPitch, setMensagemDataTerminoPitch] =
     useState(MSG000);
 
+  const [qntdAvaliadores, setQntdAvaliadores] = useState(0);
+
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
+
+  const handleQntdUsuarios = (quantidade) => {
+    setQntdAvaliadores(quantidade);
+    console.log(`AVALIADORES => ${quantidade}`);
+  };
+
   const salvarEtapaPitch = () => {
     props.setEtapaPitchOk(false);
+    setMensagemErro(MSG000);
 
     let statusDataInicioPitch = validarCamposObrigatorios(
       dataInicioPitch,
@@ -54,6 +72,8 @@ function EtapaPitch(props) {
       ) {
         setErrorDataInicioPitch(true);
         setMensagemDataInicioPitch(MSG029);
+      } else if (qntdAvaliadores === 0) {
+        setMensagemErro(MSG040.replace("{1}", "avaliadores"));
       } else {
         const dadosPitch = {
           dataInicioPitch,
@@ -66,6 +86,11 @@ function EtapaPitch(props) {
 
   return (
     <div id="etapa-pitch-content">
+      <div style={{ width: "50%", marginBottom: "20px" }}>
+        {mensagemErro !== "" ? (
+          <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+        ) : null}
+      </div>
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioPitchDiv">
@@ -127,6 +152,7 @@ function EtapaPitch(props) {
       <TabelaAddConsultorAvaliador
         dominioCompeticao={props.dominioCompeticao}
         tipoUsuario={MSG025}
+        handleQntdUsuarios={handleQntdUsuarios}
       />
 
       <div className="input-cadastro-competicao mt-4">
