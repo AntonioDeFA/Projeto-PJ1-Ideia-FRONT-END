@@ -9,8 +9,10 @@ import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Modal, TextField, TextareaAutosize } from "@mui/material";
 
+import api from "./../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
+import StoreContext from "./../../../store/context";
 import { styleModals } from "../../../utils/constantes";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import {
@@ -52,8 +54,9 @@ const valueProps = (index) => {
 };
 
 function QuestoesAvaliativasPitches(props) {
-  const [value, setValue] = React.useState(0);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
+
+  const [value, setValue] = React.useState(0);
 
   const [questoesAdaptabilidade, setQuestaoAdaptabilidade] = useState([]);
   const [questoesInovacao, setQuestaoInovacao] = useState([]);
@@ -76,7 +79,6 @@ function QuestoesAvaliativasPitches(props) {
   const [questao, setQuestao] = useState(MSG000);
   const [pontosMax, setPontosMax] = useState(MSG000);
   const [indexQuestao, setindexQuestao] = useState(-1);
-
   const [errorPontosMax, setErrorPontosMax] = useState(false);
   const [mensagemPontosMax, setMensagemPontosMax] = useState(MSG000);
   const [mensagemErroQuestao, setMensagemErroQuestao] = useState(MSG000);
@@ -85,69 +87,7 @@ function QuestoesAvaliativasPitches(props) {
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
-  const ListPanel = (props) => {
-    const { opcao } = props;
-
-    let lista = questoesSustentabilidade;
-    setTipo("Sustentabilidade");
-
-    if (opcao === "Adaptabilidade") {
-      lista = questoesAdaptabilidade;
-      setTipo("Adaptabilidade");
-    } else if (opcao === "Inovação") {
-      lista = questoesInovacao;
-      setTipo("Inovação");
-    } else if (opcao === "Utilidade") {
-      lista = questoesUtilidade;
-      setTipo("Utilidade");
-    }
-
-    return (
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "background.paper",
-          position: "relative",
-          overflow: "auto",
-          maxHeight: 300,
-          "& ul": { padding: 0 },
-        }}
-        subheader={<li />}
-      >
-        {lista.map((questao, index) => (
-          <li key={index} className="border rounded m-3 p-2">
-            <ul>
-              <ListItem
-                secondaryAction={
-                  <div>
-                    <IconButton
-                      edge="end"
-                      aria-label="upload"
-                      className="me-1"
-                      id="botao-atualizar-questao"
-                      onClick={() => preencherQuestaoAvaliativa(questao, index)}
-                    >
-                      <i className="fa-solid fa-pen-to-square hover-azul p-0"></i>
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => removerQuestaoAvaliativa(index)}
-                    >
-                      <i className="fa-solid fa-trash-can p-0"></i>
-                    </IconButton>
-                  </div>
-                }
-                key={questao.questao}
-              >
-                <ListItemText primary={questao.questao} />
-              </ListItem>
-            </ul>
-          </li>
-        ))}
-      </List>
-    );
-  };
+  const { token } = useContext(StoreContext);
 
   const cadastrarNovaQuestaoAvaliativa = () => {
     setErrorPontosMax(false);
@@ -261,7 +201,21 @@ function QuestoesAvaliativasPitches(props) {
       setMensagemErro(MSG030);
     } else {
       setMensagemErro(MSG000);
-      props.handleQuestoesAvaliativas(formatarArrayQuestoes());
+      let questoes = formatarArrayQuestoes();
+
+      api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+      api
+        .patch(`/competicao/update/${idCompeticaoHook}`, {
+          questoesAvaliativas: questoes,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+
+      props.handleQuestoesAvaliativas(questoes);
     }
   };
 
@@ -284,6 +238,70 @@ function QuestoesAvaliativasPitches(props) {
         enumeracao: Number(questoes.length + 1),
         tipoQuestaoAvaliativa,
       })
+    );
+  };
+
+  const ListPanel = (props) => {
+    const { opcao } = props;
+
+    let lista = questoesSustentabilidade;
+    setTipo("Sustentabilidade");
+
+    if (opcao === "Adaptabilidade") {
+      lista = questoesAdaptabilidade;
+      setTipo("Adaptabilidade");
+    } else if (opcao === "Inovação") {
+      lista = questoesInovacao;
+      setTipo("Inovação");
+    } else if (opcao === "Utilidade") {
+      lista = questoesUtilidade;
+      setTipo("Utilidade");
+    }
+
+    return (
+      <List
+        sx={{
+          width: "100%",
+          bgcolor: "background.paper",
+          position: "relative",
+          overflow: "auto",
+          maxHeight: 300,
+          "& ul": { padding: 0 },
+        }}
+        subheader={<li />}
+      >
+        {lista.map((questao, index) => (
+          <li key={index} className="border rounded m-3 p-2">
+            <ul>
+              <ListItem
+                secondaryAction={
+                  <div>
+                    <IconButton
+                      edge="end"
+                      aria-label="upload"
+                      className="me-1"
+                      id="botao-atualizar-questao"
+                      onClick={() => preencherQuestaoAvaliativa(questao, index)}
+                    >
+                      <i className="fa-solid fa-pen-to-square hover-azul p-0"></i>
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => removerQuestaoAvaliativa(index)}
+                    >
+                      <i className="fa-solid fa-trash-can p-0"></i>
+                    </IconButton>
+                  </div>
+                }
+                key={questao.questao}
+              >
+                <ListItemText primary={questao.questao} />
+              </ListItem>
+            </ul>
+          </li>
+        ))}
+      </List>
     );
   };
 
