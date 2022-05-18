@@ -167,8 +167,6 @@ function CadastroCompeticao() {
         ],
       };
 
-      console.log(competicaoAtualizada);
-
       api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
       api
         .patch(`/competicao/update/${idCompeticaoHook}`, competicaoAtualizada)
