@@ -45,7 +45,9 @@ function EtapaImersao(props) {
 
   const handleQntdUsuarios = (quantidade) => {
     setQntdConsultores(quantidade);
-    console.log(`CONSULTORES => ${quantidade}`);
+    if (quantidade <= 0) {
+      props.setEtapaImersaoOk(false);
+    }
   };
 
   const salvarEtapaImersao = () => {

@@ -44,7 +44,9 @@ function EtapaPitch(props) {
 
   const handleQntdUsuarios = (quantidade) => {
     setQntdAvaliadores(quantidade);
-    console.log(`AVALIADORES => ${quantidade}`);
+    if (quantidade <= 0) {
+      props.setEtapaPitchOk(false);
+    }
   };
 
   const salvarEtapaPitch = () => {

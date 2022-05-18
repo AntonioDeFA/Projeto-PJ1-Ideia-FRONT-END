@@ -31,12 +31,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    height: "55px !important",
   },
 }));
-
-function createData(email, statusConvite) {
-  return { email, statusConvite };
-}
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -84,8 +81,17 @@ function TabelaAddConsultorAvaliador(props) {
   };
 
   const removerUsuario = (email) => {
-    console.log(email);
-    props.handleQntdUsuarios(rows.length);
+    api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
+    api
+      .delete(`/${idCompeticaoHook}/remover-usuario-convidado`, { email })
+      .then((response) => {
+        console.log(response.data);
+        getConvites();
+        getUsuariosNaoRelacionados();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   const handleMensagemConvidarUsuario = () => {
@@ -250,25 +256,33 @@ function TabelaAddConsultorAvaliador(props) {
               </TableRow>
             </TableHead>
 
-            <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.email}>
-                  <StyledTableCell align="center">{row.email}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <i
-                      onClick={() => {
-                        removerUsuario(row.email);
-                      }}
-                      className="fa-solid fa-trash-can icone-tabela"
-                      title="Remover este usuário"
-                    ></i>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {handleStatusConvite(row.statusConvite)}
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
+            {rows.length > 0 ? (
+              <TableBody>
+                {rows.map((row) => (
+                  <StyledTableRow key={row.email}>
+                    <StyledTableCell align="center">
+                      {row.email}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <i
+                        onClick={() => {
+                          removerUsuario(row.email);
+                        }}
+                        className="fa-solid fa-trash-can icone-tabela"
+                        title="Remover este usuário"
+                      ></i>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {handleStatusConvite(row.statusConvite)}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            ) : (
+              <div className="m-3">
+                <p>Não há {props.tipoUsuario}es convidados.</p>
+              </div>
+            )}
           </Table>
         </TableContainer>
       </div>
