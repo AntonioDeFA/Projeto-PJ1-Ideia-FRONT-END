@@ -416,6 +416,7 @@ function QuestoesAvaliativasPitches(props) {
               onChange={(e) => {
                 setQuestao(e.target.value);
               }}
+              id="textarea-questao-avaliativa"
               className="border rounded p-3 mt-4 w-100"
               aria-label="minimum height"
               minRows={2}
@@ -425,6 +426,7 @@ function QuestoesAvaliativasPitches(props) {
             <div className="botoes-cadastro mt-2">
               <Botao
                 titulo="salvar"
+                id="btn-salvar-questao-avaliativa"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={() => cadastrarNovaQuestaoAvaliativa()}
               />
