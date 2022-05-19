@@ -184,16 +184,23 @@ function CadastroEquipe() {
     handleCloseModalCriarMembro();
   };
 
-  const baixarRegulamento = () => {
+  const baixarRegulamento = async () => {
 
-    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/${idCompeticao}/regulamento`).then((response) => {
-      console.log(response);
-      var file = new Blob([response.data], {type: 'application/pdf'});
-      var fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    });
+    const fs = require('fs').promises;
+    let arquivoPdf = await fs.readdir('c:/arquivo.pdf');
 
+    console.log(arquivoPdf)
+
+    // api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    // api.get(`/competicao/7/regulamento`).then((response) => {
+    //   console.log(response);
+
+    //   var file = new Blob([response.data], { type: 'application/pdf' });
+    //   console.log(file);
+    //   var fileURL = URL.createObjectURL(file);
+    //   console.log(fileURL);
+    //   window.open(fileURL);
+    // });
 
     console.log("Baixando regulamento...");
   };
