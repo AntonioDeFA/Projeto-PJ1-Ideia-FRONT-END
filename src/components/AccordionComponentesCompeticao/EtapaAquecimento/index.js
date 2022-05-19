@@ -1,13 +1,6 @@
-import React, { useContext, useState } from "react";
-
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, TextField } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 
 import Table from "@mui/material/Table";
-import Botao from "../../Botao";
-import Mensagem from "../../Mensagem";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TableRow from "@mui/material/TableRow";
@@ -16,6 +9,17 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Box, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
+import api from "../../../services/api";
+import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
+import StoreContext from "../../../store/context";
+import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import {
   MSG000,
   MSG018,
@@ -24,7 +28,6 @@ import {
   MSG004,
   MSG031,
 } from "../../../utils/mensagens";
-import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
   saoDuasDatasIguais,
   validarCamposObrigatorios,
@@ -34,6 +37,7 @@ import "./styles.css";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -55,6 +59,8 @@ function EtapaAquecimento(props) {
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
+
+  const { token } = useContext(StoreContext);
 
   const salvarEtapaAquecimento = () => {
     props.setEtapaAquecimentoOk(false);
@@ -93,6 +99,18 @@ function EtapaAquecimento(props) {
           dataTerminoAquecimento,
           materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
+
+        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+        api
+          .patch(`/competicao/update/${idCompeticaoHook}`, {
+            materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+          })
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+          });
 
         props.handleEtapaAquecimento(dadosAquecimento);
       }
@@ -215,6 +233,26 @@ function EtapaAquecimento(props) {
       });
     });
   };
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
+      const { data } = response;
+      console.log(data);
+
+      data.map((material) => {
+        console.log(material);
+        if (material.tipoMaterialEstudo === "LINK") {
+          links.push({
+            link: material.link,
+            tipo: "LINK",
+          });
+        } else {
+          // TODO atribuir arquivos aqui
+        }
+      });
+    });
+  }, [idCompeticaoHook]);
 
   const Tables = () => {
     return (
