@@ -191,6 +191,16 @@ function CadastroCompeticao() {
     if (pathname.includes("atualizar-competicao")) {
       setIdCompeticaoHook(idCompeticao);
       setAtualizar(true);
+
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api
+        .get(`/competicao/dados-gerais/${idCompeticao}`)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     }
   }, [location, idCompeticao]);
 
@@ -426,7 +436,7 @@ function CadastroCompeticao() {
               </div>
               <div id="btn-cancelar-confirmacao">
                 <Botao
-                  titulo="cancelar"
+                  titulo="voltar"
                   id="btn-cancelar-confirmacao-inscricao-para-teste"
                   classes="btn btn-secondary botao-menor-personalizado"
                   onClick={cancelar}
