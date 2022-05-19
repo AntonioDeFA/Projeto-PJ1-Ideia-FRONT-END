@@ -181,6 +181,10 @@ function CadastroCompeticao() {
     }
   };
 
+  const cancelar = () => {
+    return navigate("/inicio");
+  };
+
   useEffect(() => {
     const { pathname } = location;
 
@@ -425,7 +429,7 @@ function CadastroCompeticao() {
                   titulo="cancelar"
                   id="btn-cancelar-confirmacao-inscricao-para-teste"
                   classes="btn btn-secondary botao-menor-personalizado"
-                  onClick={null}
+                  onClick={cancelar}
                 />
               </div>
             </div>
