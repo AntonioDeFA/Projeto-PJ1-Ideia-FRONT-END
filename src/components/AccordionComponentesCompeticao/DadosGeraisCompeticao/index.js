@@ -207,20 +207,6 @@ function DadosGeraisCompeticao(props) {
 
     console.log("ESSE É O RESULT  ");
     console.log(result);
-    // var reader = new FileReader();
-    // var fileByteArray = [];
-    // reader.readAsArrayBuffer(arquivoInput);
-    // reader.onloadend = await function (evt) {
-    //   setTimeout(() => {
-    //     if (evt.target.readyState == FileReader.DONE) {
-    //       var arrayBuffer = evt.target.result,
-    //         array = new Uint8Array(arrayBuffer);
-    //       for (var i = 0; i < array.length; i++) {
-    //         fileByteArray.push(array[i]);
-    //       }
-    //     }
-    //   }, 2500);
-    // };
 
     setTimeout(() => {
       setRegulamento(result);
