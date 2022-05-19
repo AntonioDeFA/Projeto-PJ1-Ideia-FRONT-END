@@ -32,9 +32,6 @@ import "./styles.css";
 
 function DadosGeraisCompeticao(props) {
   const idCompeticaoHook = useContext(idCompeticaoContext);
-  const location = useLocation();
-
-  const [isAtualizar, setAtualizar] = useState(false);
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
@@ -241,15 +238,6 @@ function DadosGeraisCompeticao(props) {
   };
 
   useEffect(() => {
-    const { pathname } = location;
-
-    if (pathname.includes("atualizar-competicao")) {
-      console.log(true);
-      setAtualizar(true);
-    } else {
-      console.log(false);
-    }
-
     // let data = new Date();
     // data.setDate(23);
     // data.setMonth(5 - 1);

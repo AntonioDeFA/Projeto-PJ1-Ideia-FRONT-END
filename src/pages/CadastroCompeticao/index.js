@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -33,13 +33,17 @@ import { IdCompeticaoProvider } from "../../utils/context/idCompeticaoContext";
 import api from "../../services/api";
 import StoreContext from "../../store/context";
 
-import { useNavigate } from "react-router-dom";
+import {} from "react-router-dom";
 import { ExpandedAccordionProvider } from "../../utils/context/expandedAccordionContext";
 
 function CadastroCompeticao() {
   const { idCompeticao } = useParams();
-  const { token } = useContext(StoreContext);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const { token } = useContext(StoreContext);
+
+  const [isAtualizar, setAtualizar] = useState(false);
 
   const [dadosGerais, setDadosGerais] = useState(null);
   const [questoesAvaliativas, setQuestoesAvaliativas] = useState(null);
@@ -91,9 +95,6 @@ function CadastroCompeticao() {
     setExpanded(MSG000);
   };
 
-  const handleAccordionQuestoesAvaliativas = () => {
-    return dadosGeraisOk === false;
-  };
   const handleAccordionAquecimento = () => {
     return dadosGeraisOk === false;
   };
@@ -181,10 +182,13 @@ function CadastroCompeticao() {
   };
 
   useEffect(() => {
-    if (idCompeticao) {
+    const { pathname } = location;
+
+    if (pathname.includes("atualizar-competicao")) {
       setIdCompeticaoHook(idCompeticao);
+      setAtualizar(true);
     }
-  }, [idCompeticao]);
+  }, [location, idCompeticao]);
 
   return (
     <div id="cadastro-equipe">
@@ -227,9 +231,13 @@ function CadastroCompeticao() {
                 </AccordionDetails>
               </Accordion>
             </div>
-            <div title={handleAccordionAquecimento() ? MSG022 : null}>
+            <div
+              title={
+                handleAccordionAquecimento() && !isAtualizar ? MSG022 : null
+              }
+            >
               <Accordion
-                disabled={handleAccordionAquecimento()}
+                disabled={handleAccordionAquecimento() && !isAtualizar}
                 expanded={expanded === "panel2"}
                 onChange={handleChange("panel2")}
                 sx={{ border: "1px solid #ffc107" }}
@@ -258,14 +266,19 @@ function CadastroCompeticao() {
                   <QuestoesAvaliativasPitches
                     handleQuestoesAvaliativas={handleQuestoesAvaliativas}
                     setQuestoesAvaliativasOk={setQuestoesAvaliativasOk}
+                    isAtualizar={isAtualizar}
                   />
                 </AccordionDetails>
               </Accordion>
             </div>
-            <div title={handleAccordionAquecimento() ? MSG022 : null}>
+            <div
+              title={
+                handleAccordionAquecimento() && !isAtualizar ? MSG022 : null
+              }
+            >
               <DadosGeraisProvider value={dadosGerais}>
                 <Accordion
-                  disabled={handleAccordionAquecimento()}
+                  disabled={handleAccordionAquecimento() && !isAtualizar}
                   expanded={expanded === "panel3"}
                   onChange={handleChange("panel3")}
                   sx={{ border: "1px solid #ffc107" }}
@@ -294,6 +307,7 @@ function CadastroCompeticao() {
                     <EtapaAquecimento
                       handleEtapaAquecimento={handleEtapaAquecimento}
                       setEtapaAquecimentoOk={setEtapaAquecimentoOk}
+                      isAtualizar={isAtualizar}
                     />
                   </AccordionDetails>
                 </Accordion>
@@ -302,10 +316,14 @@ function CadastroCompeticao() {
 
             <ExpandedAccordionProvider value={expanded}>
               <DadosGeraisProvider value={dadosGerais}>
-                <div title={handleAccordionImersao() ? MSG022 : null}>
+                <div
+                  title={
+                    handleAccordionImersao() && !isAtualizar ? MSG022 : null
+                  }
+                >
                   <EtapaAquecimentoProvider value={dadosAquecimento}>
                     <Accordion
-                      disabled={handleAccordionImersao()}
+                      disabled={handleAccordionImersao() && !isAtualizar}
                       expanded={expanded === "panel4"}
                       onChange={handleChange("panel4")}
                       sx={{ border: "1px solid #ffc107" }}
@@ -341,10 +359,12 @@ function CadastroCompeticao() {
                   </EtapaAquecimentoProvider>
                 </div>
 
-                <div title={handleAccordionPitch() ? MSG022 : null}>
+                <div
+                  title={handleAccordionPitch() && !isAtualizar ? MSG022 : null}
+                >
                   <EtapaImersaoProvider value={dadosImersao}>
                     <Accordion
-                      disabled={handleAccordionPitch()}
+                      disabled={handleAccordionPitch() && !isAtualizar}
                       expanded={expanded === "panel5"}
                       onChange={handleChange("panel5")}
                       sx={{ border: "1px solid #ffc107" }}
@@ -395,7 +415,7 @@ function CadastroCompeticao() {
                       etapaImersaoOk &&
                       etapaPitchOk &&
                       questoesAvaliativasOk
-                    )
+                    ) && !isAtualizar
                   }
                   classes="btn btn-warning botao-menor-personalizado"
                 />
