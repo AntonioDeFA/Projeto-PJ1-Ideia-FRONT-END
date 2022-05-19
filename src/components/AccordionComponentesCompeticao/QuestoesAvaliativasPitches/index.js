@@ -170,19 +170,6 @@ function QuestoesAvaliativasPitches(props) {
 
   const preencherQuestaoAvaliativa = async (questao, index) => {
     setIsAtualizarQuestao(true);
-
-    console.log(questao);
-
-    let lista = questoesSustentabilidade;
-
-    if (tipo === "Adaptabilidade") {
-      lista = questoesAdaptabilidade;
-    } else if (tipo === "Inovação") {
-      lista = questoesInovacao;
-    } else if (tipo === "Utilidade") {
-      lista = questoesUtilidade;
-    }
-
     setQuestao(questao.questao);
     setPontosMax(questao.pontosMax);
     setindexQuestao(index);
