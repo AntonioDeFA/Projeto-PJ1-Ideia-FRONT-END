@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 
-import "../../assets/styles/global.css";
-import "./styles.css";
-import { Box, Modal, Typography } from "@mui/material";
-import { styleModals } from "../../utils/constantes";
+import api from "../../services/api";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
-import api from "../../services/api";
 import { handleDatas } from "../../services/utils";
+import { styleModals } from "../../utils/constantes";
+import { Box, Modal, Typography } from "@mui/material";
+
+import "./styles.css";
+import "../../assets/styles/global.css";
 
 function CardMinhasCompeticoes(props) {
   const { token } = useContext(StoreContext);
@@ -148,7 +150,9 @@ function CardMinhasCompeticoes(props) {
 
             <div id="icons">
               {props.card.papelUsuario === "ORGANIZADOR" ? (
-                <i className="fa-solid fa-pen-to-square hover-azul"></i>
+                <Link to={`/atualizar-competicao/${props.card.id}`}>
+                  <i className="fa-solid fa-pen-to-square hover-azul"></i>
+                </Link>
               ) : null}
 
               {!props.card.elaboracao ? (
