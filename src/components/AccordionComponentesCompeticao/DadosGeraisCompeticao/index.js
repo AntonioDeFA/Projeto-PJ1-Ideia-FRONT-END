@@ -1,14 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-import { Box, Input, TextField } from "@mui/material";
-import Button from "@mui/material/Button";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import api from "./../../../services/api";
+import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
+import StoreContext from "../../../store/context";
+import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import { validarCamposObrigatorios } from "./../../../services/utils";
 import {
   MSG000,
-  MSG005,
   MSG006,
   MSG015,
   MSG016,
@@ -24,16 +29,12 @@ import {
 } from "../../../utils/mensagens";
 
 import "./styles.css";
-import { UploadFile } from "@mui/icons-material";
-import Botao from "../../Botao";
-import { validarCamposObrigatorios } from "./../../../services/utils";
-import api from "./../../../services/api";
-import StoreContext from "../../../store/context";
-import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import Mensagem from "../../Mensagem";
 
 function DadosGeraisCompeticao(props) {
   const idCompeticaoHook = useContext(idCompeticaoContext);
+  const location = useLocation();
+
+  const [isAtualizar, setAtualizar] = useState(false);
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
@@ -239,6 +240,23 @@ function DadosGeraisCompeticao(props) {
     }
   };
 
+  useEffect(() => {
+    const { pathname } = location;
+
+    if (pathname.includes("atualizar-competicao")) {
+      console.log(true);
+      setAtualizar(true);
+    } else {
+      console.log(false);
+    }
+
+    // let data = new Date();
+    // data.setDate(23);
+    // data.setMonth(5 - 1);
+    // data.setFullYear(2022);
+    // setDataInicioInscricoes(data);
+  }, []);
+
   return (
     <div id="dados-gerais-content">
       <div style={{ width: "50%" }} className="mb-3">
@@ -325,7 +343,7 @@ function DadosGeraisCompeticao(props) {
               className="input-irmao"
               error={errorQntdMinMembros}
               helperText={mensagemQntdMinMembros}
-              id="input-data-inicio-inscricoes"
+              id="input-data-qntd-min-membros"
               value={qntdMinMembros}
               onChange={(e) => {
                 setQntdMinMembros(e.target.value);
@@ -342,7 +360,7 @@ function DadosGeraisCompeticao(props) {
               className="input-irmao"
               error={errorQntdMaxMembros}
               helperText={mensagemQntdMaxMembros}
-              id="input-data-inicio-inscricoes"
+              id="input-data-qntd-max-membros"
               value={qntdMaxMembros}
               onChange={(e) => {
                 setQntdMaxMembros(e.target.value);
