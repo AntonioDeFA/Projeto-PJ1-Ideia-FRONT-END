@@ -149,7 +149,8 @@ function CardMinhasCompeticoes(props) {
             {handleEtapaCompeticao()}
 
             <div id="icons">
-              {props.card.papelUsuario === "ORGANIZADOR" ? (
+              {props.card.papelUsuario === "ORGANIZADOR" &&
+              !props.card.elaboracao ? (
                 <Link to={`/atualizar-competicao/${props.card.id}`}>
                   <i className="fa-solid fa-pen-to-square hover-azul"></i>
                 </Link>
