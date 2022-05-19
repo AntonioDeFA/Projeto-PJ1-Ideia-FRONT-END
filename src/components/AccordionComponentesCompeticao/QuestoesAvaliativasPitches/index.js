@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -26,6 +26,7 @@ import {
 } from "../../../utils/mensagens";
 
 import "./styles.css";
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -130,14 +131,6 @@ function QuestoesAvaliativasPitches(props) {
       handleCloseModalCriarQuestao();
     }
   };
-
-  // const atualizarQuestaoAvaliativa = () => {
-  //   setQuestaoObj({
-  //     questao,
-  //     pontosMax,
-  //   });
-  //   setIsAtualizarQuestao(false);
-  // };
 
   const removerQuestaoAvaliativa = async (index) => {
     let lista = questoesSustentabilidade;
@@ -291,6 +284,31 @@ function QuestoesAvaliativasPitches(props) {
       </List>
     );
   };
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get(`/${idCompeticaoHook}/questoes-avaliativas`).then((response) => {
+      const { data } = response;
+      console.log(data);
+
+      data.map((questao) => {
+        let lista = questoesSustentabilidade;
+        let tipo = questao.tipoQuestaoAvaliativa;
+
+        if (tipo === "ADAPTABILIDADE") {
+          lista = questoesAdaptabilidade;
+        } else if (tipo === "INOVACAO") {
+          lista = questoesInovacao;
+        } else if (tipo === "UTILIDADE") {
+          lista = questoesUtilidade;
+        }
+        lista.push({
+          questao: questao.questao,
+          pontosMax: questao.notaMax,
+        });
+      });
+    });
+  }, [idCompeticaoHook]);
 
   return (
     <div>
