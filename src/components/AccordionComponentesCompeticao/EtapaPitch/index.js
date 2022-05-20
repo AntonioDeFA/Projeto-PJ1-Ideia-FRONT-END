@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { DatePicker } from "@mui/x-date-pickers";
 import { Box, TextField } from "@mui/material";
@@ -9,6 +9,7 @@ import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
+import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -26,6 +27,7 @@ import "./styles.css";
 
 function EtapaPitch(props) {
   const dadosImersao = useContext(EtapaImersaoContext);
+  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioPitch, setDataInicioPitch] = useState(null);
   const [dataTerminoPitch, setDataTerminoPitch] = useState(null);
@@ -85,6 +87,22 @@ function EtapaPitch(props) {
       }
     }
   };
+
+  useEffect(() => {
+    let datas = dadosGeraisConsultados?.estapas[3];
+
+    let data = new Date();
+    data.setDate(datas?.dataInicio[2]);
+    data.setMonth(datas?.dataInicio[1] - 1);
+    data.setFullYear(datas?.dataInicio[0]);
+    setDataInicioPitch(data);
+
+    data = new Date();
+    data.setDate(datas?.dataTermino[2]);
+    data.setMonth(datas?.dataTermino[1] - 1);
+    data.setFullYear(datas?.dataTermino[0]);
+    setDataTerminoPitch(data);
+  }, [dadosGeraisConsultados]);
 
   return (
     <div id="etapa-pitch-content">

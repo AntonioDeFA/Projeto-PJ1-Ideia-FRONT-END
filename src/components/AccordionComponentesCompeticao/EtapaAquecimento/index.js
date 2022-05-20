@@ -20,12 +20,13 @@ import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
-  MSG018,
-  MSG027,
   MSG006,
   MSG004,
+  MSG018,
+  MSG027,
   MSG031,
 } from "../../../utils/mensagens";
 import {
@@ -38,6 +39,7 @@ import "./styles.css";
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
+  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -233,6 +235,22 @@ function EtapaAquecimento(props) {
       });
     });
   };
+
+  useEffect(() => {
+    let datas = dadosGeraisConsultados?.estapas[1];
+
+    let data = new Date();
+    data.setDate(datas?.dataInicio[2]);
+    data.setMonth(datas?.dataInicio[1] - 1);
+    data.setFullYear(datas?.dataInicio[0]);
+    setDataInicioAquecimento(data);
+
+    data = new Date();
+    data.setDate(datas?.dataTermino[2]);
+    data.setMonth(datas?.dataTermino[1] - 1);
+    data.setFullYear(datas?.dataTermino[0]);
+    setDataTerminoAquecimento(data);
+  }, [dadosGeraisConsultados]);
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
