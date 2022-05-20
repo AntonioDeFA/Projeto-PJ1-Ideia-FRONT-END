@@ -56,3 +56,7 @@ export const saoDuasDatasIguais = (data1, data2) => {
     data1.getYear() === data2.getYear()
   );
 };
+
+export const isDataDefault = (dia, mes, ano) => {
+  return dia === 1 && mes + 1 === 1 && ano === 2000;
+};
