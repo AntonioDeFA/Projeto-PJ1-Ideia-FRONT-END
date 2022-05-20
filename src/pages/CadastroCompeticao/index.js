@@ -451,7 +451,7 @@ function CadastroCompeticao() {
                 <div id="botoes-competicao">
                   <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>
                     <Botao
-                      id="btn-confirmar-inscricao-para-teste"
+                      id="btn-confirmar-competicao-para-teste"
                       titulo="salvar"
                       onClick={salvarCompeticao}
                       disabled={
