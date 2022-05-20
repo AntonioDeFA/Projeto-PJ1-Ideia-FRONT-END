@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { DatePicker } from "@mui/x-date-pickers";
 import { Box, TextField } from "@mui/material";
@@ -6,7 +6,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
+import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
+import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -15,9 +19,6 @@ import {
   MSG028,
   MSG040,
 } from "../../../utils/mensagens";
-import Mensagem from "../../Mensagem";
-import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
-
 import {
   saoDuasDatasIguais,
   validarCamposObrigatorios,
@@ -26,7 +27,9 @@ import {
 import "./styles.css";
 
 function EtapaImersao(props) {
+  const IsAtualizar = useContext(IsAtualizarContext);
   const dadosAquecimento = useContext(EtapaAquecimentoContext);
+  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
@@ -90,6 +93,22 @@ function EtapaImersao(props) {
     }
   };
 
+  useEffect(() => {
+    let datas = dadosGeraisConsultados?.estapas[2];
+
+    let data = new Date();
+    data.setDate(datas?.dataInicio[2]);
+    data.setMonth(datas?.dataInicio[1] - 1);
+    data.setFullYear(datas?.dataInicio[0]);
+    setDataInicioImersao(data);
+
+    data = new Date();
+    data.setDate(datas?.dataTermino[2]);
+    data.setMonth(datas?.dataTermino[1] - 1);
+    data.setFullYear(datas?.dataTermino[0]);
+    setDataTerminoImersao(data);
+  }, [dadosGeraisConsultados]);
+
   return (
     <div id="etapa-imersao-content">
       <div style={{ width: "50%", marginBottom: "20px" }}>
@@ -102,6 +121,7 @@ function EtapaImersao(props) {
           <div id="dataInicioImersaoDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -116,7 +136,7 @@ function EtapaImersao(props) {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-inicio-inscricoes"
+                    id="input-data-inicio-imersao"
                     helperText={mensagemDataInicioImersao}
                     {...params}
                   />
@@ -127,6 +147,7 @@ function EtapaImersao(props) {
           <div id="dataTerminoImersaoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -142,7 +163,7 @@ function EtapaImersao(props) {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-termino-inscricoes"
+                    id="input-data-termino-imersao"
                     helperText={mensagemDataTerminoImersao}
                     {...params}
                   />

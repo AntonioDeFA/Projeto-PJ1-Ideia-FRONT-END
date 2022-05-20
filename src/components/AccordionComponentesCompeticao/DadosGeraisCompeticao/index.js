@@ -10,8 +10,10 @@ import api from "./../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import { validarCamposObrigatorios } from "./../../../services/utils";
+import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -32,6 +34,8 @@ import "./styles.css";
 
 function DadosGeraisCompeticao(props) {
   const idCompeticaoHook = useContext(idCompeticaoContext);
+  const IsAtualizar = useContext(IsAtualizarContext);
+  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
@@ -238,12 +242,27 @@ function DadosGeraisCompeticao(props) {
   };
 
   useEffect(() => {
-    // let data = new Date();
-    // data.setDate(23);
-    // data.setMonth(5 - 1);
-    // data.setFullYear(2022);
-    // setDataInicioInscricoes(data);
-  }, []);
+    let datas = dadosGeraisConsultados?.estapas[0];
+
+    setNome(dadosGeraisConsultados?.nomeCompeticao);
+    setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
+    setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
+    setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
+    setDominio(dadosGeraisConsultados?.dominioCompeticao);
+    // TODO setar regulamento
+
+    let data = new Date();
+    data.setDate(datas?.dataInicio[2]);
+    data.setMonth(datas?.dataInicio[1] - 1);
+    data.setFullYear(datas?.dataInicio[0]);
+    setDataInicioInscricoes(data);
+
+    data = new Date();
+    data.setDate(datas?.dataTermino[2]);
+    data.setMonth(datas?.dataTermino[1] - 1);
+    data.setFullYear(datas?.dataTermino[0]);
+    setDataTerminoInscricoes(data);
+  }, [dadosGeraisConsultados]);
 
   return (
     <div id="dados-gerais-content">
@@ -257,6 +276,7 @@ function DadosGeraisCompeticao(props) {
           <div id="dataInicioDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -282,6 +302,7 @@ function DadosGeraisCompeticao(props) {
           <div id="dataTerminoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -328,6 +349,7 @@ function DadosGeraisCompeticao(props) {
         <div className="inputs-lado-a-lado">
           <div id="qntdMinMemrosDiv">
             <TextField
+              disabled={IsAtualizar}
               className="input-irmao"
               error={errorQntdMinMembros}
               helperText={mensagemQntdMinMembros}
@@ -345,6 +367,7 @@ function DadosGeraisCompeticao(props) {
           </div>
           <div id="qntdMaxMemrosDiv" className="input-irmao-direito">
             <TextField
+              disabled={IsAtualizar}
               className="input-irmao"
               error={errorQntdMaxMembros}
               helperText={mensagemQntdMaxMembros}
@@ -365,6 +388,7 @@ function DadosGeraisCompeticao(props) {
 
         <div>
           <TextField
+            disabled={IsAtualizar}
             className="input-cadastro-competicao"
             id="input-dominio-competicao"
             value={dominio}
