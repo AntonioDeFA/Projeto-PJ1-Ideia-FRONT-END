@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
 import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
@@ -26,6 +27,7 @@ import {
 import "./styles.css";
 
 function EtapaPitch(props) {
+  const IsAtualizar = useContext(IsAtualizarContext);
   const dadosImersao = useContext(EtapaImersaoContext);
   const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
@@ -116,6 +118,7 @@ function EtapaPitch(props) {
           <div id="dataInicioPitchDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -130,7 +133,7 @@ function EtapaPitch(props) {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-inicio-inscricoes"
+                    id="input-data-inicio-pitch"
                     helperText={mensagemDataInicioPitch}
                     {...params}
                   />
@@ -141,6 +144,7 @@ function EtapaPitch(props) {
           <div id="dataTerminoPitchDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -156,7 +160,7 @@ function EtapaPitch(props) {
                     className="input-irmao"
                     color="warning"
                     variant="filled"
-                    id="input-data-termino-inscricoes"
+                    id="input-data-termino-pitch"
                     helperText={mensagemDataTerminoPitch}
                     {...params}
                   />
