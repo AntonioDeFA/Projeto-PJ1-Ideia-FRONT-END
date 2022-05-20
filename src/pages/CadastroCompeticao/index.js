@@ -63,12 +63,14 @@ function CadastroCompeticao() {
 
   const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
 
+  const [houveAtualizacao, setHouveAtualizacao] = useState(false);
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const handleDadosGerais = (dadosGerais) => {
-    setDadosGerais(dadosGerais);
+  const handleDadosGerais = (dadosGeraisVar) => {
+    setDadosGerais(dadosGeraisVar);
     setDadosGeraisOk(true);
     setExpanded("panel2");
   };
@@ -187,6 +189,11 @@ function CadastroCompeticao() {
     return navigate("/inicio");
   };
 
+  const handleHouveAlteracao = () => {
+    setHouveAtualizacao(true);
+    setHouveAtualizacao(false);
+  };
+
   useEffect(() => {
     const { pathname } = location;
 
@@ -204,7 +211,7 @@ function CadastroCompeticao() {
           console.log(error.response.data);
         });
     }
-  }, [location, idCompeticao]);
+  }, [location, idCompeticao, houveAtualizacao]);
 
   return (
     <div id="cadastro-equipe">
@@ -249,13 +256,9 @@ function CadastroCompeticao() {
                     </AccordionDetails>
                   </Accordion>
                 </div>
-                <div
-                  title={
-                    handleAccordionAquecimento() && !isAtualizar ? MSG022 : null
-                  }
-                >
+                <div title={handleAccordionAquecimento() ? MSG022 : null}>
                   <Accordion
-                    disabled={handleAccordionAquecimento() && !isAtualizar}
+                    disabled={handleAccordionAquecimento()}
                     expanded={expanded === "panel2"}
                     onChange={handleChange("panel2")}
                     sx={{ border: "1px solid #ffc107" }}
@@ -332,6 +335,7 @@ function CadastroCompeticao() {
                           dataTermino={
                             dadosGeraisConsultados?.estapas[1].dataTermino
                           }
+                          handleHouveAlteracao={handleHouveAlteracao}
                         />
                       </AccordionDetails>
                     </Accordion>
@@ -340,14 +344,10 @@ function CadastroCompeticao() {
 
                 <ExpandedAccordionProvider value={expanded}>
                   <DadosGeraisProvider value={dadosGerais}>
-                    <div
-                      title={
-                        handleAccordionImersao() && !isAtualizar ? MSG022 : null
-                      }
-                    >
+                    <div title={handleAccordionImersao() ? MSG022 : null}>
                       <EtapaAquecimentoProvider value={dadosAquecimento}>
                         <Accordion
-                          disabled={handleAccordionImersao() && !isAtualizar}
+                          disabled={handleAccordionImersao()}
                           expanded={expanded === "panel4"}
                           onChange={handleChange("panel4")}
                           sx={{ border: "1px solid #ffc107" }}
@@ -387,6 +387,7 @@ function CadastroCompeticao() {
                               dataTermino={
                                 dadosGeraisConsultados?.estapas[2].dataTermino
                               }
+                              handleHouveAlteracao={handleHouveAlteracao}
                             />
                           </AccordionDetails>
                         </Accordion>
@@ -440,6 +441,7 @@ function CadastroCompeticao() {
                               dataTermino={
                                 dadosGeraisConsultados?.estapas[3].dataTermino
                               }
+                              handleHouveAlteracao={handleHouveAlteracao}
                             />
                           </AccordionDetails>
                         </Accordion>
@@ -449,7 +451,20 @@ function CadastroCompeticao() {
                 </ExpandedAccordionProvider>
 
                 <div id="botoes-competicao">
-                  <div id="btn-confirmar" title={!etapaPitchOk ? MSG023 : null}>
+                  <div
+                    id="btn-confirmar"
+                    title={
+                      !(
+                        dadosGeraisOk &&
+                        etapaAquecimentoOk &&
+                        etapaImersaoOk &&
+                        etapaPitchOk &&
+                        questoesAvaliativasOk
+                      ) && !isAtualizar
+                        ? MSG023
+                        : null
+                    }
+                  >
                     <Botao
                       id="btn-confirmar-competicao-para-teste"
                       titulo="salvar"

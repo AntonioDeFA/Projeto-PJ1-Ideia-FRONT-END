@@ -19,6 +19,7 @@ import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
@@ -28,6 +29,7 @@ import {
   MSG018,
   MSG027,
   MSG031,
+  MSG033,
 } from "../../../utils/mensagens";
 import {
   saoDuasDatasIguais,
@@ -35,9 +37,11 @@ import {
 } from "../../../services/utils";
 
 import "./styles.css";
+import { isDataDefault } from "./../../../services/utils";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
+  const IsAtualizar = useContext(IsAtualizarContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
   const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
@@ -61,6 +65,8 @@ function EtapaAquecimento(props) {
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
+
+  const [datasInformadas, setDatasInformadas] = useState(true);
 
   const { token } = useContext(StoreContext);
 
@@ -101,6 +107,23 @@ function EtapaAquecimento(props) {
           dataTerminoAquecimento,
           materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
+
+        // TODO continuar daqui: incluir datas formatas para passar no PATCH
+        // const etapas = dadosGeraisConsultados.estapas;
+        // etapas[1] = {
+        //   dataInicio: [
+        //     Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+        //     Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+        //     Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+        //   ],
+        //   dataTermino: [
+        //     Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+        //     Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
+        //     Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+        //   ],
+        //   tipoEtapa: MSG033,
+        // };
+        // console.log(etapas);
 
         api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
         api
@@ -237,19 +260,37 @@ function EtapaAquecimento(props) {
   };
 
   useEffect(() => {
-    let datas = dadosGeraisConsultados?.estapas[1];
+    if (IsAtualizar) {
+      let datas = dadosGeraisConsultados?.estapas[1];
 
-    let data = new Date();
-    data.setDate(datas?.dataInicio[2]);
-    data.setMonth(datas?.dataInicio[1] - 1);
-    data.setFullYear(datas?.dataInicio[0]);
-    setDataInicioAquecimento(data);
+      if (
+        isDataDefault(
+          datas?.dataInicio[2],
+          datas?.dataInicio[1] - 1,
+          datas?.dataInicio[0]
+        ) &&
+        isDataDefault(
+          datas?.dataTermino[2],
+          datas?.dataTermino[1] - 1,
+          datas?.dataTermino[0]
+        )
+      ) {
+        setDatasInformadas(false);
+        props.setEtapaAquecimentoOk(false);
+      } else {
+        let data = new Date();
+        data.setDate(datas?.dataInicio[2]);
+        data.setMonth(datas?.dataInicio[1] - 1);
+        data.setFullYear(datas?.dataInicio[0]);
+        setDataInicioAquecimento(data);
 
-    data = new Date();
-    data.setDate(datas?.dataTermino[2]);
-    data.setMonth(datas?.dataTermino[1] - 1);
-    data.setFullYear(datas?.dataTermino[0]);
-    setDataTerminoAquecimento(data);
+        data = new Date();
+        data.setDate(datas?.dataTermino[2]);
+        data.setMonth(datas?.dataTermino[1] - 1);
+        data.setFullYear(datas?.dataTermino[0]);
+        setDataTerminoAquecimento(data);
+      }
+    }
   }, [dadosGeraisConsultados]);
 
   useEffect(() => {
@@ -359,6 +400,7 @@ function EtapaAquecimento(props) {
           <div id="dataInicioDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -384,6 +426,7 @@ function EtapaAquecimento(props) {
           <div id="dataTerminoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast

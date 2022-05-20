@@ -242,26 +242,42 @@ function DadosGeraisCompeticao(props) {
   };
 
   useEffect(() => {
-    let datas = dadosGeraisConsultados?.estapas[0];
+    if (IsAtualizar) {
+      let datas = dadosGeraisConsultados?.estapas[0];
 
-    setNome(dadosGeraisConsultados?.nomeCompeticao);
-    setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
-    setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
-    setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
-    setDominio(dadosGeraisConsultados?.dominioCompeticao);
-    // TODO setar regulamento
+      setNome(dadosGeraisConsultados?.nomeCompeticao);
+      setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
+      setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
+      setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
+      setDominio(dadosGeraisConsultados?.dominioCompeticao);
+      // TODO setar regulamento
 
-    let data = new Date();
-    data.setDate(datas?.dataInicio[2]);
-    data.setMonth(datas?.dataInicio[1] - 1);
-    data.setFullYear(datas?.dataInicio[0]);
-    setDataInicioInscricoes(data);
+      let data1 = new Date();
+      data1.setDate(datas?.dataInicio[2]);
+      data1.setMonth(datas?.dataInicio[1] - 1);
+      data1.setFullYear(datas?.dataInicio[0]);
+      setDataInicioInscricoes(data1);
 
-    data = new Date();
-    data.setDate(datas?.dataTermino[2]);
-    data.setMonth(datas?.dataTermino[1] - 1);
-    data.setFullYear(datas?.dataTermino[0]);
-    setDataTerminoInscricoes(data);
+      let data2 = new Date();
+      data2.setDate(datas?.dataTermino[2]);
+      data2.setMonth(datas?.dataTermino[1] - 1);
+      data2.setFullYear(datas?.dataTermino[0]);
+      setDataTerminoInscricoes(data2);
+
+      const dadosGerais = {
+        nome: dadosGeraisConsultados?.nomeCompeticao,
+        dominio: dadosGeraisConsultados?.dominioCompeticao,
+        regulamento,
+        tempoMaxPitch: dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60,
+        qntdMinMembros: dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe,
+        qntdMaxMembros: dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe,
+        dataInicioInscricoes: data1,
+        dataTerminoInscricoes: data2,
+      };
+
+      console.log(dadosGerais);
+      props.handleDadosGerais(dadosGerais);
+    }
   }, [dadosGeraisConsultados]);
 
   return (

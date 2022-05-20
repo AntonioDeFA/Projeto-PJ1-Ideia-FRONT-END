@@ -20,6 +20,7 @@ import {
   MSG040,
 } from "../../../utils/mensagens";
 import {
+  isDataDefault,
   saoDuasDatasIguais,
   validarCamposObrigatorios,
 } from "../../../services/utils";
@@ -45,6 +46,8 @@ function EtapaImersao(props) {
   const [qntdConsultores, setQntdConsultores] = useState(0);
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
+
+  const [datasInformadas, setDatasInformadas] = useState(true);
 
   const handleQntdUsuarios = (quantidade) => {
     setQntdConsultores(quantidade);
@@ -96,17 +99,32 @@ function EtapaImersao(props) {
   useEffect(() => {
     let datas = dadosGeraisConsultados?.estapas[2];
 
-    let data = new Date();
-    data.setDate(datas?.dataInicio[2]);
-    data.setMonth(datas?.dataInicio[1] - 1);
-    data.setFullYear(datas?.dataInicio[0]);
-    setDataInicioImersao(data);
+    if (
+      isDataDefault(
+        datas?.dataInicio[2],
+        datas?.dataInicio[1] - 1,
+        datas?.dataInicio[0]
+      ) &&
+      isDataDefault(
+        datas?.dataTermino[2],
+        datas?.dataTermino[1] - 1,
+        datas?.dataTermino[0]
+      )
+    ) {
+      setDatasInformadas(false);
+    } else {
+      let data = new Date();
+      data.setDate(datas?.dataInicio[2]);
+      data.setMonth(datas?.dataInicio[1] - 1);
+      data.setFullYear(datas?.dataInicio[0]);
+      setDataInicioImersao(data);
 
-    data = new Date();
-    data.setDate(datas?.dataTermino[2]);
-    data.setMonth(datas?.dataTermino[1] - 1);
-    data.setFullYear(datas?.dataTermino[0]);
-    setDataTerminoImersao(data);
+      data = new Date();
+      data.setDate(datas?.dataTermino[2]);
+      data.setMonth(datas?.dataTermino[1] - 1);
+      data.setFullYear(datas?.dataTermino[0]);
+      setDataTerminoImersao(data);
+    }
   }, [dadosGeraisConsultados]);
 
   return (
@@ -121,7 +139,7 @@ function EtapaImersao(props) {
           <div id="dataInicioImersaoDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                disabled={IsAtualizar}
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -147,7 +165,7 @@ function EtapaImersao(props) {
           <div id="dataTerminoImersaoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                disabled={IsAtualizar}
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
