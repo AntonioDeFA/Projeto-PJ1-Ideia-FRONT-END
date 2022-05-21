@@ -18,6 +18,7 @@ import api from "../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
+import { isDataDefault } from "./../../../services/utils";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
@@ -32,12 +33,12 @@ import {
   MSG033,
 } from "../../../utils/mensagens";
 import {
+  formatarEtapasParaPatch,
   saoDuasDatasIguais,
   validarCamposObrigatorios,
 } from "../../../services/utils";
 
 import "./styles.css";
-import { isDataDefault } from "./../../../services/utils";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
@@ -108,36 +109,35 @@ function EtapaAquecimento(props) {
           materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
 
-        // TODO continuar daqui: incluir datas formatas para passar no PATCH
-        // const etapas = dadosGeraisConsultados.estapas;
-        // etapas[1] = {
-        //   dataInicio: [
-        //     Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
-        //     Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
-        //     Number(dadosAquecimento.dataInicioAquecimento.getDate()),
-        //   ],
-        //   dataTermino: [
-        //     Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
-        //     Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
-        //     Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
-        //   ],
-        //   tipoEtapa: MSG033,
-        // };
-        // console.log(etapas);
+        let etapas = formatarEtapasParaPatch(dadosGeraisConsultados.etapas);
+
+        etapas[1] = {
+          dataInicio: [
+            Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+            Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+            Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+          ],
+          dataTermino: [
+            Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+            Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
+            Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+          ],
+          tipoEtapa: MSG033,
+        };
 
         api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
         api
           .patch(`/competicao/update/${idCompeticaoHook}`, {
+            etapas,
             materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
           })
           .then((response) => {
             console.log(response.data);
+            props.handleEtapaAquecimento(dadosAquecimento);
           })
           .catch((error) => {
             console.log(error.response.data);
           });
-
-        props.handleEtapaAquecimento(dadosAquecimento);
       }
     }
   };
@@ -151,6 +151,7 @@ function EtapaAquecimento(props) {
         link,
         tipo: "LINK",
       });
+      props.setEtapaAquecimentoOk(false);
 
       await setTimeout(() => {
         setMudou(false);
@@ -179,6 +180,8 @@ function EtapaAquecimento(props) {
         arquivoInput,
         tipo,
       });
+
+      props.setEtapaAquecimentoOk(false);
     }
 
     await setTimeout(() => {
@@ -260,8 +263,10 @@ function EtapaAquecimento(props) {
   };
 
   useEffect(() => {
+    let data1 = new Date();
+    let data2 = new Date();
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.estapas[1];
+      let datas = dadosGeraisConsultados?.etapas[1];
 
       if (
         isDataDefault(
@@ -278,31 +283,27 @@ function EtapaAquecimento(props) {
         setDatasInformadas(false);
         props.setEtapaAquecimentoOk(false);
       } else {
-        let data = new Date();
-        data.setDate(datas?.dataInicio[2]);
-        data.setMonth(datas?.dataInicio[1] - 1);
-        data.setFullYear(datas?.dataInicio[0]);
-        setDataInicioAquecimento(data);
+        data1.setDate(datas?.dataInicio[2]);
+        data1.setMonth(datas?.dataInicio[1] - 1);
+        data1.setFullYear(datas?.dataInicio[0]);
+        setDataInicioAquecimento(data1);
 
-        data = new Date();
-        data.setDate(datas?.dataTermino[2]);
-        data.setMonth(datas?.dataTermino[1] - 1);
-        data.setFullYear(datas?.dataTermino[0]);
-        setDataTerminoAquecimento(data);
+        data2.setDate(datas?.dataTermino[2]);
+        data2.setMonth(datas?.dataTermino[1] - 1);
+        data2.setFullYear(datas?.dataTermino[0]);
+        setDataTerminoAquecimento(data2);
       }
     }
-  }, [dadosGeraisConsultados]);
 
-  useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
       const { data } = response;
-      console.log(data);
+
+      let listaLinks = [];
 
       data.map((material) => {
-        console.log(material);
         if (material.tipoMaterialEstudo === "LINK") {
-          links.push({
+          listaLinks.push({
             link: material.link,
             tipo: "LINK",
           });
@@ -310,8 +311,24 @@ function EtapaAquecimento(props) {
           // TODO atribuir arquivos aqui
         }
       });
+
+      setLinks(listaLinks);
+
+      setTimeout(() => {
+        if (
+          datasInformadas &&
+          (listaLinks.length !== 0 || arquivos.length !== 0)
+        ) {
+          const dadosAquecimento = {
+            dataInicioAquecimento: data1,
+            dataTerminoAquecimento: data2,
+            materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
+          };
+          props.handleEtapaAquecimento(dadosAquecimento);
+        }
+      }, 1000);
     });
-  }, [idCompeticaoHook]);
+  }, [idCompeticaoHook, dadosGeraisConsultados]);
 
   const Tables = () => {
     return (

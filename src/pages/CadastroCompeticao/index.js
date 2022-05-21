@@ -208,10 +208,10 @@ function CadastroCompeticao() {
           setDadosGeraisConsultados(response.data);
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error);
         });
     }
-  }, [location, idCompeticao, houveAtualizacao]);
+  }, [token, location, idCompeticao, houveAtualizacao]);
 
   return (
     <div id="cadastro-equipe">
@@ -330,12 +330,11 @@ function CadastroCompeticao() {
                           setEtapaAquecimentoOk={setEtapaAquecimentoOk}
                           isAtualizar={isAtualizar}
                           dataInicio={
-                            dadosGeraisConsultados?.estapas[1].dataInicio
+                            dadosGeraisConsultados?.etapas[1].dataInicio
                           }
                           dataTermino={
-                            dadosGeraisConsultados?.estapas[1].dataTermino
+                            dadosGeraisConsultados?.etapas[1].dataTermino
                           }
-                          handleHouveAlteracao={handleHouveAlteracao}
                         />
                       </AccordionDetails>
                     </Accordion>
@@ -382,26 +381,21 @@ function CadastroCompeticao() {
                               setEtapaImersaoOk={setEtapaImersaoOk}
                               dominioCompeticao={dadosGerais?.dominioCompeticao}
                               dataInicio={
-                                dadosGeraisConsultados?.estapas[2].dataInicio
+                                dadosGeraisConsultados?.etapas[2].dataInicio
                               }
                               dataTermino={
-                                dadosGeraisConsultados?.estapas[2].dataTermino
+                                dadosGeraisConsultados?.etapas[2].dataTermino
                               }
-                              handleHouveAlteracao={handleHouveAlteracao}
                             />
                           </AccordionDetails>
                         </Accordion>
                       </EtapaAquecimentoProvider>
                     </div>
 
-                    <div
-                      title={
-                        handleAccordionPitch() && !isAtualizar ? MSG022 : null
-                      }
-                    >
+                    <div title={handleAccordionPitch() ? MSG022 : null}>
                       <EtapaImersaoProvider value={dadosImersao}>
                         <Accordion
-                          disabled={handleAccordionPitch() && !isAtualizar}
+                          disabled={handleAccordionPitch()}
                           expanded={expanded === "panel5"}
                           onChange={handleChange("panel5")}
                           sx={{ border: "1px solid #ffc107" }}
@@ -436,12 +430,11 @@ function CadastroCompeticao() {
                               setEtapaPitchOk={setEtapaPitchOk}
                               dominioCompeticao={dadosGerais?.dominioCompeticao}
                               dataInicio={
-                                dadosGeraisConsultados?.estapas[3].dataInicio
+                                dadosGeraisConsultados?.etapas[3].dataInicio
                               }
                               dataTermino={
-                                dadosGeraisConsultados?.estapas[3].dataTermino
+                                dadosGeraisConsultados?.etapas[3].dataTermino
                               }
-                              handleHouveAlteracao={handleHouveAlteracao}
                             />
                           </AccordionDetails>
                         </Accordion>
@@ -460,7 +453,7 @@ function CadastroCompeticao() {
                         etapaImersaoOk &&
                         etapaPitchOk &&
                         questoesAvaliativasOk
-                      ) && !isAtualizar
+                      )
                         ? MSG023
                         : null
                     }
@@ -476,7 +469,7 @@ function CadastroCompeticao() {
                           etapaImersaoOk &&
                           etapaPitchOk &&
                           questoesAvaliativasOk
-                        ) && !isAtualizar
+                        )
                       }
                       classes="btn btn-warning botao-menor-personalizado"
                     />

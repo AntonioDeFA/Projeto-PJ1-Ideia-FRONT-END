@@ -127,6 +127,7 @@ function QuestoesAvaliativasPitches(props) {
       setQuestao(MSG000);
       setPontosMax(null);
       setIsAtualizarQuestao(false);
+      props.setQuestoesAvaliativasOk(false);
 
       handleCloseModalCriarQuestao();
     }
@@ -172,6 +173,7 @@ function QuestoesAvaliativasPitches(props) {
 
   const confirmarQuestoesAvaliativas = () => {
     props.setQuestoesAvaliativasOk(false);
+
     if (
       questoesSustentabilidade.length === 0 &&
       questoesAdaptabilidade.length === 0 &&
@@ -187,15 +189,15 @@ function QuestoesAvaliativasPitches(props) {
       api
         .patch(`/competicao/update/${idCompeticaoHook}`, {
           questoesAvaliativas: questoes,
+          isElaboracao: true,
         })
         .then((response) => {
           console.log(response.data);
+          props.handleQuestoesAvaliativas(questoes);
         })
         .catch((error) => {
           console.log(error.response.data);
         });
-
-      props.handleQuestoesAvaliativas(questoes);
     }
   };
 
@@ -289,24 +291,40 @@ function QuestoesAvaliativasPitches(props) {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/${idCompeticaoHook}/questoes-avaliativas`).then((response) => {
       const { data } = response;
-      console.log(data);
+
+      let listaSustentabilidade = [];
+      let listaAdaptabilidade = [];
+      let listaInovacao = [];
+      let listaUtilidade = [];
 
       data.map((questao) => {
-        let lista = questoesSustentabilidade;
         let tipo = questao.tipoQuestaoAvaliativa;
 
-        if (tipo === "ADAPTABILIDADE") {
-          lista = questoesAdaptabilidade;
-        } else if (tipo === "INOVACAO") {
-          lista = questoesInovacao;
-        } else if (tipo === "UTILIDADE") {
-          lista = questoesUtilidade;
-        }
-        lista.push({
+        let questaoFormatada = {
           questao: questao.questao,
           pontosMax: questao.notaMax,
-        });
+        };
+
+        if (tipo === "SUSTENTABILIDADE") {
+          listaSustentabilidade.push(questaoFormatada);
+        } else if (tipo === "ADAPTABILIDADE") {
+          listaAdaptabilidade.push(questaoFormatada);
+        } else if (tipo === "INOVACAO") {
+          listaInovacao.push(questaoFormatada);
+        } else if (tipo === "UTILIDADE") {
+          listaUtilidade.push(questaoFormatada);
+        }
       });
+
+      setQuestaoSustentabilidade(listaSustentabilidade);
+      setQuestaoAdaptabilidade(listaAdaptabilidade);
+      setQuestaoInovacao(listaInovacao);
+      setQuestaoUtilidade(listaUtilidade);
+
+      if (data.length > 0) {
+        let questoes = formatarArrayQuestoes();
+        props.handleQuestoesAvaliativas(questoes);
+      }
     });
   }, [idCompeticaoHook]);
 

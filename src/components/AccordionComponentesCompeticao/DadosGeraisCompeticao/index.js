@@ -190,8 +190,7 @@ function DadosGeraisCompeticao(props) {
           ],
         };
 
-        salvarCompeticaoEmElaboracao(novaCompeticao);
-        props.handleDadosGerais(dadosGerais);
+        salvarCompeticaoEmElaboracao(novaCompeticao, dadosGerais);
       }
     }
   };
@@ -217,33 +216,37 @@ function DadosGeraisCompeticao(props) {
     }, 5000);
   };
 
-  const salvarCompeticaoEmElaboracao = (competicao) => {
+  const salvarCompeticaoEmElaboracao = (competicao, dadosGerais) => {
+    setMensagemErro(MSG000);
     if (idCompeticaoHook === 0) {
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post("/competicao", competicao)
         .then((response) => {
           props.setIdCompeticaoHook(response.data.idCompeticao);
+          props.handleDadosGerais(dadosGerais);
         })
         .catch((error) => {
           console.log(error.response.data);
+          setMensagemErro(error.response.data.motivosErros[0]);
         });
     } else {
       api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
       api
         .put(`/competicao/update/${idCompeticaoHook}`, competicao)
         .then((response) => {
-          console.log(response.data);
+          props.handleDadosGerais(dadosGerais);
         })
         .catch((error) => {
           console.log(error.response.data);
+          setMensagemErro(error.response.data.motivosErros[0]);
         });
     }
   };
 
   useEffect(() => {
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.estapas[0];
+      let datas = dadosGeraisConsultados?.etapas[0];
 
       setNome(dadosGeraisConsultados?.nomeCompeticao);
       setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
@@ -275,7 +278,6 @@ function DadosGeraisCompeticao(props) {
         dataTerminoInscricoes: data2,
       };
 
-      console.log(dadosGerais);
       props.handleDadosGerais(dadosGerais);
     }
   }, [dadosGeraisConsultados]);
