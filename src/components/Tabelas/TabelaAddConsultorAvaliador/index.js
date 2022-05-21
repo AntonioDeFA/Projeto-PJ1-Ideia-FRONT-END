@@ -149,6 +149,7 @@ function TabelaAddConsultorAvaliador(props) {
         <div>
           <Botao
             titulo="convidar"
+            id="btn-convidar-usuarios-tabela"
             classes="btn btn-warning botao-menor-personalizado"
             onClick={convidarUsuario}
           />
