@@ -98,7 +98,6 @@ function DadosUsuario() {
           api
             .post("/usuario", user)
             .then((response) => {
-              console.log(response);
               return navigate("/inicio");
             })
             .catch((error) => {
@@ -150,7 +149,6 @@ function DadosUsuario() {
         api
           .patch("/usuario/update", dadosAtualizados)
           .then((response) => {
-            console.log(response);
             return navigate("/inicio");
           })
           .catch((error) => {
