@@ -1,4 +1,11 @@
-import { MSG000, MSG004 } from "../utils/mensagens";
+import {
+  MSG000,
+  MSG004,
+  MSG032,
+  MSG033,
+  MSG034,
+  MSG035,
+} from "../utils/mensagens";
 
 export function validarEmail(email) {
   var re =
@@ -59,4 +66,61 @@ export const saoDuasDatasIguais = (data1, data2) => {
 
 export const isDataDefault = (dia, mes, ano) => {
   return dia === 1 && mes + 1 === 1 && ano === 2000;
+};
+
+export const formatarEtapasParaPatch = (etapas) => {
+  return [
+    {
+      dataInicio: [
+        etapas[0].dataInicio[0],
+        etapas[0].dataInicio[1],
+        etapas[0].dataInicio[2],
+      ],
+      dataTermino: [
+        etapas[0].dataTermino[0],
+        etapas[0].dataTermino[1],
+        etapas[0].dataTermino[2],
+      ],
+      tipoEtapa: MSG032,
+    },
+    {
+      dataInicio: [
+        etapas[1].dataInicio[0],
+        etapas[1].dataInicio[1],
+        etapas[1].dataInicio[2],
+      ],
+      dataTermino: [
+        etapas[1].dataTermino[0],
+        etapas[1].dataTermino[1],
+        etapas[1].dataTermino[2],
+      ],
+      tipoEtapa: MSG033,
+    },
+    {
+      dataInicio: [
+        etapas[2].dataInicio[0],
+        etapas[2].dataInicio[1],
+        etapas[2].dataInicio[2],
+      ],
+      dataTermino: [
+        etapas[2].dataTermino[0],
+        etapas[2].dataTermino[1],
+        etapas[2].dataTermino[2],
+      ],
+      tipoEtapa: MSG034,
+    },
+    {
+      dataInicio: [
+        etapas[3].dataInicio[0],
+        etapas[3].dataInicio[1],
+        etapas[3].dataInicio[2],
+      ],
+      dataTermino: [
+        etapas[3].dataTermino[0],
+        etapas[3].dataTermino[1],
+        etapas[3].dataTermino[2],
+      ],
+      tipoEtapa: MSG035,
+    },
+  ];
 };
