@@ -110,23 +110,23 @@ function EtapaPitch(props) {
 
         console.log(etapas);
 
-        // api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-        // api
-        //   .patch(`/competicao/update/${idCompeticaoHook}`, {
-        //     etapas,
-        //   })
-        //   .then((response) => {
-        //     console.log(response.data);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error.response.data);
-        //   });
+        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+        api
+          .patch(`/competicao/update/${idCompeticaoHook}`, {
+            etapas,
+          })
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+          });
 
-        // const dadosPitch = {
-        //   dataInicioPitch,
-        //   dataTerminoPitch,
-        // };
-        // props.handleEtapaPitch(dadosPitch);
+        const dadosPitch = {
+          dataInicioPitch,
+          dataTerminoPitch,
+        };
+        props.handleEtapaPitch(dadosPitch);
       }
     }
   };

@@ -200,12 +200,15 @@ function CadastroCompeticao() {
     if (pathname.includes("atualizar-competicao")) {
       setIdCompeticaoHook(idCompeticao);
       setAtualizar(true);
+    }
 
+    if (idCompeticaoHook !== 0) {
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
       api
-        .get(`/competicao/dados-gerais/${idCompeticao}`)
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
         .then((response) => {
           setDadosGeraisConsultados(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

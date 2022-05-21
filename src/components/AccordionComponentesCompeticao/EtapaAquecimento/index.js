@@ -293,41 +293,41 @@ function EtapaAquecimento(props) {
         data2.setFullYear(datas?.dataTermino[0]);
         setDataTerminoAquecimento(data2);
       }
-    }
 
-    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
-      const { data } = response;
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
+        const { data } = response;
 
-      let listaLinks = [];
+        let listaLinks = [];
 
-      data.map((material) => {
-        if (material.tipoMaterialEstudo === "LINK") {
-          listaLinks.push({
-            link: material.link,
-            tipo: "LINK",
-          });
-        } else {
-          // TODO atribuir arquivos aqui
-        }
+        data.map((material) => {
+          if (material.tipoMaterialEstudo === "LINK") {
+            listaLinks.push({
+              link: material.link,
+              tipo: "LINK",
+            });
+          } else {
+            // TODO atribuir arquivos aqui
+          }
+        });
+
+        setLinks(listaLinks);
+
+        setTimeout(() => {
+          if (
+            datasInformadas &&
+            (listaLinks.length !== 0 || arquivos.length !== 0)
+          ) {
+            const dadosAquecimento = {
+              dataInicioAquecimento: data1,
+              dataTerminoAquecimento: data2,
+              materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
+            };
+            props.handleEtapaAquecimento(dadosAquecimento);
+          }
+        }, 1000);
       });
-
-      setLinks(listaLinks);
-
-      setTimeout(() => {
-        if (
-          datasInformadas &&
-          (listaLinks.length !== 0 || arquivos.length !== 0)
-        ) {
-          const dadosAquecimento = {
-            dataInicioAquecimento: data1,
-            dataTerminoAquecimento: data2,
-            materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
-          };
-          props.handleEtapaAquecimento(dadosAquecimento);
-        }
-      }, 1000);
-    });
+    }
   }, [idCompeticaoHook, dadosGeraisConsultados]);
 
   const Tables = () => {
