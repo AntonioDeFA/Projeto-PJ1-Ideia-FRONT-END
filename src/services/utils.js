@@ -65,7 +65,10 @@ export const saoDuasDatasIguais = (data1, data2) => {
 };
 
 export const isDataDefault = (dia, mes, ano) => {
-  return dia === 1 && mes + 1 === 1 && ano === 2000;
+  if (dia === undefined || mes === undefined || ano === undefined) {
+    return true;
+  }
+  return dia === 1 && mes === 1 && ano === 2000;
 };
 
 export const formatarEtapasParaPatch = (etapas) => {
