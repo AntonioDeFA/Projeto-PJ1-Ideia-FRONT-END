@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import "../../assets/styles/global.css";
-import "./styles.css";
-import { Box, Modal, Typography } from "@mui/material";
-import { styleModals } from "../../utils/constantes";
+import api from "../../services/api";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
-import api from "../../services/api";
 import { handleDatas } from "../../services/utils";
-import { useNavigate } from "react-router-dom";
+import { styleModals } from "../../utils/constantes";
+import { Box, Modal, Typography } from "@mui/material";
+
+import "./styles.css";
+import "../../assets/styles/global.css";
 
 function CardMinhasCompeticoes(props) {
   const { token } = useContext(StoreContext);
@@ -58,7 +59,7 @@ function CardMinhasCompeticoes(props) {
     let element = null;
     let tipoEtapa = props.card?.etapaVigente?.tipoEtapa;
 
-    if (props.card.elaboracao) {
+    if (props.card.isElaboracao) {
       element = <h6 className="text-info fw-bold m-0">ELABORAÇÃO</h6>;
     } else {
       switch (tipoEtapa) {
@@ -140,7 +141,7 @@ function CardMinhasCompeticoes(props) {
               {handleDatas(
                 props.card?.etapaVigente?.dataInicio,
                 props.card?.etapaVigente?.dataTermino,
-                props.card.elaboracao
+                props.card.isElaboracao
               )}
             </h6>
           </div>
@@ -154,10 +155,12 @@ function CardMinhasCompeticoes(props) {
 
             <div id="icons">
               {props.card.papelUsuario === "ORGANIZADOR" ? (
-                <i className="fa-solid fa-pen-to-square hover-azul"></i>
+                <Link to={`/atualizar-competicao/${props.card.id}`}>
+                  <i className="fa-solid fa-pen-to-square hover-azul"></i>
+                </Link>
               ) : null}
 
-              {!props.card.elaboracao ? (
+              {!props.card.isElaboracao ? (
                 <i
                   onClick={dadosCompeticao}
                   className="fa-solid fa-arrow-right-to-bracket hover-azul"

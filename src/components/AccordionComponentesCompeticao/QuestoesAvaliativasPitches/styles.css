@@ -1,0 +1,9 @@
+.css-cjctlb-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: var(--color-button-hover);
+  font-weight: bold;
+}
+
+.css-cjctlb-MuiButtonBase-root-MuiTab-root {
+  color: var(--color-cinza-escuro);
+  font-weight: bold;
+}

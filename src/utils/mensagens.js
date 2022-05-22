@@ -51,3 +51,5 @@ export const MSG037 =
   "É necessário que um PDF com o regulamento da competição seja anexado.";
 export const MSG038 = "É necessário que a questão avaliativa seja informada.";
 export const MSG039 = "A questão deve ter entre 5 e 80 caracteres.";
+export const MSG040 =
+  "É necessário que você convide usuários para participarem como {1}.";

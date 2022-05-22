@@ -1,13 +1,6 @@
-import React, { useContext, useState } from "react";
-
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, TextField } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 
 import Table from "@mui/material/Table";
-import Botao from "../../Botao";
-import Mensagem from "../../Mensagem";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TableRow from "@mui/material/TableRow";
@@ -16,16 +9,30 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Box, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
+import api from "../../../services/api";
+import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
+import StoreContext from "../../../store/context";
+import { isDataDefault } from "./../../../services/utils";
+import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
+import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import {
   MSG000,
-  MSG018,
-  MSG027,
   MSG006,
   MSG004,
+  MSG018,
+  MSG027,
   MSG031,
+  MSG033,
 } from "../../../utils/mensagens";
-import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import {
+  formatarEtapasParaPatch,
   saoDuasDatasIguais,
   validarCamposObrigatorios,
 } from "../../../services/utils";
@@ -34,6 +41,8 @@ import "./styles.css";
 
 function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
+  const IsAtualizar = useContext(IsAtualizarContext);
+  const idCompeticaoHook = useContext(IdCompeticaoContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -55,6 +64,10 @@ function EtapaAquecimento(props) {
   const [arquivos, setArquivos] = useState([]);
 
   const [mudou, setMudou] = useState(true);
+
+  const [datasInformadas, setDatasInformadas] = useState(true);
+
+  const { token } = useContext(StoreContext);
 
   const salvarEtapaAquecimento = () => {
     props.setEtapaAquecimentoOk(false);
@@ -94,7 +107,44 @@ function EtapaAquecimento(props) {
           materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
 
-        props.handleEtapaAquecimento(dadosAquecimento);
+        api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+        api
+          .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+          .then((response) => {
+            let etapas = formatarEtapasParaPatch(response.data.etapas);
+
+            etapas[1] = {
+              dataInicio: [
+                Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+                Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+                Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+              ],
+              dataTermino: [
+                Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+                Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
+                Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+              ],
+              tipoEtapa: MSG033,
+            };
+
+            api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+            api
+              .patch(`/competicao/update/${idCompeticaoHook}`, {
+                etapas,
+                materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+                isElaboracao: true,
+              })
+              .then((response) => {
+                console.log(response.data);
+                props.handleEtapaAquecimento(dadosAquecimento);
+              })
+              .catch((error) => {
+                console.log(error.response.data);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     }
   };
@@ -108,6 +158,7 @@ function EtapaAquecimento(props) {
         link,
         tipo: "LINK",
       });
+      props.setEtapaAquecimentoOk(false);
 
       await setTimeout(() => {
         setMudou(false);
@@ -136,6 +187,8 @@ function EtapaAquecimento(props) {
         arquivoInput,
         tipo,
       });
+
+      props.setEtapaAquecimentoOk(false);
     }
 
     await setTimeout(() => {
@@ -147,6 +200,7 @@ function EtapaAquecimento(props) {
   const removerLink = async (index) => {
     links.splice(index, 1);
     let linksAtt = links;
+    props.setEtapaAquecimentoOk(false);
 
     await setTimeout(() => {
       setLinks(linksAtt);
@@ -163,6 +217,7 @@ function EtapaAquecimento(props) {
     await setTimeout(() => {
       setArquivos(arquivosAtt);
     }, 400);
+    props.setEtapaAquecimentoOk(false);
 
     setMudou(false);
     setMudou(true);
@@ -207,6 +262,7 @@ function EtapaAquecimento(props) {
     });
   };
 
+
   const converterArquivo = async (arquivoInput) => {
 
     let result = await toBase64(arquivoInput);
@@ -219,6 +275,85 @@ function EtapaAquecimento(props) {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
+
+  const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
+
+  useEffect(() => {
+    let data1 = new Date();
+    let data2 = new Date();
+
+    if (IsAtualizar) {
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+        .then((response) => {
+          setDadosGeraisConsultados(response.data);
+
+          let datas = response.data.etapas[1];
+          if (
+            isDataDefault(
+              datas?.dataInicio[2],
+              datas?.dataInicio[1],
+              datas?.dataInicio[0]
+            ) &&
+            isDataDefault(
+              datas?.dataTermino[2],
+              datas?.dataTermino[1],
+              datas?.dataTermino[0]
+            )
+          ) {
+            setDatasInformadas(false);
+            props.setEtapaAquecimentoOk(false);
+          } else {
+            setDatasInformadas(true);
+            data1.setDate(datas?.dataInicio[2]);
+            data1.setMonth(datas?.dataInicio[1] - 1);
+            data1.setFullYear(datas?.dataInicio[0]);
+            setDataInicioAquecimento(data1);
+
+            data2.setDate(datas?.dataTermino[2]);
+            data2.setMonth(datas?.dataTermino[1] - 1);
+            data2.setFullYear(datas?.dataTermino[0]);
+            setDataTerminoAquecimento(data2);
+          }
+
+          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+          api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
+            const { data } = response;
+
+            let listaLinks = [];
+
+            data.map((material) => {
+              if (material.tipoMaterialEstudo === "LINK") {
+                listaLinks.push({
+                  link: material.link,
+                  tipo: "LINK",
+                });
+              } else {
+                // TODO atribuir arquivos aqui
+              }
+            });
+
+            setLinks(listaLinks);
+
+            if (
+              datasInformadas &&
+              (listaLinks.length !== 0 || arquivos.length !== 0)
+            ) {
+              const dadosAquecimento = {
+                dataInicioAquecimento: data1,
+                dataTerminoAquecimento: data2,
+                materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
+              };
+              props.handleEtapaAquecimento(dadosAquecimento, false);
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [idCompeticaoHook]);
 
   const Tables = () => {
     return (
@@ -234,25 +369,32 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {url.link}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        className="me-1"
-                        onClick={() => removerLink(index)}
-                      >
-                        <i className="fa-solid fa-trash-can p-0"></i>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <a
+                          href={url.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {url.link}
+                        </a>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-1"
+                          onClick={() => removerLink(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+
                 : null}
             </TableBody>
           </Table>
@@ -307,6 +449,7 @@ function EtapaAquecimento(props) {
           <div id="dataInicioDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -332,6 +475,7 @@ function EtapaAquecimento(props) {
           <div id="dataTerminoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar && datasInformadas}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast

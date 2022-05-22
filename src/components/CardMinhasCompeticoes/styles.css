@@ -6,8 +6,9 @@ div .datas-etapa-bottom {
 margin-top: 6%;
 }
 
-i {
+i.hover-azul {
   padding-left: 7px;
+  color: rgb(44, 44, 44);
 }
 
 i.hover-azul:hover {

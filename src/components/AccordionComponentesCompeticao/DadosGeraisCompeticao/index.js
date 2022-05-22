@@ -1,14 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-import { Box, Input, TextField } from "@mui/material";
-import Button from "@mui/material/Button";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box, TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import api from "./../../../services/api";
+import Botao from "../../Botao";
+import Mensagem from "../../Mensagem";
+import StoreContext from "../../../store/context";
+import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
+import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
+import { validarCamposObrigatorios } from "./../../../services/utils";
+import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
-  MSG005,
   MSG006,
   MSG015,
   MSG016,
@@ -24,16 +31,11 @@ import {
 } from "../../../utils/mensagens";
 
 import "./styles.css";
-import { UploadFile } from "@mui/icons-material";
-import Botao from "../../Botao";
-import { validarCamposObrigatorios } from "./../../../services/utils";
-import api from "./../../../services/api";
-import StoreContext from "../../../store/context";
-import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import Mensagem from "../../Mensagem";
 
 function DadosGeraisCompeticao(props) {
   const idCompeticaoHook = useContext(idCompeticaoContext);
+  const IsAtualizar = useContext(IsAtualizarContext);
+  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
@@ -188,8 +190,7 @@ function DadosGeraisCompeticao(props) {
           ],
         };
 
-        salvarCompeticaoEmElaboracao(novaCompeticao);
-        props.handleDadosGerais(dadosGerais);
+        salvarCompeticaoEmElaboracao(novaCompeticao, dadosGerais);
       }
     }
   };
@@ -213,29 +214,71 @@ function DadosGeraisCompeticao(props) {
     }, 5000);
   };
 
-  const salvarCompeticaoEmElaboracao = (competicao) => {
+  const salvarCompeticaoEmElaboracao = (competicao, dadosGerais) => {
+    setMensagemErro(MSG000);
     if (idCompeticaoHook === 0) {
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post("/competicao", competicao)
         .then((response) => {
           props.setIdCompeticaoHook(response.data.idCompeticao);
+          props.handleDadosGerais(dadosGerais);
         })
         .catch((error) => {
           console.log(error.response.data);
+          setMensagemErro(error.response.data.motivosErros[0]);
         });
     } else {
       api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
       api
         .put(`/competicao/update/${idCompeticaoHook}`, competicao)
         .then((response) => {
-          console.log(response.data);
+          props.handleDadosGerais(dadosGerais);
         })
         .catch((error) => {
           console.log(error.response.data);
+          setMensagemErro(error.response.data.motivosErros[0]);
         });
     }
   };
+
+  useEffect(() => {
+    if (IsAtualizar) {
+      let datas = dadosGeraisConsultados?.etapas[0];
+
+      setNome(dadosGeraisConsultados?.nomeCompeticao);
+      setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
+      setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
+      setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
+      setDominio(dadosGeraisConsultados?.dominioCompeticao);
+      // TODO setar regulamento
+
+      let data1 = new Date();
+      data1.setDate(datas?.dataInicio[2]);
+      data1.setMonth(datas?.dataInicio[1] - 1);
+      data1.setFullYear(datas?.dataInicio[0]);
+      setDataInicioInscricoes(data1);
+
+      let data2 = new Date();
+      data2.setDate(datas?.dataTermino[2]);
+      data2.setMonth(datas?.dataTermino[1] - 1);
+      data2.setFullYear(datas?.dataTermino[0]);
+      setDataTerminoInscricoes(data2);
+
+      const dadosGerais = {
+        nome: dadosGeraisConsultados?.nomeCompeticao,
+        dominio: dadosGeraisConsultados?.dominioCompeticao,
+        regulamento,
+        tempoMaxPitch: dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60,
+        qntdMinMembros: dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe,
+        qntdMaxMembros: dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe,
+        dataInicioInscricoes: data1,
+        dataTerminoInscricoes: data2,
+      };
+
+      props.handleDadosGerais(dadosGerais, false);
+    }
+  }, [dadosGeraisConsultados]);
 
   return (
     <div id="dados-gerais-content">
@@ -249,6 +292,7 @@ function DadosGeraisCompeticao(props) {
           <div id="dataInicioDiv">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -274,6 +318,7 @@ function DadosGeraisCompeticao(props) {
           <div id="dataTerminoDiv" className="input-irmao-direito">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                disabled={IsAtualizar}
                 sx={{ color: "#ffc107" }}
                 format="DD-MM-YYYY"
                 disablePast
@@ -320,10 +365,11 @@ function DadosGeraisCompeticao(props) {
         <div className="inputs-lado-a-lado">
           <div id="qntdMinMemrosDiv">
             <TextField
+              disabled={IsAtualizar}
               className="input-irmao"
               error={errorQntdMinMembros}
               helperText={mensagemQntdMinMembros}
-              id="input-data-inicio-inscricoes"
+              id="input-data-qntd-min-membros"
               value={qntdMinMembros}
               onChange={(e) => {
                 setQntdMinMembros(e.target.value);
@@ -337,10 +383,11 @@ function DadosGeraisCompeticao(props) {
           </div>
           <div id="qntdMaxMemrosDiv" className="input-irmao-direito">
             <TextField
+              disabled={IsAtualizar}
               className="input-irmao"
               error={errorQntdMaxMembros}
               helperText={mensagemQntdMaxMembros}
-              id="input-data-inicio-inscricoes"
+              id="input-data-qntd-max-membros"
               value={qntdMaxMembros}
               onChange={(e) => {
                 setQntdMaxMembros(e.target.value);
@@ -357,6 +404,7 @@ function DadosGeraisCompeticao(props) {
 
         <div>
           <TextField
+            disabled={IsAtualizar}
             className="input-cadastro-competicao"
             id="input-dominio-competicao"
             value={dominio}

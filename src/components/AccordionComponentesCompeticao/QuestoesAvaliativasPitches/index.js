@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -9,8 +9,10 @@ import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Modal, TextField, TextareaAutosize } from "@mui/material";
 
+import api from "./../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
+import StoreContext from "./../../../store/context";
 import { styleModals } from "../../../utils/constantes";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import {
@@ -24,6 +26,7 @@ import {
 } from "../../../utils/mensagens";
 
 import "./styles.css";
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -52,8 +55,9 @@ const valueProps = (index) => {
 };
 
 function QuestoesAvaliativasPitches(props) {
-  const [value, setValue] = React.useState(0);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
+
+  const [value, setValue] = React.useState(0);
 
   const [questoesAdaptabilidade, setQuestaoAdaptabilidade] = useState([]);
   const [questoesInovacao, setQuestaoInovacao] = useState([]);
@@ -76,7 +80,6 @@ function QuestoesAvaliativasPitches(props) {
   const [questao, setQuestao] = useState(MSG000);
   const [pontosMax, setPontosMax] = useState(MSG000);
   const [indexQuestao, setindexQuestao] = useState(-1);
-
   const [errorPontosMax, setErrorPontosMax] = useState(false);
   const [mensagemPontosMax, setMensagemPontosMax] = useState(MSG000);
   const [mensagemErroQuestao, setMensagemErroQuestao] = useState(MSG000);
@@ -84,6 +87,141 @@ function QuestoesAvaliativasPitches(props) {
   const [isAtualizarQuestao, setIsAtualizarQuestao] = useState(false);
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
+
+  const { token } = useContext(StoreContext);
+
+  const cadastrarNovaQuestaoAvaliativa = () => {
+    setErrorPontosMax(false);
+    setMensagemPontosMax(MSG000);
+
+    if (!pontosMax) {
+      setErrorPontosMax(true);
+      setMensagemPontosMax(MSG004);
+    } else if (pontosMax <= 4) {
+      setErrorPontosMax(true);
+      setMensagemPontosMax(MSG036);
+    } else if (questao === MSG000) {
+      setMensagemErroQuestao(MSG038);
+    } else if (questao.length < 5 || questao.length > 80) {
+      setMensagemErroQuestao(MSG039);
+    } else {
+      let lista = questoesSustentabilidade;
+
+      if (tipo === "Adaptabilidade") {
+        lista = questoesAdaptabilidade;
+      } else if (tipo === "Inovação") {
+        lista = questoesInovacao;
+      } else if (tipo === "Utilidade") {
+        lista = questoesUtilidade;
+      }
+
+      if (isAtualizarQuestao) {
+        lista.splice(indexQuestao, 1);
+      }
+
+      lista.push({
+        questao,
+        pontosMax,
+      });
+
+      setQuestao(MSG000);
+      setPontosMax(null);
+      setIsAtualizarQuestao(false);
+      props.setQuestoesAvaliativasOk(false);
+
+      handleCloseModalCriarQuestao();
+    }
+  };
+
+  const removerQuestaoAvaliativa = async (index) => {
+    let lista = questoesSustentabilidade;
+
+    if (tipo === "Adaptabilidade") {
+      lista = questoesAdaptabilidade;
+    } else if (tipo === "Inovação") {
+      lista = questoesInovacao;
+    } else if (tipo === "Utilidade") {
+      lista = questoesUtilidade;
+    }
+    lista.splice(index, 1);
+
+    let questoesAtt = lista;
+
+    await setTimeout(() => {
+      if (tipo === "Adaptabilidade") {
+        setQuestaoAdaptabilidade(questoesAtt);
+      } else if (tipo === "Inovação") {
+        setQuestaoInovacao(questoesAtt);
+      } else if (tipo === "Utilidade") {
+        setQuestaoUtilidade(questoesAtt);
+      } else {
+        setQuestaoSustentabilidade(questoesAtt);
+      }
+    }, 400);
+
+    ListPanel(tipo);
+  };
+
+  const preencherQuestaoAvaliativa = async (questao, index) => {
+    setIsAtualizarQuestao(true);
+    setQuestao(questao.questao);
+    setPontosMax(questao.pontosMax);
+    setindexQuestao(index);
+
+    handleOpenModalCriarQuestao();
+  };
+
+  const confirmarQuestoesAvaliativas = () => {
+    props.setQuestoesAvaliativasOk(false);
+
+    if (
+      questoesSustentabilidade.length === 0 &&
+      questoesAdaptabilidade.length === 0 &&
+      questoesInovacao.length === 0 &&
+      questoesUtilidade.length === 0
+    ) {
+      setMensagemErro(MSG030);
+    } else {
+      setMensagemErro(MSG000);
+      let questoes = formatarArrayQuestoes();
+
+      api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+      api
+        .patch(`/competicao/update/${idCompeticaoHook}`, {
+          questoesAvaliativas: questoes,
+          isElaboracao: true,
+        })
+        .then((response) => {
+          console.log(response.data);
+          props.handleQuestoesAvaliativas(questoes);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
+  };
+
+  const formatarArrayQuestoes = () => {
+    let questoes = [];
+
+    atribuirQuestoes(questoes, questoesAdaptabilidade, "ADAPTABILIDADE");
+    atribuirQuestoes(questoes, questoesInovacao, "INOVACAO");
+    atribuirQuestoes(questoes, questoesUtilidade, "UTILIDADE");
+    atribuirQuestoes(questoes, questoesSustentabilidade, "SUSTENTABILIDADE");
+
+    return questoes;
+  };
+
+  const atribuirQuestoes = (questoes, array, tipoQuestaoAvaliativa) => {
+    array.forEach((questao) =>
+      questoes.push({
+        notaMax: Number(questao.pontosMax),
+        questao: questao.questao,
+        enumeracao: Number(questoes.length + 1),
+        tipoQuestaoAvaliativa,
+      })
+    );
+  };
 
   const ListPanel = (props) => {
     const { opcao } = props;
@@ -149,143 +287,46 @@ function QuestoesAvaliativasPitches(props) {
     );
   };
 
-  const cadastrarNovaQuestaoAvaliativa = () => {
-    setErrorPontosMax(false);
-    setMensagemPontosMax(MSG000);
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get(`/${idCompeticaoHook}/questoes-avaliativas`).then((response) => {
+      const { data } = response;
 
-    if (!pontosMax) {
-      setErrorPontosMax(true);
-      setMensagemPontosMax(MSG004);
-    } else if (pontosMax <= 4) {
-      setErrorPontosMax(true);
-      setMensagemPontosMax(MSG036);
-    } else if (questao === MSG000) {
-      setMensagemErroQuestao(MSG038);
-    } else if (questao.length < 5 || questao.length > 80) {
-      setMensagemErroQuestao(MSG039);
-    } else {
-      let lista = questoesSustentabilidade;
+      let listaSustentabilidade = [];
+      let listaAdaptabilidade = [];
+      let listaInovacao = [];
+      let listaUtilidade = [];
 
-      if (tipo === "Adaptabilidade") {
-        lista = questoesAdaptabilidade;
-      } else if (tipo === "Inovação") {
-        lista = questoesInovacao;
-      } else if (tipo === "Utilidade") {
-        lista = questoesUtilidade;
-      }
+      data.map((questao) => {
+        let tipo = questao.tipoQuestaoAvaliativa;
 
-      if (isAtualizarQuestao) {
-        lista.splice(indexQuestao, 1);
-      }
+        let questaoFormatada = {
+          questao: questao.questao,
+          pontosMax: questao.notaMax,
+        };
 
-      lista.push({
-        questao,
-        pontosMax,
+        if (tipo === "SUSTENTABILIDADE") {
+          listaSustentabilidade.push(questaoFormatada);
+        } else if (tipo === "ADAPTABILIDADE") {
+          listaAdaptabilidade.push(questaoFormatada);
+        } else if (tipo === "INOVACAO") {
+          listaInovacao.push(questaoFormatada);
+        } else if (tipo === "UTILIDADE") {
+          listaUtilidade.push(questaoFormatada);
+        }
       });
 
-      setQuestao(MSG000);
-      setPontosMax(null);
-      setIsAtualizarQuestao(false);
+      setQuestaoSustentabilidade(listaSustentabilidade);
+      setQuestaoAdaptabilidade(listaAdaptabilidade);
+      setQuestaoInovacao(listaInovacao);
+      setQuestaoUtilidade(listaUtilidade);
 
-      handleCloseModalCriarQuestao();
-    }
-  };
-
-  // const atualizarQuestaoAvaliativa = () => {
-  //   setQuestaoObj({
-  //     questao,
-  //     pontosMax,
-  //   });
-  //   setIsAtualizarQuestao(false);
-  // };
-
-  const removerQuestaoAvaliativa = async (index) => {
-    let lista = questoesSustentabilidade;
-
-    if (tipo === "Adaptabilidade") {
-      lista = questoesAdaptabilidade;
-    } else if (tipo === "Inovação") {
-      lista = questoesInovacao;
-    } else if (tipo === "Utilidade") {
-      lista = questoesUtilidade;
-    }
-    lista.splice(index, 1);
-
-    let questoesAtt = lista;
-
-    await setTimeout(() => {
-      if (tipo === "Adaptabilidade") {
-        setQuestaoAdaptabilidade(questoesAtt);
-      } else if (tipo === "Inovação") {
-        setQuestaoInovacao(questoesAtt);
-      } else if (tipo === "Utilidade") {
-        setQuestaoUtilidade(questoesAtt);
-      } else {
-        setQuestaoSustentabilidade(questoesAtt);
+      if (data.length > 0) {
+        let questoes = formatarArrayQuestoes();
+        props.handleQuestoesAvaliativas(questoes, false);
       }
-    }, 400);
-
-    ListPanel(tipo);
-  };
-
-  const preencherQuestaoAvaliativa = async (questao, index) => {
-    setIsAtualizarQuestao(true);
-
-    console.log(questao);
-
-    let lista = questoesSustentabilidade;
-
-    if (tipo === "Adaptabilidade") {
-      lista = questoesAdaptabilidade;
-    } else if (tipo === "Inovação") {
-      lista = questoesInovacao;
-    } else if (tipo === "Utilidade") {
-      lista = questoesUtilidade;
-    }
-
-    setQuestao(questao.questao);
-    setPontosMax(questao.pontosMax);
-    setindexQuestao(index);
-
-    handleOpenModalCriarQuestao();
-  };
-
-  const confirmarQuestoesAvaliativas = () => {
-    props.setQuestoesAvaliativasOk(false);
-    if (
-      questoesSustentabilidade.length === 0 &&
-      questoesAdaptabilidade.length === 0 &&
-      questoesInovacao.length === 0 &&
-      questoesUtilidade.length === 0
-    ) {
-      setMensagemErro(MSG030);
-    } else {
-      setMensagemErro(MSG000);
-      props.handleQuestoesAvaliativas(formatarArrayQuestoes());
-    }
-  };
-
-  const formatarArrayQuestoes = () => {
-    let questoes = [];
-
-    atribuirQuestoes(questoes, questoesAdaptabilidade, "ADAPTABILIDADE");
-    atribuirQuestoes(questoes, questoesInovacao, "INOVACAO");
-    atribuirQuestoes(questoes, questoesUtilidade, "UTILIDADE");
-    atribuirQuestoes(questoes, questoesSustentabilidade, "SUSTENTABILIDADE");
-
-    return questoes;
-  };
-
-  const atribuirQuestoes = (questoes, array, tipoQuestaoAvaliativa) => {
-    array.forEach((questao) =>
-      questoes.push({
-        notaMax: Number(questao.pontosMax),
-        questao: questao.questao,
-        enumeracao: Number(questoes.length + 1),
-        tipoQuestaoAvaliativa,
-      })
-    );
-  };
+    });
+  }, [idCompeticaoHook]);
 
   return (
     <div>
@@ -309,6 +350,8 @@ function QuestoesAvaliativasPitches(props) {
             onChange={(event, newValue) => {
               setValue(newValue);
             }}
+            textColor="inherit"
+            indicatorColor="inherit"
             aria-label="basic tabs example"
           >
             <Tab
@@ -330,7 +373,7 @@ function QuestoesAvaliativasPitches(props) {
           </Tabs>
         </Box>
 
-        <TabPanel value={value} index={0}>
+        <TabPanel color="warning" value={value} index={0}>
           <ListPanel opcao="Adaptabilidade" />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -391,6 +434,7 @@ function QuestoesAvaliativasPitches(props) {
               onChange={(e) => {
                 setQuestao(e.target.value);
               }}
+              id="textarea-questao-avaliativa"
               className="border rounded p-3 mt-4 w-100"
               aria-label="minimum height"
               minRows={2}
@@ -400,6 +444,7 @@ function QuestoesAvaliativasPitches(props) {
             <div className="botoes-cadastro mt-2">
               <Botao
                 titulo="salvar"
+                id="btn-salvar-questao-avaliativa"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={() => cadastrarNovaQuestaoAvaliativa()}
               />
