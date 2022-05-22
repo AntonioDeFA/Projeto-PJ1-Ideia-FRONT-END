@@ -58,7 +58,7 @@ function CardMinhasCompeticoes(props) {
     let element = null;
     let tipoEtapa = props.card?.etapaVigente?.tipoEtapa;
 
-    if (props.card.elaboracao) {
+    if (props.card.isElaboracao) {
       element = <h6 className="text-info fw-bold m-0">ELABORAÇÃO</h6>;
     } else {
       switch (tipoEtapa) {
@@ -136,7 +136,7 @@ function CardMinhasCompeticoes(props) {
               {handleDatas(
                 props.card?.etapaVigente?.dataInicio,
                 props.card?.etapaVigente?.dataTermino,
-                props.card.elaboracao
+                props.card.isElaboracao
               )}
             </h6>
           </div>
@@ -155,7 +155,7 @@ function CardMinhasCompeticoes(props) {
                 </Link>
               ) : null}
 
-              {!props.card.elaboracao ? (
+              {!props.card.isElaboracao ? (
                 <i
                   onClick={null}
                   className="fa-solid fa-arrow-right-to-bracket hover-azul"
