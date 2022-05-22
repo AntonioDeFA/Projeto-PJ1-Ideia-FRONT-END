@@ -183,16 +183,22 @@ function CadastroEquipe() {
     handleCloseModalCriarMembro();
   };
 
-  const baixarRegulamento = () => {
+  const baixarRegulamento = async () => {
+
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/${idCompeticao}/regulamento`).then((response) => {
-      console.log(response);
-      var file = new Blob([response.data], { type: "application/pdf" });
+    api.get(`/competicao/7/regulamento`).then((response) => {
+
+      var byteCharacters = window.atob(response.data);
+      var byteNumbers = new Array(byteCharacters.length);
+      for (var i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      var file = new Blob([byteArray], { type: 'application/pdf;base64' });
       var fileURL = URL.createObjectURL(file);
       window.open(fileURL);
-    });
 
-    console.log("Baixando regulamento...");
+    });
   };
 
   const confirmarUnicidadeEmail = () => {

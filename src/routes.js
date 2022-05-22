@@ -12,6 +12,7 @@ import ResetarSenha from "./pages/ResetarSenha/index";
 import CadastroEquipe from "./pages/CadastroEquipe/index";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
+import DadosCompeticao from "./pages/DadosCompeticao";
 
 function ProjetoRoutes() {
   return (
@@ -51,6 +52,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <CadastroCompeticao />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/dados-competicao/:idCompeticao/:papelUsuario"
+            element={
+              <RoutesPrivate>
+                <DadosCompeticao />
               </RoutesPrivate>
             }
           />

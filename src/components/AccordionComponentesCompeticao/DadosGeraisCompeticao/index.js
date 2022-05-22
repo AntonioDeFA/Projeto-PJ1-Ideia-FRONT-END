@@ -39,7 +39,7 @@ function DadosGeraisCompeticao(props) {
 
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
-  const [regulamento, setRegulamento] = useState([]);
+  const [regulamento, setRegulamento] = useState(MSG000);
   const [tempoMaxPitch, setTempoMaxPitch] = useState(MSG000);
   const [qntdMinMembros, setQntdMinMembros] = useState(MSG000);
   const [qntdMaxMembros, setQntdMaxMembros] = useState(MSG000);
@@ -195,24 +195,22 @@ function DadosGeraisCompeticao(props) {
     }
   };
 
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
   const handleFormatarDocumento = async (arquivoInput) => {
-    var reader = new FileReader();
-    var fileByteArray = [];
-    reader.readAsArrayBuffer(arquivoInput);
-    reader.onloadend = await function (evt) {
-      setTimeout(() => {
-        if (evt.target.readyState == FileReader.DONE) {
-          var arrayBuffer = evt.target.result,
-            array = new Uint8Array(arrayBuffer);
-          for (var i = 0; i < array.length; i++) {
-            fileByteArray.push(array[i]);
-          }
-        }
-      }, 2500);
-    };
+
+    let result = await toBase64(arquivoInput);
+
+    console.log("ESSE É O RESULT  ");
+    console.log(result);
 
     setTimeout(() => {
-      setRegulamento(fileByteArray);
+      setRegulamento(result);
     }, 5000);
   };
 

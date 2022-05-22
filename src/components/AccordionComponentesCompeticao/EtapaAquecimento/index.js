@@ -229,6 +229,7 @@ function EtapaAquecimento(props) {
     atribuirMaterialLink(materiais, links);
     atribuirMaterialEstudo(materiais, arquivos);
 
+    console.log(materiais);
     return materiais;
   };
 
@@ -247,21 +248,11 @@ function EtapaAquecimento(props) {
 
   const atribuirMaterialEstudo = (materiais, array) => {
     array.forEach((material) => {
-      var reader = new FileReader();
-      var fileByteArray = [];
-      reader.readAsArrayBuffer(material.arquivoInput);
-      reader.onloadend = function (evt) {
-        if (evt.target.readyState == FileReader.DONE) {
-          var arrayBuffer = evt.target.result,
-            array = new Uint8Array(arrayBuffer);
-          for (var i = 0; i < array.length; i++) {
-            fileByteArray.push(array[i]);
-          }
-        }
-      };
+
+      let stringFile = converterArquivo(material.arquivoInput);
 
       materiais.push({
-        arquivoEstudo: fileByteArray,
+        arquivoEstudo: stringFile,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
           enumeracao: 2,
@@ -270,6 +261,20 @@ function EtapaAquecimento(props) {
       });
     });
   };
+
+
+  const converterArquivo = async (arquivoInput) => {
+
+    let result = await toBase64(arquivoInput);
+    return result;
+  };
+
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 
   const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
 
@@ -389,6 +394,7 @@ function EtapaAquecimento(props) {
                       </TableCell>
                     </TableRow>
                   ))
+
                 : null}
             </TableBody>
           </Table>
@@ -404,25 +410,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? arquivos.map((documento, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {documento.arquivoInput.name}
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          className="me-2"
-                          onClick={() => removerArquivo(index)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {documento.arquivoInput.name}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-2"
+                        onClick={() => removerArquivo(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
                 : null}
             </TableBody>
           </Table>
