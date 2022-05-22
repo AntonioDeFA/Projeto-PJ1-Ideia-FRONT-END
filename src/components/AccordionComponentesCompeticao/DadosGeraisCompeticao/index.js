@@ -278,7 +278,7 @@ function DadosGeraisCompeticao(props) {
         dataTerminoInscricoes: data2,
       };
 
-      props.handleDadosGerais(dadosGerais);
+      props.handleDadosGerais(dadosGerais, false);
     }
   }, [dadosGeraisConsultados]);
 

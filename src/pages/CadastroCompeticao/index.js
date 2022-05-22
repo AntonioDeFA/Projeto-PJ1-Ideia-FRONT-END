@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { Box } from "@mui/material";
@@ -69,34 +69,52 @@ function CadastroCompeticao() {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const handleDadosGerais = (dadosGeraisVar) => {
+  const handleDadosGerais = (dadosGeraisVar, trocarAccordion = true) => {
     setDadosGerais(dadosGeraisVar);
     setDadosGeraisOk(true);
-    setExpanded("panel2");
+
+    if (trocarAccordion) {
+      setExpanded("panel2");
+    }
   };
 
-  const handleQuestoesAvaliativas = (questoesAvaliativas) => {
+  const handleQuestoesAvaliativas = (
+    questoesAvaliativas,
+    trocarAccordion = true
+  ) => {
     setQuestoesAvaliativas(questoesAvaliativas);
     setQuestoesAvaliativasOk(true);
-    setExpanded("panel3");
+
+    if (trocarAccordion) {
+      setExpanded("panel3");
+    }
   };
 
-  const handleEtapaAquecimento = (dadosAquecimento) => {
+  const handleEtapaAquecimento = (dadosAquecimento, trocarAccordion = true) => {
     setDadosAquecimento(dadosAquecimento);
     setEtapaAquecimentoOk(true);
-    setExpanded("panel4");
+
+    if (trocarAccordion) {
+      setExpanded("panel4");
+    }
   };
 
-  const handleEtapaImersao = (dadosImersao) => {
+  const handleEtapaImersao = (dadosImersao, trocarAccordion = true) => {
     setDadosImersao(dadosImersao);
     setEtapaImersaoOk(true);
-    setExpanded("panel5");
+
+    if (trocarAccordion) {
+      setExpanded("panel5");
+    }
   };
 
-  const handleEtapaPitch = (dadosPitch) => {
+  const handleEtapaPitch = (dadosPitch, trocarAccordion = true) => {
     setDadosPitch(dadosPitch);
     setEtapaPitchOk(true);
-    setExpanded(MSG000);
+
+    if (trocarAccordion) {
+      setExpanded(MSG000);
+    }
   };
 
   const handleAccordionAquecimento = () => {
@@ -112,10 +130,11 @@ function CadastroCompeticao() {
   const salvarCompeticao = () => {
     if (idCompeticaoHook !== 0) {
       let competicaoAtualizada = {
-        nomeCompeticao: dadosGerais.nome,
-        tempoMaximoVideoEmSeg: Number(dadosGerais.tempoMaxPitch) * 60,
-        questoesAvaliativas: questoesAvaliativas,
-        materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+        // nomeCompeticao: dadosGerais.nome,
+        // tempoMaximoVideoEmSeg: Number(dadosGerais.tempoMaxPitch) * 60,
+        // questoesAvaliativas: questoesAvaliativas,
+        // materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+        isElaboracao: true,
         etapas: [
           {
             dataInicio: [
@@ -189,12 +208,7 @@ function CadastroCompeticao() {
     return navigate("/inicio");
   };
 
-  const handleHouveAlteracao = () => {
-    setHouveAtualizacao(true);
-    setHouveAtualizacao(false);
-  };
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const { pathname } = location;
 
     if (pathname.includes("atualizar-competicao")) {
@@ -208,13 +222,12 @@ function CadastroCompeticao() {
         .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
         .then((response) => {
           setDadosGeraisConsultados(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [token, location, idCompeticao, houveAtualizacao]);
+  }, [token, location, idCompeticao, houveAtualizacao, idCompeticaoHook]);
 
   return (
     <div id="cadastro-equipe">
@@ -332,12 +345,6 @@ function CadastroCompeticao() {
                           handleEtapaAquecimento={handleEtapaAquecimento}
                           setEtapaAquecimentoOk={setEtapaAquecimentoOk}
                           isAtualizar={isAtualizar}
-                          dataInicio={
-                            dadosGeraisConsultados?.etapas[1].dataInicio
-                          }
-                          dataTermino={
-                            dadosGeraisConsultados?.etapas[1].dataTermino
-                          }
                         />
                       </AccordionDetails>
                     </Accordion>
@@ -383,12 +390,6 @@ function CadastroCompeticao() {
                               handleEtapaImersao={handleEtapaImersao}
                               setEtapaImersaoOk={setEtapaImersaoOk}
                               dominioCompeticao={dadosGerais?.dominioCompeticao}
-                              dataInicio={
-                                dadosGeraisConsultados?.etapas[2].dataInicio
-                              }
-                              dataTermino={
-                                dadosGeraisConsultados?.etapas[2].dataTermino
-                              }
                             />
                           </AccordionDetails>
                         </Accordion>
@@ -432,12 +433,6 @@ function CadastroCompeticao() {
                               handleEtapaPitch={handleEtapaPitch}
                               setEtapaPitchOk={setEtapaPitchOk}
                               dominioCompeticao={dadosGerais?.dominioCompeticao}
-                              dataInicio={
-                                dadosGeraisConsultados?.etapas[3].dataInicio
-                              }
-                              dataTermino={
-                                dadosGeraisConsultados?.etapas[3].dataTermino
-                              }
                             />
                           </AccordionDetails>
                         </Accordion>

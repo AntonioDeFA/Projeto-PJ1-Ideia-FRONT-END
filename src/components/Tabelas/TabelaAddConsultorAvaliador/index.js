@@ -81,9 +81,9 @@ function TabelaAddConsultorAvaliador(props) {
   };
 
   const removerUsuario = (email) => {
-    api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
     api
-      .delete(`/${idCompeticaoHook}/remover-usuario-convidado`, { email })
+      .post(`/${idCompeticaoHook}/remover-usuario-convidado`, { email })
       .then((response) => {
         console.log(response.data);
         getConvites();
@@ -214,6 +214,10 @@ function TabelaAddConsultorAvaliador(props) {
         }, 500);
       });
   };
+
+  useEffect(() => {
+    props.handleQntdUsuarios(rows.length);
+  }, [rows]);
 
   useEffect(() => {
     if (idCompeticaoHook !== 0) {

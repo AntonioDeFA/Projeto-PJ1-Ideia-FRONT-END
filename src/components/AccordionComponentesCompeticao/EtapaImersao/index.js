@@ -13,7 +13,6 @@ import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import EtapaAquecimentoContext from "../../../utils/context/etapaAquecimentoContext";
 import TabelaAddConsultorAvaliador from "../../Tabelas/TabelaAddConsultorAvaliador";
-import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -36,7 +35,6 @@ function EtapaImersao(props) {
   const IsAtualizar = useContext(IsAtualizarContext);
   const dadosAquecimento = useContext(EtapaAquecimentoContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
-  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioImersao, setDataInicioImersao] = useState(null);
   const [dataTerminoImersao, setDataTerminoImersao] = useState(null);
@@ -53,7 +51,7 @@ function EtapaImersao(props) {
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
-  const [datasInformadas, setDatasInformadas] = useState(true);
+  const [datasInformadas, setDatasInformadas] = useState(false);
 
   const { token } = useContext(StoreContext);
 
@@ -95,83 +93,105 @@ function EtapaImersao(props) {
       } else if (qntdConsultores === 0) {
         setMensagemErro(MSG040.replace("{1}", "consultores"));
       } else {
-        let etapas = formatarEtapasParaPatch(dadosGeraisConsultados.etapas);
+        if (IsAtualizar) {
+          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+          api
+            .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+            .then((response) => {
+              let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-        etapas[2] = {
-          dataInicio: [
-            Number(dataInicioImersao.getFullYear()),
-            Number(dataInicioImersao.getMonth()) + 1,
-            Number(dataInicioImersao.getDate()),
-          ],
-          dataTermino: [
-            Number(dataTerminoImersao.getFullYear()),
-            Number(dataTerminoImersao.getMonth()) + 1,
-            Number(dataTerminoImersao.getDate()),
-          ],
-          tipoEtapa: MSG034,
-        };
+              etapas[2] = {
+                dataInicio: [
+                  Number(dataInicioImersao.getFullYear()),
+                  Number(dataInicioImersao.getMonth()) + 1,
+                  Number(dataInicioImersao.getDate()),
+                ],
+                dataTermino: [
+                  Number(dataTerminoImersao.getFullYear()),
+                  Number(dataTerminoImersao.getMonth()) + 1,
+                  Number(dataTerminoImersao.getDate()),
+                ],
+                tipoEtapa: MSG034,
+              };
 
-        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-        api
-          .patch(`/competicao/update/${idCompeticaoHook}`, {
-            etapas,
-          })
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.log(error.response.data);
-          });
+              api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+              api
+                .patch(`/competicao/update/${idCompeticaoHook}`, {
+                  etapas,
+                  isElaboracao: true,
+                })
+                .then((response) => {
+                  console.log(response.data);
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                });
 
-        const dadosImersao = {
-          dataInicioImersao,
-          dataTerminoImersao,
-        };
-        props.handleEtapaImersao(dadosImersao);
+              const dadosImersao = {
+                dataInicioImersao,
+                dataTerminoImersao,
+              };
+              props.handleEtapaImersao(dadosImersao);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
     }
   };
 
   useEffect(() => {
+    let data1 = new Date();
+    let data2 = new Date();
+
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.etapas[2];
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+        .then((response) => {
+          let datas = response.data.etapas[2];
 
-      if (
-        isDataDefault(
-          datas?.dataInicio[2],
-          datas?.dataInicio[1] - 1,
-          datas?.dataInicio[0]
-        ) &&
-        isDataDefault(
-          datas?.dataTermino[2],
-          datas?.dataTermino[1] - 1,
-          datas?.dataTermino[0]
-        )
-      ) {
-        setDatasInformadas(false);
-      } else {
-        let data = new Date();
-        data.setDate(datas?.dataInicio[2]);
-        data.setMonth(datas?.dataInicio[1] - 1);
-        data.setFullYear(datas?.dataInicio[0]);
-        setDataInicioImersao(data);
+          if (
+            isDataDefault(
+              datas?.dataInicio[2],
+              datas?.dataInicio[1],
+              datas?.dataInicio[0]
+            ) &&
+            isDataDefault(
+              datas?.dataTermino[2],
+              datas?.dataTermino[1],
+              datas?.dataTermino[0]
+            )
+          ) {
+            console.log("entrei no IF");
+            setDatasInformadas(false);
+          } else {
+            setDatasInformadas(true);
+            data1.setDate(datas?.dataInicio[2]);
+            data1.setMonth(datas?.dataInicio[1] - 1);
+            data1.setFullYear(datas?.dataInicio[0]);
+            setDataInicioImersao(data1);
 
-        data = new Date();
-        data.setDate(datas?.dataTermino[2]);
-        data.setMonth(datas?.dataTermino[1] - 1);
-        data.setFullYear(datas?.dataTermino[0]);
-        setDataTerminoImersao(data);
-      }
+            data2.setDate(datas?.dataTermino[2]);
+            data2.setMonth(datas?.dataTermino[1] - 1);
+            data2.setFullYear(datas?.dataTermino[0]);
+            setDataTerminoImersao(data2);
+          }
+
+          if (datasInformadas && qntdConsultores > 0) {
+            const dadosImersao = {
+              dataInicioImersao: data1,
+              dataTerminoImersao: data2,
+            };
+            props.handleEtapaImersao(dadosImersao, false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-
-    if (datasInformadas && qntdConsultores > 0) {
-      const dadosImersao = {
-        dataInicioImersao,
-        dataTerminoImersao,
-      };
-      props.handleEtapaImersao(dadosImersao);
-    }
-  }, [dadosGeraisConsultados]);
+  }, [IsAtualizar, qntdConsultores]);
 
   return (
     <div id="etapa-imersao-content">

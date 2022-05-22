@@ -44,7 +44,7 @@ function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
   const IsAtualizar = useContext(IsAtualizarContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
-  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
+  // const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -130,6 +130,7 @@ function EtapaAquecimento(props) {
           .patch(`/competicao/update/${idCompeticaoHook}`, {
             etapas,
             materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+            isElaboracao: true,
           })
           .then((response) => {
             console.log(response.data);
@@ -193,6 +194,7 @@ function EtapaAquecimento(props) {
   const removerLink = async (index) => {
     links.splice(index, 1);
     let linksAtt = links;
+    props.setEtapaAquecimentoOk(false);
 
     await setTimeout(() => {
       setLinks(linksAtt);
@@ -209,6 +211,7 @@ function EtapaAquecimento(props) {
     await setTimeout(() => {
       setArquivos(arquivosAtt);
     }, 400);
+    props.setEtapaAquecimentoOk(false);
 
     setMudou(false);
     setMudou(true);
@@ -262,73 +265,84 @@ function EtapaAquecimento(props) {
     });
   };
 
+  const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
+
   useEffect(() => {
     let data1 = new Date();
     let data2 = new Date();
+
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.etapas[1];
-
-      if (
-        isDataDefault(
-          datas?.dataInicio[2],
-          datas?.dataInicio[1] - 1,
-          datas?.dataInicio[0]
-        ) &&
-        isDataDefault(
-          datas?.dataTermino[2],
-          datas?.dataTermino[1] - 1,
-          datas?.dataTermino[0]
-        )
-      ) {
-        setDatasInformadas(false);
-        props.setEtapaAquecimentoOk(false);
-      } else {
-        data1.setDate(datas?.dataInicio[2]);
-        data1.setMonth(datas?.dataInicio[1] - 1);
-        data1.setFullYear(datas?.dataInicio[0]);
-        setDataInicioAquecimento(data1);
-
-        data2.setDate(datas?.dataTermino[2]);
-        data2.setMonth(datas?.dataTermino[1] - 1);
-        data2.setFullYear(datas?.dataTermino[0]);
-        setDataTerminoAquecimento(data2);
-      }
-
       api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-      api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
-        const { data } = response;
+      api
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+        .then((response) => {
+          setDadosGeraisConsultados(response.data);
 
-        let listaLinks = [];
-
-        data.map((material) => {
-          if (material.tipoMaterialEstudo === "LINK") {
-            listaLinks.push({
-              link: material.link,
-              tipo: "LINK",
-            });
-          } else {
-            // TODO atribuir arquivos aqui
-          }
-        });
-
-        setLinks(listaLinks);
-
-        setTimeout(() => {
+          let datas = response.data.etapas[1];
           if (
-            datasInformadas &&
-            (listaLinks.length !== 0 || arquivos.length !== 0)
+            isDataDefault(
+              datas?.dataInicio[2],
+              datas?.dataInicio[1],
+              datas?.dataInicio[0]
+            ) &&
+            isDataDefault(
+              datas?.dataTermino[2],
+              datas?.dataTermino[1],
+              datas?.dataTermino[0]
+            )
           ) {
-            const dadosAquecimento = {
-              dataInicioAquecimento: data1,
-              dataTerminoAquecimento: data2,
-              materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
-            };
-            props.handleEtapaAquecimento(dadosAquecimento);
+            setDatasInformadas(false);
+            props.setEtapaAquecimentoOk(false);
+          } else {
+            setDatasInformadas(true);
+            data1.setDate(datas?.dataInicio[2]);
+            data1.setMonth(datas?.dataInicio[1] - 1);
+            data1.setFullYear(datas?.dataInicio[0]);
+            setDataInicioAquecimento(data1);
+
+            data2.setDate(datas?.dataTermino[2]);
+            data2.setMonth(datas?.dataTermino[1] - 1);
+            data2.setFullYear(datas?.dataTermino[0]);
+            setDataTerminoAquecimento(data2);
           }
-        }, 1000);
-      });
+
+          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+          api.get(`/${idCompeticaoHook}/materiais-estudo`).then((response) => {
+            const { data } = response;
+
+            let listaLinks = [];
+
+            data.map((material) => {
+              if (material.tipoMaterialEstudo === "LINK") {
+                listaLinks.push({
+                  link: material.link,
+                  tipo: "LINK",
+                });
+              } else {
+                // TODO atribuir arquivos aqui
+              }
+            });
+
+            setLinks(listaLinks);
+
+            if (
+              datasInformadas &&
+              (listaLinks.length !== 0 || arquivos.length !== 0)
+            ) {
+              const dadosAquecimento = {
+                dataInicioAquecimento: data1,
+                dataTerminoAquecimento: data2,
+                materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
+              };
+              props.handleEtapaAquecimento(dadosAquecimento, false);
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-  }, [idCompeticaoHook, dadosGeraisConsultados]);
+  }, [idCompeticaoHook]);
 
   const Tables = () => {
     return (
@@ -349,7 +363,13 @@ function EtapaAquecimento(props) {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {url.link}
+                        <a
+                          href={url.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {url.link}
+                        </a>
                       </TableCell>
                       <TableCell align="right">
                         <IconButton

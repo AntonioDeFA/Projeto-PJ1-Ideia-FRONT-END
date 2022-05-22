@@ -13,7 +13,6 @@ import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import EtapaImersaoContext from "../../../utils/context/etapaImersaoContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import TabelaAddConsultorAvaliador from "./../../Tabelas/TabelaAddConsultorAvaliador/index";
-import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -36,7 +35,6 @@ function EtapaPitch(props) {
   const IsAtualizar = useContext(IsAtualizarContext);
   const dadosImersao = useContext(EtapaImersaoContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
-  const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioPitch, setDataInicioPitch] = useState(null);
   const [dataTerminoPitch, setDataTerminoPitch] = useState(null);
@@ -53,7 +51,7 @@ function EtapaPitch(props) {
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
-  const [datasInformadas, setDatasInformadas] = useState(true);
+  const [datasInformadas, setDatasInformadas] = useState(false);
 
   const { token } = useContext(StoreContext);
 
@@ -92,77 +90,104 @@ function EtapaPitch(props) {
       } else if (qntdAvaliadores === 0) {
         setMensagemErro(MSG040.replace("{1}", "avaliadores"));
       } else {
-        let etapas = formatarEtapasParaPatch(dadosGeraisConsultados.etapas);
+        if (IsAtualizar) {
+          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+          api
+            .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+            .then((response) => {
+              let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-        etapas[3] = {
-          dataInicio: [
-            Number(dataInicioPitch.getFullYear()),
-            Number(dataInicioPitch.getMonth()) + 1,
-            Number(dataInicioPitch.getDate()),
-          ],
-          dataTermino: [
-            Number(dataTerminoPitch.getFullYear()),
-            Number(dataTerminoPitch.getMonth()) + 1,
-            Number(dataTerminoPitch.getDate()),
-          ],
-          tipoEtapa: MSG035,
-        };
+              etapas[3] = {
+                dataInicio: [
+                  Number(dataInicioPitch.getFullYear()),
+                  Number(dataInicioPitch.getMonth()) + 1,
+                  Number(dataInicioPitch.getDate()),
+                ],
+                dataTermino: [
+                  Number(dataTerminoPitch.getFullYear()),
+                  Number(dataTerminoPitch.getMonth()) + 1,
+                  Number(dataTerminoPitch.getDate()),
+                ],
+                tipoEtapa: MSG035,
+              };
 
-        console.log(etapas);
+              api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+              api
+                .patch(`/competicao/update/${idCompeticaoHook}`, {
+                  etapas,
+                  isElaboracao: true,
+                })
+                .then((response) => {
+                  console.log(response.data);
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                });
 
-        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-        api
-          .patch(`/competicao/update/${idCompeticaoHook}`, {
-            etapas,
-          })
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.log(error.response.data);
-          });
-
-        const dadosPitch = {
-          dataInicioPitch,
-          dataTerminoPitch,
-        };
-        props.handleEtapaPitch(dadosPitch);
+              const dadosPitch = {
+                dataInicioPitch,
+                dataTerminoPitch,
+              };
+              props.handleEtapaPitch(dadosPitch);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
     }
   };
 
   useEffect(() => {
+    let data1 = new Date();
+    let data2 = new Date();
+
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.etapas[3];
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+      api
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+        .then((response) => {
+          let datas = response.data?.etapas[3];
 
-      if (
-        isDataDefault(
-          datas?.dataInicio[2],
-          datas?.dataInicio[1] - 1,
-          datas?.dataInicio[0]
-        ) &&
-        isDataDefault(
-          datas?.dataTermino[2],
-          datas?.dataTermino[1] - 1,
-          datas?.dataTermino[0]
-        )
-      ) {
-        setDatasInformadas(false);
-      } else {
-        let data = new Date();
-        data.setDate(datas?.dataInicio[2]);
-        data.setMonth(datas?.dataInicio[1] - 1);
-        data.setFullYear(datas?.dataInicio[0]);
-        setDataInicioPitch(data);
+          if (
+            isDataDefault(
+              datas?.dataInicio[2],
+              datas?.dataInicio[1],
+              datas?.dataInicio[0]
+            ) &&
+            isDataDefault(
+              datas?.dataTermino[2],
+              datas?.dataTermino[1],
+              datas?.dataTermino[0]
+            )
+          ) {
+            setDatasInformadas(false);
+          } else {
+            setDatasInformadas(true);
+            data1.setDate(datas?.dataInicio[2]);
+            data1.setMonth(datas?.dataInicio[1] - 1);
+            data1.setFullYear(datas?.dataInicio[0]);
+            setDataInicioPitch(data1);
 
-        data = new Date();
-        data.setDate(datas?.dataTermino[2]);
-        data.setMonth(datas?.dataTermino[1] - 1);
-        data.setFullYear(datas?.dataTermino[0]);
-        setDataTerminoPitch(data);
-      }
+            data2.setDate(datas?.dataTermino[2]);
+            data2.setMonth(datas?.dataTermino[1] - 1);
+            data2.setFullYear(datas?.dataTermino[0]);
+            setDataTerminoPitch(data2);
+          }
+          console.log(qntdAvaliadores);
+          if (datasInformadas && qntdAvaliadores > 0) {
+            const dadosPitch = {
+              dataInicioPitch: data1,
+              dataTerminoPitch: data2,
+            };
+            props.handleEtapaPitch(dadosPitch, false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-  }, [dadosGeraisConsultados]);
+  }, [IsAtualizar, qntdAvaliadores]);
 
   return (
     <div id="etapa-pitch-content">

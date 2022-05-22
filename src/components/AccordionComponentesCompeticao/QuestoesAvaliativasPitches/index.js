@@ -323,7 +323,7 @@ function QuestoesAvaliativasPitches(props) {
 
       if (data.length > 0) {
         let questoes = formatarArrayQuestoes();
-        props.handleQuestoesAvaliativas(questoes);
+        props.handleQuestoesAvaliativas(questoes, false);
       }
     });
   }, [idCompeticaoHook]);
