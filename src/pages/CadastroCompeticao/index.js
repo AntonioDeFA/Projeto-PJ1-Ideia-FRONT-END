@@ -130,11 +130,7 @@ function CadastroCompeticao() {
   const salvarCompeticao = () => {
     if (idCompeticaoHook !== 0) {
       let competicaoAtualizada = {
-        // nomeCompeticao: dadosGerais.nome,
-        // tempoMaximoVideoEmSeg: Number(dadosGerais.tempoMaxPitch) * 60,
-        // questoesAvaliativas: questoesAvaliativas,
-        // materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
-        isElaboracao: true,
+        isElaboracao: false,
         etapas: [
           {
             dataInicio: [
