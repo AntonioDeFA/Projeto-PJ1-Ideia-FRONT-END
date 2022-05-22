@@ -129,73 +129,33 @@ function CadastroCompeticao() {
 
   const salvarCompeticao = () => {
     if (idCompeticaoHook !== 0) {
-      let competicaoAtualizada = {
-        isElaboracao: false,
-        etapas: [
-          {
-            dataInicio: [
-              Number(dadosGerais.dataInicioInscricoes.getFullYear()),
-              Number(dadosGerais.dataInicioInscricoes.getMonth()) + 1,
-              Number(dadosGerais.dataInicioInscricoes.getDate()),
-            ],
-            dataTermino: [
-              Number(dadosGerais.dataTerminoInscricoes.getFullYear()),
-              Number(dadosGerais.dataTerminoInscricoes.getMonth()) + 1,
-              Number(dadosGerais.dataTerminoInscricoes.getDate()),
-            ],
-            tipoEtapa: MSG032,
-          },
-          {
-            dataInicio: [
-              Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
-              Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
-              Number(dadosAquecimento.dataInicioAquecimento.getDate()),
-            ],
-            dataTermino: [
-              Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
-              Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
-              Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
-            ],
-            tipoEtapa: MSG033,
-          },
-          {
-            dataInicio: [
-              Number(dadosImersao.dataInicioImersao.getFullYear()),
-              Number(dadosImersao.dataInicioImersao.getMonth()) + 1,
-              Number(dadosImersao.dataInicioImersao.getDate()),
-            ],
-            dataTermino: [
-              Number(dadosImersao.dataTerminoImersao.getFullYear()),
-              Number(dadosImersao.dataTerminoImersao.getMonth()) + 1,
-              Number(dadosImersao.dataTerminoImersao.getDate()),
-            ],
-            tipoEtapa: MSG034,
-          },
-          {
-            dataInicio: [
-              Number(dadosPitch.dataInicioPitch.getFullYear()),
-              Number(dadosPitch.dataInicioPitch.getMonth()) + 1,
-              Number(dadosPitch.dataInicioPitch.getDate()),
-            ],
-            dataTermino: [
-              Number(dadosPitch.dataTerminoPitch.getFullYear()),
-              Number(dadosPitch.dataTerminoPitch.getMonth()) + 1,
-              Number(dadosPitch.dataTerminoPitch.getDate()),
-            ],
-            tipoEtapa: MSG035,
-          },
-        ],
-      };
-
-      api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+      api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
       api
-        .patch(`/competicao/update/${idCompeticaoHook}`, competicaoAtualizada)
+        .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
         .then((response) => {
-          console.log(response.data);
-          return navigate("/inicio");
+          let etapas = formatarEtapasParaPatch(response.data.etapas);
+
+          let competicaoAtualizada = {
+            isElaboracao: false,
+            etapas,
+          };
+
+          api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+          api
+            .patch(
+              `/competicao/update/${idCompeticaoHook}`,
+              competicaoAtualizada
+            )
+            .then((response) => {
+              console.log(response.data);
+              return navigate("/inicio");
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+            });
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error);
         });
     }
   };
