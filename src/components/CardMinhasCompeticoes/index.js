@@ -8,9 +8,11 @@ import Botao from "../Botao";
 import StoreContext from "../../store/context";
 import api from "../../services/api";
 import { handleDatas } from "../../services/utils";
+import { useNavigate } from "react-router-dom";
 
 function CardMinhasCompeticoes(props) {
   const { token } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const [openModalDeletarCompeticao, setOpenModalDeletarCompeticao] =
     React.useState(false);
@@ -115,6 +117,10 @@ function CardMinhasCompeticoes(props) {
     handleCloseModalDeletarCompeticao();
   };
 
+  const dadosCompeticao = () => {
+    navigate(`/dados-competicao/${props.card.id}/${props.card.papelUsuario}`);
+  }
+
   return (
     <div
       id="component-cardCompeticao"
@@ -153,7 +159,7 @@ function CardMinhasCompeticoes(props) {
 
               {!props.card.elaboracao ? (
                 <i
-                  onClick={null}
+                  onClick={dadosCompeticao}
                   className="fa-solid fa-arrow-right-to-bracket hover-azul"
                 ></i>
               ) : null}
