@@ -17,24 +17,17 @@ import DefaultHeader from "../../components/DefaultHeader";
 import EtapaAquecimento from "./../../components/AccordionComponentesCompeticao/EtapaAquecimento/index";
 import DadosGeraisCompeticao from "./../../components/AccordionComponentesCompeticao/DadosGeraisCompeticao/index";
 import { DadosGeraisProvider } from "../../utils/context/dadosGeraisContext";
+import { IsAtualizarProvider } from "./../../utils/context/isAtualizarContext";
 import { EtapaImersaoProvider } from "./../../utils/context/etapaImersaoContext";
 import { IdCompeticaoProvider } from "../../utils/context/idCompeticaoContext";
 import QuestoesAvaliativasPitches from "./../../components/AccordionComponentesCompeticao/QuestoesAvaliativasPitches/index";
+import { formatarEtapasParaPatch } from "../../services/utils";
 import { EtapaAquecimentoProvider } from "./../../utils/context/etapaAquecimentoContext";
 import { ExpandedAccordionProvider } from "../../utils/context/expandedAccordionContext";
 import { DadosGeraisConsultadosProvider } from "./../../utils/context/dadosGeraisConsultadosContext";
-import {
-  MSG000,
-  MSG022,
-  MSG023,
-  MSG032,
-  MSG033,
-  MSG034,
-  MSG035,
-} from "../../utils/mensagens";
+import { MSG000, MSG022, MSG023 } from "../../utils/mensagens";
 
 import "./styles.css";
-import { IsAtualizarProvider } from "./../../utils/context/isAtualizarContext";
 
 function CadastroCompeticao() {
   const { idCompeticao } = useParams();
