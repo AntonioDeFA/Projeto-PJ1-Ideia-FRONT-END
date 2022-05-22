@@ -90,50 +90,48 @@ function EtapaPitch(props) {
       } else if (qntdAvaliadores === 0) {
         setMensagemErro(MSG040.replace("{1}", "avaliadores"));
       } else {
-        if (IsAtualizar) {
-          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-          api
-            .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
-            .then((response) => {
-              let etapas = formatarEtapasParaPatch(response.data.etapas);
+        api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+        api
+          .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+          .then((response) => {
+            let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-              etapas[3] = {
-                dataInicio: [
-                  Number(dataInicioPitch.getFullYear()),
-                  Number(dataInicioPitch.getMonth()) + 1,
-                  Number(dataInicioPitch.getDate()),
-                ],
-                dataTermino: [
-                  Number(dataTerminoPitch.getFullYear()),
-                  Number(dataTerminoPitch.getMonth()) + 1,
-                  Number(dataTerminoPitch.getDate()),
-                ],
-                tipoEtapa: MSG035,
-              };
+            etapas[3] = {
+              dataInicio: [
+                Number(dataInicioPitch.getFullYear()),
+                Number(dataInicioPitch.getMonth()) + 1,
+                Number(dataInicioPitch.getDate()),
+              ],
+              dataTermino: [
+                Number(dataTerminoPitch.getFullYear()),
+                Number(dataTerminoPitch.getMonth()) + 1,
+                Number(dataTerminoPitch.getDate()),
+              ],
+              tipoEtapa: MSG035,
+            };
 
-              api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-              api
-                .patch(`/competicao/update/${idCompeticaoHook}`, {
-                  etapas,
-                  isElaboracao: true,
-                })
-                .then((response) => {
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  console.log(error.response.data);
-                });
+            api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+            api
+              .patch(`/competicao/update/${idCompeticaoHook}`, {
+                etapas,
+                isElaboracao: true,
+              })
+              .then((response) => {
+                console.log(response.data);
+              })
+              .catch((error) => {
+                console.log(error.response.data);
+              });
 
-              const dadosPitch = {
-                dataInicioPitch,
-                dataTerminoPitch,
-              };
-              props.handleEtapaPitch(dadosPitch);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
+            const dadosPitch = {
+              dataInicioPitch,
+              dataTerminoPitch,
+            };
+            props.handleEtapaPitch(dadosPitch);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     }
   };

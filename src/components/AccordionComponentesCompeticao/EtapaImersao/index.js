@@ -93,50 +93,48 @@ function EtapaImersao(props) {
       } else if (qntdConsultores === 0) {
         setMensagemErro(MSG040.replace("{1}", "consultores"));
       } else {
-        if (IsAtualizar) {
-          api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-          api
-            .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
-            .then((response) => {
-              let etapas = formatarEtapasParaPatch(response.data.etapas);
+        api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+        api
+          .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
+          .then((response) => {
+            let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-              etapas[2] = {
-                dataInicio: [
-                  Number(dataInicioImersao.getFullYear()),
-                  Number(dataInicioImersao.getMonth()) + 1,
-                  Number(dataInicioImersao.getDate()),
-                ],
-                dataTermino: [
-                  Number(dataTerminoImersao.getFullYear()),
-                  Number(dataTerminoImersao.getMonth()) + 1,
-                  Number(dataTerminoImersao.getDate()),
-                ],
-                tipoEtapa: MSG034,
-              };
+            etapas[2] = {
+              dataInicio: [
+                Number(dataInicioImersao.getFullYear()),
+                Number(dataInicioImersao.getMonth()) + 1,
+                Number(dataInicioImersao.getDate()),
+              ],
+              dataTermino: [
+                Number(dataTerminoImersao.getFullYear()),
+                Number(dataTerminoImersao.getMonth()) + 1,
+                Number(dataTerminoImersao.getDate()),
+              ],
+              tipoEtapa: MSG034,
+            };
 
-              api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
-              api
-                .patch(`/competicao/update/${idCompeticaoHook}`, {
-                  etapas,
-                  isElaboracao: true,
-                })
-                .then((response) => {
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  console.log(error.response.data);
-                });
+            api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+            api
+              .patch(`/competicao/update/${idCompeticaoHook}`, {
+                etapas,
+                isElaboracao: true,
+              })
+              .then((response) => {
+                console.log(response.data);
+              })
+              .catch((error) => {
+                console.log(error.response.data);
+              });
 
-              const dadosImersao = {
-                dataInicioImersao,
-                dataTerminoImersao,
-              };
-              props.handleEtapaImersao(dadosImersao);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
+            const dadosImersao = {
+              dataInicioImersao,
+              dataTerminoImersao,
+            };
+            props.handleEtapaImersao(dadosImersao);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     }
   };

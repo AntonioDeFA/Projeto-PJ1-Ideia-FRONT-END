@@ -22,7 +22,6 @@ import { isDataDefault } from "./../../../services/utils";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
 import {
   MSG000,
   MSG006,
@@ -44,7 +43,6 @@ function EtapaAquecimento(props) {
   const dadosGerais = useContext(DadosGeraisContext);
   const IsAtualizar = useContext(IsAtualizarContext);
   const idCompeticaoHook = useContext(IdCompeticaoContext);
-  // const dadosGeraisConsultados = useContext(DadosGeraisConsultadosContext);
 
   const [dataInicioAquecimento, setDataInicioAquecimento] = useState(null);
   const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(null);
@@ -109,35 +107,43 @@ function EtapaAquecimento(props) {
           materiaisDeEstudo: formatarArrayMateriaisDeEstudo(),
         };
 
-        let etapas = formatarEtapasParaPatch(dadosGeraisConsultados.etapas);
-
-        etapas[1] = {
-          dataInicio: [
-            Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
-            Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
-            Number(dadosAquecimento.dataInicioAquecimento.getDate()),
-          ],
-          dataTermino: [
-            Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
-            Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
-            Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
-          ],
-          tipoEtapa: MSG033,
-        };
-
-        api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+        api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
         api
-          .patch(`/competicao/update/${idCompeticaoHook}`, {
-            etapas,
-            materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
-            isElaboracao: true,
-          })
+          .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
           .then((response) => {
-            console.log(response.data);
-            props.handleEtapaAquecimento(dadosAquecimento);
+            let etapas = formatarEtapasParaPatch(response.data.etapas);
+
+            etapas[1] = {
+              dataInicio: [
+                Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+                Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+                Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+              ],
+              dataTermino: [
+                Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+                Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
+                Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+              ],
+              tipoEtapa: MSG033,
+            };
+
+            api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
+            api
+              .patch(`/competicao/update/${idCompeticaoHook}`, {
+                etapas,
+                materiaisDeEstudo: dadosAquecimento.materiaisDeEstudo,
+                isElaboracao: true,
+              })
+              .then((response) => {
+                console.log(response.data);
+                props.handleEtapaAquecimento(dadosAquecimento);
+              })
+              .catch((error) => {
+                console.log(error.response.data);
+              });
           })
           .catch((error) => {
-            console.log(error.response.data);
+            console.log(error);
           });
       }
     }
