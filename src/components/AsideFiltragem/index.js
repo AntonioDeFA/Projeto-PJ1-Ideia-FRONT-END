@@ -76,6 +76,8 @@ function AsideFiltragem(props) {
 
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
+  const [checkboxElaboracao, setCheckboxElaboracao] = useState(false);
+  const [checkboxNaoIniciada, setCheckboxNaoIniciada] = useState(false);
   const [checkboxInscricao, setCheckboxInscricao] = useState(false);
   const [checkboxAquecimento, setCheckboxAquecimento] = useState(false);
   const [checkboxImersao, setCheckboxImersao] = useState(false);
@@ -104,6 +106,60 @@ function AsideFiltragem(props) {
       return (
         <div className="margem-personalizada">
           <FormGroup value={etapasFiltragem} onChange={setEtapasFiltragem}>
+            <FormControlLabel
+              onChange={(e) => {
+                if (e.target.checked) {
+                  etapasSelecionadas.push("ELABORACAO");
+                } else {
+                  let index = etapasSelecionadas.indexOf("ELABORACAO");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(e, setCheckboxElaboracao, "ELABORACAO");
+              }}
+              control={
+                <Checkbox
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
+                    },
+                  }}
+                />
+              }
+              label="Elaboração"
+              value={checkboxElaboracao}
+            />
+
+            <FormControlLabel
+              onChange={(e) => {
+                if (e.target.checked) {
+                  etapasSelecionadas.push("NAO_INICIADA");
+                } else {
+                  let index = etapasSelecionadas.indexOf("NAO_INICIADA");
+                  if (index !== -1) {
+                    etapasSelecionadas.splice(index, 1);
+                  }
+                }
+                realizarFiltragemEtapas(
+                  e,
+                  setCheckboxNaoIniciada,
+                  "NAO_INICIADA"
+                );
+              }}
+              control={
+                <Checkbox
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#FC7A00",
+                    },
+                  }}
+                />
+              }
+              label="Não Iniciada"
+              value={checkboxNaoIniciada}
+            />
+
             <FormControlLabel
               onChange={(e) => {
                 if (e.target.checked) {

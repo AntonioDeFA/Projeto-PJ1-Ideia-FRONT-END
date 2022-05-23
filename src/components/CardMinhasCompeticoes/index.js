@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
-import { handleDatas } from "../../services/utils";
+import { competicaoNaoIniciada, handleDatas } from "../../services/utils";
 import { styleModals } from "../../utils/constantes";
 import { Box, Modal, Typography } from "@mui/material";
 
@@ -61,6 +61,8 @@ function CardMinhasCompeticoes(props) {
 
     if (props.card.isElaboracao) {
       element = <h6 className="text-info fw-bold m-0">ELABORAÇÃO</h6>;
+    } else if (competicaoNaoIniciada(props.card)) {
+      element = <h6 className="text-dark fw-bold m-0">NÃO INICIADA</h6>;
     } else {
       switch (tipoEtapa) {
         case "INSCRICAO":
@@ -79,7 +81,7 @@ function CardMinhasCompeticoes(props) {
           element = <h6 className="text-secondary fw-bold m-0">ENCERRADA</h6>;
           break;
         default:
-          element = <h6 className="fw-bold m-0">Etapa não especificada</h6>;
+          element = <h6 className="fw-bold m-0">Não especificada</h6>;
           break;
       }
     }
@@ -120,7 +122,7 @@ function CardMinhasCompeticoes(props) {
 
   const dadosCompeticao = () => {
     navigate(`/dados-competicao/${props.card.id}/${props.card.papelUsuario}`);
-  }
+  };
 
   return (
     <div
@@ -141,7 +143,9 @@ function CardMinhasCompeticoes(props) {
               {handleDatas(
                 props.card?.etapaVigente?.dataInicio,
                 props.card?.etapaVigente?.dataTermino,
-                props.card.isElaboracao
+                props.card.isElaboracao,
+                competicaoNaoIniciada(props.card),
+                props.card.etapas[0]
               )}
             </h6>
           </div>

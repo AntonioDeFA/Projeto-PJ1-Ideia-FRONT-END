@@ -8,6 +8,7 @@ import "../../assets/styles/global.css";
 
 import FiltrosContext from "../../utils/context/filtrosContext";
 import StoreContext from "./../../store/context";
+import { competicaoNaoIniciada } from "./../../services/utils";
 
 function ListaCardsMinhasCompeticoes() {
   const filtros = useContext(FiltrosContext);
@@ -33,6 +34,8 @@ function ListaCardsMinhasCompeticoes() {
   }, [filtros, token]);
 
   const obterCards = (params, etapasSelecionadas) => {
+    console.log(etapasSelecionadas);
+
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/competicoes/usuario-logado", { params }).then((response) => {
       const { data } = response;
@@ -41,7 +44,7 @@ function ListaCardsMinhasCompeticoes() {
       if (etapasSelecionadas && etapasSelecionadas.length > 0) {
         etapasSelecionadas.forEach((etapa) => {
           data.forEach((card) => {
-            if (card.etapaVigente.tipoEtapa === etapa) {
+            if (card.etapaVigenteStr === etapa) {
               cardsFiltrados.push(card);
             }
           });
