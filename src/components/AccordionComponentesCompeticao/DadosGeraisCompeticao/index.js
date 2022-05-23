@@ -138,8 +138,6 @@ function DadosGeraisCompeticao(props) {
       } else {
         setMensagemErro(MSG000);
 
-        await handleFormatarDocumento(arquivoInput);
-
         const dadosGerais = {
           nome,
           dominio,
@@ -202,21 +200,20 @@ function DadosGeraisCompeticao(props) {
     reader.onerror = error => reject(error);
   });
 
-  const handleFormatarDocumento = async (arquivoInput) => {
-
+  const handleFormatarDocumento = async () => {
+    let arquivoInput = document.getElementById("contained-button-file")
+      .files[0];
     let result = await toBase64(arquivoInput);
-
-    console.log("ESSE É O RESULT  ");
-    console.log(result);
-
+    result = result.replace("data:application/pdf;base64,", "");
     setTimeout(() => {
       setRegulamento(result);
-    }, 5000);
+    }, 2500);
   };
 
   const salvarCompeticaoEmElaboracao = (competicao, dadosGerais) => {
     setMensagemErro(MSG000);
     if (idCompeticaoHook === 0) {
+      console.log(competicao);
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post("/competicao", competicao)
@@ -428,6 +425,9 @@ function DadosGeraisCompeticao(props) {
               id="contained-button-file"
               accept=".pdf"
               className="form-control"
+              onChange={(e) => {
+                handleFormatarDocumento();
+              }}
             />
           </label>
         </div>

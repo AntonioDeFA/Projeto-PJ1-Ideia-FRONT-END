@@ -186,7 +186,7 @@ function CadastroEquipe() {
   const baixarRegulamento = async () => {
 
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/7/regulamento`).then((response) => {
+    api.get(`/competicao/${idCompeticao}/regulamento`).then((response) => {
 
       var byteCharacters = window.atob(response.data);
       var byteNumbers = new Array(byteCharacters.length);
@@ -307,18 +307,18 @@ function CadastroEquipe() {
             <ul id="lista-membros">
               {mudou
                 ? membros.map((membro, index) => {
-                    return (
-                      <li key={index}>
-                        <CardMembro
-                          nome={membro.nomeMembro}
-                          email={membro.emailMembro}
-                          isLider={membro.isLider}
-                          sequencial={index + 1}
-                          removerMembro={removerMembro}
-                        />
-                      </li>
-                    );
-                  })
+                  return (
+                    <li key={index}>
+                      <CardMembro
+                        nome={membro.nomeMembro}
+                        email={membro.emailMembro}
+                        isLider={membro.isLider}
+                        sequencial={index + 1}
+                        removerMembro={removerMembro}
+                      />
+                    </li>
+                  );
+                })
                 : null}
             </ul>
           </div>
