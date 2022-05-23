@@ -13,9 +13,21 @@ export function validarEmail(email) {
   return re.test(email);
 }
 
-export function handleDatas(dataInicio, dataTermino, elaboracao = false) {
+export function handleDatas(
+  dataInicio,
+  dataTermino,
+  elaboracao = false,
+  naoIniciada = false,
+  etapaIncricao = null
+) {
   if (!elaboracao) {
-    if (
+    if (naoIniciada) {
+      return `Inicia em ${adicionarZero(
+        etapaIncricao.dataInicio[2]
+      )}/${adicionarZero(etapaIncricao.dataInicio[1])}/${
+        etapaIncricao.dataInicio[0]
+      }`;
+    } else if (
       dataInicio &&
       dataInicio.length > 0 &&
       dataTermino &&
@@ -32,6 +44,15 @@ export function handleDatas(dataInicio, dataTermino, elaboracao = false) {
 
 const adicionarZero = (numero) => {
   return Number(numero) < 10 ? `0${numero}` : numero;
+};
+
+export const competicaoNaoIniciada = (card) => {
+  let dia = card.etapas[0].dataInicio[2];
+  let mes = card.etapas[0].dataInicio[1];
+  let ano = card.etapas[0].dataInicio[0];
+
+  let dataInicioFormatada = new Date(ano, mes - 1, dia);
+  return new Date() < dataInicioFormatada;
 };
 
 export const validarCamposObrigatorios = (
