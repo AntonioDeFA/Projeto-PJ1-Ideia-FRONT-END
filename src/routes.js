@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Login from "./pages/Login";
-
 import StoreProvider from "./store/provider";
 import RoutesPrivate from "./store/routes/private";
 
+import Login from "./pages/Login";
+import Convites from "./pages/Convites";
 import LoginToken from "./pages/LoginToken";
 import TelaInicial from "./pages/TelaInicial";
 import ResetarSenha from "./pages/ResetarSenha/index";
 import CadastroEquipe from "./pages/CadastroEquipe/index";
 import CadastroUsuario from "./pages/CadastroUsuario";
-import CadastroCompeticao from "./pages/CadastroCompeticao";
 import DadosCompeticao from "./pages/DadosCompeticao";
+import CadastroCompeticao from "./pages/CadastroCompeticao";
 
 function ProjetoRoutes() {
   return (
@@ -60,6 +60,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <DadosCompeticao />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/convites/:papelUsuario"
+            element={
+              <RoutesPrivate>
+                <Convites />
               </RoutesPrivate>
             }
           />

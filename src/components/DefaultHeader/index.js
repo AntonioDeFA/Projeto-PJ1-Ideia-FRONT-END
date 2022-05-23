@@ -50,7 +50,7 @@ function DefaultHeader() {
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/inicio"}>
+              <Link to={"/convites/avaliador"}>
                 <img src={Confirma} alt="navegacao_confirma" />
               </Link>
             </li>
@@ -62,7 +62,7 @@ function DefaultHeader() {
             </li>
 
             <li className="nav-item mt-0 pt-3 pb-3 px-2">
-              <Link to={"/inicio"}>
+              <Link to={"/convites/consultor"}>
                 <img src={Grupo} alt="navegacao_grupo" />
               </Link>
             </li>

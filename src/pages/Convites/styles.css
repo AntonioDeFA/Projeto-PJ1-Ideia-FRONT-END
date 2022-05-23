@@ -1,0 +1,53 @@
+div #dados-equipe {
+  width: 94.5%;
+  margin-top: 2%;
+}
+
+div #nome-botoes {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2%;
+}
+
+div .botoes {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+
+div #btn-confirmar {
+  margin-right: 20px;
+}
+
+div #nome-equipe {
+  margin-bottom: 2%;
+}
+
+/* CARD MEMBRO */
+ul#lista-membros {
+  list-style: none;
+  padding: 0;
+  margin-top: 4%;
+  width: 102%;
+}
+
+ul#lista-membros li {
+  width: 23%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  display: inline-block;
+}
+
+#filled-search-nomeEquipe {
+  width: 385px;
+}
+
+i {
+  font-size: 15pt;
+}
+
+div #regulamento {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
