@@ -1,53 +1,55 @@
-div #dados-equipe {
-  width: 94.5%;
-  margin-top: 2%;
+ul#lista-convites {
+  list-style: none;
+  max-height: 426px;
+  overflow-y: scroll;
 }
 
-div #nome-botoes {
+li.item-list-convite {
+  background-color: white;
+}
+
+div .convite {
+  width: 1050px;
+  height: 90px;
+  padding: 20px;
+  display: flex;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--color-secondary-titles);
+}
+
+div .nome-competicao-convite-h4 {
+  margin: 0;
+}
+
+div .botoes-aceitar-recusar-convite {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2%;
 }
 
-div .botoes {
+div .btn-aceitar-convite,
+div .btn-recusar-convite {
+  width: 80px;
+  height: 50px;
+  cursor: pointer;
   display: flex;
-  justify-content: space-between;
-  margin-right: 10px;
+  border-radius: 10px;
+  justify-content: center;
 }
 
-div #btn-confirmar {
+div .btn-aceitar-convite {
+  background-color: var(--color-verde-forte);
   margin-right: 20px;
 }
 
-div #nome-equipe {
-  margin-bottom: 2%;
+div .btn-recusar-convite {
+  background-color: red;
 }
 
-/* CARD MEMBRO */
-ul#lista-membros {
-  list-style: none;
-  padding: 0;
-  margin-top: 4%;
-  width: 102%;
-}
-
-ul#lista-membros li {
-  width: 23%;
-  margin-right: 2%;
-  margin-bottom: 2%;
-  display: inline-block;
-}
-
-#filled-search-nomeEquipe {
-  width: 385px;
-}
-
-i {
-  font-size: 15pt;
-}
-
-div #regulamento {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+i.icone-convite {
+  color: white;
+  font-weight: bolder;
+  font-size: 20pt;
 }
