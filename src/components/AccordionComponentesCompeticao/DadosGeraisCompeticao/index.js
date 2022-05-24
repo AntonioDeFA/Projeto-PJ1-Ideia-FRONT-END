@@ -52,6 +52,7 @@ function DadosGeraisCompeticao(props) {
   const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(false);
   const [, setErrorDataInicioInscricoes] = useState(false);
   const [, setErrorDataTerminoInscricoes] = useState(false);
+  const [contemArquivo, setContemArquivo] = useState(false);
 
   const [mensagemNome, setMensagemNome] = useState(MSG000);
   const [mensagemTempoMaxPitch, setMensagemTempoMaxPitch] = useState(MSG000);
@@ -112,8 +113,8 @@ function DadosGeraisCompeticao(props) {
       statusDataTerminoInscricoes
     ) {
       let hoje = new Date();
-      let arquivoInput = document.getElementById("contained-button-file")
-        .files[0];
+      // let arquivoInput = document.getElementById("contained-button-file")
+      //   .files[0];
 
       if (tempoMaxPitch < 3) {
         setErrorTempoMaxPitch(true);
@@ -133,7 +134,7 @@ function DadosGeraisCompeticao(props) {
       } else if (nome.length < 3 || nome.length > 16) {
         setErrorNome(true);
         setMensagemNome(MSG019);
-      } else if (!arquivoInput) {
+      } else if (!contemArquivo) {
         setMensagemErro(MSG037);
       } else {
         setMensagemErro(MSG000);
@@ -189,6 +190,7 @@ function DadosGeraisCompeticao(props) {
         };
 
         salvarCompeticaoEmElaboracao(novaCompeticao, dadosGerais);
+        setContemArquivo(false);
       }
     }
   };
@@ -205,8 +207,10 @@ function DadosGeraisCompeticao(props) {
       .files[0];
     let result = await toBase64(arquivoInput);
     result = result.replace("data:application/pdf;base64,", "");
+    console.log(result)
     setTimeout(() => {
       setRegulamento(result);
+      setContemArquivo(true);
     }, 2500);
   };
 
@@ -248,7 +252,9 @@ function DadosGeraisCompeticao(props) {
       setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
       setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
       setDominio(dadosGeraisConsultados?.dominioCompeticao);
+      adicionarArquivoAoInput(dadosGeraisConsultados?.arquivoRegulamentoCompeticao);
       // TODO setar regulamento
+      console.log(regulamento);
 
       let data1 = new Date();
       data1.setDate(datas?.dataInicio[2]);
@@ -276,6 +282,13 @@ function DadosGeraisCompeticao(props) {
       props.handleDadosGerais(dadosGerais, false);
     }
   }, [dadosGeraisConsultados]);
+
+  const adicionarArquivoAoInput = (regulamento) => {
+    setRegulamento(dadosGeraisConsultados?.arquivoRegulamentoCompeticao);
+    setContemArquivo(true);
+    console.log("Pego no banco");
+    console.log(regulamento);
+  }
 
   return (
     <div id="dados-gerais-content">
@@ -430,6 +443,11 @@ function DadosGeraisCompeticao(props) {
               }}
             />
           </label>
+          {IsAtualizar ? (
+            <h6 className="text-success mt-2">
+              Você já possui um regulamento, mas pode subistituí-lo se desejar.
+            </h6>
+          ) : null}
         </div>
 
         <div id="tempoMaximoPitch" className="input-cadastro-competicao">
