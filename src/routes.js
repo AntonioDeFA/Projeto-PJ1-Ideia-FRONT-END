@@ -5,14 +5,15 @@ import StoreProvider from "./store/provider";
 import RoutesPrivate from "./store/routes/private";
 
 import Login from "./pages/Login";
-import Convites from "./pages/Convites";
 import LoginToken from "./pages/LoginToken";
 import TelaInicial from "./pages/TelaInicial";
 import ResetarSenha from "./pages/ResetarSenha/index";
 import CadastroEquipe from "./pages/CadastroEquipe/index";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import DadosCompeticao from "./pages/DadosCompeticao";
+import ConvitesAvaliador from "./pages/ConvitesAvaliador";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
+import ConvitesConsultor from "./pages/ConvitesConsultor";
 
 function ProjetoRoutes() {
   return (
@@ -64,10 +65,18 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/convites/:papelUsuario"
+            path="/convites-avaliador"
             element={
               <RoutesPrivate>
-                <Convites />
+                <ConvitesAvaliador />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/convites-consultor"
+            element={
+              <RoutesPrivate>
+                <ConvitesConsultor />
               </RoutesPrivate>
             }
           />

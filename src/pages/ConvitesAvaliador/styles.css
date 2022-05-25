@@ -1,6 +1,6 @@
-ul#lista-convites {
+ul.lista-convites {
   list-style: none;
-  max-height: 426px;
+  max-height: 450px;
   overflow-y: scroll;
 }
 
@@ -52,4 +52,14 @@ i.icone-convite {
   color: white;
   font-weight: bolder;
   font-size: 20pt;
+}
+
+h5#saudacao-parte-1 {
+  line-height: 30px;
+}
+
+.link-competicao {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
