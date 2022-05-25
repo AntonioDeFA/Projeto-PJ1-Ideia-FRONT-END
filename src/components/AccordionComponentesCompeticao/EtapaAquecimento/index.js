@@ -178,7 +178,7 @@ function EtapaAquecimento(props) {
     if (arquivoInput) {
 
       let result = await toBase64(arquivoInput);
-      result = result.replace("data:application/pdf;base64,", "");
+      result = result.replace("data:video/mp4;base64,", "");
 
       let nome = arquivoInput.name;
       console.log(result)
@@ -188,6 +188,7 @@ function EtapaAquecimento(props) {
 
       if (extensaoPdf.exec(arquivoInput.name)) {
         tipo = "PDF";
+        result = result.replace("data:application/pdf;base64,", "");
       }
 
       arquivos.push({
