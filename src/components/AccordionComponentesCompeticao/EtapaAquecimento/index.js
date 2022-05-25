@@ -176,6 +176,13 @@ function EtapaAquecimento(props) {
     let arquivoInput = document.getElementById("id-arquivo").files[0];
 
     if (arquivoInput) {
+
+      let result = await toBase64(arquivoInput);
+      result = result.replace("data:application/pdf;base64,", "");
+
+      let nome = arquivoInput.name;
+      console.log(result)
+
       let tipo = "VIDEO";
       let extensaoPdf = /(.pdf)$/i;
 
@@ -184,7 +191,8 @@ function EtapaAquecimento(props) {
       }
 
       arquivos.push({
-        arquivoInput,
+        nome,
+        result,
         tipo,
       });
 
@@ -196,6 +204,13 @@ function EtapaAquecimento(props) {
       setMudou(true);
     }, 100);
   };
+
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 
   const removerLink = async (index) => {
     links.splice(index, 1);
@@ -248,11 +263,8 @@ function EtapaAquecimento(props) {
 
   const atribuirMaterialEstudo = (materiais, array) => {
     array.forEach((material) => {
-
-      let stringFile = converterArquivo(material.arquivoInput);
-
       materiais.push({
-        arquivoEstudo: stringFile,
+        arquivoEstudo: material.result,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
           enumeracao: 2,
@@ -261,20 +273,6 @@ function EtapaAquecimento(props) {
       });
     });
   };
-
-
-  const converterArquivo = async (arquivoInput) => {
-
-    let result = await toBase64(arquivoInput);
-    return result;
-  };
-
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
 
   const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
 
@@ -322,23 +320,30 @@ function EtapaAquecimento(props) {
             const { data } = response;
 
             let listaLinks = [];
+            let listaArquivos = [];
 
-            data.map((material) => {
+            data.map((material, index) => {
               if (material.tipoMaterialEstudo === "LINK") {
                 listaLinks.push({
                   link: material.link,
                   tipo: "LINK",
                 });
               } else {
+                listaArquivos.push({
+                  nome: "Material da competição " + (index + 1),
+                  result: material.arquivoEstudo,
+                  tipo: material.tipoMaterialEstudo,
+                });
                 // TODO atribuir arquivos aqui
               }
             });
 
             setLinks(listaLinks);
+            setArquivos(listaArquivos);
 
             if (
               datasInformadas &&
-              (listaLinks.length !== 0 || arquivos.length !== 0)
+              (listaLinks.length !== 0 || listaArquivos.length !== 0)
             ) {
               const dadosAquecimento = {
                 dataInicioAquecimento: data1,
@@ -369,31 +374,31 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        <a
-                          href={url.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {url.link}
-                        </a>
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          className="me-1"
-                          onClick={() => removerLink(index)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <a
+                        href={url.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {url.link}
+                      </a>
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-1"
+                        onClick={() => removerLink(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
 
                 : null}
             </TableBody>
@@ -415,7 +420,7 @@ function EtapaAquecimento(props) {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {documento.arquivoInput.name}
+                      {documento.nome}
                     </TableCell>
                     <TableCell align="right">
                       <IconButton
