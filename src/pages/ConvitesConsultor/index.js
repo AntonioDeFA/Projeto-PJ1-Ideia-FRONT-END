@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import api from "../../services/api";
 import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
+import { AlteracaoConvitesProvider } from "./../../utils/context/alteracaoConvites";
 
 function ConvitesConsultor() {
   const { token } = useContext(StoreContext);
 
   const [convites, setConvites] = useState([]);
   const [mudou, setMudou] = useState(true);
+
+  const [houveAlteracao, setHouveAlteracao] = useState(false);
 
   const responderConvite = (convite, aceito) => {
     let resposta = {
@@ -32,10 +35,12 @@ function ConvitesConsultor() {
       .then((response) => {
         setConvites(response.data);
         setMudou(true);
+        setHouveAlteracao(!houveAlteracao);
       })
       .catch((error) => {
         setConvites([]);
         setMudou(true);
+        setHouveAlteracao(!houveAlteracao);
         console.log(error);
       });
   };
@@ -46,7 +51,10 @@ function ConvitesConsultor() {
 
   return (
     <div id="cadastro-equipe">
-      <DefaultHeader iconeDestaque="convites-consultor" />
+      <AlteracaoConvitesProvider value={houveAlteracao}>
+        <DefaultHeader iconeDestaque="convites-consultor" />
+      </AlteracaoConvitesProvider>
+
       <div className="elementos-centralizados">
         <div id="dados-equipe">
           <div className="mb-4">

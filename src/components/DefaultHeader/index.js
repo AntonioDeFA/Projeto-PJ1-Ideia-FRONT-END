@@ -6,12 +6,17 @@ import Trofeu from "../../assets/images/Trofeu.svg";
 import { Badge } from "@mui/material";
 import ImagemLogo from "../../assets/images/Imagem1.svg";
 import StoreContext from "../../store/context";
+import AlteracaoConvitesContext from "../../utils/context/alteracaoConvites";
 
 import "./styles.css";
 
 function DefaultHeader(props) {
-  const [usuarioLogado, setUsuarioLogado] = useState(null);
   const { token, setToken } = useContext(StoreContext);
+  const houveAlteracao = useContext(AlteracaoConvitesContext);
+
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [qntdConvitesAvaliador, setQntdConvitesAvaliador] = useState(0);
+  const [qntdConvitesConsultor, setQntdConvitesConsultor] = useState(0);
 
   const fazerLogoff = () => {
     setToken("");
@@ -25,13 +30,26 @@ function DefaultHeader(props) {
     return "nav-item mt-0 pt-3 pb-3 px-2 elementos-centralizados";
   };
 
+  const consultarQuantidadeConvites = () => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get("/convites/AVALIADOR/quantidade").then((response) => {
+      setQntdConvitesAvaliador(response.data.quantidade);
+    });
+
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get("/convites/CONSULTOR/quantidade").then((response) => {
+      setQntdConvitesConsultor(response.data.quantidade);
+    });
+  };
+
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/usuario-logado").then((response) => {
-      const { data } = response;
-      setUsuarioLogado(data);
+      setUsuarioLogado(response.data);
     });
-  }, [token]);
+
+    consultarQuantidadeConvites();
+  }, [token, houveAlteracao]);
 
   return (
     <div id="component-defaultHeader">
@@ -65,7 +83,12 @@ function DefaultHeader(props) {
               id="op-convites-avaliador-cabecalho"
             >
               <Link to={"/convites-avaliador"}>
-                <Badge color="error" badgeContent={0} showZero className="mt-2">
+                <Badge
+                  color="error"
+                  badgeContent={qntdConvitesAvaliador}
+                  showZero
+                  className="mt-2"
+                >
                   <i className="icone-cabecalho fa-regular fa-circle-check"></i>
                 </Badge>
               </Link>
@@ -85,7 +108,12 @@ function DefaultHeader(props) {
               id="op-convites-consultor-cabecalho"
             >
               <Link to={"/convites-consultor"}>
-                <Badge color="error" badgeContent={0} showZero className="mt-2">
+                <Badge
+                  color="error"
+                  badgeContent={qntdConvitesConsultor}
+                  showZero
+                  className="mt-2"
+                >
                   <i className="icone-cabecalho fa-solid fa-users"></i>
                 </Badge>
               </Link>
