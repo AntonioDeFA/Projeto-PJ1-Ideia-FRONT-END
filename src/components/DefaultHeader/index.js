@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import StoreContext from "../../store/context";
 
 import api from "./../../services/api";
-import Grupo from "../../assets/images/Grupo.svg";
 import Trofeu from "../../assets/images/Trofeu.svg";
-import Confirma from "../../assets/images/Confirma.svg";
+import { Badge } from "@mui/material";
 import ImagemLogo from "../../assets/images/Imagem1.svg";
+import StoreContext from "../../store/context";
 
 import "./styles.css";
 
@@ -21,9 +20,9 @@ function DefaultHeader(props) {
 
   const handleIconeComDestaque = (icone) => {
     if (props.iconeDestaque === icone) {
-      return "nav-item mt-0 pt-3 pb-3 px-2 bg-light";
+      return "nav-item mt-0 pt-3 pb-3 px-2 bg-light elementos-centralizados";
     }
-    return "nav-item mt-0 pt-3 pb-3 px-2";
+    return "nav-item mt-0 pt-3 pb-3 px-2 elementos-centralizados";
   };
 
   useEffect(() => {
@@ -47,36 +46,57 @@ function DefaultHeader(props) {
           />
           <div></div>
           <ul
+            id="lista-icones-centrais"
             className="nav nav-pills justify-content-center"
             style={{ width: "30.2%" }}
           >
-            <li className={handleIconeComDestaque("trofeu")}>
+            <li
+              className={handleIconeComDestaque("trofeu")}
+              id="op-trofeu-cabecalho"
+            >
               <Link to={"/inicio"}>
                 <img src={Trofeu} alt="navegacao_trofeu" />
               </Link>
             </li>
 
-            <li className={handleIconeComDestaque("convites-avaliador")}>
+            <li
+              className={handleIconeComDestaque("convites-avaliador")}
+              style={{ marginTop: "10px" }}
+              id="op-convites-avaliador-cabecalho"
+            >
               <Link to={"/convites-avaliador"}>
-                <img src={Confirma} alt="navegacao_confirma" />
+                <Badge color="error" badgeContent={0} showZero className="mt-2">
+                  <i className="icone-cabecalho fa-regular fa-circle-check"></i>
+                </Badge>
               </Link>
             </li>
 
-            <li className={handleIconeComDestaque("avaliador")}>
+            <li
+              className={handleIconeComDestaque("avaliador")}
+              id="op-avaliador-cabecalho"
+            >
               <Link to={"/inicio"}>
-                <img src={Confirma} alt="navegacao_confirma" />
+                <i className="icone-cabecalho fa-regular fa-circle-check mt-2"></i>
               </Link>
             </li>
 
-            <li className={handleIconeComDestaque("convites-consultor")}>
+            <li
+              className={handleIconeComDestaque("convites-consultor")}
+              id="op-convites-consultor-cabecalho"
+            >
               <Link to={"/convites-consultor"}>
-                <img src={Grupo} alt="navegacao_grupo" />
+                <Badge color="error" badgeContent={0} showZero className="mt-2">
+                  <i className="icone-cabecalho fa-solid fa-users"></i>
+                </Badge>
               </Link>
             </li>
 
-            <li className={handleIconeComDestaque("consultor")}>
+            <li
+              className={handleIconeComDestaque("consultor")}
+              id="op-consultor-cabecalho"
+            >
               <Link to={"/inicio"}>
-                <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
+                <i className="icone-cabecalho fa-solid fa-users mt-2"></i>
               </Link>
             </li>
           </ul>

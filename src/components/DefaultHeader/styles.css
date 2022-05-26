@@ -24,3 +24,17 @@ font-size: 50px;
 i.fa-address-card:hover {
   color: var(--color-button-hover);
 }
+
+i.icone-cabecalho {
+  color: var(--color-button-hover);
+  font-size: 35pt;
+}
+
+ul#lista-icones-centrais li {
+  width: 80px;
+  height: 96px;
+}
+
+ul#lista-icones-centrais li a {
+  text-decoration: none;
+}
