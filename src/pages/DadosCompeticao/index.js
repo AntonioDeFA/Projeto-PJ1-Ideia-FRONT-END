@@ -1,5 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, List, ListItem, ListItemText, IconButton, Modal, Typography, TextField, TextareaAutosize, Tabs, Tab } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Modal,
+  Typography,
+  TextField,
+  TextareaAutosize,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 
 import api from "../../services/api";
@@ -13,7 +25,6 @@ import { MSG000, MSG006 } from "../../utils/mensagens";
 import "./styles.css";
 
 function DadosCompeticao() {
-
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const [value, setValue] = React.useState(0);
@@ -40,6 +51,7 @@ function DadosCompeticao() {
 
   const [openModalEscolherConsultor, setOpenModalEscolherConsultor] =
     React.useState(false);
+
   const handleCloseModalEscolherConsultor = () => setOpenModalEscolherConsultor(false);
   const handleOpenModalEscolherConsultor = () => setOpenModalEscolherConsultor(true);
 
@@ -222,10 +234,14 @@ function DadosCompeticao() {
 
   const PainelDadosGerais = () => {
     return (
-      <div id="id-panel-dados-gerais" className="d-flex justify-content-between p-3 pt-4">
+      <div
+        id="id-panel-dados-gerais"
+        className="d-flex justify-content-between p-3 pt-4"
+      >
         <div id="id-dados-da-competicao">
           <h5 className="mb-5">Dados da Competição</h5>
           <h6 className="mt-3">Nome da Competição</h6>
+
           <input type="text" value={nome} className="border border-2 rounded input-cadastro-competicao" disabled />
           <div className="d-flex justify-content-between">
             <div>
@@ -256,6 +272,7 @@ function DadosCompeticao() {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <div>
+
               <h6 >Início aquecimento</h6>
               <input type="text" value={dataInicioAquecimento} className="border border-2 rounded" disabled />
             </div>
@@ -266,6 +283,7 @@ function DadosCompeticao() {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <div>
+
               <h6 >Início imersão</h6>
               <input type="text" value={dataInicioImersao} className="border border-2 rounded" disabled />
             </div>
@@ -293,12 +311,11 @@ function DadosCompeticao() {
             <i className="fa-solid fa-download"></i>
           </Botao>
         </div>
-      </div >
+      </div>
     );
-  }
+  };
 
   const PainelEquipes = () => {
-
     return (
       <div id="painel-equipes">
         <List
@@ -344,10 +361,11 @@ function DadosCompeticao() {
                 </ul>
               </li>
             )) : null}
+
         </List>
       </div>
     );
-  }
+  };
 
   const PainelResultadoGeral = () => {
     return (
@@ -366,6 +384,7 @@ function DadosCompeticao() {
           {resultados.map((resultado, index) => (
             <li key={index} className="border border-warning rounded m-3 p-2">
               <ul>
+
                 <ListItem
                   key={index}
                 >
@@ -373,6 +392,7 @@ function DadosCompeticao() {
                     <h6>{index + 1}°</h6>
                     <h6>{resultado.nome}</h6>
                     <h6>{resultado.notaAtribuida}/{resultado.notaMaximaCompeticao}</h6>
+
                   </div>
                 </ListItem>
               </ul>
@@ -381,7 +401,7 @@ function DadosCompeticao() {
         </List>
       </div>
     );
-  }
+  };
 
   return (
     <div id="dados-competicao">
@@ -393,6 +413,7 @@ function DadosCompeticao() {
           classes="btn me-4 btn-secondary botao-menor-personalizado"
           onClick={null}
         />
+
       </div>
       <div className="p-3 d-flex justify-content-center">
         <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
@@ -405,32 +426,24 @@ function DadosCompeticao() {
                 }}
                 aria-label="basic tabs example"
               >
-
-                < Tab
-                  label={"Dados Gerais"}
-                  {...valueProps(0)}
-                />
-                {papelUsuario === "ORGANIZADOR" ? (<Tab
-                  label={"Equipes"}
-                  {...valueProps(1)}
-                />) : null}
-                <Tab
-                  label={"Resultado Geral"}
-                  {...valueProps(2)}
-                />
+                <Tab label={"Dados Gerais"} {...valueProps(0)} />
+                {papelUsuario === "ORGANIZADOR" ? (
+                  <Tab label={"Equipes"} {...valueProps(1)} />
+                ) : null}
+                <Tab label={"Resultado Geral"} {...valueProps(2)} />
               </Tabs>
             </Box>
 
             <TabPanel color="warning" value={value} index={0}>
               <PainelDadosGerais />
             </TabPanel>
+
             {papelUsuario === "ORGANIZADOR" ? (<TabPanel color="warning" value={value} index={1}>
               <PainelEquipes />
             </TabPanel>) : null}
             <TabPanel color="warning" value={value} index={papelUsuario === "ORGANIZADOR" ? 2 : 1}>
               <PainelResultadoGeral />
             </TabPanel>
-
 
             <Modal
               open={openModalEscolherConsultor}
@@ -464,18 +477,19 @@ function DadosCompeticao() {
                   subheader={<li />}
                 >
                   {consultores.map((consultor, index) => (
+
                     <li key={index} className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action">
                       <ul onClick={() => setIdConsultor(consultor.id)}>
                         <ListItem
                           key={consultor.id}
                         >
+
                           <h6 className="mt-2">
                             Nome: {consultor.nomeConsultor}
                             <br />
                             <br />
                             Email: {consultor.emailConsultor}
                           </h6>
-
                         </ListItem>
                       </ul>
                     </li>
@@ -487,9 +501,7 @@ function DadosCompeticao() {
                   onClick={() => adicionarConsultorAEquipe()}
                 />
               </Box>
-
             </Modal>
-
           </div>
         </Box>
       </div>

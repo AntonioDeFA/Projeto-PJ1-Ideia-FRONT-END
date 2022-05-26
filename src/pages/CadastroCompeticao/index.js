@@ -180,7 +180,7 @@ function CadastroCompeticao() {
 
   return (
     <div id="cadastro-equipe">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="trofeu" />
       <DadosGeraisConsultadosProvider value={dadosGeraisConsultados}>
         <IsAtualizarProvider value={isAtualizar}>
           <IdCompeticaoProvider value={idCompeticaoHook}>

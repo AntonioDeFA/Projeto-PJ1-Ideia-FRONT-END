@@ -31,7 +31,7 @@ function TelaInicial() {
 
   return (
     <div id="minhas-competicoes">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="trofeu" />
       <div id="content">
         <div id="aside-filtragem">
           <AsideFiltragem
