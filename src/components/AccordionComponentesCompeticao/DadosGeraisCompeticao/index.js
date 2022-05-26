@@ -211,7 +211,7 @@ function DadosGeraisCompeticao(props) {
     setTimeout(() => {
       setRegulamento(result);
       setContemArquivo(true);
-    }, 2500);
+    }, 400);
   };
 
   const salvarCompeticaoEmElaboracao = (competicao, dadosGerais) => {
