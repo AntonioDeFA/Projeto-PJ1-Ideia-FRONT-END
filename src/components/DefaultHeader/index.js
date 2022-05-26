@@ -10,13 +10,20 @@ import ImagemLogo from "../../assets/images/Imagem1.svg";
 
 import "./styles.css";
 
-function DefaultHeader() {
+function DefaultHeader(props) {
   const [usuarioLogado, setUsuarioLogado] = useState(null);
   const { token, setToken } = useContext(StoreContext);
 
   const fazerLogoff = () => {
     setToken("");
     <Navigate to="/" />;
+  };
+
+  const handleIconeComDestaque = (icone) => {
+    if (props.iconeDestaque === icone) {
+      return "nav-item mt-0 pt-3 pb-3 px-2 bg-light";
+    }
+    return "nav-item mt-0 pt-3 pb-3 px-2";
   };
 
   useEffect(() => {
@@ -43,31 +50,31 @@ function DefaultHeader() {
             className="nav nav-pills justify-content-center"
             style={{ width: "30.2%" }}
           >
-            <li className="nav-item bg-light mt-0 pt-3 pb-3 px-2">
+            <li className={handleIconeComDestaque("trofeu")}>
               <Link to={"/inicio"}>
                 <img src={Trofeu} alt="navegacao_trofeu" />
               </Link>
             </li>
 
-            <li className="nav-item mt-0 pt-3 pb-3 px-2">
+            <li className={handleIconeComDestaque("convites-avaliador")}>
               <Link to={"/convites-avaliador"}>
                 <img src={Confirma} alt="navegacao_confirma" />
               </Link>
             </li>
 
-            <li className="nav-item mt-0 pt-3 pb-3 px-2">
+            <li className={handleIconeComDestaque("avaliador")}>
               <Link to={"/inicio"}>
                 <img src={Confirma} alt="navegacao_confirma" />
               </Link>
             </li>
 
-            <li className="nav-item mt-0 pt-3 pb-3 px-2">
+            <li className={handleIconeComDestaque("convites-consultor")}>
               <Link to={"/convites-consultor"}>
                 <img src={Grupo} alt="navegacao_grupo" />
               </Link>
             </li>
 
-            <li className="nav-item mt-0 pt-3 pb-3 px-2">
+            <li className={handleIconeComDestaque("consultor")}>
               <Link to={"/inicio"}>
                 <img src={Grupo} alt="navegacao_grupo" className="img-fluid" />
               </Link>

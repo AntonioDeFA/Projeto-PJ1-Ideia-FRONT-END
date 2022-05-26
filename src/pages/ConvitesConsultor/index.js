@@ -46,7 +46,7 @@ function ConvitesConsultor() {
 
   return (
     <div id="cadastro-equipe">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="convites-consultor" />
       <div className="elementos-centralizados">
         <div id="dados-equipe">
           <div className="mb-4">

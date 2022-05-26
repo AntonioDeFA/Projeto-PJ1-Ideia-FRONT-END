@@ -184,20 +184,17 @@ function CadastroEquipe() {
   };
 
   const baixarRegulamento = async () => {
-
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/competicao/${idCompeticao}/regulamento`).then((response) => {
-
       var byteCharacters = window.atob(response.data);
       var byteNumbers = new Array(byteCharacters.length);
       for (var i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       var byteArray = new Uint8Array(byteNumbers);
-      var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+      var file = new Blob([byteArray], { type: "application/pdf;base64" });
       var fileURL = URL.createObjectURL(file);
       window.open(fileURL);
-
     });
   };
 
@@ -233,7 +230,7 @@ function CadastroEquipe() {
 
   return (
     <div id="cadastro-equipe">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="trofeu" />
       <div className="elementos-centralizados">
         <div id="dados-equipe">
           <div id="nome-botoes">
@@ -307,18 +304,18 @@ function CadastroEquipe() {
             <ul id="lista-membros">
               {mudou
                 ? membros.map((membro, index) => {
-                  return (
-                    <li key={index}>
-                      <CardMembro
-                        nome={membro.nomeMembro}
-                        email={membro.emailMembro}
-                        isLider={membro.isLider}
-                        sequencial={index + 1}
-                        removerMembro={removerMembro}
-                      />
-                    </li>
-                  );
-                })
+                    return (
+                      <li key={index}>
+                        <CardMembro
+                          nome={membro.nomeMembro}
+                          email={membro.emailMembro}
+                          isLider={membro.isLider}
+                          sequencial={index + 1}
+                          removerMembro={removerMembro}
+                        />
+                      </li>
+                    );
+                  })
                 : null}
             </ul>
           </div>

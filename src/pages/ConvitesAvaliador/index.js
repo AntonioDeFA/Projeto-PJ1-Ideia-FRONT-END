@@ -48,7 +48,7 @@ function ConvitesAvaliador() {
 
   return (
     <div id="cadastro-equipe">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="convites-avaliador" />
       <div className="elementos-centralizados">
         <div id="dados-equipe">
           <div className="mb-4">
