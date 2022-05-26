@@ -12,7 +12,7 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
 import StoreContext from "../../store/context";
@@ -60,6 +60,9 @@ function DadosCompeticao() {
 
   const [idEquipeEscolhida, setIdEquipeEscolhida] = useState(0);
   const [idConsultor, setIdConsultor] = useState(0);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     buscarDadosGerais();
@@ -411,7 +414,7 @@ function DadosCompeticao() {
         <Botao
           titulo="voltar"
           classes="btn me-4 btn-secondary botao-menor-personalizado"
-          onClick={null}
+          onClick={() => navigate("/inicio")}
         />
 
       </div>
