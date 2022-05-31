@@ -14,6 +14,7 @@ import DadosCompeticao from "./pages/DadosCompeticao";
 import ConvitesAvaliador from "./pages/ConvitesAvaliador";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
 import ConvitesConsultor from "./pages/ConvitesConsultor";
+import Equipe from "./pages/Equipe/index";
 
 function ProjetoRoutes() {
   return (
@@ -77,6 +78,22 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <ConvitesConsultor />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/equipe/:idEquipe"
+            element={
+              <RoutesPrivate>
+                <Equipe />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/equipe/:token"
+            element={
+              <RoutesPrivate>
+                <Equipe />
               </RoutesPrivate>
             }
           />

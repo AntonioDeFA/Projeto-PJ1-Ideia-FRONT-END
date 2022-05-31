@@ -1,0 +1,13 @@
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: var(--color-button-hover);
+  font-weight: bold;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+  color: var(--color-cinza-escuro);
+  font-weight: bold;
+}
+
+#resultado-geral h6 {
+  margin: 0;
+}
