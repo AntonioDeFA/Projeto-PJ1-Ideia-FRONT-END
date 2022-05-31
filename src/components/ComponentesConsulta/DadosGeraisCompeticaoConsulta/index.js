@@ -93,7 +93,7 @@ function DadosGeraisCompeticaoConsulta() {
   return (
     <div
       id="id-panel-dados-gerais"
-      className="d-flex justify-content-between p-3 pt-4"
+      className="d-flex justify-content-between p-3 pt-4 bg-white"
     >
       <div id="id-dados-da-competicao">
         <h5 className="mb-5">Dados da Competição</h5>

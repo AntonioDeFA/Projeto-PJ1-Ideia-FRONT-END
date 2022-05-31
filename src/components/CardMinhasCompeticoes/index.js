@@ -121,7 +121,11 @@ function CardMinhasCompeticoes(props) {
   };
 
   const dadosCompeticao = () => {
-    navigate(`/dados-competicao/${props.card.id}/${props.card.papelUsuario}`);
+    navigate(
+      props.card.papelUsuario === "ORGANIZADOR"
+        ? `/dados-competicao/${props.card.id}/${props.card.papelUsuario}`
+        : `/equipe/${10}` // TODO atualizar para ID real da equipe
+    );
   };
 
   return (
