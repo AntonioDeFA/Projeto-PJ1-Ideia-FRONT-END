@@ -52,8 +52,10 @@ function DadosCompeticao() {
   const [openModalEscolherConsultor, setOpenModalEscolherConsultor] =
     React.useState(false);
 
-  const handleCloseModalEscolherConsultor = () => setOpenModalEscolherConsultor(false);
-  const handleOpenModalEscolherConsultor = () => setOpenModalEscolherConsultor(true);
+  const handleCloseModalEscolherConsultor = () =>
+    setOpenModalEscolherConsultor(false);
+  const handleOpenModalEscolherConsultor = () =>
+    setOpenModalEscolherConsultor(true);
 
   const { token } = useContext(StoreContext);
   const [mudou, setMudou] = useState(true);
@@ -62,7 +64,6 @@ function DadosCompeticao() {
   const [idConsultor, setIdConsultor] = useState(0);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     buscarDadosGerais();
@@ -80,8 +81,8 @@ function DadosCompeticao() {
       setDominio(data.dominioCompeticao);
       setRegulamento(data.arquivoRegulamentoCompeticao);
       setTempoMaxPitch(data.tempoMaximoVideoEmSeg / 60);
-      setQntdMinMembros(data.qntdMaximaMembrosPorEquipe);
-      setQntdMaxMembros(data.qntdMinimaMembrosPorEquipe);
+      setQntdMinMembros(data.qntdMinimaMembrosPorEquipe);
+      setQntdMaxMembros(data.qntdMaximaMembrosPorEquipe);
 
       let etapa1 = data.etapas[0];
       let etapa2 = data.etapas[1];
@@ -136,18 +137,16 @@ function DadosCompeticao() {
       setDataTerminoImersao(data6.toLocaleDateString());
       setDataInicioPitch(data7.toLocaleDateString());
       setDataTerminoPitch(data8.toLocaleDateString());
-
     });
-  }
+  };
 
   const buscarEquipes = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/competicao/equipes/${idCompeticao}`).then((response) => {
       const { data } = response;
       setEquipes(data);
-
     });
-  }
+  };
 
   const buscarConsultores = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -155,46 +154,53 @@ function DadosCompeticao() {
       const { data } = response;
       setConsultores(data);
     });
-  }
+  };
 
   const buscarResultados = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/resultados-gerais/${idCompeticao}`).then((response) => {
-      const { data } = response;
-      setResultados(data);
-    });
-  }
+    api
+      .get(`/competicao/resultados-gerais/${idCompeticao}`)
+      .then((response) => {
+        const { data } = response;
+        setResultados(data);
+      });
+  };
 
   const adicionarIdEquipeEAbrirModal = (idEquipe) => {
     setIdEquipeEscolhida(idEquipe);
     handleOpenModalEscolherConsultor();
-  }
+  };
 
   const adicionarConsultorAEquipe = () => {
     if (idEquipeEscolhida !== 0 && idConsultor !== 0) {
-      console.log("entrou")
+      console.log("entrou");
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
-      api.post(`/competicao/adicionar-consultor/${idCompeticao}/${idEquipeEscolhida}/${idConsultor}`).then((response) => {
-        setIdEquipeEscolhida(0);
-        setIdConsultor(0);
-        setMensagemErro(MSG000);
-        handleCloseModalEscolherConsultor();
-        buscarEquipes();
-
-      });
+      api
+        .post(
+          `/competicao/adicionar-consultor/${idCompeticao}/${idEquipeEscolhida}/${idConsultor}`
+        )
+        .then((response) => {
+          setIdEquipeEscolhida(0);
+          setIdConsultor(0);
+          setMensagemErro(MSG000);
+          handleCloseModalEscolherConsultor();
+          buscarEquipes();
+        });
     } else {
       setMensagemErro("Escolha um consultor");
     }
-  }
+  };
 
   const deletarEquipe = (idEquipe) => {
     api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
-    api.delete(`/competicao/deletar-equipe/${idCompeticao}/${idEquipe}`).then((response) => {
-      buscarEquipes();
-    });
+    api
+      .delete(`/competicao/deletar-equipe/${idCompeticao}/${idEquipe}`)
+      .then((response) => {
+        buscarEquipes();
+      });
     setMudou(false);
     setMudou(true);
-  }
+  };
 
   const baixarRegulamento = () => {
     var byteCharacters = window.atob(regulamento);
@@ -203,10 +209,10 @@ function DadosCompeticao() {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     var byteArray = new Uint8Array(byteNumbers);
-    var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+    var file = new Blob([byteArray], { type: "application/pdf;base64" });
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
-  }
+  };
 
   const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -245,64 +251,127 @@ function DadosCompeticao() {
           <h5 className="mb-5">Dados da Competição</h5>
           <h6 className="mt-3">Nome da Competição</h6>
 
-          <input type="text" value={nome} className="border border-2 rounded input-cadastro-competicao" disabled />
+          <input
+            type="text"
+            value={nome}
+            className="border border-2 rounded input-cadastro-competicao"
+            disabled
+          />
           <div className="d-flex justify-content-between">
             <div>
-              <h6 >Min. por equipe</h6>
-              <input type="text" value={qntdMinMembros} className="border border-2 rounded" disabled />
+              <h6>Min. por equipe</h6>
+              <input
+                type="text"
+                value={qntdMinMembros}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
             <div>
-              <h6 >Max. por equipe</h6>
-              <input type="text" value={qntdMaxMembros} className="border border-2 rounded" disabled />
+              <h6>Max. por equipe</h6>
+              <input
+                type="text"
+                value={qntdMaxMembros}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
           </div>
           <h6 className="mt-3">Domínio restrito para inscritos</h6>
-          <input type="text" value={dominio} className="border border-2 rounded input-cadastro-competicao" disabled />
+          <input
+            type="text"
+            value={!!dominio ? dominio : "Não há um domínio especificado"}
+            className="border border-2 rounded input-cadastro-competicao"
+            disabled
+          />
           <h6 className="">Tempo máx. pitch(min)</h6>
-          <input type="text" value={tempoMaxPitch} className="border border-2 rounded" disabled />
+          <input
+            type="text"
+            value={tempoMaxPitch}
+            className="border border-2 rounded"
+            disabled
+          />
         </div>
         <div id="id-etapas-da-competicao">
           <h5 className="mb-5">Etapas da Competição</h5>
           <div className="d-flex justify-content-between">
             <div className="pe-3">
-              <h6 >Início inscrições</h6>
-              <input type="text" value={dataInicioInscricoes} className="border border-2 rounded" disabled />
+              <h6>Início inscrições</h6>
+              <input
+                type="text"
+                value={dataInicioInscricoes}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
             <div>
-              <h6 >Término inscrições</h6>
-              <input type="text" value={dataTerminoInscricoes} className="border border-2 rounded" disabled />
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-
-              <h6 >Início aquecimento</h6>
-              <input type="text" value={dataInicioAquecimento} className="border border-2 rounded" disabled />
-            </div>
-            <div>
-              <h6 >Término aquecimento</h6>
-              <input type="text" value={dataTerminoAquecimento} className="border border-2 rounded" disabled />
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-
-              <h6 >Início imersão</h6>
-              <input type="text" value={dataInicioImersao} className="border border-2 rounded" disabled />
-            </div>
-            <div>
-              <h6 >Término imersão</h6>
-              <input type="text" value={dataTerminoImersao} className="border border-2 rounded" disabled />
+              <h6>Término inscrições</h6>
+              <input
+                type="text"
+                value={dataTerminoInscricoes}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
           </div>
           <div className="d-flex justify-content-between mt-3">
             <div>
-              <h6 >Início pitch</h6>
-              <input type="text" value={dataInicioPitch} className="border border-2 rounded" disabled />
+              <h6>Início aquecimento</h6>
+              <input
+                type="text"
+                value={dataInicioAquecimento}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
             <div>
-              <h6 >Término pitch</h6>
-              <input type="text" value={dataTerminoPitch} className="border border-2 rounded" disabled />
+              <h6>Término aquecimento</h6>
+              <input
+                type="text"
+                value={dataTerminoAquecimento}
+                className="border border-2 rounded"
+                disabled
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-between mt-3">
+            <div>
+              <h6>Início imersão</h6>
+              <input
+                type="text"
+                value={dataInicioImersao}
+                className="border border-2 rounded"
+                disabled
+              />
+            </div>
+            <div>
+              <h6>Término imersão</h6>
+              <input
+                type="text"
+                value={dataTerminoImersao}
+                className="border border-2 rounded"
+                disabled
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-between mt-3">
+            <div>
+              <h6>Início pitch</h6>
+              <input
+                type="text"
+                value={dataInicioPitch}
+                className="border border-2 rounded"
+                disabled
+              />
+            </div>
+            <div>
+              <h6>Término pitch</h6>
+              <input
+                type="text"
+                value={dataTerminoPitch}
+                className="border border-2 rounded"
+                disabled
+              />
             </div>
           </div>
           <Botao
@@ -334,37 +403,39 @@ function DadosCompeticao() {
         >
           {mudou
             ? equipes.map((equipe, index) => (
-              <li key={index} className="border border-warning rounded m-3 p-2">
-                <ul>
-                  <ListItem
-                    secondaryAction={
-                      <div>
-                        <IconButton
-                          edge="end"
-                          aria-label="adicionar"
-                          className="me-1"
-                          id="botao-atualizar-questao"
-                          onClick={() => adicionarIdEquipeEAbrirModal(equipe.id)}
-                        >
-                          <i className="fa-solid fa-user-plus hover-azul p-0 text-warning" ></i>
-                        </IconButton>
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => deletarEquipe(equipe.id)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </div>
-                    }
-                    key={equipe.id}
-                  >
-                    <ListItemText primary={equipe.nome} />
-                  </ListItem>
-                </ul>
-              </li>
-            )) : null}
-
+                <li key={index} className="border border-dark rounded m-3 p-2">
+                  <ul>
+                    <ListItem
+                      secondaryAction={
+                        <div>
+                          <IconButton
+                            edge="end"
+                            aria-label="adicionar"
+                            className="me-1"
+                            id="botao-atualizar-questao"
+                            onClick={() =>
+                              adicionarIdEquipeEAbrirModal(equipe.id)
+                            }
+                          >
+                            <i className="fa-solid fa-user-plus hover-azul p-0 text-warning"></i>
+                          </IconButton>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => deletarEquipe(equipe.id)}
+                          >
+                            <i className="fa-solid fa-trash-can p-0"></i>
+                          </IconButton>
+                        </div>
+                      }
+                      key={equipe.id}
+                    >
+                      <ListItemText primary={equipe.nome} />
+                    </ListItem>
+                  </ul>
+                </li>
+              ))
+            : null}
         </List>
       </div>
     );
@@ -385,17 +456,17 @@ function DadosCompeticao() {
           subheader={<li />}
         >
           {resultados.map((resultado, index) => (
-            <li key={index} className="border border-warning rounded m-3 p-2">
+            <li key={index} className="border border-dark rounded m-3 p-2">
               <ul>
-
-                <ListItem
-                  key={index}
-                >
+                <ListItem key={index}>
                   <div className="d-flex justify-content-between mt-3 w-100">
-                    <h6>{index + 1}°</h6>
+                    <h6 style={{ fontWeight: "bolder" }}>{index + 1}°</h6>
                     <h6>{resultado.nome}</h6>
-                    <h6>{resultado.notaAtribuida}/{resultado.notaMaximaCompeticao}</h6>
-
+                    <h6>
+                      {" "}
+                      <strong>{resultado.notaAtribuida}</strong> /
+                      {resultado.notaMaximaCompeticao}
+                    </h6>
                   </div>
                 </ListItem>
               </ul>
@@ -410,13 +481,12 @@ function DadosCompeticao() {
     <div id="dados-competicao">
       <DefaultHeader />
       <div className=" ps-3 pe-4 pt-3 d-flex justify-content-between">
-        <h1 className="ps-3 ms-1 titulos-principais">Competição</h1>
+        <h1 className="ps-3 ms-1 titulos-principais">Competição {nome}</h1>
         <Botao
           titulo="voltar"
           classes="btn me-4 btn-secondary botao-menor-personalizado"
           onClick={() => navigate("/inicio")}
         />
-
       </div>
       <div className="p-3 d-flex justify-content-center">
         <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
@@ -427,6 +497,8 @@ function DadosCompeticao() {
                 onChange={(event, newValue) => {
                   setValue(newValue);
                 }}
+                textColor="inherit"
+                indicatorColor="inherit"
                 aria-label="basic tabs example"
               >
                 <Tab label={"Dados Gerais"} {...valueProps(0)} />
@@ -441,10 +513,16 @@ function DadosCompeticao() {
               <PainelDadosGerais />
             </TabPanel>
 
-            {papelUsuario === "ORGANIZADOR" ? (<TabPanel color="warning" value={value} index={1}>
-              <PainelEquipes />
-            </TabPanel>) : null}
-            <TabPanel color="warning" value={value} index={papelUsuario === "ORGANIZADOR" ? 2 : 1}>
+            {papelUsuario === "ORGANIZADOR" ? (
+              <TabPanel color="warning" value={value} index={1}>
+                <PainelEquipes />
+              </TabPanel>
+            ) : null}
+            <TabPanel
+              color="warning"
+              value={value}
+              index={papelUsuario === "ORGANIZADOR" ? 2 : 1}
+            >
               <PainelResultadoGeral />
             </TabPanel>
 
@@ -480,13 +558,12 @@ function DadosCompeticao() {
                   subheader={<li />}
                 >
                   {consultores.map((consultor, index) => (
-
-                    <li key={index} className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action">
+                    <li
+                      key={index}
+                      className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action"
+                    >
                       <ul onClick={() => setIdConsultor(consultor.id)}>
-                        <ListItem
-                          key={consultor.id}
-                        >
-
+                        <ListItem key={consultor.id}>
                           <h6 className="mt-2">
                             Nome: {consultor.nomeConsultor}
                             <br />
