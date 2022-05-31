@@ -13,35 +13,26 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
-import StoreContext from "../../store/context";
-import Mensagem from "../../components/Mensagem";
 import Botao from "../../components/Botao";
-import { styleModals } from "../../utils/constantes";
+import Mensagem from "../../components/Mensagem";
+import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
+import { styleModals } from "../../utils/constantes";
 import { MSG000, MSG006 } from "../../utils/mensagens";
+import { IdCompeticaoProvider } from "./../../utils/context/idCompeticaoContext";
+import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 
 import "./styles.css";
 
 function DadosCompeticao() {
-  const [mensagemErro, setMensagemErro] = useState(MSG000);
-
-  const [value, setValue] = React.useState(0);
+  const { token } = useContext(StoreContext);
   const { idCompeticao, papelUsuario } = useParams();
 
   const [nome, setNome] = useState(MSG000);
-  const [dominio, setDominio] = useState(MSG000);
-  const [regulamento, setRegulamento] = useState(MSG000);
-  const [tempoMaxPitch, setTempoMaxPitch] = useState(MSG000);
-  const [qntdMinMembros, setQntdMinMembros] = useState(MSG000);
-  const [qntdMaxMembros, setQntdMaxMembros] = useState(MSG000);
-  const [dataInicioInscricoes, setDataInicioInscricoes] = useState(MSG000);
-  const [dataTerminoInscricoes, setDataTerminoInscricoes] = useState(MSG000);
-  const [dataInicioAquecimento, setDataInicioAquecimento] = useState(MSG000);
-  const [dataTerminoAquecimento, setDataTerminoAquecimento] = useState(MSG000);
-  const [dataInicioImersao, setDataInicioImersao] = useState(MSG000);
-  const [dataTerminoImersao, setDataTerminoImersao] = useState(MSG000);
-  const [dataInicioPitch, setDataInicioPitch] = useState(MSG000);
-  const [dataTerminoPitch, setDataTerminoPitch] = useState(MSG000);
+
+  const [value, setValue] = React.useState(0);
+
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const [resultados, setResultados] = useState([]);
   const [equipes, setEquipes] = useState([]);
@@ -55,7 +46,6 @@ function DadosCompeticao() {
   const handleOpenModalEscolherConsultor = () =>
     setOpenModalEscolherConsultor(true);
 
-  const { token } = useContext(StoreContext);
   const [mudou, setMudou] = useState(true);
 
   const [idEquipeEscolhida, setIdEquipeEscolhida] = useState(0);
@@ -64,77 +54,16 @@ function DadosCompeticao() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    buscarDadosGerais();
+    buscarNomeCompeticao();
     buscarEquipes();
     buscarConsultores();
     buscarResultados();
   }, []);
 
-  const buscarDadosGerais = () => {
+  const buscarNomeCompeticao = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/competicao/dados-gerais/${idCompeticao}`).then((response) => {
-      const { data } = response;
-
-      setNome(data.nomeCompeticao);
-      setDominio(data.dominioCompeticao);
-      setRegulamento(data.arquivoRegulamentoCompeticao);
-      setTempoMaxPitch(data.tempoMaximoVideoEmSeg / 60);
-      setQntdMinMembros(data.qntdMinimaMembrosPorEquipe);
-      setQntdMaxMembros(data.qntdMaximaMembrosPorEquipe);
-
-      let etapa1 = data.etapas[0];
-      let etapa2 = data.etapas[1];
-      let etapa3 = data.etapas[2];
-      let etapa4 = data.etapas[3];
-
-      let data1 = new Date();
-      data1.setDate(etapa1.dataInicio[2]);
-      data1.setMonth(etapa1.dataInicio[1] - 1);
-      data1.setFullYear(etapa1.dataInicio[0]);
-
-      let data2 = new Date();
-      data2.setDate(etapa1.dataTermino[2]);
-      data2.setMonth(etapa1.dataTermino[1] - 1);
-      data2.setFullYear(etapa1.dataTermino[0]);
-
-      let data3 = new Date();
-      data3.setDate(etapa2.dataInicio[2]);
-      data3.setMonth(etapa2.dataInicio[1] - 1);
-      data3.setFullYear(etapa2.dataInicio[0]);
-
-      let data4 = new Date();
-      data4.setDate(etapa2.dataTermino[2]);
-      data4.setMonth(etapa2.dataTermino[1] - 1);
-      data4.setFullYear(etapa2.dataTermino[0]);
-
-      let data5 = new Date();
-      data5.setDate(etapa3.dataInicio[2]);
-      data5.setMonth(etapa3.dataInicio[1] - 1);
-      data5.setFullYear(etapa3.dataInicio[0]);
-
-      let data6 = new Date();
-      data6.setDate(etapa3.dataTermino[2]);
-      data6.setMonth(etapa3.dataTermino[1] - 1);
-      data6.setFullYear(etapa3.dataTermino[0]);
-
-      let data7 = new Date();
-      data7.setDate(etapa4.dataInicio[2]);
-      data7.setMonth(etapa4.dataInicio[1] - 1);
-      data7.setFullYear(etapa4.dataInicio[0]);
-
-      let data8 = new Date();
-      data8.setDate(etapa4.dataTermino[2]);
-      data8.setMonth(etapa4.dataTermino[1] - 1);
-      data8.setFullYear(etapa4.dataTermino[0]);
-
-      setDataInicioInscricoes(data1.toLocaleDateString());
-      setDataTerminoInscricoes(data2.toLocaleDateString());
-      setDataInicioAquecimento(data3.toLocaleDateString());
-      setDataTerminoAquecimento(data4.toLocaleDateString());
-      setDataInicioImersao(data5.toLocaleDateString());
-      setDataTerminoImersao(data6.toLocaleDateString());
-      setDataInicioPitch(data7.toLocaleDateString());
-      setDataTerminoPitch(data8.toLocaleDateString());
+      setNome(response.data.nomeCompeticao);
     });
   };
 
@@ -200,18 +129,6 @@ function DadosCompeticao() {
     setMudou(true);
   };
 
-  const baixarRegulamento = () => {
-    var byteCharacters = window.atob(regulamento);
-    var byteNumbers = new Array(byteCharacters.length);
-    for (var i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    var byteArray = new Uint8Array(byteNumbers);
-    var file = new Blob([byteArray], { type: "application/pdf;base64" });
-    var fileURL = URL.createObjectURL(file);
-    window.open(fileURL);
-  };
-
   const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
@@ -237,152 +154,6 @@ function DadosCompeticao() {
       id: `simple-tab-${index}`,
       "aria-controls": `simple-tabpanel-${index}`,
     };
-  };
-
-  const PainelDadosGerais = () => {
-    return (
-      <div
-        id="id-panel-dados-gerais"
-        className="d-flex justify-content-between p-3 pt-4"
-      >
-        <div id="id-dados-da-competicao">
-          <h5 className="mb-5">Dados da Competição</h5>
-          <h6 className="mt-3">Nome da Competição</h6>
-
-          <input
-            type="text"
-            value={nome}
-            className="border border-2 rounded input-cadastro-competicao"
-            disabled
-          />
-          <div className="d-flex justify-content-between">
-            <div>
-              <h6>Min. por equipe</h6>
-              <input
-                type="text"
-                value={qntdMinMembros}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-            <div>
-              <h6>Max. por equipe</h6>
-              <input
-                type="text"
-                value={qntdMaxMembros}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-          </div>
-          <h6 className="mt-3">Domínio restrito para inscritos</h6>
-          <input
-            type="text"
-            value={!!dominio ? dominio : "Não há um domínio especificado"}
-            className="border border-2 rounded input-cadastro-competicao"
-            disabled
-          />
-          <h6 className="">Tempo máx. pitch(min)</h6>
-          <input
-            type="text"
-            value={tempoMaxPitch}
-            className="border border-2 rounded"
-            disabled
-          />
-        </div>
-        <div id="id-etapas-da-competicao">
-          <h5 className="mb-5">Etapas da Competição</h5>
-          <div className="d-flex justify-content-between">
-            <div className="pe-3">
-              <h6>Início inscrições</h6>
-              <input
-                type="text"
-                value={dataInicioInscricoes}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-            <div>
-              <h6>Término inscrições</h6>
-              <input
-                type="text"
-                value={dataTerminoInscricoes}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              <h6>Início aquecimento</h6>
-              <input
-                type="text"
-                value={dataInicioAquecimento}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-            <div>
-              <h6>Término aquecimento</h6>
-              <input
-                type="text"
-                value={dataTerminoAquecimento}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              <h6>Início imersão</h6>
-              <input
-                type="text"
-                value={dataInicioImersao}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-            <div>
-              <h6>Término imersão</h6>
-              <input
-                type="text"
-                value={dataTerminoImersao}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              <h6>Início pitch</h6>
-              <input
-                type="text"
-                value={dataInicioPitch}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-            <div>
-              <h6>Término pitch</h6>
-              <input
-                type="text"
-                value={dataTerminoPitch}
-                className="border border-2 rounded"
-                disabled
-              />
-            </div>
-          </div>
-          <Botao
-            id="btn-regulamento-para-teste"
-            classes="btn btn-warning botao-menor-personalizado mt-3"
-            titulo="Regulamento da competição"
-            onClick={() => baixarRegulamento()}
-          >
-            <i className="fa-solid fa-download"></i>
-          </Botao>
-        </div>
-      </div>
-    );
   };
 
   const PainelEquipes = () => {
@@ -457,7 +228,10 @@ function DadosCompeticao() {
             <li key={index} className="border border-dark rounded m-3 p-2">
               <ul>
                 <ListItem key={index}>
-                  <div className="d-flex justify-content-between mt-3 w-100">
+                  <div
+                    className="d-flex justify-content-between align-items-center mt-2 mb-2 w-100"
+                    id="resultado-geral"
+                  >
                     <h6 style={{ fontWeight: "bolder" }}>{index + 1}°</h6>
                     <h6>{resultado.nome}</h6>
                     <h6>
@@ -508,7 +282,9 @@ function DadosCompeticao() {
             </Box>
 
             <TabPanel color="warning" value={value} index={0}>
-              <PainelDadosGerais />
+              <IdCompeticaoProvider value={idCompeticao}>
+                <DadosGeraisCompeticaoConsulta />
+              </IdCompeticaoProvider>
             </TabPanel>
 
             {papelUsuario === "ORGANIZADOR" ? (
