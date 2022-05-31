@@ -17,7 +17,7 @@ import Botao from "../../components/Botao";
 import Mensagem from "../../components/Mensagem";
 import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
-import { styleModals } from "../../utils/constantes";
+import { styleModals, TabPanel, valueProps } from "../../utils/constantes";
 import { MSG000, MSG006 } from "../../utils/mensagens";
 import { IdCompeticaoProvider } from "./../../utils/context/idCompeticaoContext";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
@@ -129,33 +129,6 @@ function DadosCompeticao() {
     setMudou(true);
   };
 
-  const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 0 }}>
-            <div>{children}</div>
-          </Box>
-        )}
-      </div>
-    );
-  };
-
-  const valueProps = (index) => {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  };
-
   const PainelEquipes = () => {
     return (
       <div id="painel-equipes">
@@ -251,7 +224,7 @@ function DadosCompeticao() {
 
   return (
     <div id="dados-competicao">
-      <DefaultHeader />
+      <DefaultHeader iconeDestaque="trofeu" />
       <div className=" ps-3 pe-4 pt-3 d-flex justify-content-between">
         <h1 className="ps-3 ms-1 titulos-principais">Competição {nome}</h1>
         <Botao
@@ -262,7 +235,7 @@ function DadosCompeticao() {
       </div>
       <div className="p-3 d-flex justify-content-center">
         <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
-          <div className="mt-3">
+          <div className="mt-3 mb-5">
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
                 value={value}
@@ -299,66 +272,66 @@ function DadosCompeticao() {
             >
               <PainelResultadoGeral />
             </TabPanel>
-
-            <Modal
-              open={openModalEscolherConsultor}
-              onClose={handleCloseModalEscolherConsultor}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={styleModals} style={{ width: 600 }}>
-                <div style={{ width: "50%" }} className="mb-3">
-                  {mensagemErro !== "" ? (
-                    <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
-                  ) : null}
-                </div>
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  style={{ marginBottom: "20px" }}
-                >
-                  Escolha um consultor !
-                </Typography>
-                <List
-                  sx={{
-                    width: "100%",
-                    bgcolor: "background.paper",
-                    position: "relative",
-                    overflow: "auto",
-                    maxHeight: 320,
-                    "& ul": { padding: 0 },
-                  }}
-                  subheader={<li />}
-                >
-                  {consultores.map((consultor, index) => (
-                    <li
-                      key={index}
-                      className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action"
-                    >
-                      <ul onClick={() => setIdConsultor(consultor.id)}>
-                        <ListItem key={consultor.id}>
-                          <h6 className="mt-2">
-                            Nome: {consultor.nomeConsultor}
-                            <br />
-                            <br />
-                            Email: {consultor.emailConsultor}
-                          </h6>
-                        </ListItem>
-                      </ul>
-                    </li>
-                  ))}
-                </List>
-                <Botao
-                  titulo="adicionar"
-                  classes="btn btn-warning botao-menor-personalizado mt-4"
-                  onClick={() => adicionarConsultorAEquipe()}
-                />
-              </Box>
-            </Modal>
           </div>
         </Box>
       </div>
+
+      <Modal
+        open={openModalEscolherConsultor}
+        onClose={handleCloseModalEscolherConsultor}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals} style={{ width: 600 }}>
+          <div style={{ width: "50%" }} className="mb-3">
+            {mensagemErro !== "" ? (
+              <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+            ) : null}
+          </div>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px" }}
+          >
+            Escolha um consultor !
+          </Typography>
+          <List
+            sx={{
+              width: "100%",
+              bgcolor: "background.paper",
+              position: "relative",
+              overflow: "auto",
+              maxHeight: 320,
+              "& ul": { padding: 0 },
+            }}
+            subheader={<li />}
+          >
+            {consultores.map((consultor, index) => (
+              <li
+                key={index}
+                className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action"
+              >
+                <ul onClick={() => setIdConsultor(consultor.id)}>
+                  <ListItem key={consultor.id}>
+                    <h6 className="mt-2">
+                      Nome: {consultor.nomeConsultor}
+                      <br />
+                      <br />
+                      Email: {consultor.emailConsultor}
+                    </h6>
+                  </ListItem>
+                </ul>
+              </li>
+            ))}
+          </List>
+          <Botao
+            titulo="adicionar"
+            classes="btn btn-warning botao-menor-personalizado mt-4"
+            onClick={() => adicionarConsultorAEquipe()}
+          />
+        </Box>
+      </Modal>
     </div>
   );
 }

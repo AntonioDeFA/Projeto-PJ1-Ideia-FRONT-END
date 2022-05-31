@@ -13,7 +13,7 @@ import api from "./../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import StoreContext from "./../../../store/context";
-import { styleModals } from "../../../utils/constantes";
+import { styleModals, TabPanel, valueProps } from "../../../utils/constantes";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import {
   MSG000,
@@ -26,33 +26,6 @@ import {
 } from "../../../utils/mensagens";
 
 import "./styles.css";
-
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 0 }}>
-          <div>{children}</div>
-        </Box>
-      )}
-    </div>
-  );
-};
-
-const valueProps = (index) => {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-};
 
 function QuestoesAvaliativasPitches(props) {
   const idCompeticaoHook = useContext(IdCompeticaoContext);
