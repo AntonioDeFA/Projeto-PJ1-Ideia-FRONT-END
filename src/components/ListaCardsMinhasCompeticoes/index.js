@@ -8,7 +8,6 @@ import "../../assets/styles/global.css";
 
 import FiltrosContext from "../../utils/context/filtrosContext";
 import StoreContext from "./../../store/context";
-import { competicaoNaoIniciada } from "./../../services/utils";
 
 function ListaCardsMinhasCompeticoes() {
   const filtros = useContext(FiltrosContext);

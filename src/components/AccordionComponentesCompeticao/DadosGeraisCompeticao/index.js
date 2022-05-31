@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Box, TextField } from "@mui/material";
@@ -195,19 +194,20 @@ function DadosGeraisCompeticao(props) {
     }
   };
 
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const handleFormatarDocumento = async () => {
     let arquivoInput = document.getElementById("contained-button-file")
       .files[0];
     let result = await toBase64(arquivoInput);
     result = result.replace("data:application/pdf;base64,", "");
-    console.log(result)
+    console.log(result);
     setTimeout(() => {
       setRegulamento(result);
       setContemArquivo(true);
@@ -252,7 +252,9 @@ function DadosGeraisCompeticao(props) {
       setQntdMaxMembros(dadosGeraisConsultados?.qntdMaximaMembrosPorEquipe);
       setTempoMaxPitch(dadosGeraisConsultados?.tempoMaximoVideoEmSeg / 60);
       setDominio(dadosGeraisConsultados?.dominioCompeticao);
-      adicionarArquivoAoInput(dadosGeraisConsultados?.arquivoRegulamentoCompeticao);
+      adicionarArquivoAoInput(
+        dadosGeraisConsultados?.arquivoRegulamentoCompeticao
+      );
       // TODO setar regulamento
       console.log(regulamento);
 
@@ -288,7 +290,7 @@ function DadosGeraisCompeticao(props) {
     setContemArquivo(true);
     console.log("Pego no banco");
     console.log(regulamento);
-  }
+  };
 
   return (
     <div id="dados-gerais-content">

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { Box } from "@mui/material";
@@ -39,10 +39,10 @@ function CadastroCompeticao() {
   const [isAtualizar, setAtualizar] = useState(false);
 
   const [dadosGerais, setDadosGerais] = useState(null);
-  const [questoesAvaliativas, setQuestoesAvaliativas] = useState(null);
+  const [, setQuestoesAvaliativas] = useState(null);
   const [dadosAquecimento, setDadosAquecimento] = useState(null);
   const [dadosImersao, setDadosImersao] = useState(null);
-  const [dadosPitch, setDadosPitch] = useState(null);
+  const [, setDadosPitch] = useState(null);
 
   const [dadosGeraisOk, setDadosGeraisOk] = useState(false);
   const [questoesAvaliativasOk, setQuestoesAvaliativasOk] = useState(false);
@@ -55,8 +55,6 @@ function CadastroCompeticao() {
   const [idCompeticaoHook, setIdCompeticaoHook] = useState(0);
 
   const [dadosGeraisConsultados, setDadosGeraisConsultados] = useState(null);
-
-  const [houveAtualizacao, setHouveAtualizacao] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -176,7 +174,7 @@ function CadastroCompeticao() {
           console.log(error);
         });
     }
-  }, [token, location, idCompeticao, houveAtualizacao, idCompeticaoHook]);
+  }, [token, location, idCompeticao, idCompeticaoHook]);
 
   return (
     <div id="cadastro-equipe">

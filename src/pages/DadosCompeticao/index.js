@@ -7,8 +7,6 @@ import {
   IconButton,
   Modal,
   Typography,
-  TextField,
-  TextareaAutosize,
   Tabs,
   Tab,
 } from "@mui/material";
