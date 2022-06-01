@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
-import StoreContext from "../../store/context";
+import { Link, useNavigate } from "react-router-dom";
 
-import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
 import api from "../../services/api";
+import Box from "@mui/material/Box";
+import Botao from "./../../components/Botao/index";
+import Mensagem from "./../../components/Mensagem/index";
+import TextField from "@mui/material/TextField";
+import StoreContext from "../../store/context";
+import ImgLogoLaranja from "../../assets/images/logo-ideia-laranja.png";
+import { MSG000, MSG006 } from "./../../utils/mensagens";
+import { validarCamposObrigatorios } from "../../services/utils";
 
 import "./styles.css";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Botao from "./../../components/Botao/index";
-import { Link } from "react-router-dom";
-import { MSG000, MSG006 } from "./../../utils/mensagens";
-import Mensagem from "./../../components/Mensagem/index";
-import { validarCamposObrigatorios } from "../../services/utils";
 
 function LoginToken() {
   const [token, setInputToken] = useState(MSG000);
@@ -22,6 +22,9 @@ function LoginToken() {
   const [mensagem, setMensagem] = useState(MSG000);
 
   const { setToken } = useContext(StoreContext);
+
+  const navigate = useNavigate();
+
   const entrar = () => {
     let statusInputToken = validarCamposObrigatorios(
       token,
@@ -29,13 +32,11 @@ function LoginToken() {
       setMensagemCampoObrigatorioToken
     );
     if (statusInputToken) {
-      // Pode fazer login com token
       api
         .post("/seguranca/token", { token: token })
         .then((response) => {
-          console.log(response.data.token);
           setToken(response.data.token);
-          console.log("Bem vindo a tela de equipe");
+          navigate(`/equipe/${response.data.idEquipe}/USUARIO_TOKEN`);
         })
         .catch((error) => {
           setMensagem(error.response.data.message);

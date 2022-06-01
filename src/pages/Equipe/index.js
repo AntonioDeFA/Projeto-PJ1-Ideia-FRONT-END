@@ -1,36 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+import { Box, Tabs, Tab } from "@mui/material";
+
 import Botao from "../../components/Botao";
-import DefaultHeader from "../../components/DefaultHeader";
 import { MSG000 } from "../../utils/mensagens";
+import StoreContext from "./../../store/context";
+import DefaultHeader from "../../components/DefaultHeader";
+import PainelPitchDeck from "./../../components/AbasTelaEquipe/PainelPitchDeck/index";
+import PainelAvaliacao from "./../../components/AbasTelaEquipe/PainelAvaliacao/index";
+import PainelLeanCanvas from "./../../components/AbasTelaEquipe/PainelLeanCanvas/index";
+import PainelDadosEquipe from "./../../components/AbasTelaEquipe/PainelDadosEquipe/index";
+import PainelResultadoGeral from "./../../components/AbasTelaEquipe/PainelResultadoGeral/index";
 import { IdCompeticaoProvider } from "./../../utils/context/idCompeticaoContext";
-import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 import { TabPanel, valueProps } from "../../utils/constantes";
+import PainelMateriaisAquecimento from "./../../components/AbasTelaEquipe/PainelMateriaisAquecimento/index";
+import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 
 import "./styles.css";
 
 function Equipe() {
   const navigate = useNavigate();
-  const { idCompeticao } = useParams();
+  const { idEquipe, papelUsuario } = useParams();
 
-  const [value, setValue] = React.useState(0);
+  const { token, setToken } = useContext(StoreContext);
+
+  const [value, setValue] = useState(0);
+
+  const [equipe, setEquipe] = useState(null);
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
-  useEffect(() => {}, []);
+  const handleSairDaTela = () => {
+    if (papelUsuario === "USUARIO_LIDER") {
+      navigate("/inicio");
+    } else {
+      setToken("");
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    console.log(papelUsuario);
+  }, []);
 
   return (
     <div id="dados-competicao">
-      <DefaultHeader />
-      <div className=" ps-3 pe-4 pt-3 d-flex justify-content-between">
-        <h1 className="ps-3 ms-1 titulos-principais">Competição</h1>
-        <Botao
-          titulo="voltar"
-          classes="btn me-4 btn-warning botao-menor-personalizado"
-          onClick={() => navigate("/inicio")}
-        />
+      <DefaultHeader isLoginViaToken={papelUsuario === "USUARIO_TOKEN"} />
+
+      <div className="ps-3 pe-4 pt-3 d-flex justify-content-between">
+        <h1 className="ps-3 ms-1 titulos-principais">
+          Equipe &lt;nome da equipe&gt;
+        </h1>
+
+        {papelUsuario === "USUARIO_LIDER" ? (
+          <Botao
+            titulo="voltar"
+            classes="btn me-4 btn-warning botao-menor-personalizado"
+            onClick={handleSairDaTela}
+          />
+        ) : null}
       </div>
       <div className="p-3 d-flex justify-content-center">
         <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
@@ -45,23 +74,44 @@ function Equipe() {
                 indicatorColor="inherit"
                 aria-label="basic tabs example"
               >
-                <Tab label={"Dados Gerais"} {...valueProps(0)} />
-                <Tab label={"Equipes"} {...valueProps(1)} />
-                <Tab label={"Resultado Geral"} {...valueProps(2)} />
+                <Tab label={"Competição"} {...valueProps(0)} />
+                <Tab label={"Equipe"} {...valueProps(1)} />
+                <Tab label={"Aquecimento"} {...valueProps(2)} />
+                <Tab label={"Lean Canvas"} {...valueProps(3)} />
+                <Tab label={"Pitch Deck"} {...valueProps(4)} />
+                <Tab label={"Avaliação"} {...valueProps(5)} />
+                <Tab label={"Resultado Geral"} {...valueProps(6)} />
               </Tabs>
             </Box>
 
-            <TabPanel color="warning" value={value} index={0}>
-              <IdCompeticaoProvider value={idCompeticao}>
+            <TabPanel value={value} index={0}>
+              <IdCompeticaoProvider value={equipe?.idCompeticao}>
                 <DadosGeraisCompeticaoConsulta />
               </IdCompeticaoProvider>
             </TabPanel>
 
-            <TabPanel color="warning" value={value} index={1}>
-              {/* <PainelEquipes /> */}
+            <TabPanel value={value} index={1}>
+              <PainelDadosEquipe id={equipe?.id} />
             </TabPanel>
-            <TabPanel color="warning" value={value} index={1}>
-              {/* <PainelResultadoGeral /> */}
+
+            <TabPanel value={value} index={2}>
+              <PainelMateriaisAquecimento />
+            </TabPanel>
+
+            <TabPanel value={value} index={3}>
+              <PainelLeanCanvas idEquipe={equipe?.id} />
+            </TabPanel>
+
+            <TabPanel value={value} index={4}>
+              <PainelPitchDeck />
+            </TabPanel>
+
+            <TabPanel value={value} index={5}>
+              <PainelAvaliacao />
+            </TabPanel>
+
+            <TabPanel value={value} index={6}>
+              <PainelResultadoGeral />
             </TabPanel>
           </div>
         </Box>

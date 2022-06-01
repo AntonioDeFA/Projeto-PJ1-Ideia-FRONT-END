@@ -63,71 +63,73 @@ function DefaultHeader(props) {
             width="150"
           />
           <div></div>
-          <ul
-            id="lista-icones-centrais"
-            className="nav nav-pills justify-content-center"
-            style={{ width: "30.2%" }}
-          >
-            <li
-              className={handleIconeComDestaque("trofeu")}
-              id="op-trofeu-cabecalho"
+          {!props.isLoginViaToken ? (
+            <ul
+              id="lista-icones-centrais"
+              className="nav nav-pills justify-content-center"
+              style={{ width: "30.2%" }}
             >
-              <Link to={"/inicio"}>
-                <img src={Trofeu} alt="navegacao_trofeu" />
-              </Link>
-            </li>
+              <li
+                className={handleIconeComDestaque("trofeu")}
+                id="op-trofeu-cabecalho"
+              >
+                <Link to={"/inicio"}>
+                  <img src={Trofeu} alt="navegacao_trofeu" />
+                </Link>
+              </li>
 
-            <li
-              className={handleIconeComDestaque("convites-avaliador")}
-              style={{ marginTop: "10px" }}
-              id="op-convites-avaliador-cabecalho"
-            >
-              <Link to={"/convites-avaliador"}>
-                <Badge
-                  color="error"
-                  badgeContent={qntdConvitesAvaliador}
-                  showZero
-                  className="mt-2"
-                >
-                  <i className="icone-cabecalho fa-regular fa-circle-check"></i>
-                </Badge>
-              </Link>
-            </li>
+              <li
+                className={handleIconeComDestaque("convites-avaliador")}
+                style={{ marginTop: "10px" }}
+                id="op-convites-avaliador-cabecalho"
+              >
+                <Link to={"/convites-avaliador"}>
+                  <Badge
+                    color="error"
+                    badgeContent={qntdConvitesAvaliador}
+                    showZero
+                    className="mt-2"
+                  >
+                    <i className="icone-cabecalho fa-regular fa-circle-check"></i>
+                  </Badge>
+                </Link>
+              </li>
 
-            <li
-              className={handleIconeComDestaque("avaliador")}
-              id="op-avaliador-cabecalho"
-            >
-              <Link to={"/inicio"}>
-                <i className="icone-cabecalho fa-regular fa-circle-check mt-2"></i>
-              </Link>
-            </li>
+              <li
+                className={handleIconeComDestaque("avaliador")}
+                id="op-avaliador-cabecalho"
+              >
+                <Link to={"/inicio"}>
+                  <i className="icone-cabecalho fa-regular fa-circle-check mt-2"></i>
+                </Link>
+              </li>
 
-            <li
-              className={handleIconeComDestaque("convites-consultor")}
-              id="op-convites-consultor-cabecalho"
-            >
-              <Link to={"/convites-consultor"}>
-                <Badge
-                  color="error"
-                  badgeContent={qntdConvitesConsultor}
-                  showZero
-                  className="mt-2"
-                >
-                  <i className="icone-cabecalho fa-solid fa-users"></i>
-                </Badge>
-              </Link>
-            </li>
+              <li
+                className={handleIconeComDestaque("convites-consultor")}
+                id="op-convites-consultor-cabecalho"
+              >
+                <Link to={"/convites-consultor"}>
+                  <Badge
+                    color="error"
+                    badgeContent={qntdConvitesConsultor}
+                    showZero
+                    className="mt-2"
+                  >
+                    <i className="icone-cabecalho fa-solid fa-users"></i>
+                  </Badge>
+                </Link>
+              </li>
 
-            <li
-              className={handleIconeComDestaque("consultor")}
-              id="op-consultor-cabecalho"
-            >
-              <Link to={"/inicio"}>
-                <i className="icone-cabecalho fa-solid fa-users mt-2"></i>
-              </Link>
-            </li>
-          </ul>
+              <li
+                className={handleIconeComDestaque("consultor")}
+                id="op-consultor-cabecalho"
+              >
+                <Link to={"/inicio"}>
+                  <i className="icone-cabecalho fa-solid fa-users mt-2"></i>
+                </Link>
+              </li>
+            </ul>
+          ) : null}
 
           <div className="elementos-alinhados-esquerda">
             <h6 className="fw-bold nome-usuario" id="nome-usuario-para-teste">
@@ -160,7 +162,9 @@ function DefaultHeader(props) {
                         to={"/cadastro-usuario"}
                         style={{ textDecoration: "none" }}
                       >
-                        <h6 style={{ color: "black" }}>Meus dados</h6>
+                        {props.isLoginViaToken ? null : (
+                          <h6 style={{ color: "black" }}>Meus dados</h6>
+                        )}
                       </Link>
                     </li>
                   </button>

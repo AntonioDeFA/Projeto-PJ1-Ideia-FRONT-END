@@ -82,15 +82,7 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/equipe/:idEquipe"
-            element={
-              <RoutesPrivate>
-                <Equipe />
-              </RoutesPrivate>
-            }
-          />
-          <Route
-            path="/equipe/:token"
+            path="/equipe/:idEquipe/:papelUsuario"
             element={
               <RoutesPrivate>
                 <Equipe />
