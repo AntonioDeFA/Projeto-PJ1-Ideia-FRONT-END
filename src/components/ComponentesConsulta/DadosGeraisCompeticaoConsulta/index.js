@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 
 import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
+import StoreContext from "./../../../store/context";
+import { formatarData, obterDatas } from "../../../services/utils";
 import {
   MSG000,
   MSG032,
@@ -9,15 +11,10 @@ import {
   MSG034,
   MSG035,
 } from "./../../../utils/mensagens";
-import StoreContext from "./../../../store/context";
-import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 
 import "./styles.css";
-import { obterDatas } from "../../../services/utils";
 
 function DadosGeraisCompeticaoConsulta(props) {
-  const idCompeticao = useContext(IdCompeticaoContext);
-
   const [nome, setNome] = useState(MSG000);
   const [dominio, setDominio] = useState(MSG000);
   const [regulamento, setRegulamento] = useState(MSG000);
@@ -34,15 +31,6 @@ function DadosGeraisCompeticaoConsulta(props) {
   const [dataTerminoPitch, setDataTerminoPitch] = useState(MSG000);
 
   const { token } = useContext(StoreContext);
-
-  const formatarData = (data) => {
-    let dataFormatada = new Date();
-    dataFormatada.setDate(data[2]);
-    dataFormatada.setMonth(data[1] - 1);
-    dataFormatada.setFullYear(data[0]);
-
-    return dataFormatada;
-  };
 
   const buscarDadosGerais = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -100,7 +88,7 @@ function DadosGeraisCompeticaoConsulta(props) {
   return (
     <div
       id="id-panel-dados-gerais"
-      className="d-flex justify-content-between p-3 pt-4 bg-white"
+      className="d-flex justify-content-between p-3 pt-4 pb-5 bg-white"
     >
       <div id="id-dados-da-competicao">
         <h5 className="mb-5">Dados da Competição</h5>

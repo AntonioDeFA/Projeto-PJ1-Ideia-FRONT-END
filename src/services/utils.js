@@ -146,3 +146,12 @@ export const obterDatas = (datasArr, etapa) => {
   let data = datasArr.find((data) => data.tipoEtapa === etapa);
   return data;
 };
+
+export const formatarData = (data) => {
+  let dataFormatada = new Date();
+  dataFormatada.setDate(data[2]);
+  dataFormatada.setMonth(data[1] - 1);
+  dataFormatada.setFullYear(data[0]);
+
+  return dataFormatada;
+};
