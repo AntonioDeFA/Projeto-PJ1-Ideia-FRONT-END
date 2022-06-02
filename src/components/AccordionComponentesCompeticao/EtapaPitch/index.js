@@ -25,6 +25,7 @@ import {
 import {
   formatarEtapasParaPatch,
   isDataDefault,
+  obterDatas,
   saoDuasDatasIguais,
   validarCamposObrigatorios,
 } from "./../../../services/utils";
@@ -96,19 +97,20 @@ function EtapaPitch(props) {
           .then((response) => {
             let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-            etapas[3] = {
-              dataInicio: [
-                Number(dataInicioPitch.getFullYear()),
-                Number(dataInicioPitch.getMonth()) + 1,
-                Number(dataInicioPitch.getDate()),
-              ],
-              dataTermino: [
-                Number(dataTerminoPitch.getFullYear()),
-                Number(dataTerminoPitch.getMonth()) + 1,
-                Number(dataTerminoPitch.getDate()),
-              ],
-              tipoEtapa: MSG035,
-            };
+            etapas.map((etapa) => {
+              if (etapa.tipoEtapa === MSG035) {
+                etapa.dataInicio = [
+                  Number(dataInicioPitch.getFullYear()),
+                  Number(dataInicioPitch.getMonth()) + 1,
+                  Number(dataInicioPitch.getDate()),
+                ];
+                etapa.dataTermino = [
+                  Number(dataTerminoPitch.getFullYear()),
+                  Number(dataTerminoPitch.getMonth()) + 1,
+                  Number(dataTerminoPitch.getDate()),
+                ];
+              }
+            });
 
             api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
             api
@@ -145,7 +147,7 @@ function EtapaPitch(props) {
       api
         .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
         .then((response) => {
-          let datas = response.data?.etapas[3];
+          let datas = obterDatas(response.data.etapas, MSG035);
 
           if (
             isDataDefault(
@@ -172,7 +174,7 @@ function EtapaPitch(props) {
             data2.setFullYear(datas?.dataTermino[0]);
             setDataTerminoPitch(data2);
           }
-          console.log(qntdAvaliadores);
+
           if (datasInformadas && qntdAvaliadores > 0) {
             const dadosPitch = {
               dataInicioPitch: data1,

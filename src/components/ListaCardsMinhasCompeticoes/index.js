@@ -33,8 +33,6 @@ function ListaCardsMinhasCompeticoes() {
   }, [filtros, token]);
 
   const obterCards = (params, etapasSelecionadas) => {
-    console.log(etapasSelecionadas);
-
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/competicoes/usuario-logado", { params }).then((response) => {
       const { data } = response;

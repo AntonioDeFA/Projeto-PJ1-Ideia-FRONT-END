@@ -100,7 +100,6 @@ function DadosCompeticao() {
 
   const adicionarConsultorAEquipe = () => {
     if (idEquipeEscolhida !== 0 && idConsultor !== 0) {
-      console.log("entrou");
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post(
@@ -229,7 +228,7 @@ function DadosCompeticao() {
         <h1 className="ps-3 ms-1 titulos-principais">Competição {nome}</h1>
         <Botao
           titulo="voltar"
-          classes="btn me-4 btn-secondary botao-menor-personalizado"
+          classes="btn me-4 btn-warning botao-menor-personalizado"
           onClick={() => navigate("/inicio")}
         />
       </div>
@@ -255,9 +254,7 @@ function DadosCompeticao() {
             </Box>
 
             <TabPanel color="warning" value={value} index={0}>
-              <IdCompeticaoProvider value={idCompeticao}>
-                <DadosGeraisCompeticaoConsulta />
-              </IdCompeticaoProvider>
+              <DadosGeraisCompeticaoConsulta id={idCompeticao} />
             </TabPanel>
 
             {papelUsuario === "ORGANIZADOR" ? (

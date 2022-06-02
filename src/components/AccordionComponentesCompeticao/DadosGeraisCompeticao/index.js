@@ -11,8 +11,11 @@ import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
 import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import idCompeticaoContext from "../../../utils/context/idCompeticaoContext";
-import { validarCamposObrigatorios } from "./../../../services/utils";
 import DadosGeraisConsultadosContext from "../../../utils/context/dadosGeraisConsultadosContext";
+import {
+  obterDatas,
+  validarCamposObrigatorios,
+} from "./../../../services/utils";
 import {
   MSG000,
   MSG006,
@@ -207,7 +210,6 @@ function DadosGeraisCompeticao(props) {
       .files[0];
     let result = await toBase64(arquivoInput);
     result = result.replace("data:application/pdf;base64,", "");
-    console.log(result);
     setTimeout(() => {
       setRegulamento(result);
       setContemArquivo(true);
@@ -217,7 +219,6 @@ function DadosGeraisCompeticao(props) {
   const salvarCompeticaoEmElaboracao = (competicao, dadosGerais) => {
     setMensagemErro(MSG000);
     if (idCompeticaoHook === 0) {
-      console.log(competicao);
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post("/competicao", competicao)
@@ -245,7 +246,8 @@ function DadosGeraisCompeticao(props) {
 
   useEffect(() => {
     if (IsAtualizar) {
-      let datas = dadosGeraisConsultados?.etapas[0];
+      let datas = obterDatas(dadosGeraisConsultados?.etapas, MSG032);
+      console.log(datas);
 
       setNome(dadosGeraisConsultados?.nomeCompeticao);
       setQntdMinMembros(dadosGeraisConsultados?.qntdMinimaMembrosPorEquipe);
@@ -256,7 +258,6 @@ function DadosGeraisCompeticao(props) {
         dadosGeraisConsultados?.arquivoRegulamentoCompeticao
       );
       // TODO setar regulamento
-      console.log(regulamento);
 
       let data1 = new Date();
       data1.setDate(datas?.dataInicio[2]);
@@ -288,8 +289,6 @@ function DadosGeraisCompeticao(props) {
   const adicionarArquivoAoInput = (regulamento) => {
     setRegulamento(dadosGeraisConsultados?.arquivoRegulamentoCompeticao);
     setContemArquivo(true);
-    console.log("Pego no banco");
-    console.log(regulamento);
   };
 
   return (

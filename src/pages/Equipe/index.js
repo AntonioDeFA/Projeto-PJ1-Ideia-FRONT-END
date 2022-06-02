@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { Box, Tabs, Tab } from "@mui/material";
 
+import api from "./../../services/api";
 import Botao from "../../components/Botao";
 import { MSG000 } from "../../utils/mensagens";
 import StoreContext from "./../../store/context";
@@ -41,7 +42,10 @@ function Equipe() {
   };
 
   useEffect(() => {
-    console.log(papelUsuario);
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get(`/equipe/dados/${idEquipe}`).then((response) => {
+      setEquipe(response.data);
+    });
   }, []);
 
   return (
@@ -50,7 +54,7 @@ function Equipe() {
 
       <div className="ps-3 pe-4 pt-3 d-flex justify-content-between">
         <h1 className="ps-3 ms-1 titulos-principais">
-          Equipe &lt;nome da equipe&gt;
+          Equipe {equipe?.nomeEquipe}
         </h1>
 
         {papelUsuario === "USUARIO_LIDER" ? (
@@ -85,9 +89,9 @@ function Equipe() {
             </Box>
 
             <TabPanel value={value} index={0}>
-              <IdCompeticaoProvider value={equipe?.idCompeticao}>
-                <DadosGeraisCompeticaoConsulta />
-              </IdCompeticaoProvider>
+              <DadosGeraisCompeticaoConsulta
+                id={equipe?.idCompeticaoCadastrada}
+              />
             </TabPanel>
 
             <TabPanel value={value} index={1}>

@@ -2,13 +2,20 @@ import React, { useContext, useState, useEffect } from "react";
 
 import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
-import { MSG000 } from "./../../../utils/mensagens";
+import {
+  MSG000,
+  MSG032,
+  MSG033,
+  MSG034,
+  MSG035,
+} from "./../../../utils/mensagens";
 import StoreContext from "./../../../store/context";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 
 import "./styles.css";
+import { obterDatas } from "../../../services/utils";
 
-function DadosGeraisCompeticaoConsulta() {
+function DadosGeraisCompeticaoConsulta(props) {
   const idCompeticao = useContext(IdCompeticaoContext);
 
   const [nome, setNome] = useState(MSG000);
@@ -39,7 +46,7 @@ function DadosGeraisCompeticaoConsulta() {
 
   const buscarDadosGerais = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/dados-gerais/${idCompeticao}`).then((response) => {
+    api.get(`/competicao/dados-gerais/${props?.id}`).then((response) => {
       const { data } = response;
 
       setNome(data.nomeCompeticao);
@@ -49,10 +56,10 @@ function DadosGeraisCompeticaoConsulta() {
       setQntdMinMembros(data.qntdMinimaMembrosPorEquipe);
       setQntdMaxMembros(data.qntdMaximaMembrosPorEquipe);
 
-      let etapa1 = data.etapas[0];
-      let etapa2 = data.etapas[1];
-      let etapa3 = data.etapas[2];
-      let etapa4 = data.etapas[3];
+      let etapa1 = obterDatas(data.etapas, MSG032);
+      let etapa2 = obterDatas(data.etapas, MSG033);
+      let etapa3 = obterDatas(data.etapas, MSG034);
+      let etapa4 = obterDatas(data.etapas, MSG035);
 
       let data1 = formatarData(etapa1.dataInicio);
       let data2 = formatarData(etapa1.dataTermino);
@@ -88,7 +95,7 @@ function DadosGeraisCompeticaoConsulta() {
 
   useEffect(() => {
     buscarDadosGerais();
-  }, []);
+  }, [props.id]);
 
   return (
     <div

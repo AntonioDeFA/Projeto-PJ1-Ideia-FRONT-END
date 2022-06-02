@@ -1,11 +1,4 @@
-import {
-  MSG000,
-  MSG004,
-  MSG032,
-  MSG033,
-  MSG034,
-  MSG035,
-} from "../utils/mensagens";
+import { MSG000, MSG004 } from "../utils/mensagens";
 
 export function validarEmail(email) {
   var re =
@@ -105,7 +98,7 @@ export const formatarEtapasParaPatch = (etapas) => {
         etapas[0].dataTermino[1],
         etapas[0].dataTermino[2],
       ],
-      tipoEtapa: MSG032,
+      tipoEtapa: etapas[0].tipoEtapa,
     },
     {
       dataInicio: [
@@ -118,7 +111,7 @@ export const formatarEtapasParaPatch = (etapas) => {
         etapas[1].dataTermino[1],
         etapas[1].dataTermino[2],
       ],
-      tipoEtapa: MSG033,
+      tipoEtapa: etapas[1].tipoEtapa,
     },
     {
       dataInicio: [
@@ -131,7 +124,7 @@ export const formatarEtapasParaPatch = (etapas) => {
         etapas[2].dataTermino[1],
         etapas[2].dataTermino[2],
       ],
-      tipoEtapa: MSG034,
+      tipoEtapa: etapas[2].tipoEtapa,
     },
     {
       dataInicio: [
@@ -144,7 +137,12 @@ export const formatarEtapasParaPatch = (etapas) => {
         etapas[3].dataTermino[1],
         etapas[3].dataTermino[2],
       ],
-      tipoEtapa: MSG035,
+      tipoEtapa: etapas[3].tipoEtapa,
     },
   ];
+};
+
+export const obterDatas = (datasArr, etapa) => {
+  let data = datasArr.find((data) => data.tipoEtapa === etapa);
+  return data;
 };

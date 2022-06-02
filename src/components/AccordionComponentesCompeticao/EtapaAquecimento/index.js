@@ -18,7 +18,6 @@ import api from "../../../services/api";
 import Botao from "../../Botao";
 import Mensagem from "../../Mensagem";
 import StoreContext from "../../../store/context";
-import { isDataDefault } from "./../../../services/utils";
 import DadosGeraisContext from "../../../utils/context/dadosGeraisContext";
 import IsAtualizarContext from "../../../utils/context/isAtualizarContext";
 import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
@@ -32,8 +31,10 @@ import {
   MSG033,
 } from "../../../utils/mensagens";
 import {
-  formatarEtapasParaPatch,
+  obterDatas,
+  isDataDefault,
   saoDuasDatasIguais,
+  formatarEtapasParaPatch,
   validarCamposObrigatorios,
 } from "../../../services/utils";
 
@@ -113,19 +114,21 @@ function EtapaAquecimento(props) {
           .then((response) => {
             let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-            etapas[1] = {
-              dataInicio: [
-                Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
-                Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
-                Number(dadosAquecimento.dataInicioAquecimento.getDate()),
-              ],
-              dataTermino: [
-                Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
-                Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) + 1,
-                Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
-              ],
-              tipoEtapa: MSG033,
-            };
+            etapas.map((etapa) => {
+              if (etapa.tipoEtapa === MSG033) {
+                etapa.dataInicio = [
+                  Number(dadosAquecimento.dataInicioAquecimento.getFullYear()),
+                  Number(dadosAquecimento.dataInicioAquecimento.getMonth()) + 1,
+                  Number(dadosAquecimento.dataInicioAquecimento.getDate()),
+                ];
+                etapa.dataTermino = [
+                  Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
+                  Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) +
+                    1,
+                  Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
+                ];
+              }
+            });
 
             api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
             api
@@ -176,12 +179,10 @@ function EtapaAquecimento(props) {
     let arquivoInput = document.getElementById("id-arquivo").files[0];
 
     if (arquivoInput) {
-
       let result = await toBase64(arquivoInput);
       result = result.replace("data:video/mp4;base64,", "");
 
       let nome = arquivoInput.name;
-      console.log(result)
 
       let tipo = "VIDEO";
       let extensaoPdf = /(.pdf)$/i;
@@ -206,12 +207,13 @@ function EtapaAquecimento(props) {
     }, 100);
   };
 
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const removerLink = async (index) => {
     links.splice(index, 1);
@@ -245,7 +247,6 @@ function EtapaAquecimento(props) {
     atribuirMaterialLink(materiais, links);
     atribuirMaterialEstudo(materiais, arquivos);
 
-    console.log(materiais);
     return materiais;
   };
 
@@ -288,7 +289,7 @@ function EtapaAquecimento(props) {
         .then((response) => {
           setDadosGeraisConsultados(response.data);
 
-          let datas = response.data.etapas[1];
+          let datas = obterDatas(response.data.etapas, MSG033);
           if (
             isDataDefault(
               datas?.dataInicio[2],
@@ -375,32 +376,31 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      <a
-                        href={url.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {url.link}
-                      </a>
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        className="me-1"
-                        onClick={() => removerLink(index)}
-                      >
-                        <i className="fa-solid fa-trash-can p-0"></i>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <a
+                          href={url.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {url.link}
+                        </a>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-1"
+                          onClick={() => removerLink(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 : null}
             </TableBody>
           </Table>
@@ -416,25 +416,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? arquivos.map((documento, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {documento.nome}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        className="me-2"
-                        onClick={() => removerArquivo(index)}
-                      >
-                        <i className="fa-solid fa-trash-can p-0"></i>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {documento.nome}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          className="me-2"
+                          onClick={() => removerArquivo(index)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 : null}
             </TableBody>
           </Table>

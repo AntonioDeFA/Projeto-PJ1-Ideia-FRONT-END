@@ -3,10 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
 import Botao from "../Botao";
+import { MSG032 } from "../../utils/mensagens";
 import StoreContext from "../../store/context";
-import { competicaoNaoIniciada, handleDatas } from "../../services/utils";
 import { styleModals } from "../../utils/constantes";
 import { Box, Modal, Typography } from "@mui/material";
+import {
+  competicaoNaoIniciada,
+  handleDatas,
+  obterDatas,
+} from "../../services/utils";
 
 import "./styles.css";
 import "../../assets/styles/global.css";
@@ -149,7 +154,7 @@ function CardMinhasCompeticoes(props) {
                 props.card?.etapaVigente?.dataTermino,
                 props.card.isElaboracao,
                 competicaoNaoIniciada(props.card),
-                props.card.etapas[0]
+                obterDatas(props.card.etapas, MSG032)
               )}
             </h6>
           </div>

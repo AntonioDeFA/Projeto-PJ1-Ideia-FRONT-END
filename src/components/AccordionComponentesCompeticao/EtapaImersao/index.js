@@ -23,6 +23,7 @@ import {
   MSG040,
 } from "../../../utils/mensagens";
 import {
+  obterDatas,
   formatarEtapasParaPatch,
   isDataDefault,
   saoDuasDatasIguais,
@@ -99,19 +100,20 @@ function EtapaImersao(props) {
           .then((response) => {
             let etapas = formatarEtapasParaPatch(response.data.etapas);
 
-            etapas[2] = {
-              dataInicio: [
-                Number(dataInicioImersao.getFullYear()),
-                Number(dataInicioImersao.getMonth()) + 1,
-                Number(dataInicioImersao.getDate()),
-              ],
-              dataTermino: [
-                Number(dataTerminoImersao.getFullYear()),
-                Number(dataTerminoImersao.getMonth()) + 1,
-                Number(dataTerminoImersao.getDate()),
-              ],
-              tipoEtapa: MSG034,
-            };
+            etapas.map((etapa) => {
+              if (etapa.tipoEtapa === MSG034) {
+                etapa.dataInicio = [
+                  Number(dataInicioImersao.getFullYear()),
+                  Number(dataInicioImersao.getMonth()) + 1,
+                  Number(dataInicioImersao.getDate()),
+                ];
+                etapa.dataTermino = [
+                  Number(dataTerminoImersao.getFullYear()),
+                  Number(dataTerminoImersao.getMonth()) + 1,
+                  Number(dataTerminoImersao.getDate()),
+                ];
+              }
+            });
 
             api.defaults.headers.patch["Authorization"] = `Bearer ${token}`;
             api
@@ -148,7 +150,7 @@ function EtapaImersao(props) {
       api
         .get(`/competicao/dados-gerais/${idCompeticaoHook}`)
         .then((response) => {
-          let datas = response.data.etapas[2];
+          let datas = obterDatas(response.data.etapas, MSG034);
 
           if (
             isDataDefault(
@@ -162,7 +164,6 @@ function EtapaImersao(props) {
               datas?.dataTermino[0]
             )
           ) {
-            console.log("entrei no IF");
             setDatasInformadas(false);
           } else {
             setDatasInformadas(true);
