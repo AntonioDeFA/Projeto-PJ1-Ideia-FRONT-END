@@ -107,7 +107,7 @@ function DadosGeraisCompeticaoConsulta() {
         />
         <div className="d-flex justify-content-between">
           <div>
-            <h6>Min. de membros por equipe</h6>
+            <h6>Min. membros por equipe</h6>
             <input
               type="text"
               value={qntdMinMembros}
@@ -116,7 +116,7 @@ function DadosGeraisCompeticaoConsulta() {
             />
           </div>
           <div>
-            <h6>Max. de membros por equipe</h6>
+            <h6>Max. membros por equipe</h6>
             <input
               type="text"
               value={qntdMaxMembros}

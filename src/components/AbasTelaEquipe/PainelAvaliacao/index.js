@@ -3,7 +3,7 @@ import React from "react";
 import "./styles.css";
 
 function PainelAvaliacao(props) {
-  return <h1>Avaliação</h1>;
+  return <div id="painel-avaliacao"></div>;
 }
 
 export default PainelAvaliacao;

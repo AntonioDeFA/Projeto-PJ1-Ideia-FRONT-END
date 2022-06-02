@@ -3,7 +3,7 @@ import React from "react";
 import "./styles.css";
 
 function PainelMateriaisAquecimento(props) {
-  return <h1>Aquecimento</h1>;
+  return <div id="painel-materiais-aquecimento"></div>;
 }
 
 export default PainelMateriaisAquecimento;

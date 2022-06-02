@@ -3,7 +3,7 @@ import React from "react";
 import "./styles.css";
 
 function PainelLeanCanvas(props) {
-  return <h1>Lean Canvas</h1>;
+  return <div id="painel-lean-canvas"></div>;
 }
 
 export default PainelLeanCanvas;

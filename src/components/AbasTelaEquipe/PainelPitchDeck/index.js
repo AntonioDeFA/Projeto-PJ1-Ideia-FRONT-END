@@ -3,7 +3,7 @@ import React from "react";
 import "./styles.css";
 
 function PainelPitchDeck(props) {
-  return <h1>Pitch Deck</h1>;
+  return <div id="painel-pitch-deck"></div>;
 }
 
 export default PainelPitchDeck;
