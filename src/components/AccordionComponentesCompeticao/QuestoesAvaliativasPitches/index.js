@@ -262,43 +262,48 @@ function QuestoesAvaliativasPitches(props) {
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/${idCompeticaoHook}/questoes-avaliativas`).then((response) => {
-      const { data } = response;
+    api
+      .get(`/${idCompeticaoHook}/questoes-avaliativas`)
+      .then((response) => {
+        const { data } = response;
 
-      let listaSustentabilidade = [];
-      let listaAdaptabilidade = [];
-      let listaInovacao = [];
-      let listaUtilidade = [];
+        let listaSustentabilidade = [];
+        let listaAdaptabilidade = [];
+        let listaInovacao = [];
+        let listaUtilidade = [];
 
-      data.map((questao) => {
-        let tipo = questao.tipoQuestaoAvaliativa;
+        data.map((questao) => {
+          let tipo = questao.tipoQuestaoAvaliativa;
 
-        let questaoFormatada = {
-          questao: questao.questao,
-          pontosMax: questao.notaMax,
-        };
+          let questaoFormatada = {
+            questao: questao.questao,
+            pontosMax: questao.notaMax,
+          };
 
-        if (tipo === "SUSTENTABILIDADE") {
-          listaSustentabilidade.push(questaoFormatada);
-        } else if (tipo === "ADAPTABILIDADE") {
-          listaAdaptabilidade.push(questaoFormatada);
-        } else if (tipo === "INOVACAO") {
-          listaInovacao.push(questaoFormatada);
-        } else if (tipo === "UTILIDADE") {
-          listaUtilidade.push(questaoFormatada);
+          if (tipo === "SUSTENTABILIDADE") {
+            listaSustentabilidade.push(questaoFormatada);
+          } else if (tipo === "ADAPTABILIDADE") {
+            listaAdaptabilidade.push(questaoFormatada);
+          } else if (tipo === "INOVACAO") {
+            listaInovacao.push(questaoFormatada);
+          } else if (tipo === "UTILIDADE") {
+            listaUtilidade.push(questaoFormatada);
+          }
+        });
+
+        setQuestaoSustentabilidade(listaSustentabilidade);
+        setQuestaoAdaptabilidade(listaAdaptabilidade);
+        setQuestaoInovacao(listaInovacao);
+        setQuestaoUtilidade(listaUtilidade);
+
+        if (data.length > 0) {
+          let questoes = formatarArrayQuestoes();
+          props.handleQuestoesAvaliativas(questoes, false);
         }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
       });
-
-      setQuestaoSustentabilidade(listaSustentabilidade);
-      setQuestaoAdaptabilidade(listaAdaptabilidade);
-      setQuestaoInovacao(listaInovacao);
-      setQuestaoUtilidade(listaUtilidade);
-
-      if (data.length > 0) {
-        let questoes = formatarArrayQuestoes();
-        props.handleQuestoesAvaliativas(questoes, false);
-      }
-    });
   }, [idCompeticaoHook]);
 
   return (

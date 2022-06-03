@@ -188,6 +188,9 @@ function TabelaAddConsultorAvaliador(props) {
       .get(`/competicao/${idCompeticaoHook}/usuarios-nao-relacionados`)
       .then((response) => {
         setUsuarios(response.data.usuarios);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
       });
   };
 
