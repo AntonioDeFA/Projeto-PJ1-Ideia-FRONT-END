@@ -43,9 +43,14 @@ function Equipe() {
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/equipe/dados/${idEquipe}`).then((response) => {
-      setEquipe(response.data);
-    });
+    api
+      .get(`/equipe/dados/${idEquipe}`)
+      .then((response) => {
+        setEquipe(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   }, []);
 
   return (
@@ -91,6 +96,7 @@ function Equipe() {
             <TabPanel value={value} index={0} className="tab-customizada">
               <DadosGeraisCompeticaoConsulta
                 id={equipe?.idCompeticaoCadastrada}
+                isLider={papelUsuario === "USUARIO_LIDER"}
               />
             </TabPanel>
 

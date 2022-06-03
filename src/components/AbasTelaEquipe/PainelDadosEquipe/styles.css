@@ -1,0 +1,20 @@
+.div-input-dado-equipe {
+  margin-bottom: 20px;
+}
+
+#div-input-dado-equipe-nome,
+#div-input-dado-equipe-token {
+  margin-right: 20px;
+}
+
+.input-dado-equipe {
+  width: 370px;
+}
+
+.input-dado-equipe-metade {
+  width: 185px;
+}
+
+.class-btn-dado-equipe {
+  height: 48px;
+}
