@@ -98,6 +98,7 @@ function DadosGeraisCompeticaoConsulta(props) {
             size="small"
             value={nome}
             color="warning"
+            variant="filled"
             label="Nome da Competição"
             className="input-readonly"
           />
@@ -110,6 +111,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={qntdMinMembros}
               className="input-small"
               label="Min. membros por equipe"
@@ -121,6 +123,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={qntdMaxMembros}
               className="input-small"
               label="Max. membros por equipe"
@@ -133,10 +136,11 @@ function DadosGeraisCompeticaoConsulta(props) {
             readOnly
             type="text"
             size="small"
-            value={!!dominio ? dominio : "Não há um domínio especificado"}
             color="warning"
+            variant="filled"
             className="input-readonly"
             label="Domínio restrito para inscritos"
+            value={!!dominio ? dominio : "Não há um domínio especificado"}
           />
         </div>
 
@@ -146,6 +150,7 @@ function DadosGeraisCompeticaoConsulta(props) {
             type="text"
             size="small"
             color="warning"
+            variant="filled"
             value={tempoMaxPitch}
             className="input-small"
             label="Tempo máx. pitch(min)"
@@ -163,6 +168,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataInicioInscricoes}
               className="input-small"
               label="Início inscrições"
@@ -174,6 +180,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataTerminoInscricoes}
               className="input-small"
               label="Término inscrições"
@@ -188,6 +195,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataInicioAquecimento}
               className="input-small"
               label="Início aquecimento"
@@ -199,6 +207,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataTerminoAquecimento}
               className="input-small"
               label="Término aquecimento"
@@ -213,6 +222,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataInicioImersao}
               className="input-small"
               label="Início imersão"
@@ -224,6 +234,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataTerminoImersao}
               className="input-small"
               label="Término imersão"
@@ -238,6 +249,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataInicioPitch}
               className="input-small"
               label="Início pitch"
@@ -249,6 +261,7 @@ function DadosGeraisCompeticaoConsulta(props) {
               type="text"
               size="small"
               color="warning"
+              variant="filled"
               value={dataTerminoPitch}
               className="input-small"
               label="Término pitch"
