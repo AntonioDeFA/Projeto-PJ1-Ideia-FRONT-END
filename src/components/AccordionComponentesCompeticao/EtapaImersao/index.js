@@ -194,11 +194,11 @@ function EtapaImersao(props) {
 
   return (
     <div id="etapa-imersao-content">
-      <div style={{ width: "50%", marginBottom: "20px" }}>
-        {mensagemErro !== "" ? (
+      {mensagemErro !== "" ? (
+        <div style={{ width: "50%", marginBottom: "20px" }}>
           <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioImersaoDiv">

@@ -293,11 +293,11 @@ function DadosGeraisCompeticao(props) {
 
   return (
     <div id="dados-gerais-content">
-      <div style={{ width: "50%" }} className="mb-3">
-        {mensagemErro !== "" ? (
+      {mensagemErro !== "" ? (
+        <div style={{ width: "50%" }} className="mb-3">
           <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       <Box component="form" noValidate autoComplete="off">
         <div className="datas-inicio-termino inputs-lado-a-lado">
           <div id="dataInicioDiv">
