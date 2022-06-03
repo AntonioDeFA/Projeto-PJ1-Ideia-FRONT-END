@@ -13,6 +13,7 @@ import {
 } from "./../../../utils/mensagens";
 
 import "./styles.css";
+import { TextField } from "@mui/material";
 
 function DadosGeraisCompeticaoConsulta(props) {
   const [nome, setNome] = useState(MSG000);
@@ -86,140 +87,178 @@ function DadosGeraisCompeticaoConsulta(props) {
   }, [props.id]);
 
   return (
-    <div
-      id="id-panel-dados-gerais"
-      className="d-flex justify-content-between p-3 pt-4 pb-5 bg-white"
-    >
+    <div id="id-panel-dados-gerais" className="d-flex justify-content-between">
       <div id="id-dados-da-competicao">
         <h5 className="mb-5">Dados da Competição</h5>
-        <h6 className="mt-3">Nome da Competição</h6>
 
-        <input
-          type="text"
-          value={nome}
-          className="border border-2 rounded input-cadastro-competicao"
-          disabled
-        />
-        <div className="d-flex justify-content-between">
-          <div>
-            <h6>Min. membros por equipe</h6>
-            <input
+        <div className="div-input-readonly">
+          <TextField
+            readOnly
+            type="text"
+            size="small"
+            value={nome}
+            color="warning"
+            label="Nome da Competição"
+            className="input-readonly"
+          />
+        </div>
+
+        <div className="d-flex justify-content-between div-input-readonly">
+          <div style={{ marginRight: "30px" }}>
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={qntdMinMembros}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Min. membros por equipe"
             />
           </div>
           <div>
-            <h6>Max. membros por equipe</h6>
-            <input
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={qntdMaxMembros}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Max. membros por equipe"
             />
           </div>
         </div>
-        <h6 className="mt-3">Domínio restrito para inscritos</h6>
-        <input
-          type="text"
-          value={!!dominio ? dominio : "Não há um domínio especificado"}
-          className="border border-2 rounded input-cadastro-competicao"
-          disabled
-        />
-        <h6 className="">Tempo máx. pitch(min)</h6>
-        <input
-          type="text"
-          value={tempoMaxPitch}
-          className="border border-2 rounded"
-          disabled
-        />
+
+        <div className="div-input-readonly">
+          <TextField
+            readOnly
+            type="text"
+            size="small"
+            value={!!dominio ? dominio : "Não há um domínio especificado"}
+            color="warning"
+            className="input-readonly"
+            label="Domínio restrito para inscritos"
+          />
+        </div>
+
+        <div className="div-input-readonly">
+          <TextField
+            readOnly
+            type="text"
+            size="small"
+            color="warning"
+            value={tempoMaxPitch}
+            className="input-small"
+            label="Tempo máx. pitch(min)"
+          />
+        </div>
       </div>
+
       <div id="id-etapas-da-competicao">
         <h5 className="mb-5">Etapas da Competição</h5>
-        <div className="d-flex justify-content-between">
-          <div className="pe-3">
-            <h6>Início inscrições</h6>
-            <input
+
+        <div className="d-flex justify-content-between div-input-readonly">
+          <div style={{ marginRight: "30px" }}>
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataInicioInscricoes}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Início inscrições"
             />
           </div>
           <div>
-            <h6>Término inscrições</h6>
-            <input
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataTerminoInscricoes}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Término inscrições"
             />
           </div>
         </div>
-        <div className="d-flex justify-content-between mt-3">
-          <div>
-            <h6>Início aquecimento</h6>
-            <input
+
+        <div className="d-flex justify-content-between div-input-readonly">
+          <div style={{ marginRight: "30px" }}>
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataInicioAquecimento}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Início aquecimento"
             />
           </div>
           <div>
-            <h6>Término aquecimento</h6>
-            <input
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataTerminoAquecimento}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Término aquecimento"
             />
           </div>
         </div>
-        <div className="d-flex justify-content-between mt-3">
-          <div>
-            <h6>Início imersão</h6>
-            <input
+
+        <div className="d-flex justify-content-between div-input-readonly">
+          <div style={{ marginRight: "30px" }}>
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataInicioImersao}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Início imersão"
             />
           </div>
           <div>
-            <h6>Término imersão</h6>
-            <input
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataTerminoImersao}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Término imersão"
             />
           </div>
         </div>
-        <div className="d-flex justify-content-between mt-3">
-          <div>
-            <h6>Início pitch</h6>
-            <input
+
+        <div className="d-flex justify-content-between div-input-readonly">
+          <div style={{ marginRight: "30px" }}>
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataInicioPitch}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Início pitch"
             />
           </div>
           <div>
-            <h6>Término pitch</h6>
-            <input
+            <TextField
+              readOnly
               type="text"
+              size="small"
+              color="warning"
               value={dataTerminoPitch}
-              className="border border-2 rounded"
-              disabled
+              className="input-small"
+              label="Término pitch"
             />
           </div>
         </div>
+
         <Botao
           id="btn-regulamento-para-teste"
-          classes="btn btn-warning botao-menor-personalizado mt-3"
+          classes="btn btn-warning botao-menor-personalizado"
           titulo="Regulamento da competição"
           onClick={() => baixarRegulamento()}
         >
