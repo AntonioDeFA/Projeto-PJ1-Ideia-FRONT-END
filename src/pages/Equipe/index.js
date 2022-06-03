@@ -88,33 +88,33 @@ function Equipe() {
               </Tabs>
             </Box>
 
-            <TabPanel value={value} index={0}>
+            <TabPanel value={value} index={0} className="tab-customizada">
               <DadosGeraisCompeticaoConsulta
                 id={equipe?.idCompeticaoCadastrada}
               />
             </TabPanel>
 
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={1} className="tab-customizada">
               <PainelDadosEquipe id={equipe?.id} />
             </TabPanel>
 
-            <TabPanel value={value} index={2}>
+            <TabPanel value={value} index={2} className="tab-customizada">
               <PainelMateriaisAquecimento />
             </TabPanel>
 
-            <TabPanel value={value} index={3}>
+            <TabPanel value={value} index={3} className="tab-customizada">
               <PainelLeanCanvas idEquipe={equipe?.id} />
             </TabPanel>
 
-            <TabPanel value={value} index={4}>
+            <TabPanel value={value} index={4} className="tab-customizada">
               <PainelPitchDeck />
             </TabPanel>
 
-            <TabPanel value={value} index={5}>
+            <TabPanel value={value} index={5} className="tab-customizada">
               <PainelAvaliacao />
             </TabPanel>
 
-            <TabPanel value={value} index={6}>
+            <TabPanel value={value} index={6} className="tab-customizada">
               <PainelResultadoGeral />
             </TabPanel>
           </div>
