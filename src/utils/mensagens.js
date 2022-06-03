@@ -53,3 +53,5 @@ export const MSG038 = "É necessário que a questão avaliativa seja informada."
 export const MSG039 = "A questão deve ter entre 5 e 80 caracteres.";
 export const MSG040 =
   "É necessário que você convide usuários para participarem como {1}.";
+export const MSG041 = "Token copiado para área de transferência!";
+export const MSG042 = "Nome da equipe atualizado com sucesso!";
