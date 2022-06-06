@@ -121,7 +121,7 @@ function PainelDadosEquipe(props) {
       });
       setRows(listaAux);
     });
-  }, [props.id, flagAlteracao]);
+  }, [props.id, flagAlteracao, token]);
 
   return (
     <div id="id-panel-dados-equipe" className="d-flex justify-content-between">

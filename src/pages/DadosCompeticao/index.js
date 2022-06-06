@@ -19,7 +19,6 @@ import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
 import { styleModals, TabPanel, valueProps } from "../../utils/constantes";
 import { MSG000, MSG006 } from "../../utils/mensagens";
-import { IdCompeticaoProvider } from "./../../utils/context/idCompeticaoContext";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 
 import "./styles.css";
