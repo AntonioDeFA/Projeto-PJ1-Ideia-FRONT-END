@@ -94,7 +94,7 @@ function ConvitesAvaliador() {
                                 className="link-competicao"
                                 to={`/dados-competicao/${convite.idCompeticao}/AVALIADOR`}
                               >
-                                <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                                <i className="fa-solid fa-arrow-right-to-bracket cursor-pointer"></i>
                                 {"  " + convite.nomeCompeticao}
                               </Link>
                             </h4>
@@ -107,7 +107,7 @@ function ConvitesAvaliador() {
                                 responderConvite(convite, true);
                               }}
                             >
-                              <i className="icone-convite fa-solid fa-check"></i>
+                              <i className="icone-convite fa-solid cursor-pointer fa-check "></i>
                             </div>
                             <div
                               className="btn-recusar-convite elementos-centralizados"
@@ -116,7 +116,7 @@ function ConvitesAvaliador() {
                                 responderConvite(convite, false);
                               }}
                             >
-                              <i className="icone-convite fa-solid fa-x"></i>
+                              <i className="icone-convite fa-solid cursor-pointer fa-x"></i>
                             </div>
                           </div>
                         </div>

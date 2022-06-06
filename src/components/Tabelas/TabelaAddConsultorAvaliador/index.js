@@ -257,7 +257,7 @@ function TabelaAddConsultorAvaliador(props) {
                         onClick={() => {
                           removerUsuario(row.email);
                         }}
-                        className="fa-solid fa-trash-can icone-tabela"
+                        className="fa-solid fa-trash-can cursor-pointer"
                         title="Remover este usuário"
                       ></i>
                     </StyledTableCell>
