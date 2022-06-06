@@ -15,8 +15,9 @@ import {
 
 import api from "../../../services/api";
 import Botao from "./../../Botao/index";
+import Mensagem from "./../../Mensagem/index";
 import StoreContext from "../../../store/context";
-import { MSG000, MSG041, MSG042 } from "../../../utils/mensagens";
+import { MSG000, MSG006, MSG041, MSG042 } from "../../../utils/mensagens";
 import { StyledTableRow, StyledTableCell } from "./../../../utils/constantes";
 import {
   formatarData,
@@ -40,6 +41,7 @@ function PainelDadosEquipe(props) {
 
   const [flagAlteracao, setFlagAlteracao] = useState(false);
 
+  const [mensagemErro, setMensagemErro] = useState(MSG000);
   const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
 
   const { token } = useContext(StoreContext);
@@ -81,7 +83,23 @@ function PainelDadosEquipe(props) {
     setOpen(false);
   };
 
-  const removerUsuario = (email) => {};
+  const removerUsuario = (email) => {
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api
+      .post(`/equipe/${props.id}/remover-membro`, { email })
+      .then((response) => {
+        setMensagemErro(MSG000);
+        setFlagAlteracao(!flagAlteracao);
+      })
+      .catch((error) => {
+        setMensagemErro(error.response.data.message);
+
+        setTimeout(() => {
+          setMensagemErro(MSG000);
+          console.log("ok");
+        }, 10000);
+      });
+  };
 
   useEffect(() => {
     let listaAux = [];
@@ -108,7 +126,7 @@ function PainelDadosEquipe(props) {
   return (
     <div id="id-panel-dados-equipe" className="d-flex justify-content-between">
       <div id="id-dados-da-competicao" className="div-painel-equipe">
-        <h5 className="mb-5">Equipe</h5>
+        <h5 className="mb-4">Equipe</h5>
 
         <div className="div-input-dado-equipe d-flex justify-content-between">
           <div id="div-input-dado-equipe-nome">
@@ -192,8 +210,13 @@ function PainelDadosEquipe(props) {
       </div>
 
       <div id="id-div-tabela-membros" className="div-painel-equipe">
-        <h5 className="mb-5">Membros</h5>
+        <h5 className="mb-4">Membros</h5>
 
+        {mensagemErro !== MSG000 ? (
+          <div className="mb-3">
+            <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
+          </div>
+        ) : null}
         <div id="id-tabela-membros">
           <TableContainer component={Paper}>
             <Table
@@ -219,7 +242,12 @@ function PainelDadosEquipe(props) {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {index === 0 ? (
-                        <p className="m-0 text-danger fw-bold">LIDER</p>
+                        <p
+                          className="m-0 text-danger fw-bold"
+                          title="Não é possível remover o líder."
+                        >
+                          LIDER
+                        </p>
                       ) : (
                         <i
                           onClick={() => {

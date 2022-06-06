@@ -3,7 +3,7 @@ div .div-painel-equipe {
 }
 
 div #id-tabela-membros {
-  height: 290px;
+  height: 300px;
   overflow-y: scroll;
 }
 
@@ -26,4 +26,8 @@ div #id-tabela-membros {
 
 .class-btn-dado-equipe {
   height: 48px;
+}
+
+#id-div-tabela-membros .mensagem {
+  width: 100%;
 }
