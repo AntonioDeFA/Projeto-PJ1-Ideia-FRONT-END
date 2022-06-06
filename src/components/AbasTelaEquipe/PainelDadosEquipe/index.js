@@ -1,19 +1,29 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import { TextField, Snackbar, Alert } from "@mui/material";
+import {
+  TextField,
+  Snackbar,
+  Alert,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+} from "@mui/material";
 
 import api from "../../../services/api";
 import Botao from "./../../Botao/index";
-import { MSG000, MSG042 } from "../../../utils/mensagens";
 import StoreContext from "../../../store/context";
+import { MSG000, MSG041, MSG042 } from "../../../utils/mensagens";
+import { StyledTableRow, StyledTableCell } from "./../../../utils/constantes";
 import {
   formatarData,
   validarCamposObrigatorios,
 } from "../../../services/utils";
 
 import "./styles.css";
-import { MSG041 } from "./../../../utils/mensagens";
 
 function PainelDadosEquipe(props) {
   const [nome, setNome] = useState(MSG000);
@@ -21,6 +31,7 @@ function PainelDadosEquipe(props) {
   const [dataInscricao, setDataInscricao] = useState(MSG000);
 
   const [nomeOriginal, setNomeOriginal] = useState(MSG000);
+  const [rows, setRows] = useState([]);
 
   const [open, setOpen] = useState(false);
 
@@ -70,7 +81,11 @@ function PainelDadosEquipe(props) {
     setOpen(false);
   };
 
+  const removerUsuario = (email) => {};
+
   useEffect(() => {
+    let listaAux = [];
+
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get(`/equipe/dados/${props.id}`).then((response) => {
       setNome(response.data.nomeEquipe);
@@ -79,12 +94,20 @@ function PainelDadosEquipe(props) {
       setDataInscricao(
         formatarData(response.data.dataInscricao).toLocaleDateString()
       );
+
+      response.data.usuarios.forEach((user) => {
+        listaAux.push({
+          nome: user.nomeUsuario,
+          email: user.email,
+        });
+      });
+      setRows(listaAux);
     });
   }, [props.id, flagAlteracao]);
 
   return (
     <div id="id-panel-dados-equipe" className="d-flex justify-content-between">
-      <div id="id-dados-da-competicao">
+      <div id="id-dados-da-competicao" className="div-painel-equipe">
         <h5 className="mb-5">Equipe</h5>
 
         <div className="div-input-dado-equipe d-flex justify-content-between">
@@ -168,8 +191,51 @@ function PainelDadosEquipe(props) {
         </div>
       </div>
 
-      <div id="id-tabela-membros">
+      <div id="id-div-tabela-membros" className="div-painel-equipe">
         <h5 className="mb-5">Membros</h5>
+
+        <div id="id-tabela-membros">
+          <TableContainer component={Paper}>
+            <Table
+              sx={{ height: 300, overflowY: "scroll" }}
+              aria-label="customized table"
+            >
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">Nome</StyledTableCell>
+                  <StyledTableCell align="center">E-mail</StyledTableCell>
+                  <StyledTableCell align="center">Remover</StyledTableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {rows.map((row, index) => (
+                  <StyledTableRow key={row.email}>
+                    <StyledTableCell align="center">
+                      <p className="text-break">{row.nome}</p>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <p className="text-break">{row.email}</p>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {index === 0 ? (
+                        <p className="m-0 text-danger fw-bold">LIDER</p>
+                      ) : (
+                        <i
+                          onClick={() => {
+                            removerUsuario(row.email);
+                          }}
+                          className="fa-solid fa-trash-can icone-tabela"
+                          title="Remover este usuário"
+                        ></i>
+                      )}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
     </div>
   );
