@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
+import { TextField } from "@mui/material";
+
 import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
 import StoreContext from "./../../../store/context";
@@ -13,7 +15,6 @@ import {
 } from "./../../../utils/mensagens";
 
 import "./styles.css";
-import { TextField } from "@mui/material";
 
 function DadosGeraisCompeticaoConsulta(props) {
   const [nome, setNome] = useState(MSG000);
@@ -89,7 +90,7 @@ function DadosGeraisCompeticaoConsulta(props) {
   return (
     <div id="id-panel-dados-gerais" className="d-flex justify-content-between">
       <div id="id-dados-da-competicao">
-        <h5 className="mb-5">Dados da Competição</h5>
+        <h5 className="mb-4">Dados da Competição</h5>
 
         <div className="div-input-readonly">
           <TextField
@@ -159,7 +160,7 @@ function DadosGeraisCompeticaoConsulta(props) {
       </div>
 
       <div id="id-etapas-da-competicao">
-        <h5 className="mb-5">Etapas da Competição</h5>
+        <h5 className="mb-4">Etapas da Competição</h5>
 
         <div className="d-flex justify-content-between div-input-readonly">
           <div style={{ marginRight: "30px" }}>
