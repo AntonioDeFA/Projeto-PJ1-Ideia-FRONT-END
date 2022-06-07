@@ -49,7 +49,7 @@ function DadosCompeticao() {
   const [mudou, setMudou] = useState(true);
 
   const [idEquipeEscolhida, setIdEquipeEscolhida] = useState(0);
-  const [idConsultor, setIdConsultor] = useState(0);
+  // const [idConsultor, setIdConsultor] = useState(0);
 
   const navigate = useNavigate();
 
@@ -98,8 +98,9 @@ function DadosCompeticao() {
     handleOpenModalEscolherConsultor();
   };
 
-  const adicionarConsultorAEquipe = () => {
+  const adicionarConsultorAEquipe = (idConsultor) => {
     if (idEquipeEscolhida !== 0 && idConsultor !== 0) {
+      handleCloseModalEscolherConsultor();
       api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
       api
         .post(
@@ -107,9 +108,7 @@ function DadosCompeticao() {
         )
         .then((response) => {
           setIdEquipeEscolhida(0);
-          setIdConsultor(0);
           setMensagemErro(MSG000);
-          handleCloseModalEscolherConsultor();
           buscarEquipes();
         });
     } else {
@@ -144,38 +143,45 @@ function DadosCompeticao() {
         >
           {mudou
             ? equipes.map((equipe, index) => (
-                <li key={index} className="border border-dark rounded m-3 p-2">
-                  <ul>
-                    <ListItem
-                      secondaryAction={
-                        <div>
-                          <IconButton
-                            edge="end"
-                            aria-label="adicionar"
-                            className="me-1"
-                            id="botao-atualizar-questao"
-                            onClick={() =>
-                              adicionarIdEquipeEAbrirModal(equipe.id)
-                            }
+              <li key={index} className="border border-dark rounded m-3 p-2">
+                <ul>
+                  <ListItem
+                    secondaryAction={
+                      <div>
+                        <IconButton
+                          edge="end"
+                          aria-label="adicionar"
+                          className="me-1"
+                          id="botao-atualizar-questao"
+                          onClick={() =>
+                            adicionarIdEquipeEAbrirModal(equipe.id)
+                          }
+                          disabled={equipe.consultor == null ? false : true}
+                        >
+                          <i id="icone-adicionar-consultor-a-equipe"
+                            className="fa-solid fa-user-plus hover-azul p-0 text-warning"
+                            hidden={equipe.consultor == null ? false : true}
                           >
-                            <i className="fa-solid fa-user-plus hover-azul p-0 text-warning"></i>
-                          </IconButton>
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            onClick={() => deletarEquipe(equipe.id)}
-                          >
-                            <i className="fa-solid fa-trash-can p-0"></i>
-                          </IconButton>
-                        </div>
-                      }
-                      key={equipe.id}
-                    >
-                      <ListItemText primary={equipe.nome} />
-                    </ListItem>
-                  </ul>
-                </li>
-              ))
+                          </i>
+                        </IconButton>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => deletarEquipe(equipe.id)}
+                        >
+                          <i className="fa-solid fa-trash-can p-0"></i>
+                        </IconButton>
+                      </div>
+                    }
+                    key={equipe.id}
+                  >
+                    <ListItemText primary={equipe.nome} />
+                    <ListItemText
+                      secondary={equipe.consultor != null ? equipe.consultor : "Sem consultor"} />
+                  </ListItem>
+                </ul>
+              </li>
+            ))
             : null}
         </List>
       </div>
@@ -309,7 +315,7 @@ function DadosCompeticao() {
                 key={index}
                 className="border border-warning rounded mb-3 p-2 list-group-item list-group-item-action"
               >
-                <ul onClick={() => setIdConsultor(consultor.id)}>
+                <ul onClick={() => adicionarConsultorAEquipe(consultor.id)}>
                   <ListItem key={consultor.id}>
                     <h6 className="mt-2">
                       Nome: {consultor.nomeConsultor}
@@ -322,11 +328,11 @@ function DadosCompeticao() {
               </li>
             ))}
           </List>
-          <Botao
+          {/* <Botao
             titulo="adicionar"
             classes="btn btn-warning botao-menor-personalizado mt-4"
             onClick={() => adicionarConsultorAEquipe()}
-          />
+          /> */}
         </Box>
       </Modal>
     </div>
