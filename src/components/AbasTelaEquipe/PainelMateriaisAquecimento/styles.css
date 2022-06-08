@@ -3,3 +3,7 @@
   transition: 0.5s;
   opacity: 0.7;
 }
+
+.color-icone{
+  color: var(--color-button-hover);
+}
