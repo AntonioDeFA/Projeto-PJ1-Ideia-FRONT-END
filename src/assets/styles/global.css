@@ -125,3 +125,7 @@ div .listagem-cards-competicoes ul li {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.borda-laranja {
+  border: 1.5px solid var(--color-pitch) !important;
+}

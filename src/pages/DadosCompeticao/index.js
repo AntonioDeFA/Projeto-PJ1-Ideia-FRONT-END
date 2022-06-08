@@ -17,9 +17,9 @@ import Botao from "../../components/Botao";
 import Mensagem from "../../components/Mensagem";
 import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
-import { styleModals, TabPanel, valueProps } from "../../utils/constantes";
 import { MSG000, MSG006 } from "../../utils/mensagens";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
+import { styleModals, TabPanel, valueProps } from "../../utils/constantes";
 
 import "./styles.css";
 
@@ -143,7 +143,7 @@ function DadosCompeticao() {
         >
           {mudou
             ? equipes.map((equipe, index) => (
-                <li key={index} className="border border-dark rounded m-3 p-2">
+                <li key={index} className="rounded m-3 p-2 borda-laranja">
                   <ul>
                     <ListItem
                       secondaryAction={
@@ -196,7 +196,7 @@ function DadosCompeticao() {
           subheader={<li />}
         >
           {resultados.map((resultado, index) => (
-            <li key={index} className="border border-dark rounded m-3 p-2">
+            <li key={index} className="rounded m-3 p-2 borda-laranja">
               <ul>
                 <ListItem key={index}>
                   <div
@@ -252,17 +252,16 @@ function DadosCompeticao() {
               </Tabs>
             </Box>
 
-            <TabPanel color="warning" value={value} index={0}>
+            <TabPanel value={value} index={0} className="tab-customizada">
               <DadosGeraisCompeticaoConsulta id={idCompeticao} />
             </TabPanel>
 
             {papelUsuario === "ORGANIZADOR" ? (
-              <TabPanel color="warning" value={value} index={1}>
+              <TabPanel value={value} index={1}>
                 <PainelEquipes />
               </TabPanel>
             ) : null}
             <TabPanel
-              color="warning"
               value={value}
               index={papelUsuario === "ORGANIZADOR" ? 2 : 1}
             >
