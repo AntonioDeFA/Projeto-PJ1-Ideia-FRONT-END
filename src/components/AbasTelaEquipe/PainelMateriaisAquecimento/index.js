@@ -34,19 +34,21 @@ function PainelMateriaisAquecimento(props) {
 
   const baixarMaterial = (material, tipo) => {
 
+    let descricaoType = "video/mp4;base64";
+
     if (tipo === "PDF") {
-      var byteCharacters = window.atob(material);
-      var byteNumbers = new Array(byteCharacters.length);
-      for (var i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      var byteArray = new Uint8Array(byteNumbers);
-      var file = new Blob([byteArray], { type: "application/pdf;base64" });
-      var fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } else {
-      //aqui baixa vídeo
+      descricaoType = "application/pdf;base64";
     }
+
+    var byteCharacters = window.atob(material);
+    var byteNumbers = new Array(byteCharacters.length);
+    for (var i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    var byteArray = new Uint8Array(byteNumbers);
+    var file = new Blob([byteArray], { type: descricaoType });
+    var fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
   }
 
   const abrirLink = (link) => {
