@@ -101,7 +101,7 @@ function Equipe() {
             </TabPanel>
 
             <TabPanel value={value} index={2} className="tab-customizada">
-              <PainelMateriaisAquecimento />
+              <PainelMateriaisAquecimento id={equipe?.idCompeticaoCadastrada} />
             </TabPanel>
 
             <TabPanel value={value} index={3} className="tab-customizada">
