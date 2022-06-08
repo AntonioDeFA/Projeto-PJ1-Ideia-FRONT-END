@@ -124,7 +124,7 @@ function EtapaAquecimento(props) {
                 etapa.dataTermino = [
                   Number(dadosAquecimento.dataTerminoAquecimento.getFullYear()),
                   Number(dadosAquecimento.dataTerminoAquecimento.getMonth()) +
-                    1,
+                  1,
                   Number(dadosAquecimento.dataTerminoAquecimento.getDate()),
                 ];
               }
@@ -182,7 +182,7 @@ function EtapaAquecimento(props) {
       let result = await toBase64(arquivoInput);
       result = result.replace("data:video/mp4;base64,", "");
 
-      let nome = arquivoInput.name;
+      let nome = arquivoInput.name.split(".")[0];
 
       let tipo = "VIDEO";
       let extensaoPdf = /(.pdf)$/i;
@@ -253,6 +253,7 @@ function EtapaAquecimento(props) {
   const atribuirMaterialLink = (materiais, array) => {
     array.forEach((material) =>
       materiais.push({
+        nomeMaterial: material.link,
         link: material.link,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
@@ -266,6 +267,7 @@ function EtapaAquecimento(props) {
   const atribuirMaterialEstudo = (materiais, array) => {
     array.forEach((material) => {
       materiais.push({
+        nomeMaterial: material.nome,
         arquivoEstudo: material.result,
         tipoMaterialEstudo: material.tipo,
         categoriaMaterialEstudo: {
@@ -376,31 +378,31 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? links.map((url, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        <a
-                          href={url.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {url.link}
-                        </a>
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          className="me-1"
-                          onClick={() => removerLink(index)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <a
+                        href={url.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {url.link}
+                      </a>
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-1"
+                        onClick={() => removerLink(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
                 : null}
             </TableBody>
           </Table>
@@ -416,25 +418,25 @@ function EtapaAquecimento(props) {
             <TableBody>
               {mudou
                 ? arquivos.map((documento, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {documento.nome}
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          className="me-2"
-                          onClick={() => removerArquivo(index)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {documento.nome}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className="me-2"
+                        onClick={() => removerArquivo(index)}
+                      >
+                        <i className="fa-solid fa-trash-can p-0"></i>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
                 : null}
             </TableBody>
           </Table>
