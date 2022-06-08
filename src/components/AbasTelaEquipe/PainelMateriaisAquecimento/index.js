@@ -60,11 +60,11 @@ function PainelMateriaisAquecimento(props) {
     const { tipo } = props;
 
     if (tipo === "PDF") {
-      return <i className="fa fa-file-pdf-o fa-2x me-3 mt-4"></i>;
+      return <i className="fa fa-file-pdf-o fa-2x me-3 mt-4 color-icone"></i>;
     } else if (tipo === "VIDEO") {
-      return <i className="fa fa-file-video-o fa-2x me-3 mt-4"></i>;
+      return <i className="fa fa-file-video-o fa-2x me-3 mt-4 color-icone"></i>;
     } else {
-      return <i className="fa fa-globe fa-xl me-3 mt-4 pt-3"></i>;
+      return <i className="fa fa-globe fa-xl me-3 mt-4 pt-3 color-icone"></i>;
     }
   }
 
@@ -116,10 +116,9 @@ function PainelMateriaisAquecimento(props) {
                   <div className="d-flex justify-content-center">
                     <IconeMaterial tipo={material.tipoMaterialEstudo} />
                     <div className="ms-3">
-                      <h6 className="mt-2">{"material.nome"}</h6>
-                      <div className="d-flex justify-content-center">
+                      <h6 className="mt-2">{material.nome}</h6>
+                      <div className="d-flex justify-content-start">
                         <FormControlLabel control={<Checkbox defaultChecked={false} />} label="concluído" />
-                        <h6 className="mt-1 pt-2">{material.tempo} min</h6>
                       </div>
                     </div>
                   </div>
