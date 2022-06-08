@@ -214,8 +214,8 @@ function DadosCompeticao() {
             ) : null}
             <TabPanel
               value={value}
-              index={papelUsuario === "ORGANIZADOR" ? 2 : 1}
               className="tab-customizada"
+              index={papelUsuario === "ORGANIZADOR" ? 2 : 1}
             >
               <PainelResultadoGeral id={idCompeticao} />
             </TabPanel>

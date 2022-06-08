@@ -253,8 +253,8 @@ function PainelDadosEquipe(props) {
                           onClick={() => {
                             removerUsuario(row.email);
                           }}
-                          className="fa-solid fa-trash-can icone-tabela"
-                          title="Remover este usuário"
+                          className="fa-solid fa-trash-can icone-tabela cursor-pointer"
+                          title="Remover este membro"
                         ></i>
                       )}
                     </StyledTableCell>
