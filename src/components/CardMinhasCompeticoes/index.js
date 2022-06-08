@@ -176,13 +176,13 @@ function CardMinhasCompeticoes(props) {
               {!props.card.isElaboracao ? (
                 <i
                   onClick={dadosCompeticao}
-                  className="fa-solid fa-arrow-right-to-bracket hover-azul"
+                  className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
                 ></i>
               ) : null}
 
               <i
                 onClick={handleOpenModalDeletarCompeticao}
-                className="fa-solid fa-trash-can"
+                className="fa-solid fa-trash-can cursor-pointer"
               ></i>
             </div>
           </div>

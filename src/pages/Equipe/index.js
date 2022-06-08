@@ -5,15 +5,13 @@ import { Box, Tabs, Tab } from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "../../components/Botao";
-import { MSG000 } from "../../utils/mensagens";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
 import PainelPitchDeck from "./../../components/AbasTelaEquipe/PainelPitchDeck/index";
 import PainelAvaliacao from "./../../components/AbasTelaEquipe/PainelAvaliacao/index";
 import PainelLeanCanvas from "./../../components/AbasTelaEquipe/PainelLeanCanvas/index";
 import PainelDadosEquipe from "./../../components/AbasTelaEquipe/PainelDadosEquipe/index";
-import PainelResultadoGeral from "./../../components/AbasTelaEquipe/PainelResultadoGeral/index";
-import { IdCompeticaoProvider } from "./../../utils/context/idCompeticaoContext";
+import PainelResultadoGeral from "../../components/ComponentesConsulta/PainelResultadoGeral";
 import { TabPanel, valueProps } from "../../utils/constantes";
 import PainelMateriaisAquecimento from "./../../components/AbasTelaEquipe/PainelMateriaisAquecimento/index";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
@@ -29,8 +27,6 @@ function Equipe() {
   const [value, setValue] = useState(0);
 
   const [equipe, setEquipe] = useState(null);
-
-  const [mensagemErro, setMensagemErro] = useState(MSG000);
 
   const handleSairDaTela = () => {
     if (papelUsuario === "USUARIO_LIDER") {
@@ -51,7 +47,7 @@ function Equipe() {
       .catch((error) => {
         console.log(error.response.data);
       });
-  }, []);
+  }, [idEquipe, token]);
 
   return (
     <div id="dados-competicao">
@@ -121,7 +117,7 @@ function Equipe() {
             </TabPanel>
 
             <TabPanel value={value} index={6} className="tab-customizada">
-              <PainelResultadoGeral />
+              <PainelResultadoGeral id={equipe?.idCompeticaoCadastrada} />
             </TabPanel>
           </div>
         </Box>

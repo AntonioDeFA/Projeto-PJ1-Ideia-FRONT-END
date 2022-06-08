@@ -1,3 +1,12 @@
+div .div-painel-equipe {
+  width: 470px;
+}
+
+div #id-tabela-membros {
+  height: 300px;
+  overflow-y: scroll;
+}
+
 .div-input-dado-equipe {
   margin-bottom: 20px;
 }
@@ -17,4 +26,8 @@
 
 .class-btn-dado-equipe {
   height: 48px;
+}
+
+#id-div-tabela-membros .mensagem {
+  width: 100%;
 }

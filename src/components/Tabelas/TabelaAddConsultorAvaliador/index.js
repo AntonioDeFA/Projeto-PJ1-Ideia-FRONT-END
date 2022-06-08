@@ -5,10 +5,14 @@ import Paper from "@mui/material/Paper";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
-import { styled } from "@mui/material/styles";
+
 import TableContainer from "@mui/material/TableContainer";
-import { styleModals } from "../../../utils/constantes";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import {
+  StyledTableCell,
+  StyledTableRow,
+  styleModals,
+} from "../../../utils/constantes";
+
 import { Autocomplete, Modal, TextField, Box, Typography } from "@mui/material";
 
 import api from "./../../../services/api";
@@ -21,28 +25,6 @@ import IdCompeticaoContext from "../../../utils/context/idCompeticaoContext";
 import ExpandedAccordionContext from "../../../utils/context/expandedAccordionContext";
 
 import "./styles.css";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#fc7a00",
-    color: theme.palette.common.white,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
 function TabelaAddConsultorAvaliador(props) {
   const dadosGerais = useContext(DadosGeraisContext);
@@ -275,7 +257,7 @@ function TabelaAddConsultorAvaliador(props) {
                         onClick={() => {
                           removerUsuario(row.email);
                         }}
-                        className="fa-solid fa-trash-can icone-tabela"
+                        className="fa-solid fa-trash-can cursor-pointer"
                         title="Remover este usuário"
                       ></i>
                     </StyledTableCell>

@@ -121,3 +121,11 @@ div .listagem-cards-competicoes ul li {
   width: 275px;
   margin-left: 70px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.borda-laranja {
+  border: 1.5px solid var(--color-pitch) !important;
+}

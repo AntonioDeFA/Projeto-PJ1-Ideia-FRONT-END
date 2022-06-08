@@ -40,9 +40,11 @@ const adicionarZero = (numero) => {
 };
 
 export const competicaoNaoIniciada = (card) => {
-  let dia = card.etapas[0].dataInicio[2];
-  let mes = card.etapas[0].dataInicio[1];
-  let ano = card.etapas[0].dataInicio[0];
+  let dataInicio = obterDatas(card.etapas, "INSCRICAO");
+
+  let dia = dataInicio.dataInicio[2];
+  let mes = dataInicio.dataInicio[1];
+  let ano = dataInicio.dataInicio[0];
 
   let dataInicioFormatada = new Date(ano, mes - 1, dia);
   return new Date() < dataInicioFormatada;

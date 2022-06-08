@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
+import { TextField } from "@mui/material";
+
 import api from "./../../../services/api";
 import Botao from "./../../Botao/index";
 import StoreContext from "./../../../store/context";
@@ -13,7 +15,6 @@ import {
 } from "./../../../utils/mensagens";
 
 import "./styles.css";
-import { TextField } from "@mui/material";
 
 function DadosGeraisCompeticaoConsulta(props) {
   const [nome, setNome] = useState(MSG000);
@@ -35,39 +36,44 @@ function DadosGeraisCompeticaoConsulta(props) {
 
   const buscarDadosGerais = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/competicao/dados-gerais/${props?.id}`).then((response) => {
-      const { data } = response;
+    api
+      .get(`/competicao/dados-gerais/${props?.id}`)
+      .then((response) => {
+        const { data } = response;
 
-      setNome(data.nomeCompeticao);
-      setDominio(data.dominioCompeticao);
-      setRegulamento(data.arquivoRegulamentoCompeticao);
-      setTempoMaxPitch(data.tempoMaximoVideoEmSeg / 60);
-      setQntdMinMembros(data.qntdMinimaMembrosPorEquipe);
-      setQntdMaxMembros(data.qntdMaximaMembrosPorEquipe);
+        setNome(data.nomeCompeticao);
+        setDominio(data.dominioCompeticao);
+        setRegulamento(data.arquivoRegulamentoCompeticao);
+        setTempoMaxPitch(data.tempoMaximoVideoEmSeg / 60);
+        setQntdMinMembros(data.qntdMinimaMembrosPorEquipe);
+        setQntdMaxMembros(data.qntdMaximaMembrosPorEquipe);
 
-      let etapa1 = obterDatas(data.etapas, MSG032);
-      let etapa2 = obterDatas(data.etapas, MSG033);
-      let etapa3 = obterDatas(data.etapas, MSG034);
-      let etapa4 = obterDatas(data.etapas, MSG035);
+        let etapa1 = obterDatas(data.etapas, MSG032);
+        let etapa2 = obterDatas(data.etapas, MSG033);
+        let etapa3 = obterDatas(data.etapas, MSG034);
+        let etapa4 = obterDatas(data.etapas, MSG035);
 
-      let data1 = formatarData(etapa1.dataInicio);
-      let data2 = formatarData(etapa1.dataTermino);
-      let data3 = formatarData(etapa2.dataInicio);
-      let data4 = formatarData(etapa2.dataTermino);
-      let data5 = formatarData(etapa3.dataInicio);
-      let data6 = formatarData(etapa3.dataTermino);
-      let data7 = formatarData(etapa4.dataInicio);
-      let data8 = formatarData(etapa4.dataTermino);
+        let data1 = formatarData(etapa1.dataInicio);
+        let data2 = formatarData(etapa1.dataTermino);
+        let data3 = formatarData(etapa2.dataInicio);
+        let data4 = formatarData(etapa2.dataTermino);
+        let data5 = formatarData(etapa3.dataInicio);
+        let data6 = formatarData(etapa3.dataTermino);
+        let data7 = formatarData(etapa4.dataInicio);
+        let data8 = formatarData(etapa4.dataTermino);
 
-      setDataInicioInscricoes(data1.toLocaleDateString());
-      setDataTerminoInscricoes(data2.toLocaleDateString());
-      setDataInicioAquecimento(data3.toLocaleDateString());
-      setDataTerminoAquecimento(data4.toLocaleDateString());
-      setDataInicioImersao(data5.toLocaleDateString());
-      setDataTerminoImersao(data6.toLocaleDateString());
-      setDataInicioPitch(data7.toLocaleDateString());
-      setDataTerminoPitch(data8.toLocaleDateString());
-    });
+        setDataInicioInscricoes(data1.toLocaleDateString());
+        setDataTerminoInscricoes(data2.toLocaleDateString());
+        setDataInicioAquecimento(data3.toLocaleDateString());
+        setDataTerminoAquecimento(data4.toLocaleDateString());
+        setDataInicioImersao(data5.toLocaleDateString());
+        setDataTerminoImersao(data6.toLocaleDateString());
+        setDataInicioPitch(data7.toLocaleDateString());
+        setDataTerminoPitch(data8.toLocaleDateString());
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   const baixarRegulamento = () => {
@@ -89,7 +95,7 @@ function DadosGeraisCompeticaoConsulta(props) {
   return (
     <div id="id-panel-dados-gerais" className="d-flex justify-content-between">
       <div id="id-dados-da-competicao">
-        <h5 className="mb-5">Dados da Competição</h5>
+        <h5 className="mb-4">Dados da Competição</h5>
 
         <div className="div-input-readonly">
           <TextField
@@ -159,7 +165,7 @@ function DadosGeraisCompeticaoConsulta(props) {
       </div>
 
       <div id="id-etapas-da-competicao">
-        <h5 className="mb-5">Etapas da Competição</h5>
+        <h5 className="mb-4">Etapas da Competição</h5>
 
         <div className="d-flex justify-content-between div-input-readonly">
           <div style={{ marginRight: "30px" }}>

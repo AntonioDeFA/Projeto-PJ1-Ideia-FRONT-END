@@ -22,7 +22,10 @@ function CardMembro(props) {
             </h5>
           </div>
           {props.isLider ? null : (
-            <i onClick={removerMembro} className="fa-solid fa-trash-can"></i>
+            <i
+              onClick={removerMembro}
+              className="fa-solid fa-trash-can cursor-pointer"
+            ></i>
           )}
         </div>
       </header>

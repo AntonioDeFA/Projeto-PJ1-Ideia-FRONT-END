@@ -3,10 +3,6 @@ div #tabela-usuarios {
   overflow-y: scroll;
 }
 
-i.icone-tabela {
-  cursor: pointer;
-}
-
 i.fa-trash-can:hover {
   color: var(--color-aquecimento);
 }
