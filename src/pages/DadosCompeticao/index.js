@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import {
   Box,
   List,
@@ -10,7 +12,6 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
 import Botao from "../../components/Botao";
@@ -18,6 +19,7 @@ import Mensagem from "../../components/Mensagem";
 import StoreContext from "../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
 import { MSG000, MSG006 } from "../../utils/mensagens";
+import PainelResultadoGeral from "../../components/ComponentesConsulta/PainelResultadoGeral";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 import { styleModals, TabPanel, valueProps } from "../../utils/constantes";
 
@@ -33,7 +35,6 @@ function DadosCompeticao() {
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
 
-  const [resultados, setResultados] = useState([]);
   const [equipes, setEquipes] = useState([]);
   const [consultores, setConsultores] = useState([]);
 
@@ -56,7 +57,6 @@ function DadosCompeticao() {
     buscarNomeCompeticao();
     buscarEquipes();
     buscarConsultores();
-    buscarResultados();
   }, []);
 
   const buscarNomeCompeticao = () => {
@@ -80,16 +80,6 @@ function DadosCompeticao() {
       const { data } = response;
       setConsultores(data);
     });
-  };
-
-  const buscarResultados = () => {
-    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api
-      .get(`/competicao/resultados-gerais/${idCompeticao}`)
-      .then((response) => {
-        const { data } = response;
-        setResultados(data);
-      });
   };
 
   const adicionarIdEquipeEAbrirModal = (idEquipe) => {
@@ -181,45 +171,6 @@ function DadosCompeticao() {
     );
   };
 
-  const PainelResultadoGeral = () => {
-    return (
-      <div id="id-painel-resultado-geral">
-        <List
-          sx={{
-            width: "100%",
-            bgcolor: "background.paper",
-            position: "relative",
-            overflow: "auto",
-            maxHeight: 420,
-            "& ul": { padding: 0 },
-          }}
-          subheader={<li />}
-        >
-          {resultados.map((resultado, index) => (
-            <li key={index} className="rounded m-3 p-2 borda-laranja">
-              <ul>
-                <ListItem key={index}>
-                  <div
-                    className="d-flex justify-content-between align-items-center mt-2 mb-2 w-100"
-                    id="resultado-geral"
-                  >
-                    <h6 style={{ fontWeight: "bolder" }}>{index + 1}°</h6>
-                    <h6>{resultado.nome}</h6>
-                    <h6>
-                      {" "}
-                      <strong>{resultado.notaAtribuida}</strong> /
-                      {resultado.notaMaximaCompeticao}
-                    </h6>
-                  </div>
-                </ListItem>
-              </ul>
-            </li>
-          ))}
-        </List>
-      </div>
-    );
-  };
-
   return (
     <div id="dados-competicao">
       <DefaultHeader iconeDestaque="trofeu" />
@@ -264,8 +215,9 @@ function DadosCompeticao() {
             <TabPanel
               value={value}
               index={papelUsuario === "ORGANIZADOR" ? 2 : 1}
+              className="tab-customizada"
             >
-              <PainelResultadoGeral />
+              <PainelResultadoGeral id={idCompeticao} />
             </TabPanel>
           </div>
         </Box>

@@ -11,7 +11,7 @@ import PainelPitchDeck from "./../../components/AbasTelaEquipe/PainelPitchDeck/i
 import PainelAvaliacao from "./../../components/AbasTelaEquipe/PainelAvaliacao/index";
 import PainelLeanCanvas from "./../../components/AbasTelaEquipe/PainelLeanCanvas/index";
 import PainelDadosEquipe from "./../../components/AbasTelaEquipe/PainelDadosEquipe/index";
-import PainelResultadoGeral from "./../../components/AbasTelaEquipe/PainelResultadoGeral/index";
+import PainelResultadoGeral from "../../components/ComponentesConsulta/PainelResultadoGeral";
 import { TabPanel, valueProps } from "../../utils/constantes";
 import PainelMateriaisAquecimento from "./../../components/AbasTelaEquipe/PainelMateriaisAquecimento/index";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
@@ -117,7 +117,7 @@ function Equipe() {
             </TabPanel>
 
             <TabPanel value={value} index={6} className="tab-customizada">
-              <PainelResultadoGeral />
+              <PainelResultadoGeral id={equipe?.idCompeticaoCadastrada} />
             </TabPanel>
           </div>
         </Box>
