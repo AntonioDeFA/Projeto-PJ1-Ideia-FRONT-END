@@ -55,3 +55,4 @@ export const MSG040 =
   "É necessário que você convide usuários para participarem como {1}.";
 export const MSG041 = "Token copiado para área de transferência!";
 export const MSG042 = "Nome da equipe atualizado com sucesso!";
+export const MSG043 = "ENCERRADA";
