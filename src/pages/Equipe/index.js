@@ -17,6 +17,7 @@ import PainelMateriaisAquecimento from "./../../components/AbasTelaEquipe/Painel
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
 
 import "./styles.css";
+import { MSG033, MSG034, MSG035, MSG043 } from "./../../utils/mensagens";
 
 function Equipe() {
   const navigate = useNavigate();
@@ -81,11 +82,26 @@ function Equipe() {
               >
                 <Tab label={"Competição"} {...valueProps(0)} />
                 <Tab label={"Equipe"} {...valueProps(1)} />
-                <Tab label={"Aquecimento"} {...valueProps(2)} />
-                <Tab label={"Lean Canvas"} {...valueProps(3)} />
-                <Tab label={"Pitch Deck"} {...valueProps(4)} />
-                <Tab label={"Avaliação"} {...valueProps(5)} />
-                <Tab label={"Resultado Geral"} {...valueProps(6)} />
+
+                {equipe?.etapaVigenteStr === MSG033 ? (
+                  <Tab label={"Aquecimento"} {...valueProps(2)} />
+                ) : null}
+
+                {equipe?.etapaVigenteStr === MSG034 ? (
+                  <Tab label={"Lean Canvas"} {...valueProps(2)} />
+                ) : null}
+
+                {equipe?.etapaVigenteStr === MSG034 ? (
+                  <Tab label={"Pitch Deck"} {...valueProps(3)} />
+                ) : null}
+
+                {equipe?.etapaVigenteStr === MSG035 ? (
+                  <Tab label={"Avaliação"} {...valueProps(2)} />
+                ) : null}
+
+                {equipe?.etapaVigenteStr === MSG043 ? (
+                  <Tab label={"Resultado Geral"} {...valueProps(2)} />
+                ) : null}
               </Tabs>
             </Box>
 
@@ -100,25 +116,37 @@ function Equipe() {
               <PainelDadosEquipe id={equipe?.id} />
             </TabPanel>
 
-            <TabPanel value={value} index={2} className="tab-customizada">
-              <PainelMateriaisAquecimento id={equipe?.idCompeticaoCadastrada} />
-            </TabPanel>
+            {equipe?.etapaVigenteStr === MSG033 ? (
+              <TabPanel value={value} index={2} className="tab-customizada">
+                <PainelMateriaisAquecimento
+                  id={equipe?.idCompeticaoCadastrada}
+                />
+              </TabPanel>
+            ) : null}
 
-            <TabPanel value={value} index={3} className="tab-customizada">
-              <PainelLeanCanvas idEquipe={equipe?.id} />
-            </TabPanel>
+            {equipe?.etapaVigenteStr === MSG034 ? (
+              <TabPanel value={value} index={2} className="tab-customizada">
+                <PainelLeanCanvas idEquipe={equipe?.id} />
+              </TabPanel>
+            ) : null}
 
-            <TabPanel value={value} index={4} className="tab-customizada">
-              <PainelPitchDeck />
-            </TabPanel>
+            {equipe?.etapaVigenteStr === MSG034 ? (
+              <TabPanel value={value} index={3} className="tab-customizada">
+                <PainelPitchDeck />
+              </TabPanel>
+            ) : null}
 
-            <TabPanel value={value} index={5} className="tab-customizada">
-              <PainelAvaliacao />
-            </TabPanel>
+            {equipe?.etapaVigenteStr === MSG035 ? (
+              <TabPanel value={value} index={2} className="tab-customizada">
+                <PainelAvaliacao />
+              </TabPanel>
+            ) : null}
 
-            <TabPanel value={value} index={6} className="tab-customizada">
-              <PainelResultadoGeral id={equipe?.idCompeticaoCadastrada} />
-            </TabPanel>
+            {equipe?.etapaVigenteStr === MSG043 ? (
+              <TabPanel value={value} index={2} className="tab-customizada">
+                <PainelResultadoGeral id={equipe?.idCompeticaoCadastrada} />
+              </TabPanel>
+            ) : null}
           </div>
         </Box>
       </div>
