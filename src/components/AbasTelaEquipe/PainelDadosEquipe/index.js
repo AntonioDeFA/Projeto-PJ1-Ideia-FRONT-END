@@ -73,7 +73,7 @@ function PainelDadosEquipe(props) {
           .catch((error) => {
             console.log(error.response.data);
             setErrorNome(true);
-            setMensagemNome(error.response.data.message);
+            setMensagemNome(error.response.data.motivosErros[0]);
           });
       }
     }
@@ -92,7 +92,7 @@ function PainelDadosEquipe(props) {
         setFlagAlteracao(!flagAlteracao);
       })
       .catch((error) => {
-        setMensagemErro(error.response.data.message);
+        setMensagemErro(error.response.data.motivosErros[0]);
 
         setTimeout(() => {
           setMensagemErro(MSG000);
