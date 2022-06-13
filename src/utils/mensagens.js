@@ -82,3 +82,6 @@ export const MSG051 =
 export const MSG052 =
   "Em uma empresa de construção civil: Recebimento de serviço por metragem executada; Contratos por prestação de serviço/construção..."
   + "Reflita: Seus consumidores estão dispostos a pagar pela sua solução? Como eles preferem pagar? Como cada fluxo de receita contribui para a receita global da empresa?";
+
+export const MSG043 = "ENCERRADA";
+
