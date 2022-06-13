@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { TextareaAutosize } from '@mui/material';
 import {
-  MSG043,
   MSG044,
   MSG045,
   MSG046,
@@ -10,7 +9,8 @@ import {
   MSG048,
   MSG049,
   MSG050,
-  MSG051
+  MSG051,
+  MSG052
 } from "../../utils/mensagens";
 
 import "./styles.css";
@@ -29,15 +29,15 @@ function LeanCanvas(props) {
     descricaoFonte
   } = props;
 
-  const [ajudaParcerias,] = useState(MSG043);
-  const [ajudaAtividades,] = useState(MSG044);
-  const [ajudaRecursos,] = useState(MSG045);
-  const [ajudaProposta,] = useState(MSG046);
-  const [ajudaRelacionamento,] = useState(MSG047);
-  const [ajudaCanvas,] = useState(MSG048);
-  const [ajudaSegmentos,] = useState(MSG049);
-  const [ajudaEstrutura,] = useState(MSG050);
-  const [ajudaFonte,] = useState(MSG051);
+  const [ajudaParcerias,] = useState(MSG044);
+  const [ajudaAtividades,] = useState(MSG045);
+  const [ajudaRecursos,] = useState(MSG046);
+  const [ajudaProposta,] = useState(MSG047);
+  const [ajudaRelacionamento,] = useState(MSG048);
+  const [ajudaCanvas,] = useState(MSG049);
+  const [ajudaSegmentos,] = useState(MSG050);
+  const [ajudaEstrutura,] = useState(MSG051);
+  const [ajudaFonte,] = useState(MSG052);
 
   const CampoLeanCanvas = (props) => {
 
