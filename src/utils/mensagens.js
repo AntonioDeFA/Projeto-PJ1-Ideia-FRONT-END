@@ -55,3 +55,30 @@ export const MSG040 =
   "É necessário que você convide usuários para participarem como {1}.";
 export const MSG041 = "Token copiado para área de transferência!";
 export const MSG042 = "Nome da equipe atualizado com sucesso!";
+export const MSG043 =
+  "Fornecedores e parceiros que vão ajudar na entrega do valor prometido. Inclua os parceiros e fornecedores que são realmente importantes para o sucesso do seu negócio";
+export const MSG044 =
+  "Em uma empresa da construção civil, o gerencimaneto de mão de obra tercerizada é uma atividade-chave. Em uma empresa de software: desenvolvimento de software,"
+  + "manutenção de equipamento, evolução e desenvolvimento de novos produtos. Pense como se a sua empresa já tivesse diversas pessoas trabalhando; pense nas"
+  + "atividadesque você e sua equipe fazem no dia-a-dia.";
+export const MSG045 =
+  "Em uma empresa de construção civil: Os sócios; equipe técnica e administrativa; gerente de obras. Em uma empresa de software: Computadores; licenças de software;"
+  + "recursos humanos, etc. Em caso de dúvida, reflita: Se meu negócio não tivesse (coloque aqui um recurso) ele não existiria.";
+export const MSG046 =
+  "Não seja genárico: Conveniência, conforto, praticidade, qualidade, personalização, etc. Não coloque uma só proposta para mais de um segmento; Não tente resolver "
+  + "TODOS os problemas do cliente: o que no mínimo de fato você entrega ?";
+export const MSG047 =
+  "Exemplo em empresa no ramo de construção civil: Relacionamento direto do cliente à diretoria, agendando horários específicos para atendimento e visitas à obra; "
+  + "feedbacks documentados, semanal ou diariamente. O tipo de relacionamento deve ser o mais adequado ao seu público e não o mais 'bacana' ou 'moderno'. "
+  + "Estabeleça e mantenha diferentes tipos de relacionamento com cada cliente";
+export const MSG048 =
+  "Os canasi são muito importantes pois representam como seus clientes vão conhecer seu produto/serviço, como vão comprá-lo e como vão recebê-lo.";
+export const MSG049 =
+  "Não seja genérico. Tente ser o mais específico possível: São homens ou mulheres? De que idade? Com qual perfil? Ou são empresas? De que tamanho? De qual segmento?";
+export const MSG050 =
+  "Em uma empresa da construção civil: Estrutura administrativa e técnica; compra de materiais; pagamento de mão de obra tercerizada, etc. Não tem problema se você "
+  + "não souber os valores exatos na primeira vez que preencher o canvas. O importante é já pensar em todos os custos que sua operação vai gerar. Olhe para as "
+  + "atividades e recursos chaves.";
+export const MSG051 =
+  "Em uma empresa de construção civil: Recebimento de serviço por metragem executada; Contratos por prestação de serviço/construção..."
+  + "Reflita: Seus consumidores estão dispostos a pagar pela sua solução? Como eles preferem pagar? Como cada fluxo de receita contribui para a receita global da empresa?";
