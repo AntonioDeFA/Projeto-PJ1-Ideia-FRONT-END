@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import { TextareaAutosize } from '@mui/material';
+import { TextareaAutosize } from "@mui/material";
+
 import {
   MSG044,
   MSG045,
@@ -10,13 +11,12 @@ import {
   MSG049,
   MSG050,
   MSG051,
-  MSG052
+  MSG052,
 } from "../../utils/mensagens";
 
 import "./styles.css";
 
 function LeanCanvas(props) {
-
   const {
     descricaoParcerias,
     descricaoAtividades,
@@ -26,28 +26,31 @@ function LeanCanvas(props) {
     descricaoCanvas,
     descricaoSegmentos,
     descricaoEstrutura,
-    descricaoFonte
+    descricaoFonte,
   } = props;
 
-  const [ajudaParcerias,] = useState(MSG044);
-  const [ajudaAtividades,] = useState(MSG045);
-  const [ajudaRecursos,] = useState(MSG046);
-  const [ajudaProposta,] = useState(MSG047);
-  const [ajudaRelacionamento,] = useState(MSG048);
-  const [ajudaCanvas,] = useState(MSG049);
-  const [ajudaSegmentos,] = useState(MSG050);
-  const [ajudaEstrutura,] = useState(MSG051);
-  const [ajudaFonte,] = useState(MSG052);
+  const [ajudaParcerias] = useState(MSG044);
+  const [ajudaAtividades] = useState(MSG045);
+  const [ajudaRecursos] = useState(MSG046);
+  const [ajudaProposta] = useState(MSG047);
+  const [ajudaRelacionamento] = useState(MSG048);
+  const [ajudaCanvas] = useState(MSG049);
+  const [ajudaSegmentos] = useState(MSG050);
+  const [ajudaEstrutura] = useState(MSG051);
+  const [ajudaFonte] = useState(MSG052);
 
   const CampoLeanCanvas = (props) => {
-
     const { nomeCampo, descricao, ajuda, altura, classes } = props;
 
     return (
       <div id="campo-lean-canvas" className="p-2">
         <div className="d-flex justify-content-between">
           <h6 className={classes}>{nomeCampo}</h6>
-          <i className="fa fa-question-circle" title={ajuda}></i>
+          <i
+            className="fa fa-question-circle"
+            style={{ color: "#fc7a00" }}
+            title={ajuda}
+          ></i>
         </div>
         <div className="text-center">
           <TextareaAutosize
@@ -58,13 +61,13 @@ function LeanCanvas(props) {
             className="w-100 p-1"
             style={{
               height: altura,
-              resize: "none"
+              resize: "none",
             }}
           />
         </div>
       </div>
     );
-  }
+  };
 
   return (
     <div id="lean-canvas">
