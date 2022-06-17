@@ -54,7 +54,7 @@ function DadosGeraisCompeticao(props) {
   const [errorQntdMaxMembros, setErrorQntdMaxMembros] = useState(false);
   const [, setErrorDataInicioInscricoes] = useState(false);
   const [, setErrorDataTerminoInscricoes] = useState(false);
-  const [contemArquivo, setContemArquivo] = useState(false);
+  // const [contemArquivo, setContemArquivo] = useState(false);
 
   const [mensagemNome, setMensagemNome] = useState(MSG000);
   const [mensagemTempoMaxPitch, setMensagemTempoMaxPitch] = useState(MSG000);
@@ -136,7 +136,7 @@ function DadosGeraisCompeticao(props) {
       } else if (nome.length < 3 || nome.length > 16) {
         setErrorNome(true);
         setMensagemNome(MSG019);
-      } else if (!contemArquivo) {
+      } else if (regulamento.length === 0) {
         setMensagemErro(MSG037);
       } else {
         setMensagemErro(MSG000);
@@ -192,7 +192,7 @@ function DadosGeraisCompeticao(props) {
         };
 
         salvarCompeticaoEmElaboracao(novaCompeticao, dadosGerais);
-        setContemArquivo(false);
+        // setContemArquivo(false);
       }
     }
   };
@@ -212,7 +212,7 @@ function DadosGeraisCompeticao(props) {
     result = result.replace("data:application/pdf;base64,", "");
     setTimeout(() => {
       setRegulamento(result);
-      setContemArquivo(true);
+      // setContemArquivo(true);
     }, 400);
   };
 
@@ -288,7 +288,7 @@ function DadosGeraisCompeticao(props) {
 
   const adicionarArquivoAoInput = (regulamento) => {
     setRegulamento(dadosGeraisConsultados?.arquivoRegulamentoCompeticao);
-    setContemArquivo(true);
+    // setContemArquivo(true);
   };
 
   return (
