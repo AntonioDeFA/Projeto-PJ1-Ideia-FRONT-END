@@ -4,6 +4,12 @@
   opacity: 0.7;
 }
 
-.color-icone{
+.color-icone {
   color: var(--color-button-hover);
+}
+
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+  color: #fc7a00 !important;
 }
