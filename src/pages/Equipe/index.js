@@ -15,9 +15,9 @@ import PainelResultadoGeral from "../../components/ComponentesConsulta/PainelRes
 import { TabPanel, valueProps } from "../../utils/constantes";
 import PainelMateriaisAquecimento from "./../../components/AbasTelaEquipe/PainelMateriaisAquecimento/index";
 import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/DadosGeraisCompeticaoConsulta";
+import { MSG033, MSG034, MSG035, MSG043 } from "./../../utils/mensagens";
 
 import "./styles.css";
-import { MSG033, MSG034, MSG035, MSG043 } from "./../../utils/mensagens";
 
 function Equipe() {
   const navigate = useNavigate();
@@ -126,13 +126,19 @@ function Equipe() {
 
             {equipe?.etapaVigenteStr === MSG034 ? (
               <TabPanel value={value} index={2} className="tab-customizada">
-                <PainelLeanCanvas idEquipe={equipe?.id} />
+                <PainelLeanCanvas
+                  idEquipe={equipe?.id}
+                  papelUsuario={papelUsuario}
+                />
               </TabPanel>
             ) : null}
 
             {equipe?.etapaVigenteStr === MSG034 ? (
               <TabPanel value={value} index={3} className="tab-customizada">
-                <PainelPitchDeck />
+                <PainelPitchDeck
+                  idEquipe={equipe?.id}
+                  papelUsuario={papelUsuario}
+                />
               </TabPanel>
             ) : null}
 

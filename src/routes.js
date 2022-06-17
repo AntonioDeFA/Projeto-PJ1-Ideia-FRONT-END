@@ -5,16 +5,17 @@ import StoreProvider from "./store/provider";
 import RoutesPrivate from "./store/routes/private";
 
 import Login from "./pages/Login";
+import Equipe from "./pages/Equipe/index";
 import LoginToken from "./pages/LoginToken";
 import TelaInicial from "./pages/TelaInicial";
 import ResetarSenha from "./pages/ResetarSenha/index";
 import CadastroEquipe from "./pages/CadastroEquipe/index";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import DadosCompeticao from "./pages/DadosCompeticao";
+import VersoesArtefatos from "./pages/VersoesArtefatos";
 import ConvitesAvaliador from "./pages/ConvitesAvaliador";
-import CadastroCompeticao from "./pages/CadastroCompeticao";
 import ConvitesConsultor from "./pages/ConvitesConsultor";
-import Equipe from "./pages/Equipe/index";
+import CadastroCompeticao from "./pages/CadastroCompeticao";
 
 function ProjetoRoutes() {
   return (
@@ -86,6 +87,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <Equipe />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/equipe/:idEquipe/:papelUsuario/versoes-artefatos/:tipoArtefato"
+            element={
+              <RoutesPrivate>
+                <VersoesArtefatos />
               </RoutesPrivate>
             }
           />
