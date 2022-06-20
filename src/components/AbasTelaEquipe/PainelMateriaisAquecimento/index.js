@@ -15,6 +15,9 @@ import {
 
 import api from "../../../services/api";
 import StoreContext from "../../../store/context";
+import { styleModals, TabPanel, valueProps } from "../../../utils/constantes";
+import Botao from "../../Botao";
+import { MSG000 } from "../../../utils/mensagens";
 
 
 import "./styles.css";
@@ -25,13 +28,31 @@ function PainelMateriaisAquecimento(props) {
 
   const { token } = useContext(StoreContext);
 
+  const [idMaterial, setIdMaterial] = useState(MSG000);
+  const [mudou, setMudou] = useState(true);
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = async () => {
+    buscarMateriais();
+    await setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 2000);
+    setOpenModal(false)
+  };
+
   useEffect(() => {
-    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api.get(`/${props?.id}/materiais-estudo`).then((response) => {
-      setMateriais(response.data);
-    });
+    buscarMateriais();
   }, []);
 
+  const buscarMateriais = () => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api.get(`equipe/${props?.idEquipe}/material-estudo`).then((response) => {
+      setMateriais(response.data);
+      console.log(response.data);
+    });
+  }
   const baixarMaterial = (material, tipo) => {
 
     let descricaoType = "video/mp4;base64";
@@ -55,8 +76,23 @@ function PainelMateriaisAquecimento(props) {
     window.open(link);
   }
 
-  const marcarConcluido = () => {
-    console.log("Marcado como concluído")
+  const abrirModal = (id) => {
+    setIdMaterial(id);
+    handleOpenModal();
+  }
+
+  const marcarConcluido = async () => {
+    console.log(props?.idEquipe)
+    console.log(idMaterial)
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api.post(`equipe/${props?.idEquipe}/material-estudo/${idMaterial}`).then((response) => {
+      console.log("material marcado como concluído")
+    }).catch((error) => {
+      console.log(error.response.data);
+    });
+    await setTimeout(() => {
+      handleCloseModal();
+    }, 100);
   }
 
   const IconeMaterial = (props) => {
@@ -115,7 +151,7 @@ function PainelMateriaisAquecimento(props) {
         }}
         subheader={<li />}
       >
-        {materiais.map((material, index) => (
+        {mudou ? materiais.map((material, index) => (
           <li
             key={index}
             className="pe-3"
@@ -128,14 +164,15 @@ function PainelMateriaisAquecimento(props) {
                       <IconeMaterial tipo={material.tipoMaterialEstudo} />
                     </div>
                     <div className="ms-3">
-                      <h6 className="mt-2">{material.nome}</h6>
+                      <h6 className="mt-2">{material.nomeMaterial}</h6>
                       <div className="d-flex justify-content-start">
                         <FormControlLabel
                           control={
                             <Checkbox
                               className="btn-check btn-outline-warning"
-                              defaultChecked={false}
-                              onChange={() => marcarConcluido()}
+                              defaultChecked={material.isConcluido}
+                              disabled={material.isConcluido}
+                              onChange={() => abrirModal(material.id)}
                             />
                           }
                           label="concluído"
@@ -152,8 +189,40 @@ function PainelMateriaisAquecimento(props) {
               </ListItem>
             </ul>
           </li>
-        ))}
+        )) : null}
       </List>
+      <Modal
+        open={openModal}
+        onClose={() => handleCloseModal()}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals} style={{ width: 600 }}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px" }}
+          >
+            Ao marcar como concluído não será possível desmarcar, deseja concluir o material ?
+          </Typography>
+
+          <div className="botoes-cadastro mt-2">
+            <Botao
+              titulo="concluir"
+              id="btn-concluir-material-estudo"
+              classes="btn btn-warning botao-menor-personalizado"
+              onClick={() => marcarConcluido()}
+            />
+
+            <Botao
+              titulo="cancelar"
+              classes="btn btn-secondary botao-menor-personalizado"
+              onClick={() => handleCloseModal()}
+            />
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }
