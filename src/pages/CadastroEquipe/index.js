@@ -84,7 +84,7 @@ function CadastroEquipe() {
       ]);
     });
 
-    api.get(`/competicao/${idCompeticao}`).then((response) => {
+    api.get(`/competicao/dados-gerais/${idCompeticao}`).then((response) => {
       const { data } = response;
       setCompeticao(data);
     });
@@ -124,7 +124,7 @@ function CadastroEquipe() {
 
     let dadosEquipe = {
       nomeEquipe,
-      idCompeticao: competicao.id,
+      idCompeticao: idCompeticao,
       usuarios: membrosFormatados,
     };
 
@@ -304,18 +304,18 @@ function CadastroEquipe() {
             <ul id="lista-membros">
               {mudou
                 ? membros.map((membro, index) => {
-                    return (
-                      <li key={index}>
-                        <CardMembro
-                          nome={membro.nomeMembro}
-                          email={membro.emailMembro}
-                          isLider={membro.isLider}
-                          sequencial={index + 1}
-                          removerMembro={removerMembro}
-                        />
-                      </li>
-                    );
-                  })
+                  return (
+                    <li key={index}>
+                      <CardMembro
+                        nome={membro.nomeMembro}
+                        email={membro.emailMembro}
+                        isLider={membro.isLider}
+                        sequencial={index + 1}
+                        removerMembro={removerMembro}
+                      />
+                    </li>
+                  );
+                })
                 : null}
             </ul>
           </div>
