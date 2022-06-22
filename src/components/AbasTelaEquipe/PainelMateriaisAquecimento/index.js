@@ -3,19 +3,15 @@ import {
   Box,
   List,
   ListItem,
-  ListItemText,
-  IconButton,
   Modal,
   Typography,
-  Tabs,
-  Tab,
   Checkbox,
   FormControlLabel
 } from "@mui/material";
 
 import api from "../../../services/api";
 import StoreContext from "../../../store/context";
-import { styleModals, TabPanel, valueProps } from "../../../utils/constantes";
+import { styleModals } from "../../../utils/constantes";
 import Botao from "../../Botao";
 import { MSG000 } from "../../../utils/mensagens";
 
