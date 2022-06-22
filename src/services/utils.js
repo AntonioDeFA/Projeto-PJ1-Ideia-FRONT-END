@@ -17,21 +17,24 @@ export function handleDatas(
     if (naoIniciada) {
       return `Inicia em ${adicionarZero(
         etapaIncricao.dataInicio[2]
-      )}/${adicionarZero(etapaIncricao.dataInicio[1])}/${
-        etapaIncricao.dataInicio[0]
-      }`;
+      )}/${adicionarZero(etapaIncricao.dataInicio[1])}/${etapaIncricao.dataInicio[0]
+        }`;
     } else if (
       dataInicio &&
       dataInicio.length > 0 &&
       dataTermino &&
       dataTermino.length > 0
     ) {
-      return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${
-        dataInicio[0]
-      } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${
-        dataTermino[0]
-      }`;
+      return `${adicionarZero(dataInicio[2])}/${adicionarZero(dataInicio[1])}/${dataInicio[0]
+        } - ${adicionarZero(dataTermino[2])}/${adicionarZero(dataTermino[1])}/${dataTermino[0]
+        }`;
     }
+  }
+}
+
+export function handleDataCompeticaoEncerrada(data) {
+  if (data && data.length > 0) {
+    return `Data término ${adicionarZero(data[2])}/${adicionarZero(data[1])}/${data[0]}`;
   }
 }
 
