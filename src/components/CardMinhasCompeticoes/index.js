@@ -10,6 +10,7 @@ import { Box, Modal, Typography } from "@mui/material";
 import {
   competicaoNaoIniciada,
   handleDatas,
+  handleDataCompeticaoEncerrada,
   obterDatas,
 } from "../../services/utils";
 
@@ -149,13 +150,16 @@ function CardMinhasCompeticoes(props) {
             }
           >
             <h6 className="card-subtitle">
-              {handleDatas(
-                props.card?.etapaVigente?.dataInicio,
-                props.card?.etapaVigente?.dataTermino,
-                props.card.isElaboracao,
-                competicaoNaoIniciada(props.card),
-                obterDatas(props.card.etapas, MSG032)
-              )}
+              {props.card?.etapaVigente?.tipoEtapa !== "ENCERRADA" ?
+                handleDatas(
+                  props.card?.etapaVigente?.dataInicio,
+                  props.card?.etapaVigente?.dataTermino,
+                  props.card.isElaboracao,
+                  competicaoNaoIniciada(props.card),
+                  obterDatas(props.card.etapas, MSG032)
+                ) :
+                handleDataCompeticaoEncerrada(props.card?.etapaVigente?.dataInicio)
+              }
             </h6>
           </div>
         </div>
