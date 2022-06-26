@@ -99,7 +99,7 @@ function ConvitesConsultor() {
                           </div>
                           <div className="botoes-aceitar-recusar-convite">
                             <div
-                              className="btn-aceitar-convite elementos-centralizados"
+                              className="btn-aceitar-convite elementos-centralizados cursor-pointer"
                               id={"btn-aceitar-convite-consultor" + index}
                               onClick={() => {
                                 responderConvite(convite, true);
@@ -108,7 +108,7 @@ function ConvitesConsultor() {
                               <i className="icone-convite fa-solid fa-check"></i>
                             </div>
                             <div
-                              className="btn-recusar-convite elementos-centralizados"
+                              className="btn-recusar-convite elementos-centralizados cursor-pointer"
                               id={"btn-recusar-convite-consultor" + index}
                               onClick={() => {
                                 responderConvite(convite, false);
