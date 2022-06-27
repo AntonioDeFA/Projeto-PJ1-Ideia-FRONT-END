@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 
 import Botao from "../../Botao/index";
 import LeanCanvas from "../../LeanCanvas/index";
@@ -7,9 +7,28 @@ import "./styles.css";
 
 function PainelLeanCanvas(props) {
 
+  const [leanCanvas, setLeanCanvas] = useState({
+    id: 0,
+    problema: "",
+    solucao: "",
+    metricasChave: "",
+    propostaValor: "",
+    vantagemCompetitiva: "",
+    canais: "",
+    segmentosDeClientes: "",
+    estruturaDeCusto: "",
+    fontesDeReceita: "",
+    etapaSolucaoCanvas: null
+  });
+
+  const handleLeanCanvas = (leanCanvas) => {
+    console.log("EXECUTANDO HANDLE LEAN CANVAS")
+    console.log(leanCanvas)
+    setLeanCanvas(leanCanvas);
+  }
 
   const salvar = () => {
-    console.log("salvar");
+    console.log(leanCanvas);
   }
 
   const enviarParaConsultoria = () => {
@@ -37,7 +56,7 @@ function PainelLeanCanvas(props) {
         />
       </div>
       <div className="mt-4">
-        <LeanCanvas />
+        <LeanCanvas handleLeanCanvas={handleLeanCanvas} />
       </div>
     </div>
   );
