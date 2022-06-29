@@ -1,49 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { List } from "@mui/material";
+
+import api from "../../../services/api";
+import StoreContext from "../../../store/context";
+import { formatarDataEHora } from "../../../services/utils";
 
 import "./styles.css";
 
 function VersoesLeanCanvas(props) {
   const [versoes, setVersoes] = useState([]);
 
-  useEffect(() => {
-    // api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    // api.get(`/${props.idEquipe}/lean-canvas/aprovados-consultoria`).then((response) => {
-    //   setResultados(response.data);
-    // });
+  const { token } = useContext(StoreContext);
 
-    setVersoes([
-      {
-        idLeanCanvas: 1,
-        dataHoraAprovacao: "10/10/1010 - 10:10",
-      },
-      {
-        idLeanCanvas: 2,
-        dataHoraAprovacao: "20/20/2020 - 20:20",
-      },
-      {
-        idLeanCanvas: 3,
-        dataHoraAprovacao: "30/30/3030 - 30:30",
-      },
-      {
-        idLeanCanvas: 4,
-        dataHoraAprovacao: "40/40/4040 - 40:40",
-      },
-      {
-        idLeanCanvas: 5,
-        dataHoraAprovacao: "50/50/5050 - 50:50",
-      },
-      {
-        idLeanCanvas: 6,
-        dataHoraAprovacao: "60/60/6060 - 60:60",
-      },
-      {
-        idLeanCanvas: 7,
-        dataHoraAprovacao: "70/70/7070 - 70:70",
-      },
-    ]);
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/${props.idEquipe}/lean-canvas/aprovados-consultoria`)
+      .then((response) => {
+        setVersoes(response.data);
+      });
   }, [props.idEquipe]);
 
   return (
@@ -71,7 +48,9 @@ function VersoesLeanCanvas(props) {
                   style={{ color: "#fc7a00", fontSize: "20pt" }}
                 ></i>
 
-                <h6 style={{ margin: 0 }}>Data: {versao.dataHoraAprovacao}</h6>
+                <h6 style={{ margin: 0 }}>
+                  Data: {formatarDataEHora(versao.dataHoraAprovacao)}
+                </h6>
                 <Link to={`/`}>
                   <i
                     className="fa-solid fa-arrow-right-to-bracket hover-azul"
