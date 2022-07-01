@@ -51,7 +51,9 @@ function VersoesLeanCanvas(props) {
                 <h6 style={{ margin: 0 }}>
                   Data: {formatarDataEHora(versao.dataHoraAprovacao)}
                 </h6>
-                <Link to={`/`}>
+                <Link
+                  to={`/equipe/${props.idEquipe}/${props.papelUsuario}/feedbacks-lean-canvas/${versao.idLeanCanvas}`}
+                >
                   <i
                     className="fa-solid fa-arrow-right-to-bracket hover-azul"
                     style={{ fontSize: "20pt" }}

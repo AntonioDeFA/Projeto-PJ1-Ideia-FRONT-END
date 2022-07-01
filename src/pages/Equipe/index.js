@@ -55,7 +55,7 @@ function Equipe() {
   }, [idEquipe, token]);
 
   return (
-    <div id="dados-competicao">
+    <div id="pagina-equipe">
       <DefaultHeader isLoginViaToken={papelUsuario === "USUARIO_TOKEN"} />
 
       <div className="ps-3 pe-4 pt-3 d-flex justify-content-between">

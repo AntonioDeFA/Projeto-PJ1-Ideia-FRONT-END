@@ -36,7 +36,7 @@ function VersoesArtefatos() {
   }, [token]);
 
   return (
-    <div id="dados-competicao">
+    <div id="pagina-versoes-artefatos">
       <DefaultHeader isLoginViaToken={papelUsuario === "USUARIO_TOKEN"} />
 
       <div className="ps-3 pe-4 pt-3 d-flex justify-content-between">
@@ -81,7 +81,10 @@ function VersoesArtefatos() {
             </Box>
 
             <TabPanel value={value} index={0} className="tab-customizada">
-              <VersoesLeanCanvas idEquipe={idEquipe} />
+              <VersoesLeanCanvas
+                idEquipe={idEquipe}
+                papelUsuario={papelUsuario}
+              />
             </TabPanel>
 
             <TabPanel value={value} index={1} className="tab-customizada">

@@ -1,0 +1,35 @@
+div .aside-feedbacks-lean-canvas {
+  background-color: var(--color-background-aside);
+  height: 100%;
+  width: 22rem;
+  padding: 15px;
+  display: block;
+  float: left;
+}
+
+div #listagens-feedbacks-filtragem {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+div .feedbacks {
+  margin-top: 10px;
+}
+
+div .margem-personalizada {
+  margin: 7px auto auto 8px;
+}
+
+div #radio-buttons-competicoes {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.link-aside {
+  text-decoration: none;
+  color: var(--color-titles);
+}
+
+.largura-total {
+  width: 93%;
+}

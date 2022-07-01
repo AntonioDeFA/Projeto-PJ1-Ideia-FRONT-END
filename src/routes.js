@@ -16,6 +16,7 @@ import VersoesArtefatos from "./pages/VersoesArtefatos";
 import ConvitesAvaliador from "./pages/ConvitesAvaliador";
 import ConvitesConsultor from "./pages/ConvitesConsultor";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
+import FeedbacksLeanCanvas from "./pages/FeedbacksLeanCanvas/index";
 
 function ProjetoRoutes() {
   return (
@@ -95,6 +96,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <VersoesArtefatos />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/equipe/:idEquipe/:papelUsuario/feedbacks-lean-canvas/:idLeanCanvas"
+            element={
+              <RoutesPrivate>
+                <FeedbacksLeanCanvas />
               </RoutesPrivate>
             }
           />
