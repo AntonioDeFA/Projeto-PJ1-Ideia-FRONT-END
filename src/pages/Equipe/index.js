@@ -38,7 +38,7 @@ function Equipe() {
     }
   };
 
-  useEffect(() => {
+  const consultarDadosEquipe = () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
       .get(`/equipe/dados/${idEquipe}`)
@@ -48,6 +48,10 @@ function Equipe() {
       .catch((error) => {
         console.log(error.response.data);
       });
+  };
+
+  useEffect(() => {
+    consultarDadosEquipe();
   }, [idEquipe, token]);
 
   return (
@@ -113,7 +117,10 @@ function Equipe() {
             </TabPanel>
 
             <TabPanel value={value} index={1} className="tab-customizada">
-              <PainelDadosEquipe id={equipe?.id} />
+              <PainelDadosEquipe
+                id={equipe?.id}
+                consultarDadosEquipe={consultarDadosEquipe}
+              />
             </TabPanel>
 
             {equipe?.etapaVigenteStr === MSG033 ? (

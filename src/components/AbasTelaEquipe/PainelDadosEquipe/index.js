@@ -69,6 +69,7 @@ function PainelDadosEquipe(props) {
           .then((response) => {
             handleAlerta(MSG042);
             setFlagAlteracao(!flagAlteracao);
+            props.consultarDadosEquipe();
           })
           .catch((error) => {
             console.log(error.response.data);
