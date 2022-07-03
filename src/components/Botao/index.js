@@ -6,10 +6,10 @@ import "./styles.css";
 function Botao(props) {
   return (
     <button
-      className={props.classes}
-      onClick={props.onClick}
       id={props.id}
+      onClick={props.onClick}
       disabled={props.disabled}
+      className={props.classes}
     >
       {props.children} {props.titulo}
     </button>
