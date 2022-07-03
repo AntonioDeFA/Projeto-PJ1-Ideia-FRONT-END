@@ -153,29 +153,35 @@ function DefaultHeader(props) {
                   className="list-group p-0 lista-dropdown"
                   aria-labelledby="navbarDropdownMenu"
                 >
-                  <button
-                    type="button"
-                    className="btn btn-link nav-link text-dark pt-0"
-                  >
-                    <li className="list-group-item m-0 p-0 mt-3 border border-0">
-                      <Link
-                        to={"/cadastro-usuario"}
-                        style={{ textDecoration: "none" }}
-                      >
-                        {props.isLoginViaToken ? null : (
+                  {props.isLoginViaToken ? null : (
+                    <button
+                      type="button"
+                      className="btn btn-link nav-link text-dark pt-0"
+                    >
+                      <li className="list-group-item m-0 p-0 mt-3 border border-0">
+                        <Link
+                          to={"/cadastro-usuario"}
+                          style={{ textDecoration: "none" }}
+                        >
                           <h6 style={{ color: "black" }}>Meus dados</h6>
-                        )}
-                      </Link>
-                    </li>
-                  </button>
+                        </Link>
+                      </li>
+                    </button>
+                  )}
 
                   <button
                     type="button"
                     onClick={fazerLogoff}
-                    className="btn btn-link nav-link text-dark pt-0"
+                    className={
+                      props.isLoginViaToken
+                        ? "btn btn-link nav-link text-dark pt-0 mt-2"
+                        : "btn btn-link nav-link text-dark pt-0"
+                    }
                   >
                     <li className="list-group-item m-0 p-0 border border-0">
-                      <h6>Sair</h6>
+                      <h6 className={props.isLoginViaToken ? "sem-margem" : ""}>
+                        Sair
+                      </h6>
                     </li>
                   </button>
                 </ul>
