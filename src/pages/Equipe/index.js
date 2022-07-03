@@ -112,13 +112,13 @@ function Equipe() {
             <TabPanel value={value} index={0} className="tab-customizada">
               <DadosGeraisCompeticaoConsulta
                 id={equipe?.idCompeticaoCadastrada}
-                isLider={papelUsuario === "USUARIO_LIDER"}
               />
             </TabPanel>
 
             <TabPanel value={value} index={1} className="tab-customizada">
               <PainelDadosEquipe
                 id={equipe?.id}
+                papelUsuario={papelUsuario}
                 consultarDadosEquipe={consultarDadosEquipe}
               />
             </TabPanel>

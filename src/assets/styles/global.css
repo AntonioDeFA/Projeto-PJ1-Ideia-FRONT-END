@@ -129,3 +129,11 @@ div .listagem-cards-competicoes ul li {
 .borda-laranja {
   border: 1.5px solid var(--color-pitch) !important;
 }
+
+i.icone-cinza {
+  color: var(--color-cinza) !important;
+}
+
+.sem-margem {
+  margin: 0;
+}

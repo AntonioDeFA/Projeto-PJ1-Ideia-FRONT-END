@@ -132,26 +132,32 @@ function PainelDadosEquipe(props) {
         <div className="div-input-dado-equipe d-flex justify-content-between">
           <div id="div-input-dado-equipe-nome">
             <TextField
+              id="filled-search-nome-equipe-edit"
               type="text"
               size="small"
               value={nome}
               color="warning"
-              variant="filled"
               error={errorNome}
               label="Nome da equipe *"
+              variant="filled"
               className="input-dado-equipe"
-              id="filled-search-nome-equipe-edit"
               helperText={mensagemNome}
               onChange={(e) => {
                 setNome(e.target.value);
               }}
             />
           </div>
-          <div>
+          <div
+            title={
+              props.papelUsuario === "USUARIO_TOKEN"
+                ? "Somente o líder pode alterar o nome da equipe."
+                : ""
+            }
+          >
             <Botao
               titulo="salvar"
               onClick={salvarNome}
-              disabled={props.isLider}
+              disabled={props.papelUsuario === "USUARIO_TOKEN"}
               id="id-btn-salvar-nome-equipe"
               classes="btn btn-warning botao-menor-personalizado class-btn-dado-equipe"
             />
@@ -249,13 +255,18 @@ function PainelDadosEquipe(props) {
                         >
                           LIDER
                         </p>
-                      ) : (
+                      ) : props.papelUsuario === "USUARIO_LIDER" ? (
                         <i
+                          title="Remover este membro"
+                          className="fa-solid fa-trash-can icone-tabela cursor-pointer"
                           onClick={() => {
                             removerUsuario(row.email);
                           }}
-                          className="fa-solid fa-trash-can icone-tabela cursor-pointer"
-                          title="Remover este membro"
+                        ></i>
+                      ) : (
+                        <i
+                          title="Somente o líder pode remover membros de equipe"
+                          className="fa-solid fa-trash-can icone-cinza"
                         ></i>
                       )}
                     </StyledTableCell>
