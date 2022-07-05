@@ -31,6 +31,7 @@ function PainelLeanCanvas(props) {
   });
   const [mensagemErro, setMensagemErro] = useState(MSG000);
   const { token } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const handleLeanCanvas = (leanCanvas) => {
     setLeanCanvas(leanCanvas);
