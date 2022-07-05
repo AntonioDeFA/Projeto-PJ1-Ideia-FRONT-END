@@ -126,7 +126,7 @@ function Equipe() {
             {equipe?.etapaVigenteStr === MSG033 ? (
               <TabPanel value={value} index={2} className="tab-customizada">
                 <PainelMateriaisAquecimento
-                  id={equipe?.idCompeticaoCadastrada}
+                  idEquipe={equipe?.id}
                 />
               </TabPanel>
             ) : null}
