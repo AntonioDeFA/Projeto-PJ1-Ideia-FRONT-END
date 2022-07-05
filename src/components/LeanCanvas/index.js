@@ -19,7 +19,8 @@ import "./styles.css";
 
 function LeanCanvas(props) {
 
-  const [id, setId] = useState(0);
+  const { leanCanvas } = props;
+
   const [problema, setProblema] = useState(MSG000);
   const [solucao, setSolucao] = useState(MSG000);
   const [metricas, setMetricas] = useState(MSG000);
@@ -29,21 +30,6 @@ function LeanCanvas(props) {
   const [segmentos, setSegmentos] = useState(MSG000);
   const [estrutura, setEstrutura] = useState(MSG000);
   const [fonte, setFonte] = useState(MSG000);
-  const [etapaSolucaoCanvas, setetapaSolucaoCanvas] = useState(null);
-
-  const [leanCanvas, setLeanCanvas] = useState({
-    id: 0,
-    problema: "",
-    solucao: "",
-    metricasChave: "",
-    propostaValor: "",
-    vantagemCompetitiva: "",
-    canais: "",
-    segmentosDeClientes: "",
-    estruturaDeCusto: "",
-    fontesDeReceita: "",
-    etapaSolucaoCanvas: null
-  });
 
   const [ajudaProblema] = useState(MSG044);
   const [ajudaSolucao] = useState(MSG045);
@@ -55,58 +41,64 @@ function LeanCanvas(props) {
   const [ajudaEstrutura] = useState(MSG051);
   const [ajudaFonte] = useState(MSG052);
 
-  const handleProblema = () => {
-    console.log("logou leanCanvas")
-    console.log(leanCanvas)
-    console.log("logou campo problema")
-    console.log(problema)
-    leanCanvas.problema = problema;
-    props.handleLeanCanvas(leanCanvas);
-    console.log("logou leanCanvas 2")
-    console.log(leanCanvas)
-    console.log("logou campo problema 2")
-    console.log(problema)
-  }
-
-  const handleSolucao = () => {
-    leanCanvas.solucao = solucao;
+  const handleProblema = (newValue) => {
+    leanCanvas.problema = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleMetricas = () => {
-    leanCanvas.metricasChave = metricas;
+  const handleSolucao = (newValue) => {
+    leanCanvas.solucao = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleProposta = () => {
-    leanCanvas.propostaValor = proposta;
+  const handleMetricas = (newValue) => {
+    leanCanvas.metricasChave = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleVantagem = () => {
-    leanCanvas.vantagemCompetitiva = vantagem;
+  const handleProposta = (newValue) => {
+    leanCanvas.propostaValor = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleCanais = () => {
-    leanCanvas.canais = canais;
+  const handleVantagem = (newValue) => {
+    leanCanvas.vantagemCompetitiva = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleSegmentos = () => {
-    leanCanvas.segmentosDeClientes = segmentos;
+  const handleCanais = (newValue) => {
+    leanCanvas.canais = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleEstrutura = () => {
-    leanCanvas.estruturaDeCusto = estrutura;
+  const handleSegmentos = (newValue) => {
+    leanCanvas.segmentosDeClientes = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
 
-  const handleFonte = () => {
-    leanCanvas.fontesDeReceita = fonte;
+  const handleEstrutura = (newValue) => {
+    leanCanvas.estruturaDeCusto = newValue;
     props.handleLeanCanvas(leanCanvas);
   }
+
+  const handleFonte = (newValue) => {
+    leanCanvas.fontesDeReceita = newValue;
+    props.handleLeanCanvas(leanCanvas);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setProblema(leanCanvas.problema);
+      setSolucao(leanCanvas.solucao);
+      setMetricas(leanCanvas.metricasChave);
+      setProposta(leanCanvas.propostaValor);
+      setVantagem(leanCanvas.vantagemCompetitiva);
+      setCanais(leanCanvas.canais);
+      setSegmentos(leanCanvas.segmentoDeClientes);
+      setEstrutura(leanCanvas.estruturaDeCusto);
+      setFonte(leanCanvas.fontesDeReceita);
+    }, 400);
+  }, []);
 
   return (
     <div id="lean-canvas">
@@ -126,11 +118,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={problema}
-                // value={problema}
+                value={problema}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleProblema();
+                onChange={(event) => {
+                  setProblema(event.target.value)
+                  handleProblema(event.target.value);
                 }}
                 style={{
                   height: 350,
@@ -155,10 +147,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={solucao}
+                value={solucao}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleSolucao();
+                onChange={(event) => {
+                  setSolucao(event.target.value);
+                  handleSolucao(event.target.value);
                 }}
                 style={{
                   height: 150,
@@ -182,10 +175,11 @@ function LeanCanvas(props) {
                   aria-label="minimum height"
                   minRows={2}
                   placeholder="digite aqui"
-                  defaultValue={metricas}
+                  value={metricas}
                   className="w-100 p-1"
-                  onChange={() => {
-                    handleMetricas();
+                  onChange={(event) => {
+                    setMetricas(event.target.value);
+                    handleMetricas(event.target.value);
                   }}
                   style={{
                     height: 150,
@@ -211,10 +205,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={proposta}
+                value={proposta}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleProposta();
+                onChange={(event) => {
+                  setProposta(event.target.value);
+                  handleProposta(event.target.value);
                 }}
                 style={{
                   height: 350,
@@ -239,10 +234,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={vantagem}
+                value={vantagem}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleVantagem();
+                onChange={(event) => {
+                  setVantagem(event.target.value);
+                  handleVantagem(event.target.value);
                 }}
                 style={{
                   height: 150,
@@ -266,10 +262,11 @@ function LeanCanvas(props) {
                   aria-label="minimum height"
                   minRows={2}
                   placeholder="digite aqui"
-                  defaultValue={canais}
+                  value={canais}
                   className="w-100 p-1"
-                  onChange={() => {
-                    handleCanais();
+                  onChange={(event) => {
+                    setCanais(event.target.value);
+                    handleCanais(event.target.value);
                   }}
                   style={{
                     height: 150,
@@ -295,10 +292,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={segmentos}
+                value={segmentos}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleSegmentos();
+                onChange={(event) => {
+                  setSegmentos(event.target.value);
+                  handleSegmentos(event.target.value);
                 }}
                 style={{
                   height: 350,
@@ -325,10 +323,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={estrutura}
+                value={estrutura}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleEstrutura();
+                onChange={(event) => {
+                  setEstrutura(event.target.value);
+                  handleEstrutura(event.target.value);
                 }}
                 style={{
                   height: 150,
@@ -353,10 +352,11 @@ function LeanCanvas(props) {
                 aria-label="minimum height"
                 minRows={2}
                 placeholder="digite aqui"
-                defaultValue={fonte}
+                value={fonte}
                 className="w-100 p-1"
-                onChange={() => {
-                  handleFonte();
+                onChange={(event) => {
+                  setFonte(event.target.value);
+                  handleFonte(event.target.value);
                 }}
                 style={{
                   height: 150,
