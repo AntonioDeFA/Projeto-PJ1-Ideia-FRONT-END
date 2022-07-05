@@ -1,4 +1,5 @@
 import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   MSG000,
@@ -109,12 +110,19 @@ function PainelLeanCanvas(props) {
 
   return (
     <div id="painel-lean-canvas">
-      <h5 className="mb-4">Olá competidor, aqui você deverá editar seu Lean Canvas para que ele possa ser avaliado</h5>
+      <h5 className="mb-4">
+        Olá competidor, aqui você deverá editar seu Lean Canvas para que ele
+        possa ser avaliado
+      </h5>
       <div className="d-flex justify-content-end">
         <Botao
           titulo="versões"
           classes="btn btn-warning botao-menor-personalizado me-3"
-          onClick={null}
+          onClick={() => {
+            navigate(
+              `/equipe/${props?.idEquipe}/${props?.papelUsuario}/versoes-artefatos/LEAN_CANVAS`
+            );
+          }}
         />
         <Botao
           titulo="salvar"

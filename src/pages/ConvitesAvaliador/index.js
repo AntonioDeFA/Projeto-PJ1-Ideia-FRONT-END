@@ -101,22 +101,22 @@ function ConvitesAvaliador() {
                           </div>
                           <div className="botoes-aceitar-recusar-convite">
                             <div
-                              className="btn-aceitar-convite elementos-centralizados"
+                              className="btn-aceitar-convite elementos-centralizados cursor-pointer"
                               id={"btn-aceitar-convite-avaliador" + index}
                               onClick={() => {
                                 responderConvite(convite, true);
                               }}
                             >
-                              <i className="icone-convite fa-solid cursor-pointer fa-check "></i>
+                              <i className="icone-convite fa-solid fa-check "></i>
                             </div>
                             <div
-                              className="btn-recusar-convite elementos-centralizados"
+                              className="btn-recusar-convite elementos-centralizados cursor-pointer"
                               id={"btn-recusar-convite-avaliador" + index}
                               onClick={() => {
                                 responderConvite(convite, false);
                               }}
                             >
-                              <i className="icone-convite fa-solid cursor-pointer fa-x"></i>
+                              <i className="icone-convite fa-solid fa-x"></i>
                             </div>
                           </div>
                         </div>

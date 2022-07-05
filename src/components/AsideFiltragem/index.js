@@ -1,18 +1,19 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import FormGroup from "@mui/material/FormGroup";
+import TextField from "@mui/material/TextField";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
+import Botao from "../Botao";
 
 import "./styles.css";
-import Botao from "../Botao";
-import { useNavigate } from "react-router-dom";
 
 const mesesDoAno = [
   {

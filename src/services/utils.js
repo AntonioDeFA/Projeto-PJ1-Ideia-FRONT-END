@@ -160,3 +160,9 @@ export const formatarData = (data) => {
 
   return dataFormatada;
 };
+
+export const formatarDataEHora = (dataHora) => {
+  return `${adicionarZero(dataHora[2])}/${adicionarZero(dataHora[1])}/${
+    dataHora[0]
+  } ${adicionarZero(dataHora[3])}:${adicionarZero(dataHora[4])}`;
+};
