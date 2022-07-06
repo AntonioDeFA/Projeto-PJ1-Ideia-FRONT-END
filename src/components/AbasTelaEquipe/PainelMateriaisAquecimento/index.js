@@ -167,7 +167,7 @@ function PainelMateriaisAquecimento(props) {
                             <Checkbox
                               className="btn-check btn-outline-warning"
                               defaultChecked={material.isConcluido}
-                              disabled={material.isConcluido}
+                              disabled={material.isConcluido || props.papelUsuario !== "USUARIO_LIDER"}
                               onChange={() => abrirModal(material.id)}
                             />
                           }

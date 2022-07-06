@@ -87,17 +87,17 @@ function LeanCanvas(props) {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setProblema(leanCanvas.problema);
-      setSolucao(leanCanvas.solucao);
-      setMetricas(leanCanvas.metricasChave);
-      setProposta(leanCanvas.propostaValor);
-      setVantagem(leanCanvas.vantagemCompetitiva);
-      setCanais(leanCanvas.canais);
-      setSegmentos(leanCanvas.segmentoDeClientes);
-      setEstrutura(leanCanvas.estruturaDeCusto);
-      setFonte(leanCanvas.fontesDeReceita);
-    }, 400);
+    console.log("leanCanvas")
+    console.log(leanCanvas)
+    setProblema(leanCanvas.problema);
+    setSolucao(leanCanvas.solucao);
+    setMetricas(leanCanvas.metricasChave);
+    setProposta(leanCanvas.propostaValor);
+    setVantagem(leanCanvas.vantagemCompetitiva);
+    setCanais(leanCanvas.canais);
+    setSegmentos(leanCanvas.segmentosDeClientes);
+    setEstrutura(leanCanvas.estruturaDeCusto);
+    setFonte(leanCanvas.fontesDeReceita);
   }, []);
 
   return (
