@@ -127,6 +127,7 @@ function Equipe() {
               <TabPanel value={value} index={2} className="tab-customizada">
                 <PainelMateriaisAquecimento
                   idEquipe={equipe?.id}
+                  papelUsuario={papelUsuario}
                 />
               </TabPanel>
             ) : null}
