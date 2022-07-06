@@ -29,7 +29,9 @@ function PainelLeanCanvas(props) {
     fontesDeReceita: "",
     etapaSolucaoCanvas: null
   });
+
   const [mensagemErro, setMensagemErro] = useState(MSG000);
+  const [mudou, setMudou] = useState(true);
   const { token } = useContext(StoreContext);
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ function PainelLeanCanvas(props) {
     setLeanCanvas(leanCanvas);
   }
 
-  const buscarLeanCanvas = () => {
+  const buscarLeanCanvas = async () => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
       .get(`/equipe/${props.idEquipe}/lean-canvas/elaboracao`)
@@ -49,11 +51,17 @@ function PainelLeanCanvas(props) {
       .catch((error) => {
         criarLeanCanvas()
       });
+    await setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 400);
+
   }
 
   const salvar = () => {
     console.log("Lean canvas do painel")
     console.log(leanCanvas)
+    console.log(props.idEquipe)
     if (leanCanvas.problema !== null &&
       leanCanvas.solucao !== null &&
       leanCanvas.metricasChave !== null &&
@@ -66,14 +74,27 @@ function PainelLeanCanvas(props) {
 
       api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
       api
-        .put(`/equipe/${props.idEquipe}/lean-canvas`, { leanCanvas })
+        .put(`/equipe/${props.idEquipe}/lean-canvas`,
+          {
+            id: leanCanvas.id,
+            problema: leanCanvas.problema,
+            solucao: leanCanvas.solucao,
+            metricasChave: leanCanvas.metricasChave,
+            propostaValor: leanCanvas.propostaValor,
+            vantagemCompetitiva: leanCanvas.vantagemCompetitiva,
+            canais: leanCanvas.canais,
+            segmentosDeClientes: leanCanvas.segmentosDeClientes,
+            estruturaDeCusto: leanCanvas.estruturaDeCusto,
+            fontesDeReceita: leanCanvas.fontesDeReceita
+          }
+        )
         .then((response) => {
           console.log("LeanCanvas atualizado")
           setMensagemErro(MSG000);
           buscarLeanCanvas();
         })
         .catch((error) => {
-          console.log(error.response.data)
+          console.log(error)
         });
     } else {
       setMensagemErro(MSG001);
@@ -93,7 +114,7 @@ function PainelLeanCanvas(props) {
       });
   }
 
-  const enviarParaConsultoria = () => {
+  const enviarParaConsultoria = async () => {
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
     api
       .post(`/equipe/${props.idEquipe}/lean-canvas/enviar-consultoria`)
@@ -101,8 +122,12 @@ function PainelLeanCanvas(props) {
         buscarLeanCanvas();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error.response.data.message);
+        setMensagemErro(error.response.data.message);
       });
+    await setTimeout(() => {
+      setMensagemErro(MSG000);
+    }, 30000);
   }
 
   useEffect(() => {
@@ -142,7 +167,7 @@ function PainelLeanCanvas(props) {
             <Mensagem mensagem={mensagemErro} tipoMensagem={"warning"} />
           ) : null}
         </div>
-        <LeanCanvas handleLeanCanvas={handleLeanCanvas} leanCanvas={leanCanvas} />
+        {mudou ? <LeanCanvas handleLeanCanvas={handleLeanCanvas} leanCanvas={leanCanvas} /> : null}
       </div>
     </div>
   );
