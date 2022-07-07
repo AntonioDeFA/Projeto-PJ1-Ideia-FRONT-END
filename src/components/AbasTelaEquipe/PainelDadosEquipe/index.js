@@ -242,10 +242,10 @@ function PainelDadosEquipe(props) {
                 {rows.map((row, index) => (
                   <StyledTableRow key={row.email}>
                     <StyledTableCell align="center">
-                      <p className="text-break">{row.nome}</p>
+                      <p className="text-break m-0">{row.nome}</p>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <p className="text-break">{row.email}</p>
+                      <p className="text-break m-0">{row.email}</p>
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {index === 0 ? (
