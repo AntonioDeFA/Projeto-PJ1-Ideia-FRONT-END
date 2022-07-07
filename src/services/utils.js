@@ -34,7 +34,7 @@ export function handleDatas(
 
 export function handleDataCompeticaoEncerrada(data) {
   if (data && data.length > 0) {
-    return `Data término ${adicionarZero(data[2])}/${adicionarZero(data[1])}/${data[0]}`;
+    return `Encerrada em ${adicionarZero(data[2])}/${adicionarZero(data[1])}/${data[0]}`;
   }
 }
 
@@ -162,7 +162,6 @@ export const formatarData = (data) => {
 };
 
 export const formatarDataEHora = (dataHora) => {
-  return `${adicionarZero(dataHora[2])}/${adicionarZero(dataHora[1])}/${
-    dataHora[0]
-  } ${adicionarZero(dataHora[3])}:${adicionarZero(dataHora[4])}`;
+  return `${adicionarZero(dataHora[2])}/${adicionarZero(dataHora[1])}/${dataHora[0]
+    } ${adicionarZero(dataHora[3])}:${adicionarZero(dataHora[4])}`;
 };
