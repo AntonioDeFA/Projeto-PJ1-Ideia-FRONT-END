@@ -72,7 +72,7 @@ function Equipe() {
         ) : null}
       </div>
       <div className="p-3 d-flex justify-content-center">
-        <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
+        <Box sx={{ width: "97.8%" }} className="ps-2 pe-3">
           <div className="mt-3">
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs

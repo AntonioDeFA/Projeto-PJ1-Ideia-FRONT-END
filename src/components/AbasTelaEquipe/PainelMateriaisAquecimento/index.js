@@ -6,7 +6,7 @@ import {
   Modal,
   Typography,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
 } from "@mui/material";
 
 import api from "../../../services/api";
@@ -15,11 +15,9 @@ import { styleModals } from "../../../utils/constantes";
 import Botao from "../../Botao";
 import { MSG000 } from "../../../utils/mensagens";
 
-
 import "./styles.css";
 
 function PainelMateriaisAquecimento(props) {
-
   const [materiais, setMateriais] = useState([]);
 
   const { token } = useContext(StoreContext);
@@ -35,7 +33,7 @@ function PainelMateriaisAquecimento(props) {
       setMudou(false);
       setMudou(true);
     }, 2000);
-    setOpenModal(false)
+    setOpenModal(false);
   };
 
   useEffect(() => {
@@ -48,9 +46,8 @@ function PainelMateriaisAquecimento(props) {
       setMateriais(response.data);
       console.log(response.data);
     });
-  }
+  };
   const baixarMaterial = (material, tipo) => {
-
     let descricaoType = "video/mp4;base64";
 
     if (tipo === "PDF") {
@@ -66,76 +63,76 @@ function PainelMateriaisAquecimento(props) {
     var file = new Blob([byteArray], { type: descricaoType });
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
-  }
+  };
 
   const abrirLink = (link) => {
     window.open(link);
-  }
+  };
 
   const abrirModal = (id) => {
     setIdMaterial(id);
     handleOpenModal();
-  }
+  };
 
   const marcarConcluido = async () => {
-    console.log(props?.idEquipe)
-    console.log(idMaterial)
+    console.log(props?.idEquipe);
+    console.log(idMaterial);
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
-    api.post(`equipe/${props?.idEquipe}/material-estudo/${idMaterial}`).then((response) => {
-      console.log("material marcado como concluído")
-    }).catch((error) => {
-      console.log(error.response.data);
-    });
+    api
+      .post(`equipe/${props?.idEquipe}/material-estudo/${idMaterial}`)
+      .then((response) => {
+        console.log("material marcado como concluído");
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
     await setTimeout(() => {
       handleCloseModal();
     }, 100);
-  }
+  };
 
   const IconeMaterial = (props) => {
-
     const { tipo } = props;
 
     if (tipo === "PDF") {
-      return (
-        <i className="fa fa-file-pdf-o fa-4x color-icone"></i>
-      );
+      return <i className="fa fa-file-pdf-o fa-4x color-icone"></i>;
     } else if (tipo === "VIDEO") {
-      return (
-        <i className="fa fa-file-video-o fa-4x color-icone"></i>
-      );
+      return <i className="fa fa-file-video-o fa-4x color-icone"></i>;
     } else {
-      return (
-        <i className="fa fa-globe fa-3x color-icone"></i>
-      );
+      return <i className="fa fa-globe fa-3x color-icone"></i>;
     }
-  }
+  };
 
   const IconeExecutavel = (props) => {
-
     const { tipo, material, link } = props;
 
     if (tipo === "LINK") {
       return (
         <div className=" pt-1 mt-4">
-          <i className="fa fa-external-link icone-download-e-link-material cursor-pointer"
-            onClick={() => abrirLink(link)}></i>
+          <i
+            className="fa fa-external-link icone-download-e-link-material cursor-pointer"
+            onClick={() => abrirLink(link)}
+          ></i>
         </div>
       );
     } else {
       return (
         <div className=" pt-1 mt-4">
-          <i className="fa-solid fa-download icone-download-e-link-material cursor-pointer"
-            onClick={() => baixarMaterial(material, tipo)}>
-          </i>
+          <i
+            className="fa-solid fa-download icone-download-e-link-material cursor-pointer"
+            onClick={() => baixarMaterial(material, tipo)}
+          ></i>
         </div>
       );
     }
-
-  }
+  };
 
   return (
     <div id="painel-materiais-aquecimento">
-      <h5 className="mb-5">Olá competidor, aqui estão os materiais de estudo da etapa de aquecimento</h5>
+      <h5 className="mb-5">
+        Olá competidor. Aqui estão os materiais de estudo da etapa de
+        aquecimento.
+      </h5>
       <List
         sx={{
           width: "100%",
@@ -147,45 +144,47 @@ function PainelMateriaisAquecimento(props) {
         }}
         subheader={<li />}
       >
-        {mudou ? materiais.map((material, index) => (
-          <li
-            key={index}
-            className="pe-3"
-          >
-            <ul onClick={null} className="borda-laranja rounded mb-3">
-              <ListItem key={material.id} >
-                <div className="d-flex justify-content-between w-100 pe-3 ps-3">
-                  <div className="d-flex justify-content-center">
-                    <div className="d-flex justify-content-center align-self-center me-2">
-                      <IconeMaterial tipo={material.tipoMaterialEstudo} />
-                    </div>
-                    <div className="ms-3">
-                      <h6 className="mt-2">{material.nomeMaterial}</h6>
-                      <div className="d-flex justify-content-start">
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              className="btn-check btn-outline-warning"
-                              defaultChecked={material.isConcluido}
-                              disabled={material.isConcluido || props.papelUsuario !== "USUARIO_LIDER"}
-                              onChange={() => abrirModal(material.id)}
+        {mudou
+          ? materiais.map((material, index) => (
+              <li key={index} className="pe-3">
+                <ul onClick={null} className="borda-laranja rounded mb-3">
+                  <ListItem key={material.id}>
+                    <div className="d-flex justify-content-between w-100 pe-3 ps-3">
+                      <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center align-self-center me-2">
+                          <IconeMaterial tipo={material.tipoMaterialEstudo} />
+                        </div>
+                        <div className="ms-3">
+                          <h6 className="mt-2">{material.nomeMaterial}</h6>
+                          <div className="d-flex justify-content-start">
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  className="btn-check btn-outline-warning"
+                                  defaultChecked={material.isConcluido}
+                                  disabled={
+                                    material.isConcluido ||
+                                    props.papelUsuario !== "USUARIO_LIDER"
+                                  }
+                                  onChange={() => abrirModal(material.id)}
+                                />
+                              }
+                              label="concluído"
                             />
-                          }
-                          label="concluído"
-                        />
+                          </div>
+                        </div>
                       </div>
+                      <IconeExecutavel
+                        tipo={material.tipoMaterialEstudo}
+                        material={material.arquivoEstudo}
+                        link={material.link}
+                      />
                     </div>
-                  </div>
-                  <IconeExecutavel
-                    tipo={material.tipoMaterialEstudo}
-                    material={material.arquivoEstudo}
-                    link={material.link}
-                  />
-                </div>
-              </ListItem>
-            </ul>
-          </li>
-        )) : null}
+                  </ListItem>
+                </ul>
+              </li>
+            ))
+          : null}
       </List>
       <Modal
         open={openModal}
@@ -200,7 +199,8 @@ function PainelMateriaisAquecimento(props) {
             component="h2"
             style={{ marginBottom: "20px" }}
           >
-            Ao marcar como concluído não será possível desmarcar, deseja concluir o material ?
+            Ao marcar como concluído não será possível desmarcar, deseja
+            concluir o material ?
           </Typography>
 
           <div className="botoes-cadastro mt-2">

@@ -132,46 +132,50 @@ function DadosCompeticao() {
         >
           {mudou
             ? equipes.map((equipe, index) => (
-
-              <li key={index} className="border border-dark rounded m-3 p-2">
-                <ul>
-                  <ListItem
-                    secondaryAction={
-                      <div>
-                        <IconButton
-                          edge="end"
-                          aria-label="adicionar"
-                          className="me-1"
-                          id="botao-atualizar-questao"
-                          onClick={() =>
-                            adicionarIdEquipeEAbrirModal(equipe.id)
-                          }
-                          disabled={equipe.consultor == null ? false : true}
-                        >
-                          <i id="icone-adicionar-consultor-a-equipe"
-                            className="fa-solid fa-user-plus hover-azul p-0 text-warning"
-                            hidden={equipe.consultor == null ? false : true}
+                <li key={index} className="borda-laranja rounded m-3 p-2">
+                  <ul>
+                    <ListItem
+                      secondaryAction={
+                        <div>
+                          <IconButton
+                            edge="end"
+                            aria-label="adicionar"
+                            className="me-1"
+                            id="botao-atualizar-questao"
+                            onClick={() =>
+                              adicionarIdEquipeEAbrirModal(equipe.id)
+                            }
+                            disabled={equipe.consultor == null ? false : true}
                           >
-                          </i>
-                        </IconButton>
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => deletarEquipe(equipe.id)}
-                        >
-                          <i className="fa-solid fa-trash-can p-0"></i>
-                        </IconButton>
-                      </div>
-                    }
-                    key={equipe.id}
-                  >
-                    <ListItemText primary={equipe.nome} />
-                    <ListItemText
-                      secondary={equipe.consultor != null ? equipe.consultor : "Sem consultor"} />
-                  </ListItem>
-                </ul>
-              </li>
-            ))
+                            <i
+                              id="icone-adicionar-consultor-a-equipe"
+                              className="fa-solid fa-user-plus hover-azul p-0 text-warning"
+                              hidden={equipe.consultor == null ? false : true}
+                            ></i>
+                          </IconButton>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => deletarEquipe(equipe.id)}
+                          >
+                            <i className="fa-solid fa-trash-can p-0"></i>
+                          </IconButton>
+                        </div>
+                      }
+                      key={equipe.id}
+                    >
+                      <ListItemText primary={equipe.nome} />
+                      <ListItemText
+                        secondary={
+                          equipe.consultor != null
+                            ? equipe.consultor
+                            : "Sem consultor"
+                        }
+                      />
+                    </ListItem>
+                  </ul>
+                </li>
+              ))
             : null}
         </List>
       </div>
@@ -190,7 +194,7 @@ function DadosCompeticao() {
         />
       </div>
       <div className="p-3 d-flex justify-content-center">
-        <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
+        <Box sx={{ width: "97.8%" }} className="ps-2 pe-3">
           <div className="mt-3 mb-5">
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs

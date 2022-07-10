@@ -12,9 +12,9 @@ import {
   Paper,
   Modal,
   Box,
-  Typography
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Botao from "../../Botao/index";
 import { styleModals } from "../../../utils/constantes";
@@ -22,23 +22,20 @@ import { styleModals } from "../../../utils/constantes";
 import "./styles.css";
 
 function PainelAvaliacao(props) {
-
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-
   const baixarVideoDeApresentacao = () => {
-    console.log("baixando vídeo")
-  }
+    console.log("baixando vídeo");
+  };
 
   const enviarParaAvaliacao = () => {
     handleCloseModal();
-    console.log("enviando para avaliação")
-  }
+    console.log("enviando para avaliação");
+  };
 
   const AcordionQuestao = (props) => {
-
     const { nomeAcordion, notaAtribuida, notaMaxima, questoes } = props;
 
     let lista = [
@@ -46,65 +43,61 @@ function PainelAvaliacao(props) {
         avaliador: "avaliador 1",
         questao: "Questão 1",
         comentario: "Comentário 1",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 2",
         questao: "Questão 1",
         comentario: "Comentário 1",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 3",
         questao: "Questão 3",
         comentario: "Comentário 3",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 4",
         questao: "Questão 4",
         comentario: "Comentário 4",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 5",
         questao: "Questão 5",
         comentario: "Comentário 5",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 5",
         questao: "Questão 5",
         comentario: "Comentário 5",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 5",
         questao: "Questão 5",
         comentario: "Comentário 5",
-        nota: 10
+        nota: 10,
       },
       {
         avaliador: "avaliador 5",
         questao: "Questão 5",
         comentario: "Comentário 5",
-        nota: 10
-      }
+        nota: 10,
+      },
     ];
 
     return (
       <div id="id-acordion-questao">
-        <Accordion
-          sx={{ border: "1px solid #ffc107" }}
-        >
+        <Accordion sx={{ border: "1px solid #ffc107" }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
           >
             <div className="d-flex justify-content-between w-100 pe-3">
-              <div className="align-self-center m-0">
-                {nomeAcordion}
-              </div>
+              <div className="align-self-center m-0">{nomeAcordion}</div>
               <div className="align-self-center m-0">
                 NOTA: {notaAtribuida}/{notaMaxima}
               </div>
@@ -112,7 +105,11 @@ function PainelAvaliacao(props) {
           </AccordionSummary>
           <AccordionDetails>
             <TableContainer component={Paper} className="me-2">
-              <Table sx={{ minWidth: 170 }} size="small" aria-label="a dense table">
+              <Table
+                sx={{ minWidth: 170 }}
+                size="small"
+                aria-label="a dense table"
+              >
                 <TableHead>
                   <TableRow>
                     <TableCell>Avaliador</TableCell>
@@ -146,17 +143,20 @@ function PainelAvaliacao(props) {
             </TableContainer>
           </AccordionDetails>
         </Accordion>
-      </div >
+      </div>
     );
-  }
-
+  };
 
   return (
     <div id="painel-avaliacao">
       <div className="d-flex justify-content-between w-100 mt-2">
-        <h5>
-          Olá competidor, recomenda-se dar uma olhada em seus artefatos antes da submissão.
-        </h5>
+        <div style={{ width: "150%" }}>
+          <h5 style={{ marginBottom: 0 }}>
+            Olá competidor, recomenda-se dar uma olhada em seus artefatos antes
+            da submissão.
+          </h5>
+        </div>
+
         <div className="d-flex justify-content-end w-100">
           <Botao
             titulo="vídeo de apresentação"
@@ -171,9 +171,7 @@ function PainelAvaliacao(props) {
         </div>
       </div>
 
-      <h5 className="mt-5 mb-4">
-        Notas por grupos de questões
-      </h5>
+      <h5 className="mt-5 mb-4">Notas por grupos de questões</h5>
 
       <div className="mb-2">
         <AcordionQuestao
@@ -212,10 +210,12 @@ function PainelAvaliacao(props) {
       >
         <Box sx={styleModals} style={{ width: 600 }}>
           <h5 className="">
-            Esse processo não pode ser desfeito. Você tem certeza que deseja submeter para avaliação ?
+            Esse processo não pode ser desfeito. Você tem certeza que deseja
+            submeter para avaliação?
           </h5>
           <h5 className="mb-2">
-            Verifique seu Lean Canvas e Pitch deck, e lembre-se de ler o regulamento da competição.
+            Verifique seu Lean Canvas e Pitch deck, e lembre-se de ler o
+            regulamento da competição.
           </h5>
 
           <div className="d-flex justify-content-start w-100 mt-4 mb-3">
@@ -231,7 +231,6 @@ function PainelAvaliacao(props) {
               onClick={null}
             />
           </div>
-
 
           <div className="botoes-cadastro mt-5">
             <Botao

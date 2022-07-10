@@ -126,7 +126,7 @@ function PainelDadosEquipe(props) {
 
   return (
     <div id="id-panel-dados-equipe" className="d-flex justify-content-between">
-      <div id="id-dados-da-competicao" className="div-painel-equipe">
+      <div id="id-dados-da-equipe" className="div-painel-equipe">
         <h5 className="mb-4">Equipe</h5>
 
         <div className="div-input-dado-equipe d-flex justify-content-between">

@@ -130,7 +130,7 @@ function PainelLeanCanvas(props) {
     <div id="painel-lean-canvas">
       <h5 className="mb-4">
         Olá competidor, aqui você deverá editar seu Lean Canvas para que ele
-        possa ser avaliado
+        possa ser avaliado.
       </h5>
       <div className="d-flex justify-content-end">
         <Botao
