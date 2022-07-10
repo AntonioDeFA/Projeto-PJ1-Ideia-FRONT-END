@@ -199,13 +199,13 @@ function PainelMateriaisAquecimento(props) {
             component="h2"
             style={{ marginBottom: "20px" }}
           >
-            Ao marcar como concluído não será possível desmarcar, deseja
-            concluir o material ?
+            Ao marcar como concluído não será possível desmarcar. Deseja
+            prosseguir?
           </Typography>
 
           <div className="botoes-cadastro mt-2">
             <Botao
-              titulo="concluir"
+              titulo="confirmar"
               id="btn-concluir-material-estudo"
               classes="btn btn-warning botao-menor-personalizado"
               onClick={() => marcarConcluido()}
