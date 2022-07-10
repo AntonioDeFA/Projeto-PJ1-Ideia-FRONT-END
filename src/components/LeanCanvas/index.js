@@ -18,7 +18,6 @@ import {
 import "./styles.css";
 
 function LeanCanvas(props) {
-
   const { leanCanvas } = props;
 
   const [problema, setProblema] = useState(MSG000);
@@ -44,51 +43,51 @@ function LeanCanvas(props) {
   const handleProblema = (newValue) => {
     leanCanvas.problema = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleSolucao = (newValue) => {
     leanCanvas.solucao = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleMetricas = (newValue) => {
     leanCanvas.metricasChave = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleProposta = (newValue) => {
     leanCanvas.propostaValor = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleVantagem = (newValue) => {
     leanCanvas.vantagemCompetitiva = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleCanais = (newValue) => {
     leanCanvas.canais = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleSegmentos = (newValue) => {
     leanCanvas.segmentosDeClientes = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleEstrutura = (newValue) => {
     leanCanvas.estruturaDeCusto = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   const handleFonte = (newValue) => {
     leanCanvas.fontesDeReceita = newValue;
     props.handleLeanCanvas(leanCanvas);
-  }
+  };
 
   useEffect(() => {
-    console.log("leanCanvas")
-    console.log(leanCanvas)
+    console.log("leanCanvas");
+    console.log(leanCanvas);
     setProblema(leanCanvas.problema);
     setSolucao(leanCanvas.solucao);
     setMetricas(leanCanvas.metricasChave);
@@ -121,7 +120,7 @@ function LeanCanvas(props) {
                 value={problema}
                 className="w-100 p-1"
                 onChange={(event) => {
-                  setProblema(event.target.value)
+                  setProblema(event.target.value);
                   handleProblema(event.target.value);
                 }}
                 style={{
@@ -222,7 +221,7 @@ function LeanCanvas(props) {
         <div className="border border-dark w-100 border-end-0">
           <div id="campo-vantagem-lean-canvas" className="p-2">
             <div className="d-flex justify-content-between">
-              <h6>Vantagem Competitiva</h6>
+              <h6 className="mb-4 pb-1">Vantagem Competitiva</h6>
               <i
                 className="fa fa-question-circle"
                 style={{ color: "#fc7a00" }}

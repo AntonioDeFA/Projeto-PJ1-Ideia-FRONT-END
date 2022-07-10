@@ -147,21 +147,18 @@ function PainelDadosEquipe(props) {
               }}
             />
           </div>
-          <div
-            title={
-              props.papelUsuario === "USUARIO_TOKEN"
-                ? "Somente o líder pode alterar o nome da equipe."
-                : ""
-            }
-          >
-            <Botao
-              titulo="salvar"
-              onClick={salvarNome}
-              disabled={props.papelUsuario === "USUARIO_TOKEN"}
-              id="id-btn-salvar-nome-equipe"
-              classes="btn btn-warning botao-menor-personalizado class-btn-dado-equipe"
-            />
-          </div>
+
+          {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+            <div>
+              <Botao
+                titulo="salvar"
+                onClick={salvarNome}
+                disabled={props.papelUsuario === "USUARIO_TOKEN"}
+                id="id-btn-salvar-nome-equipe"
+                classes="btn btn-warning botao-menor-personalizado class-btn-dado-equipe"
+              />
+            </div>
+          )}
         </div>
 
         <div className="div-input-dado-equipe d-flex justify-content-between">
@@ -234,7 +231,10 @@ function PainelDadosEquipe(props) {
                 <TableRow>
                   <StyledTableCell align="center">Nome</StyledTableCell>
                   <StyledTableCell align="center">E-mail</StyledTableCell>
-                  <StyledTableCell align="center">Remover</StyledTableCell>
+
+                  {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+                    <StyledTableCell align="center">Remover</StyledTableCell>
+                  )}
                 </TableRow>
               </TableHead>
 
@@ -247,29 +247,27 @@ function PainelDadosEquipe(props) {
                     <StyledTableCell align="center">
                       <p className="text-break m-0">{row.email}</p>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {index === 0 ? (
-                        <p
-                          className="m-0 text-danger fw-bold"
-                          title="Não é possível remover o líder."
-                        >
-                          LIDER
-                        </p>
-                      ) : props.papelUsuario === "USUARIO_LIDER" ? (
-                        <i
-                          title="Remover este membro"
-                          className="fa-solid fa-trash-can icone-tabela cursor-pointer"
-                          onClick={() => {
-                            removerUsuario(row.email);
-                          }}
-                        ></i>
-                      ) : (
-                        <i
-                          title="Somente o líder pode remover membros de equipe"
-                          className="fa-solid fa-trash-can icone-cinza"
-                        ></i>
-                      )}
-                    </StyledTableCell>
+
+                    {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+                      <StyledTableCell align="center">
+                        {index === 0 ? (
+                          <p
+                            className="m-0 text-danger fw-bold"
+                            title="Não é possível remover o líder."
+                          >
+                            LIDER
+                          </p>
+                        ) : (
+                          <i
+                            title="Remover este membro"
+                            className="fa-solid fa-trash-can icone-tabela cursor-pointer"
+                            onClick={() => {
+                              removerUsuario(row.email);
+                            }}
+                          ></i>
+                        )}
+                      </StyledTableCell>
+                    )}
                   </StyledTableRow>
                 ))}
               </TableBody>

@@ -129,31 +129,39 @@ function PainelLeanCanvas(props) {
   return (
     <div id="painel-lean-canvas">
       <h5 className="mb-4">
-        Olá competidor, aqui você deverá editar seu Lean Canvas para que ele
+        Olá competidor, aqui você poderá editar seu Lean Canvas para que ele
         possa ser avaliado.
       </h5>
       <div className="d-flex justify-content-end">
         <Botao
           titulo="versões"
-          classes="btn btn-warning botao-menor-personalizado me-3"
+          classes={
+            props.papelUsuario === "USUARIO_TOKEN"
+              ? "btn btn-warning botao-menor-personalizado"
+              : "btn btn-warning botao-menor-personalizado me-3"
+          }
           onClick={() => {
             navigate(
               `/equipe/${props?.idEquipe}/${props?.papelUsuario}/versoes-artefatos/LEAN_CANVAS`
             );
           }}
         />
-        <Botao
-          titulo="salvar"
-          classes="btn btn-warning botao-menor-personalizado me-3"
-          onClick={() => salvar()}
-          disabled={props.papelUsuario === "USUARIO_TOKEN"}
-        />
-        <Botao
-          titulo="enviar para consultoria"
-          classes="btn btn-warning botao-menor-personalizado"
-          onClick={() => enviarParaConsultoria()}
-          disabled={props.papelUsuario === "USUARIO_TOKEN"}
-        />
+
+        {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+          <Botao
+            titulo="salvar"
+            classes="btn btn-warning botao-menor-personalizado me-3"
+            onClick={() => salvar()}
+          />
+        )}
+
+        {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+          <Botao
+            titulo="enviar para consultoria"
+            classes="btn btn-warning botao-menor-personalizado"
+            onClick={() => enviarParaConsultoria()}
+          />
+        )}
       </div>
       <div className="mt-4">
         <div style={{ width: "50%" }} className="mb-2">

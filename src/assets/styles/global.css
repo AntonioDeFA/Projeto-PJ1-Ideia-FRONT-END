@@ -126,6 +126,10 @@ div .listagem-cards-competicoes ul li {
   cursor: pointer;
 }
 
+.cursor-default {
+  cursor: default;
+}
+
 .borda-laranja {
   border: 1.5px solid var(--color-pitch) !important;
 }

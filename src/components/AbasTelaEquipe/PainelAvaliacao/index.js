@@ -99,7 +99,7 @@ function PainelAvaliacao(props) {
             <div className="d-flex justify-content-between w-100 pe-3">
               <div className="align-self-center m-0">{nomeAcordion}</div>
               <div className="align-self-center m-0">
-                NOTA: {notaAtribuida}/{notaMaxima}
+                NOTA: <strong>{notaAtribuida}</strong> /{notaMaxima}
               </div>
             </div>
           </AccordionSummary>
@@ -150,7 +150,13 @@ function PainelAvaliacao(props) {
   return (
     <div id="painel-avaliacao">
       <div className="d-flex justify-content-between w-100 mt-2">
-        <div style={{ width: "150%" }}>
+        <div
+          style={
+            props.papelUsuario === "USUARIO_TOKEN"
+              ? { width: "175%" }
+              : { width: "150%" }
+          }
+        >
           <h5 style={{ marginBottom: 0 }}>
             Olá competidor, recomenda-se dar uma olhada em seus artefatos antes
             da submissão.
@@ -160,14 +166,20 @@ function PainelAvaliacao(props) {
         <div className="d-flex justify-content-end w-100">
           <Botao
             titulo="vídeo de apresentação"
-            classes="btn btn-warning botao-menor-personalizado me-3"
+            classes={
+              props.papelUsuario === "USUARIO_TOKEN"
+                ? "btn btn-warning botao-menor-personalizado"
+                : "btn btn-warning botao-menor-personalizado me-3"
+            }
             onClick={() => baixarVideoDeApresentacao()}
           />
-          <Botao
-            titulo="enviar para avaliação"
-            classes="btn btn-warning botao-menor-personalizado"
-            onClick={() => handleOpenModal()}
-          />
+          {props.papelUsuario === "USUARIO_TOKEN" ? null : (
+            <Botao
+              titulo="enviar para avaliação"
+              classes="btn btn-warning botao-menor-personalizado"
+              onClick={() => handleOpenModal()}
+            />
+          )}
         </div>
       </div>
 

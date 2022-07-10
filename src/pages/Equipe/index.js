@@ -152,7 +152,7 @@ function Equipe() {
 
             {equipe?.etapaVigenteStr === MSG035 ? (
               <TabPanel value={value} index={2} className="tab-customizada">
-                <PainelAvaliacao />
+                <PainelAvaliacao papelUsuario={papelUsuario} />
               </TabPanel>
             ) : null}
 

@@ -159,15 +159,29 @@ function PainelMateriaisAquecimento(props) {
                           <div className="d-flex justify-content-start">
                             <FormControlLabel
                               control={
-                                <Checkbox
-                                  className="btn-check btn-outline-warning"
-                                  defaultChecked={material.isConcluido}
-                                  disabled={
-                                    material.isConcluido ||
-                                    props.papelUsuario !== "USUARIO_LIDER"
+                                <div
+                                  className={
+                                    props.papelUsuario === "USUARIO_LIDER"
+                                      ? ""
+                                      : "cursor-default"
                                   }
-                                  onChange={() => abrirModal(material.id)}
-                                />
+                                  title={
+                                    props.papelUsuario === "USUARIO_LIDER"
+                                      ? ""
+                                      : "Só o líder pode marcar como concluído."
+                                  }
+                                >
+                                  {" "}
+                                  <Checkbox
+                                    className="btn-check btn-outline-warning"
+                                    defaultChecked={material.isConcluido}
+                                    disabled={
+                                      material.isConcluido ||
+                                      props.papelUsuario !== "USUARIO_LIDER"
+                                    }
+                                    onChange={() => abrirModal(material.id)}
+                                  />
+                                </div>
                               }
                               label="concluído"
                             />
