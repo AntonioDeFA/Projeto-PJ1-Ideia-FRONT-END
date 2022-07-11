@@ -15,9 +15,15 @@ import {
 
 import api from "../../../services/api";
 import Botao from "./../../Botao/index";
-import Mensagem from "./../../Mensagem/index";
 import StoreContext from "../../../store/context";
-import { MSG000, MSG006, MSG041, MSG042 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG005,
+  MSG006,
+  MSG041,
+  MSG042,
+  MSG053,
+} from "../../../utils/mensagens";
 import { StyledTableRow, StyledTableCell } from "./../../../utils/constantes";
 import {
   formatarData,
@@ -35,19 +41,19 @@ function PainelDadosEquipe(props) {
   const [rows, setRows] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG000);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
 
   const [errorNome, setErrorNome] = useState(false);
   const [mensagemNome, setMensagemNome] = useState(MSG000);
 
   const [flagAlteracao, setFlagAlteracao] = useState(false);
 
-  const [mensagemErro, setMensagemErro] = useState(MSG000);
-  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
-
   const { token } = useContext(StoreContext);
 
-  const handleAlerta = (mensagem) => {
+  const handleAlerta = (mensagem, severidade) => {
     setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
     setOpen(true);
   };
 
@@ -67,7 +73,7 @@ function PainelDadosEquipe(props) {
         api
           .patch(`/equipe/${props.id}/salvar-nome`, { nomeEquipe: nome })
           .then((response) => {
-            handleAlerta(MSG042);
+            handleAlerta(MSG042, MSG005);
             setFlagAlteracao(!flagAlteracao);
             props.consultarDadosEquipe();
           })
@@ -89,16 +95,10 @@ function PainelDadosEquipe(props) {
     api
       .post(`/equipe/${props.id}/remover-membro`, { email })
       .then((response) => {
-        setMensagemErro(MSG000);
         setFlagAlteracao(!flagAlteracao);
       })
       .catch((error) => {
-        setMensagemErro(error.response.data.motivosErros[0]);
-
-        setTimeout(() => {
-          setMensagemErro(MSG000);
-          console.log("ok");
-        }, 10000);
+        handleAlerta(MSG053, MSG006);
       });
   };
 
@@ -185,17 +185,6 @@ function PainelDadosEquipe(props) {
                 classes="btn btn-warning botao-menor-personalizado class-btn-dado-equipe"
               />
             </CopyToClipboard>
-
-            <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
-              <Alert
-                onClose={handleClose}
-                severity="success"
-                variant="filled"
-                sx={{ width: "100%" }}
-              >
-                {mensagemSnackBar}
-              </Alert>
-            </Snackbar>
           </div>
         </div>
 
@@ -216,11 +205,6 @@ function PainelDadosEquipe(props) {
       <div id="id-div-tabela-membros" className="div-painel-equipe">
         <h5 className="mb-4">Membros</h5>
 
-        {mensagemErro !== MSG000 ? (
-          <div className="mb-3">
-            <Mensagem mensagem={mensagemErro} tipoMensagem={MSG006} />
-          </div>
-        ) : null}
         <div id="id-tabela-membros">
           <TableContainer component={Paper}>
             <Table
@@ -275,6 +259,17 @@ function PainelDadosEquipe(props) {
           </TableContainer>
         </div>
       </div>
+
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

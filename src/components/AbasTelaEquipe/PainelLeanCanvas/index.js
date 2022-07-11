@@ -1,16 +1,20 @@
-import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { MSG000, MSG001, MSG008 } from "../../../utils/mensagens";
-import Mensagem from "../../Mensagem";
+import { Snackbar, Alert } from "@mui/material";
+
 import api from "../../../services/api";
 import Botao from "../../Botao/index";
+import Mensagem from "../../Mensagem";
 import LeanCanvas from "../../LeanCanvas/index";
 import StoreContext from "../../../store/context";
+import { MSG000, MSG001, MSG006, MSG054 } from "../../../utils/mensagens";
 
 import "./styles.css";
 
 function PainelLeanCanvas(props) {
+  const navigate = useNavigate();
+
   const [leanCanvas, setLeanCanvas] = useState({
     id: 0,
     problema: "",
@@ -27,8 +31,22 @@ function PainelLeanCanvas(props) {
 
   const [mensagemErro, setMensagemErro] = useState(MSG000);
   const [mudou, setMudou] = useState(true);
+
   const { token } = useContext(StoreContext);
-  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG000);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlerta = (mensagem, severidade) => {
+    setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
+    setOpen(true);
+  };
 
   const handleLeanCanvas = (leanCanvas) => {
     setLeanCanvas(leanCanvas);
@@ -56,16 +74,17 @@ function PainelLeanCanvas(props) {
     console.log("Lean canvas do painel");
     console.log(leanCanvas);
     console.log(props.idEquipe);
+
     if (
-      leanCanvas.problema !== null &&
-      leanCanvas.solucao !== null &&
-      leanCanvas.metricasChave !== null &&
-      leanCanvas.propostaValor !== null &&
-      leanCanvas.vantagemCompetitiva !== null &&
-      leanCanvas.canais !== null &&
-      leanCanvas.segmentosDeClientes !== null &&
-      leanCanvas.estruturaDeCusto !== null &&
-      leanCanvas.fontesDeReceita !== null
+      leanCanvas.problema?.length > 0 &&
+      leanCanvas.solucao?.length > 0 &&
+      leanCanvas.metricasChave?.length > 0 &&
+      leanCanvas.propostaValor?.length > 0 &&
+      leanCanvas.vantagemCompetitiva?.length > 0 &&
+      leanCanvas.canais?.length > 0 &&
+      leanCanvas.segmentosDeClientes?.length > 0 &&
+      leanCanvas.estruturaDeCusto?.length > 0 &&
+      leanCanvas.fontesDeReceita?.length > 0
     ) {
       api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
       api
@@ -82,15 +101,13 @@ function PainelLeanCanvas(props) {
           fontesDeReceita: leanCanvas.fontesDeReceita,
         })
         .then((response) => {
-          console.log("LeanCanvas atualizado");
-          setMensagemErro(MSG000);
           buscarLeanCanvas();
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      setMensagemErro(MSG001);
+      handleAlerta(MSG001, MSG054);
     }
   };
 
@@ -114,12 +131,8 @@ function PainelLeanCanvas(props) {
         buscarLeanCanvas();
       })
       .catch((error) => {
-        console.log(error.response.data.message);
-        setMensagemErro(error.response.data.message);
+        handleAlerta(error.response.data.message, MSG006);
       });
-    await setTimeout(() => {
-      setMensagemErro(MSG000);
-    }, 30000);
   };
 
   useEffect(() => {
@@ -176,6 +189,17 @@ function PainelLeanCanvas(props) {
           />
         ) : null}
       </div>
+
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
