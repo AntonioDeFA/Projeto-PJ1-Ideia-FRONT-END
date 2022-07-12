@@ -1,23 +1,29 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
+import { ButtonGroup, List } from "@mui/material";
 
-import "./styles.css";
-import { ButtonGroup } from "@mui/material";
-import { Button } from "@material-ui/core";
+import api from "./../../services/api";
 import Botao from "./../Botao/index";
 import { MSG000 } from "./../../utils/mensagens";
+import StoreContext from "./../../store/context";
+
+import "./styles.css";
 
 function AsideFeedbacksLeanCanvas(props) {
+  const [feedbacks, setFeedbacks] = useState(null);
+  const [feedbacksPotencialidades, setFeedbacksPotencialidades] =
+    useState(null);
+  const [feedbacksFragilidades, setFeedbacksFragilidades] = useState(null);
+
   const [classesBtnPotencialidades, setClassesBtnPotencialidades] =
     useState(MSG000);
   const [classesBtnFragilidades, setClassesBtnFragilidades] = useState(MSG000);
 
   const [btnSelecionado, setBtnSelecionado] = useState("POTENCIALIDADES");
+
+  const { token } = useContext(StoreContext);
+
+  const [mudou, setMudou] = useState(true);
 
   const trocarListaFeedbacks = (tipoFeedback) => {
     setBtnSelecionado(tipoFeedback);
@@ -28,14 +34,48 @@ function AsideFeedbacksLeanCanvas(props) {
       "btn botao-menor-personalizado class-btn-dado-equipe ";
     let classesBotaoFragilidades = classesBotaoPotencialidades;
 
-    classesBotaoPotencialidades +=
-      btnSelecionado === "POTENCIALIDADES" ? "btn-warning" : "btn-secondary";
-    classesBotaoFragilidades +=
-      btnSelecionado === "FRAGILIDADES" ? "btn-warning" : "btn-secondary";
+    if (btnSelecionado === "POTENCIALIDADES") {
+      classesBotaoPotencialidades += "btn-warning";
+      classesBotaoFragilidades += "btn-secondary";
+      setFeedbacks(feedbacksPotencialidades);
+    } else {
+      classesBotaoPotencialidades += "btn-secondary";
+      classesBotaoFragilidades += "btn-warning";
+      setFeedbacks(feedbacksFragilidades);
+    }
+
+    setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 400);
 
     setClassesBtnPotencialidades(classesBotaoPotencialidades);
     setClassesBtnFragilidades(classesBotaoFragilidades);
   }, [btnSelecionado]);
+
+  useEffect(() => {
+    let listaPotencialidades = [];
+    let listaFragilidades = [];
+
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/lean-canvas/${props.idLeanCanvas}/feedbacks-consultoria`)
+      .then((response) => {
+        response.data.feedbacksAvaliativos.map((feedback) => {
+          feedback.tipoFeedback === "POTENCIALIDADE"
+            ? listaPotencialidades.push(feedback)
+            : listaFragilidades.push(feedback);
+        });
+
+        setFeedbacksPotencialidades(listaPotencialidades);
+        setFeedbacksFragilidades(listaFragilidades);
+
+        setFeedbacks(listaPotencialidades);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }, [token]);
 
   return (
     <div className="aside-feedbacks-lean-canvas">
@@ -43,7 +83,7 @@ function AsideFeedbacksLeanCanvas(props) {
         className="elementos-centralizados"
         id="listagens-feedbacks-filtragem"
       >
-        <h1 className="titulos-principais">
+        <div className="botoes-principais">
           <ButtonGroup
             variant="contained"
             aria-label="outlined primary button group"
@@ -61,10 +101,31 @@ function AsideFeedbacksLeanCanvas(props) {
               classes={classesBtnFragilidades}
             />
           </ButtonGroup>
-        </h1>
+        </div>
       </div>
 
-      <div className="feedbacks">{props.idLeanCanvas}</div>
+      <div className="feedbacks">
+        {mudou ? (
+          <List
+            sx={{
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            {feedbacks?.map((feedback, index) => (
+              <li
+                key={index}
+                style={{ maxHeight: "150px", overflowY: "auto" }}
+                className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+              >
+                <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                  <strong>{index + 1}°</strong> {feedback.sugestao}
+                </h6>
+              </li>
+            ))}
+          </List>
+        ) : null}
+      </div>
     </div>
   );
 }

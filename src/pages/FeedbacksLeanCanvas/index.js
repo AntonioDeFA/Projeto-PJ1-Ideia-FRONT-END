@@ -1,18 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box } from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "../../components/Botao";
+import LeanCanvas from "../../components/LeanCanvas";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
-import VersoesPitchDeck from "../../components/AbasVersoesArtefatos/VersoesPitchDeck";
-import VersoesLeanCanvas from "../../components/AbasVersoesArtefatos/VersoesLeanCanvas";
-import { TabPanel, valueProps } from "../../utils/constantes";
+import AsideFeedbacksLeanCanvas from "../../components/AsideFeedbacksLeanCanvas";
 
 import "./styles.css";
-import AsideFeedbacksLeanCanvas from "../../components/AsideFeedbacksLeanCanvas";
 
 function FeedbacksLeanCanvas() {
   const navigate = useNavigate();
@@ -20,9 +18,21 @@ function FeedbacksLeanCanvas() {
 
   const { token } = useContext(StoreContext);
 
-  const [value, setValue] = useState(0);
-
   const [equipe, setEquipe] = useState(null);
+
+  const [leanCanvas, setLeanCanvas] = useState({
+    problema: "",
+    solucao: "",
+    metricasChave: "",
+    propostaValor: "",
+    vantagemCompetitiva: "",
+    canais: "",
+    segmentosDeClientes: "",
+    estruturaDeCusto: "",
+    fontesDeReceita: "",
+  });
+
+  const [mudou, setMudou] = useState(true);
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -34,6 +44,34 @@ function FeedbacksLeanCanvas() {
       .catch((error) => {
         console.log(error.response.data);
       });
+
+    api
+      .get(`/lean-canvas/${idLeanCanvas}/feedbacks-consultoria`)
+      .then((response) => {
+        const { data } = response;
+
+        setLeanCanvas({
+          problema: data.problema,
+          solucao: data.solucao,
+          metricasChave: data.metricasChave,
+          propostaValor: data.propostaDeValor,
+          vantagemCompetitiva: data.vantagemCompetitiva,
+          canais: data.canais,
+          segmentosDeClientes: data.segmentosClientes,
+          estruturaDeCusto: data.estruturaDeCustos,
+          fontesDeReceita: data.fonteDeReceita,
+        });
+
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+
+    setTimeout(() => {
+      setMudou(false);
+      setMudou(true);
+    }, 400);
   }, [token]);
 
   return (
@@ -71,9 +109,11 @@ function FeedbacksLeanCanvas() {
         </div>
 
         <div className="p-3 d-flex justify-content-center">
-          <Box sx={{ width: "1050px" }} className="ps-2 pe-3">
+          <Box sx={{ width: "1040px" }} className="ps-2 pe-3">
             <div className="mt-3">
-              <h1>Lean Canvas aq</h1>
+              {mudou ? (
+                <LeanCanvas leanCanvas={leanCanvas} isTelaFeedbacks={true} />
+              ) : null}
             </div>
           </Box>
         </div>

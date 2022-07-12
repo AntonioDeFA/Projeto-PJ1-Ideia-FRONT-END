@@ -86,8 +86,6 @@ function LeanCanvas(props) {
   };
 
   useEffect(() => {
-    console.log("leanCanvas");
-    console.log(leanCanvas);
     setProblema(leanCanvas.problema);
     setSolucao(leanCanvas.solucao);
     setMetricas(leanCanvas.metricasChave);
@@ -127,6 +125,7 @@ function LeanCanvas(props) {
                   height: 350,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -156,6 +155,7 @@ function LeanCanvas(props) {
                   height: 150,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -184,6 +184,7 @@ function LeanCanvas(props) {
                     height: 150,
                     resize: "none",
                   }}
+                  disabled={props.isTelaFeedbacks}
                 />
               </div>
             </div>
@@ -214,6 +215,7 @@ function LeanCanvas(props) {
                   height: 350,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -221,7 +223,9 @@ function LeanCanvas(props) {
         <div className="border border-dark w-100 border-end-0">
           <div id="campo-vantagem-lean-canvas" className="p-2">
             <div className="d-flex justify-content-between">
-              <h6 className="mb-4 pb-1">Vantagem Competitiva</h6>
+              <h6 className={props.isTelaFeedbacks ? "" : "mb-4 pb-1"}>
+                Vantagem Competitiva
+              </h6>
               <i
                 className="fa fa-question-circle"
                 style={{ color: "#fc7a00" }}
@@ -243,6 +247,7 @@ function LeanCanvas(props) {
                   height: 150,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -271,6 +276,7 @@ function LeanCanvas(props) {
                     height: 150,
                     resize: "none",
                   }}
+                  disabled={props.isTelaFeedbacks}
                 />
               </div>
             </div>
@@ -301,6 +307,7 @@ function LeanCanvas(props) {
                   height: 350,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -332,6 +339,7 @@ function LeanCanvas(props) {
                   height: 150,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>
@@ -361,6 +369,7 @@ function LeanCanvas(props) {
                   height: 150,
                   resize: "none",
                 }}
+                disabled={props.isTelaFeedbacks}
               />
             </div>
           </div>

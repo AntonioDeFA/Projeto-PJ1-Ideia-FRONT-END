@@ -1,10 +1,11 @@
 div .aside-feedbacks-lean-canvas {
   background-color: var(--color-background-aside);
-  height: 100%;
   width: 22rem;
   padding: 15px;
   display: block;
   float: left;
+  max-height: 753px;
+  overflow: auto;
 }
 
 div #listagens-feedbacks-filtragem {
