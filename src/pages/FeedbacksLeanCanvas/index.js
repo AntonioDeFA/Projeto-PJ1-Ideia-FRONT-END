@@ -83,7 +83,7 @@ function FeedbacksLeanCanvas() {
       </div>
 
       <div id="dados-lean-canvas-para-leitura">
-        <div className="ps-3 pe-4 pt-3 d-flex justify-content-between">
+        <div className="ps-0 pe-4 pt-3 d-flex justify-content-between">
           <div>
             <div>
               <h1 className="ps-3 ms-1 titulos-principais">
@@ -101,7 +101,7 @@ function FeedbacksLeanCanvas() {
             }}
           />
         </div>
-        <div style={{ marginLeft: "390px" }}>
+        <div style={{ marginLeft: "375px" }}>
           <h5>
             Aqui poderão ver os feedbacks dos Lean Canvas submetidos para
             consultoria.
