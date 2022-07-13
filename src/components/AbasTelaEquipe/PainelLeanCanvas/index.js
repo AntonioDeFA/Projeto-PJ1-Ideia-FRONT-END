@@ -8,7 +8,7 @@ import Botao from "../../Botao/index";
 import Mensagem from "../../Mensagem";
 import LeanCanvas from "../../LeanCanvas/index";
 import StoreContext from "../../../store/context";
-import { MSG000, MSG001, MSG006, MSG054 } from "../../../utils/mensagens";
+import { MSG000, MSG001, MSG005, MSG006, MSG054, MSG055, MSG056 } from "../../../utils/mensagens";
 
 import "./styles.css";
 
@@ -29,7 +29,7 @@ function PainelLeanCanvas(props) {
     etapaSolucaoCanvas: null,
   });
 
-  const [mensagemErro, setMensagemErro] = useState(MSG000);
+  // const [mensagemErro, setMensagemErro] = useState(MSG000);
   const [mudou, setMudou] = useState(true);
 
   const { token } = useContext(StoreContext);
@@ -76,15 +76,15 @@ function PainelLeanCanvas(props) {
     console.log(props.idEquipe);
 
     if (
-      leanCanvas.problema?.length > 0 &&
-      leanCanvas.solucao?.length > 0 &&
-      leanCanvas.metricasChave?.length > 0 &&
-      leanCanvas.propostaValor?.length > 0 &&
-      leanCanvas.vantagemCompetitiva?.length > 0 &&
-      leanCanvas.canais?.length > 0 &&
-      leanCanvas.segmentosDeClientes?.length > 0 &&
-      leanCanvas.estruturaDeCusto?.length > 0 &&
-      leanCanvas.fontesDeReceita?.length > 0
+      leanCanvas.problema?.replace(/ /g, "").length > 0 &&
+      leanCanvas.solucao?.replace(/ /g, "").length > 0 &&
+      leanCanvas.metricasChave?.replace(/ /g, "").length > 0 &&
+      leanCanvas.propostaValor?.replace(/ /g, "").length > 0 &&
+      leanCanvas.vantagemCompetitiva?.replace(/ /g, "").length > 0 &&
+      leanCanvas.canais?.replace(/ /g, "").length > 0 &&
+      leanCanvas.segmentosDeClientes?.replace(/ /g, "").length > 0 &&
+      leanCanvas.estruturaDeCusto?.replace(/ /g, "").length > 0 &&
+      leanCanvas.fontesDeReceita?.replace(/ /g, "").length > 0
     ) {
       api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
       api
@@ -101,6 +101,7 @@ function PainelLeanCanvas(props) {
           fontesDeReceita: leanCanvas.fontesDeReceita,
         })
         .then((response) => {
+          handleAlerta(MSG056, MSG005);
           buscarLeanCanvas();
         })
         .catch((error) => {
@@ -128,6 +129,7 @@ function PainelLeanCanvas(props) {
     api
       .post(`/equipe/${props.idEquipe}/lean-canvas/enviar-consultoria`)
       .then((response) => {
+        handleAlerta(MSG055, MSG005);
         buscarLeanCanvas();
       })
       .catch((error) => {
@@ -140,7 +142,7 @@ function PainelLeanCanvas(props) {
   }, []);
 
   return (
-    <div id="painel-lean-canvas">
+    <div id="painel-lean-canvas" className="p-3">
       <h5 className="mb-4">
         Olá competidor, aqui você poderá editar seu Lean Canvas para que ele
         possa ser avaliado.
@@ -177,11 +179,6 @@ function PainelLeanCanvas(props) {
         )}
       </div>
       <div className="mt-4">
-        <div style={{ width: "50%" }} className="mb-2">
-          {mensagemErro !== MSG000 ? (
-            <Mensagem mensagem={mensagemErro} tipoMensagem={"warning"} />
-          ) : null}
-        </div>
         {mudou ? (
           <LeanCanvas
             handleLeanCanvas={handleLeanCanvas}
