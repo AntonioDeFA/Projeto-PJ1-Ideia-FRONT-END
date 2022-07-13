@@ -6,7 +6,7 @@
   width: 470px !important;
 }
 
-input[type="file"] {
+#id-input-pitch-deck {
   display: none;
 }
 
