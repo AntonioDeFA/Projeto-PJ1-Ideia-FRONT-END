@@ -1,8 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
 
+import {
+  Snackbar,
+  Alert
+} from "@mui/material";
+
 import api from "../../../services/api";
 import Botao from "../../Botao/index";
 import StoreContext from "../../../store/context";
+import {
+  MSG000,
+  MSG005,
+  MSG054,
+  MSG058,
+  MSG059
+} from "../../../utils/mensagens";
 
 import "./styles.css";
 
@@ -11,7 +23,22 @@ function PainelPitchDeck(props) {
   const [competicao, setCompeticao] = useState(null);
   const { token } = useContext(StoreContext);
 
+  const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG000);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlerta = (mensagem, severidade) => {
+    setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
+    setOpen(true);
+  };
+
   const enviarParaConsultoria = () => {
+    handleAlerta(MSG058, MSG005);
     console.log("enviando para consultoria");
   };
 
@@ -45,6 +72,7 @@ function PainelPitchDeck(props) {
           arquivoPitchDeck: result,
           tipo
         }
+        handleAlerta(MSG059, MSG005);
         console.log(pitchDeck);
       }, 400);
     }
@@ -117,6 +145,16 @@ function PainelPitchDeck(props) {
           onClick={null}
         />
       </div>
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
