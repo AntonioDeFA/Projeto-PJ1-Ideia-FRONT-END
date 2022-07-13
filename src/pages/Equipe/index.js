@@ -145,6 +145,7 @@ function Equipe() {
               <TabPanel value={value} index={3} className="tab-customizada">
                 <PainelPitchDeck
                   idEquipe={equipe?.id}
+                  id={equipe?.idCompeticaoCadastrada}
                   papelUsuario={papelUsuario}
                 />
               </TabPanel>
