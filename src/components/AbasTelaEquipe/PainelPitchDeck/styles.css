@@ -1,0 +1,17 @@
+.botao-personalizado-pitch-deck {
+  width: 270px;
+}
+
+.espacamento-entre-botoes-pitch-deck {
+  width: 470px !important;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.icone-upload:hover {
+  color: var(--color-button-hover);
+  transition: 0.5s;
+  opacity: 0.7;
+}
