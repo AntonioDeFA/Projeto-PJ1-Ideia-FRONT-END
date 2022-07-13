@@ -85,3 +85,5 @@ export const MSG052 =
   "Reflita: Seus consumidores estão dispostos a pagar pela sua solução? Como eles preferem pagar? Como cada fluxo de receita contribui para a receita global da empresa?";
 export const MSG053 = "Erro! Limite mínimo de membros atingido!";
 export const MSG054 = "warning";
+export const MSG055 = "Lean Canvas enviado para consultoria";
+export const MSG056 = "Lean Canvas salvo com sucesso";
