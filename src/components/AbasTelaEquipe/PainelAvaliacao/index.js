@@ -20,14 +20,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   MSG000,
   MSG005,
+  MSG006,
   MSG057
 } from "../../../utils/mensagens";
 import Botao from "../../Botao/index";
+import api from "../../../services/api";
+import StoreContext from "../../../store/context";
 import { styleModals } from "../../../utils/constantes";
 
 import "./styles.css";
 
 function PainelAvaliacao(props) {
+
+  const { token } = useContext(StoreContext);
+
+  const [notasEquipe, setNotaEquipe] = useState([]);
 
   const [pitch, setPitch] = useState(null);
   const [open, setOpen] = useState(false);
@@ -52,7 +59,7 @@ function PainelAvaliacao(props) {
 
     let tipoArquivo = "video/mp4;base64";
 
-    if (pitch.tipo === "PDF") {
+    if (pitch.tipo === "ARQUIVO") {
       tipoArquivo = "application/pdf;base64";
     }
 
@@ -69,71 +76,20 @@ function PainelAvaliacao(props) {
 
   const enviarParaAvaliacao = () => {
     handleCloseModal();
-    handleAlerta(MSG057, MSG005);
+    api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+    api
+      .post(`/pitch/${props.idEquipe}/enviar-para-avaliacao`)
+      .then((response) => {
+        handleAlerta(MSG057, MSG005);
+      })
+      .catch((error) => {
+        handleAlerta("DEU ERRO", MSG006);
+      });
     console.log("enviando para avaliação");
   };
 
   const AcordionQuestao = (props) => {
     const { nomeAcordion, notaAtribuida, notaMaxima, questoes } = props;
-
-    let lista = [
-      {
-        avaliador: "avaliador 1",
-        questao: "Questão 1",
-        comentario: "Comentário 1",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 2",
-        questao: "Questão 1",
-        comentario: "Comentário 1",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 3",
-        questao: "Questão 3",
-        comentario: "Comentário 3",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 4",
-        questao: "Questão 4",
-        comentario: "Comentário 4",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 5",
-        questao: "Questão 5",
-        comentario: "Comentário 5",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 5",
-        questao: "Questão 5",
-        comentario: "Comentário 5",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 5",
-        questao: "Questão 5",
-        comentario: "Comentário 5",
-        nota: 10,
-        notaMaxima: 10
-      },
-      {
-        avaliador: "avaliador 5",
-        questao: "Questão 5",
-        comentario: "Comentário 5",
-        nota: 10,
-        notaMaxima: 10
-      },
-    ];
 
     return (
       <div id="id-acordion-questao">
@@ -165,21 +121,21 @@ function PainelAvaliacao(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {lista.map((question, index) => (
+                  {questoes?.map((questao, index) => (
                     <TableRow
                       key={index}
                     >
                       <TableCell component="th" scope="row" className="border text-break">
-                        <div>{question.avaliador}</div>
+                        <div>{questao.avaliador}</div>
                       </TableCell>
                       <TableCell component="th" scope="row" className="border text-break">
-                        <div>{question.questao}</div>
+                        <div>{questao.questao}</div>
                       </TableCell>
                       <TableCell component="th" scope="row" className="border text-break">
-                        <div>{question.comentario}</div>
+                        <div>{questao.comentario}</div>
                       </TableCell>
                       <TableCell component="th" scope="row" className="border text-break">
-                        <div><strong>{question.nota}</strong>/{question.notaMaxima}</div>
+                        <div><strong>{questao.nota}</strong>/{questao.notaMax}</div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -193,12 +149,28 @@ function PainelAvaliacao(props) {
   };
 
   useEffect(() => {
-    let pitchRetornado = {
-      arquivoPitchDeck: "",
-      tipo: "VIDEO"
-    }
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/arquivo-pitch-deck/${props.idEquipe}`)
+      .then((response) => {
+        console.log(response.data)
+        setPitch(response.data);
+      })
+      .catch((error) => {
+        handleAlerta("DEU ERRO", MSG006);
+      });
 
-    setPitch(pitchRetornado);
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/notas-questoes-avaliativas/${props.idEquipe}`)
+      .then((response) => {
+        console.log(response.data)
+        setNotaEquipe(response.data);
+      })
+      .catch((error) => {
+        handleAlerta("DEU ERRO", MSG006);
+      });
+
   }, []);
 
   return (
@@ -237,36 +209,46 @@ function PainelAvaliacao(props) {
         </div>
       </div>
 
-      <h5 className="mt-5 mb-4">Notas por grupos de questões</h5>
+      {notasEquipe.length !== 0 ? (
+        <div>
+          <h5 className="mt-5 mb-4">Notas por grupos de questões</h5>
 
-      <div className="mb-2">
-        <AcordionQuestao
-          nomeAcordion={"ADAPTABILIDADE"}
-          notaAtribuida={25}
-          notaMaxima={50}
-        />
-      </div>
-      <div className="mb-2">
-        <AcordionQuestao
-          nomeAcordion={"INOVAÇÃO"}
-          notaAtribuida={25}
-          notaMaxima={70}
-        />
-      </div>
-      <div className="mb-2">
-        <AcordionQuestao
-          nomeAcordion={"UTILIDADE"}
-          notaAtribuida={25}
-          notaMaxima={25}
-        />
-      </div>
-      <div>
-        <AcordionQuestao
-          nomeAcordion={"SUSTENTABILIDADE"}
-          notaAtribuida={50}
-          notaMaxima={50}
-        />
-      </div>
+          <div className="mb-2">
+            <AcordionQuestao
+              nomeAcordion={"ADAPTABILIDADE"}
+              notaAtribuida={notasEquipe?.notaAtribuidaAdaptabilidade}
+              notaMaxima={notasEquipe?.notaMaximaAdaptabilidade}
+              questoes={notasEquipe?.listaAdaptabilidade}
+            />
+          </div>
+          <div className="mb-2">
+            <AcordionQuestao
+              nomeAcordion={"INOVAÇÃO"}
+              notaAtribuida={notasEquipe?.notaAtribuidaInovacao}
+              notaMaxima={notasEquipe?.notaMaximaInovacao}
+              questoes={notasEquipe?.listaInovacao}
+            />
+          </div>
+          <div className="mb-2">
+            <AcordionQuestao
+              nomeAcordion={"UTILIDADE"}
+              notaAtribuida={notasEquipe?.notaAtribuidaUtilidade}
+              notaMaxima={notasEquipe?.notaMaximaUtilidade}
+              questoes={notasEquipe?.listaUtilidade}
+            />
+          </div>
+          <div>
+            <AcordionQuestao
+              nomeAcordion={"SUSTENTABILIDADE"}
+              notaAtribuida={notasEquipe?.notaAtribuidaSustentabilidade}
+              notaMaxima={notasEquipe?.notaMaximaSustentabilidade}
+              questoes={notasEquipe?.listaSustentabilidade}
+            />
+          </div>
+        </div>
+      ) :
+        <h5 className="mt-5 mb-4">Depois da avaliação, suas notas serão apresentadas aqui.</h5>
+      }
 
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
         <Alert
