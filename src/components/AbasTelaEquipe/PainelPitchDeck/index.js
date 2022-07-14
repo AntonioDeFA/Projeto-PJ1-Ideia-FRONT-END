@@ -105,8 +105,8 @@ function PainelPitchDeck(props) {
   }, []);
 
   return (
-    <div id="painel-pitch-deck" className="p-2">
-      <h5 className="mb-4 mt-4">
+    <div id="painel-pitch-deck">
+      <h5 className="mb-4">
         Olá competidor, aqui você poderá carregar seu Pitch Deck para que ele
         possa ser avaliado!
       </h5>

@@ -13,16 +13,11 @@ import {
   Modal,
   Box,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import {
-  MSG000,
-  MSG005,
-  MSG006,
-  MSG057
-} from "../../../utils/mensagens";
+import { MSG000, MSG005, MSG006, MSG057 } from "../../../utils/mensagens";
 import Botao from "../../Botao/index";
 import api from "../../../services/api";
 import StoreContext from "../../../store/context";
@@ -31,7 +26,6 @@ import { styleModals } from "../../../utils/constantes";
 import "./styles.css";
 
 function PainelAvaliacao(props) {
-
   const { token } = useContext(StoreContext);
 
   const [notasEquipe, setNotaEquipe] = useState([]);
@@ -56,7 +50,6 @@ function PainelAvaliacao(props) {
   };
 
   const baixarPitchDeApresentacao = () => {
-
     let tipoArquivo = "video/mp4;base64";
 
     if (pitch.tipo === "ARQUIVO") {
@@ -93,7 +86,10 @@ function PainelAvaliacao(props) {
 
     return (
       <div id="id-acordion-questao">
-        <Accordion sx={{ border: "1px solid #ffc107" }} className="sombra-acordion">
+        <Accordion
+          sx={{ border: "1px solid #ffc107" }}
+          className="sombra-acordion"
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
@@ -122,20 +118,36 @@ function PainelAvaliacao(props) {
                 </TableHead>
                 <TableBody>
                   {questoes?.map((questao, index) => (
-                    <TableRow
-                      key={index}
-                    >
-                      <TableCell component="th" scope="row" className="border text-break">
+                    <TableRow key={index}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className="border text-break"
+                      >
                         <div>{questao.avaliador}</div>
                       </TableCell>
-                      <TableCell component="th" scope="row" className="border text-break">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className="border text-break"
+                      >
                         <div>{questao.questao}</div>
                       </TableCell>
-                      <TableCell component="th" scope="row" className="border text-break">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className="border text-break"
+                      >
                         <div>{questao.comentario}</div>
                       </TableCell>
-                      <TableCell component="th" scope="row" className="border text-break">
-                        <div><strong>{questao.nota}</strong>/{questao.notaMax}</div>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className="border text-break"
+                      >
+                        <div>
+                          <strong>{questao.nota}</strong>/{questao.notaMax}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -156,7 +168,7 @@ function PainelAvaliacao(props) {
         setPitch(response.data);
       })
       .catch((error) => {
-        console.log(error.response.data.message)
+        console.log(error);
       });
 
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -168,11 +180,10 @@ function PainelAvaliacao(props) {
       .catch((error) => {
         handleAlerta(error.response.data.message, MSG006);
       });
-
   }, []);
 
   return (
-    <div id="painel-avaliacao" className="p-3">
+    <div id="painel-avaliacao">
       <div className="d-flex justify-content-between w-100 mt-2">
         <div
           style={
@@ -244,9 +255,11 @@ function PainelAvaliacao(props) {
             />
           </div>
         </div>
-      ) :
-        <h5 className="mt-5 mb-4">Depois da avaliação, as notas serão apresentadas aqui.</h5>
-      }
+      ) : (
+        <h5 className="mt-5 mb-4">
+          Depois da avaliação, as notas serão apresentadas aqui.
+        </h5>
+      )}
 
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
         <Alert

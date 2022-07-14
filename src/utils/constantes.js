@@ -23,6 +23,7 @@ export const TabPanel = (props) => {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{ padding: "20px" }}
       {...other}
     >
       {value === index && (

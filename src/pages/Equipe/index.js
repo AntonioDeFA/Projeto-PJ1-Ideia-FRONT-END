@@ -18,6 +18,7 @@ import DadosGeraisCompeticaoConsulta from "../../components/ComponentesConsulta/
 import { MSG033, MSG034, MSG035, MSG043 } from "./../../utils/mensagens";
 
 import "./styles.css";
+import { styled } from "@mui/material/styles";
 
 function Equipe() {
   const navigate = useNavigate();
@@ -153,7 +154,10 @@ function Equipe() {
 
             {equipe?.etapaVigenteStr === MSG035 ? (
               <TabPanel value={value} index={2} className="tab-customizada">
-                <PainelAvaliacao idEquipe={equipe?.id} papelUsuario={papelUsuario} />
+                <PainelAvaliacao
+                  idEquipe={equipe?.id}
+                  papelUsuario={papelUsuario}
+                />
               </TabPanel>
             ) : null}
 

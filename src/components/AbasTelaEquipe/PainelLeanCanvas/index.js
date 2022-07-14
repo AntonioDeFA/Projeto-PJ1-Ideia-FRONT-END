@@ -8,7 +8,15 @@ import Botao from "../../Botao/index";
 import Mensagem from "../../Mensagem";
 import LeanCanvas from "../../LeanCanvas/index";
 import StoreContext from "../../../store/context";
-import { MSG000, MSG001, MSG005, MSG006, MSG054, MSG055, MSG056 } from "../../../utils/mensagens";
+import {
+  MSG000,
+  MSG001,
+  MSG005,
+  MSG006,
+  MSG054,
+  MSG055,
+  MSG056,
+} from "../../../utils/mensagens";
 
 import "./styles.css";
 
@@ -142,7 +150,7 @@ function PainelLeanCanvas(props) {
   }, []);
 
   return (
-    <div id="painel-lean-canvas" className="p-3">
+    <div id="painel-lean-canvas">
       <h5 className="mb-4">
         Olá competidor, aqui você poderá editar seu Lean Canvas para que ele
         possa ser avaliado.
