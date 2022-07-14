@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {
-  Snackbar,
-  Alert
-} from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
 import api from "../../../services/api";
 import Botao from "../../Botao/index";
@@ -14,12 +12,13 @@ import {
   MSG006,
   MSG054,
   MSG058,
-  MSG059
+  MSG059,
 } from "../../../utils/mensagens";
 
 import "./styles.css";
 
 function PainelPitchDeck(props) {
+  const navigate = useNavigate();
 
   const [competicao, setCompeticao] = useState(null);
   const { token } = useContext(StoreContext);
@@ -46,7 +45,7 @@ function PainelPitchDeck(props) {
         handleAlerta(MSG058, MSG005);
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         handleAlerta(error.response.data.message, MSG006);
       });
   };
@@ -55,7 +54,6 @@ function PainelPitchDeck(props) {
     let arquivoInput = document.getElementById("id-input-pitch-deck").files[0];
 
     if (arquivoInput) {
-
       let extensaoPdf = /(.pdf)$/i;
       let result = await toBase64(arquivoInput);
       result = result.replace("data:video/mp4;base64,", "");
@@ -76,7 +74,7 @@ function PainelPitchDeck(props) {
             arquivoPitchDeck: result,
             tipo,
             titulo: nome,
-            descricao: nome
+            descricao: nome,
           })
           .then((response) => {
             handleAlerta(MSG059, MSG005);
@@ -103,8 +101,7 @@ function PainelPitchDeck(props) {
       .then((response) => {
         setCompeticao(response.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, []);
 
   return (
@@ -128,9 +125,7 @@ function PainelPitchDeck(props) {
         )}
         <div className="ms-4">
           <label for="id-input-pitch-deck">
-            <i
-              className="fa fa-upload fa-2x cursor-pointer icone-upload"
-            ></i>
+            <i className="fa fa-upload fa-2x cursor-pointer icone-upload"></i>
           </label>
           <input
             type="file"
@@ -138,7 +133,8 @@ function PainelPitchDeck(props) {
             accept="video/*,.pdf"
             onChange={(evento) => {
               fazerUpload();
-            }} />
+            }}
+          />
         </div>
       </div>
       <div className="d-flex justify-content-between espacamento-entre-botoes-pitch-deck mt-3">
@@ -152,7 +148,11 @@ function PainelPitchDeck(props) {
         <Botao
           titulo="versões"
           classes="btn btn-warning botao-menor-personalizado"
-          onClick={null}
+          onClick={() => {
+            navigate(
+              `/equipe/${props?.idEquipe}/${props?.papelUsuario}/versoes-artefatos/PITCH_DECK`
+            );
+          }}
         />
       </div>
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
