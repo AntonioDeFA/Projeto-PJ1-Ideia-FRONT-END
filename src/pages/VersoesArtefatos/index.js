@@ -15,7 +15,7 @@ import "./styles.css";
 
 function VersoesArtefatos() {
   const navigate = useNavigate();
-  const { idEquipe, papelUsuario } = useParams();
+  const { idEquipe, papelUsuario, tipoArtefato } = useParams();
 
   const { token } = useContext(StoreContext);
 
@@ -24,6 +24,8 @@ function VersoesArtefatos() {
   const [equipe, setEquipe] = useState(null);
 
   useEffect(() => {
+    setValue(tipoArtefato === "LEAN_CANVAS" ? 0 : 1);
+
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
       .get(`/equipe/dados/${idEquipe}`)
