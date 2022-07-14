@@ -145,6 +145,7 @@ function Equipe() {
               <TabPanel value={value} index={3} className="tab-customizada">
                 <PainelPitchDeck
                   idEquipe={equipe?.id}
+                  id={equipe?.idCompeticaoCadastrada}
                   papelUsuario={papelUsuario}
                 />
               </TabPanel>
@@ -152,7 +153,7 @@ function Equipe() {
 
             {equipe?.etapaVigenteStr === MSG035 ? (
               <TabPanel value={value} index={2} className="tab-customizada">
-                <PainelAvaliacao papelUsuario={papelUsuario} />
+                <PainelAvaliacao idEquipe={equipe?.id} papelUsuario={papelUsuario} />
               </TabPanel>
             ) : null}
 

@@ -38,6 +38,12 @@ export function handleDataCompeticaoEncerrada(data) {
   }
 }
 
+export function handleDataComHora(dataComHora) {
+  if (dataComHora && dataComHora.length > 0) {
+    return `${adicionarZero(dataComHora[2])}/${adicionarZero(dataComHora[1])}/${dataComHora[0]} - ${adicionarZero(dataComHora[3])}:${adicionarZero(dataComHora[4])}:${adicionarZero(dataComHora[5])}`;
+  }
+}
+
 const adicionarZero = (numero) => {
   return Number(numero) < 10 ? `0${numero}` : numero;
 };

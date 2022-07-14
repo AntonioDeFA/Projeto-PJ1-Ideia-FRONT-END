@@ -1,20 +1,114 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 
+import {
+  Snackbar,
+  Alert
+} from "@mui/material";
+
+import api from "../../../services/api";
 import Botao from "../../Botao/index";
+import StoreContext from "../../../store/context";
+import {
+  MSG000,
+  MSG005,
+  MSG006,
+  MSG054,
+  MSG058,
+  MSG059
+} from "../../../utils/mensagens";
 
 import "./styles.css";
 
 function PainelPitchDeck(props) {
-  const enviarParaConsultoria = () => {
-    console.log("enviando para consultoria");
+
+  const [competicao, setCompeticao] = useState(null);
+  const { token } = useContext(StoreContext);
+
+  const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG000);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const fazerUpload = () => {
-    console.log("fazendo upload");
+  const handleAlerta = (mensagem, severidade) => {
+    setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
+    setOpen(true);
   };
+
+  const enviarParaConsultoria = () => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/pitch-deck/${props.idEquipe}/consultoria`)
+      .then((response) => {
+        handleAlerta(MSG058, MSG005);
+      })
+      .catch((error) => {
+        console.log(error)
+        handleAlerta(error.response.data.message, MSG006);
+      });
+  };
+
+  const fazerUpload = async () => {
+    let arquivoInput = document.getElementById("id-input-pitch-deck").files[0];
+
+    if (arquivoInput) {
+
+      let extensaoPdf = /(.pdf)$/i;
+      let result = await toBase64(arquivoInput);
+      result = result.replace("data:video/mp4;base64,", "");
+
+      let nome = arquivoInput.name.split(".")[0];
+
+      let tipo = "VIDEO";
+
+      if (extensaoPdf.exec(arquivoInput.name)) {
+        tipo = "ARQUIVO";
+        result = result.replace("data:application/pdf;base64,", "");
+      }
+
+      await setTimeout(() => {
+        api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+        api
+          .post(`/pitch-deck/${props.idEquipe}`, {
+            arquivoPitchDeck: result,
+            tipo,
+            titulo: nome,
+            descricao: nome
+          })
+          .then((response) => {
+            handleAlerta(MSG059, MSG005);
+          })
+          .catch((error) => {
+            handleAlerta(error.response.data.message, MSG006);
+          });
+      }, 400);
+    }
+  };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/competicao/dados-gerais/${props.id}`)
+      .then((response) => {
+        setCompeticao(response.data);
+      })
+      .catch((error) => {
+      });
+  }, []);
 
   return (
-    <div id="painel-pitch-deck">
+    <div id="painel-pitch-deck" className="p-2">
       <h5 className="mb-4 mt-4">
         Olá competidor, aqui você poderá carregar seu Pitch Deck para que ele
         possa ser avaliado!
@@ -24,35 +118,53 @@ function PainelPitchDeck(props) {
       </h5>
       <h5 className="mb-5">
         Lembre-se: caso envie um vídeo, ele deve estar no limite máximo do
-        pitch, que é x minutos!
+        pitch, que é {competicao?.tempoMaximoVideoEmSeg / 60} minutos!
       </h5>
-      <div className="d-flex justify-content-between w-50 mt-5">
+      <div className="d-flex justify-content-start mt-5">
         {props.papelUsuario === "USUARIO_TOKEN" ? (
           <h3>Verifique as versões do seu Pitch Deck</h3>
         ) : (
           <h3>Faça o upload do seu Pitch Deck</h3>
         )}
-        <div className="me-4">
-          <i
-            className="fa fa-upload fa-2x cursor-pointer"
-            onClick={() => fazerUpload()}
-          ></i>
+        <div className="ms-4">
+          <label for="id-input-pitch-deck">
+            <i
+              className="fa fa-upload fa-2x cursor-pointer icone-upload"
+            ></i>
+          </label>
+          <input
+            type="file"
+            id="id-input-pitch-deck"
+            accept="video/*,.pdf"
+            onChange={(evento) => {
+              fazerUpload();
+            }} />
         </div>
       </div>
-      <div className="d-flex justify-content-between w-50 mt-3">
+      <div className="d-flex justify-content-between espacamento-entre-botoes-pitch-deck mt-3">
         {props.papelUsuario === "USUARIO_TOKEN" ? null : (
           <Botao
             titulo="enviar para consultoria"
-            classes="btn btn-warning botao-menor-personalizado"
+            classes="btn btn-warning botao-menor-personalizado botao-personalizado-pitch-deck"
             onClick={() => enviarParaConsultoria()}
           />
         )}
         <Botao
           titulo="versões"
-          classes="btn btn-warning botao-menor-personalizado me-4"
+          classes="btn btn-warning botao-menor-personalizado"
           onClick={null}
         />
       </div>
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
