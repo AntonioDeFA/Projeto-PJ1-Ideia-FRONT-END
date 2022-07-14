@@ -47,7 +47,7 @@ function PainelPitchDeck(props) {
       })
       .catch((error) => {
         console.log(error)
-        handleAlerta("DEU ERRO", MSG006);
+        handleAlerta(error.response.data.message, MSG006);
       });
   };
 
@@ -82,8 +82,7 @@ function PainelPitchDeck(props) {
             handleAlerta(MSG059, MSG005);
           })
           .catch((error) => {
-            console.log(error)
-            handleAlerta("DEU ERRO", MSG006);
+            handleAlerta(error.response.data.message, MSG006);
           });
       }, 400);
     }
