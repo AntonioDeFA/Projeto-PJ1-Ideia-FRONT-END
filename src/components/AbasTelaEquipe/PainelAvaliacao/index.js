@@ -83,7 +83,7 @@ function PainelAvaliacao(props) {
         handleAlerta(MSG057, MSG005);
       })
       .catch((error) => {
-        handleAlerta("DEU ERRO", MSG006);
+        handleAlerta(error.response.data.message, MSG006);
       });
     console.log("enviando para avaliação");
   };
@@ -153,22 +153,20 @@ function PainelAvaliacao(props) {
     api
       .get(`/arquivo-pitch-deck/${props.idEquipe}`)
       .then((response) => {
-        console.log(response.data)
         setPitch(response.data);
       })
       .catch((error) => {
-        handleAlerta("DEU ERRO", MSG006);
+        console.log(error.response.data.message)
       });
 
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
       .get(`/notas-questoes-avaliativas/${props.idEquipe}`)
       .then((response) => {
-        console.log(response.data)
         setNotaEquipe(response.data);
       })
       .catch((error) => {
-        handleAlerta("DEU ERRO", MSG006);
+        handleAlerta(error.response.data.message, MSG006);
       });
 
   }, []);
@@ -247,7 +245,7 @@ function PainelAvaliacao(props) {
           </div>
         </div>
       ) :
-        <h5 className="mt-5 mb-4">Depois da avaliação, suas notas serão apresentadas aqui.</h5>
+        <h5 className="mt-5 mb-4">Depois da avaliação, as notas serão apresentadas aqui.</h5>
       }
 
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
