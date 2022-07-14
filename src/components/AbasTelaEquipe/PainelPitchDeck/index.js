@@ -11,6 +11,7 @@ import StoreContext from "../../../store/context";
 import {
   MSG000,
   MSG005,
+  MSG006,
   MSG054,
   MSG058,
   MSG059
@@ -38,8 +39,16 @@ function PainelPitchDeck(props) {
   };
 
   const enviarParaConsultoria = () => {
-    handleAlerta(MSG058, MSG005);
-    console.log("enviando para consultoria");
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/pitch-deck/${props.idEquipe}/consultoria`)
+      .then((response) => {
+        handleAlerta(MSG058, MSG005);
+      })
+      .catch((error) => {
+        console.log(error)
+        handleAlerta("DEU ERRO", MSG006);
+      });
   };
 
   const fazerUpload = async () => {
@@ -48,12 +57,6 @@ function PainelPitchDeck(props) {
     if (arquivoInput) {
 
       let extensaoPdf = /(.pdf)$/i;
-
-      if (!extensaoPdf.exec(arquivoInput.name)) {
-        console.log("É vídeo")
-        console.log("Possui duração x")
-      }
-
       let result = await toBase64(arquivoInput);
       result = result.replace("data:video/mp4;base64,", "");
 
@@ -67,13 +70,21 @@ function PainelPitchDeck(props) {
       }
 
       await setTimeout(() => {
-        let pitchDeck = {
-          nome,
-          arquivoPitchDeck: result,
-          tipo
-        }
-        handleAlerta(MSG059, MSG005);
-        console.log(pitchDeck);
+        api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+        api
+          .post(`/pitch-deck/${props.idEquipe}`, {
+            arquivoPitchDeck: result,
+            tipo,
+            titulo: nome,
+            descricao: nome
+          })
+          .then((response) => {
+            handleAlerta(MSG059, MSG005);
+          })
+          .catch((error) => {
+            console.log(error)
+            handleAlerta("DEU ERRO", MSG006);
+          });
       }, 400);
     }
   };
