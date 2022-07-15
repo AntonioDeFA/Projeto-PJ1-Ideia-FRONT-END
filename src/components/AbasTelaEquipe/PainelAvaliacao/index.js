@@ -76,7 +76,7 @@ function PainelAvaliacao(props) {
         handleAlerta(MSG057, MSG005);
       })
       .catch((error) => {
-        handleAlerta(error.response.data.message, MSG006);
+        handleAlerta(error.response.data.motivosErros[0], MSG006);
       });
     console.log("enviando para avaliação");
   };
@@ -287,20 +287,6 @@ function PainelAvaliacao(props) {
             Verifique seu Lean Canvas e Pitch deck, e lembre-se de ler o
             regulamento da competição.
           </h5>
-
-          <div className="d-flex justify-content-start w-100 mt-4 mb-3">
-            <Botao
-              titulo="ver pitch deck"
-              classes="btn btn-warning botao-menor-personalizado me-3"
-              onClick={null}
-            />
-
-            <Botao
-              titulo="ver canvas"
-              classes="btn btn-warning botao-menor-personalizado me-3"
-              onClick={null}
-            />
-          </div>
 
           <div className="botoes-cadastro mt-5">
             <Botao
