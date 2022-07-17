@@ -43,13 +43,15 @@ function DefaultHeader(props) {
   };
 
   useEffect(() => {
+    consultarQuantidadeConvites();
+  }, [houveAlteracao]);
+
+  useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api.get("/usuario-logado").then((response) => {
       setUsuarioLogado(response.data);
     });
-
-    consultarQuantidadeConvites();
-  }, [token, houveAlteracao]);
+  }, [token]);
 
   return (
     <div id="component-defaultHeader">
@@ -99,7 +101,7 @@ function DefaultHeader(props) {
                 className={handleIconeComDestaque("avaliador")}
                 id="op-avaliador-cabecalho"
               >
-                <Link to={"/inicio"}>
+                <Link to={"/listagem-avaliacao"}>
                   <i className="icone-cabecalho fa-regular fa-circle-check mt-2"></i>
                 </Link>
               </li>
@@ -124,7 +126,7 @@ function DefaultHeader(props) {
                 className={handleIconeComDestaque("consultor")}
                 id="op-consultor-cabecalho"
               >
-                <Link to={"/inicio"}>
+                <Link to={"/listagem-consultoria"}>
                   <i className="icone-cabecalho fa-solid fa-users mt-2"></i>
                 </Link>
               </li>

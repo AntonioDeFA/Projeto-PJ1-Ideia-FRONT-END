@@ -15,8 +15,10 @@ import DadosCompeticao from "./pages/DadosCompeticao";
 import VersoesArtefatos from "./pages/VersoesArtefatos";
 import ConvitesAvaliador from "./pages/ConvitesAvaliador";
 import ConvitesConsultor from "./pages/ConvitesConsultor";
+import ListagemAvaliacao from "./pages/ListagemAvaliacao/index";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
 import FeedbacksLeanCanvas from "./pages/FeedbacksLeanCanvas/index";
+import ListagemConsultoria from "./pages/ListagemConsultoria/index";
 
 function ProjetoRoutes() {
   return (
@@ -104,6 +106,22 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <FeedbacksLeanCanvas />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/listagem-consultoria"
+            element={
+              <RoutesPrivate>
+                <ListagemConsultoria />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/listagem-avaliacao"
+            element={
+              <RoutesPrivate>
+                <ListagemAvaliacao />
               </RoutesPrivate>
             }
           />
