@@ -169,9 +169,16 @@ function Login() {
               }
               id="link-criar-conta"
             >
-              <p>
+              <p style={{ margin: 0 }}>
                 Não tem conta?{" "}
-                <Link to={"/cadastro-usuario"}>Crie a sua aqui!</Link>
+                <Link to={"/cadastro-usuario"}>Crie a sua aqui!</Link> <br />{" "}
+                <Link to={"/about-us"}>
+                  Sobre nós{" "}
+                  <i
+                    style={{ color: "#fc7a00" }}
+                    className="fa fa-circle-question"
+                  ></i>
+                </Link>
               </p>
             </div>
           </div>

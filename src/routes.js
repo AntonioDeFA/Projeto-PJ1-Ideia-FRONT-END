@@ -6,6 +6,7 @@ import RoutesPrivate from "./store/routes/private";
 
 import Login from "./pages/Login";
 import Equipe from "./pages/Equipe/index";
+import AboutUs from "./pages/AboutUs";
 import LoginToken from "./pages/LoginToken";
 import TelaInicial from "./pages/TelaInicial";
 import ResetarSenha from "./pages/ResetarSenha/index";
@@ -26,6 +27,7 @@ function ProjetoRoutes() {
       <StoreProvider>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/about-us" element={<AboutUs />} />
           <Route path="/login-token" element={<LoginToken />} />
           <Route path="/resetar-senha" element={<ResetarSenha />} />
           <Route path="/cadastro-usuario" element={<CadastroUsuario />} />

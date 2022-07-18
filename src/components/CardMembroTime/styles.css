@@ -1,0 +1,20 @@
+.card-membro {
+  width: 300px;
+  height: 450px;
+  border-radius: 5%;
+  background-color: var(--color-pitch);
+}
+
+img.imagem-membro {
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+}
+
+i.contato {
+  font-size: 30pt;
+}
+
+a.link-contato-membro {
+  color: var(--color-secondary-titles);
+}
