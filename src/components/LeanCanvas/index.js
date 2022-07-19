@@ -116,6 +116,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={problema}
+                id="campo-problema"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setProblema(event.target.value);
@@ -146,6 +147,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={solucao}
+                id="campo-solucao"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setSolucao(event.target.value);
@@ -175,6 +177,7 @@ function LeanCanvas(props) {
                   minRows={2}
                   placeholder="digite aqui"
                   value={metricas}
+                  id="campo-metricas"
                   className="w-100 p-1"
                   onChange={(event) => {
                     setMetricas(event.target.value);
@@ -206,6 +209,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={proposta}
+                id="campo-proposta"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setProposta(event.target.value);
@@ -238,6 +242,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={vantagem}
+                id="campo-vantagem"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setVantagem(event.target.value);
@@ -267,6 +272,7 @@ function LeanCanvas(props) {
                   minRows={2}
                   placeholder="digite aqui"
                   value={canais}
+                  id="campo-canais"
                   className="w-100 p-1"
                   onChange={(event) => {
                     setCanais(event.target.value);
@@ -298,6 +304,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={segmentos}
+                id="campo-segmentos"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setSegmentos(event.target.value);
@@ -330,6 +337,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={estrutura}
+                id="campo-estrutura"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setEstrutura(event.target.value);
@@ -360,6 +368,7 @@ function LeanCanvas(props) {
                 minRows={2}
                 placeholder="digite aqui"
                 value={fonte}
+                id="campo-fonte"
                 className="w-100 p-1"
                 onChange={(event) => {
                   setFonte(event.target.value);
