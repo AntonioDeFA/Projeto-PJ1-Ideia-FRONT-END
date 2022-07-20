@@ -21,7 +21,21 @@ function ListagemAvaliacao() {
       </div>
 
       {/* TODO trocar ID dessa div*/}
-      <div id="dados-lean-canvas-para-leitura"></div>
+      <div id="dados-lean-canvas-para-leitura">
+        <div style={{ marginLeft: "390px", marginTop: "30px" }}>
+          <h2 id="nome-pagina">Olá, avaliador!</h2>
+        </div>
+        <div>
+          <h5
+            style={{ marginLeft: "390px" }}
+            className="mb-5"
+            id="saudacao-parte-1"
+          >
+            Lhe foram enviados esses pitches para serem avaliados. Dê uma olhada
+            e devolva-os com notas e feedbacks!
+          </h5>
+        </div>
+      </div>
     </div>
   );
 }

@@ -71,7 +71,7 @@ function ConvitesConsultor() {
                   competição!
                 </h5>
               ) : (
-                <h5 className="mb-5">
+                <h5 className="mb-5 word-break">
                   Você ainda não possui convites. Quando receber, será
                   notificado por e-mail e poderá visualizar os convites aqui!
                 </h5>

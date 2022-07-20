@@ -74,38 +74,6 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
               size="small"
             />
 
-            <TextField
-              id="filled-select-mesDoAno"
-              select
-              label="Mês"
-              value={mesDoAno}
-              onChange={(e) => {
-                setMesDoAno(e.target.value);
-              }}
-              variant="filled"
-              color="warning"
-              style={{ maxWidth: "17ch" }}
-            >
-              {mesesDoAno.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              id="filled-number"
-              label="Ano"
-              value={anoFiltragem}
-              onChange={(e) => {
-                setAnoFiltragem(e.target.value);
-              }}
-              type="number"
-              variant="filled"
-              color="warning"
-              style={{ maxWidth: "17ch" }}
-            />
-
             <div className="margem-personalizada">
               <Botao
                 titulo="filtrar"
