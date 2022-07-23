@@ -1,0 +1,53 @@
+ul.lista-pitches {
+  list-style: none;
+  max-height: 373px;
+  overflow-y: auto;
+  width: 985px;
+  margin-left: -35px;
+}
+
+li.item-list-pitch {
+  width: 931px;
+}
+
+div .pitch {
+  width: 931px;
+  height: 70px;
+  padding: 20px;
+  display: flex;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  align-items: center;
+  background-color: white;
+  justify-content: space-between;
+  border: 1px solid var(--color-pitch);
+}
+
+div .nome-competicao-pitch-h4 {
+  margin: 0;
+}
+
+div .botoes-acessar-pitch {
+  display: flex;
+  justify-content: space-between;
+}
+
+div .botoes-acessar-pitch {
+  width: 90px;
+}
+
+i.icone-pitch {
+  color: var(--color-pitch);
+  font-weight: bolder;
+  font-size: 25pt;
+}
+
+h5#saudacao-parte-1 {
+  line-height: 30px;
+}
+
+.link-competicao {
+  color: black;
+  text-decoration: none;
+}

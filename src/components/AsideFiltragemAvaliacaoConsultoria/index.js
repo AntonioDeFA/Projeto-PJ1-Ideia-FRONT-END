@@ -2,11 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import {
-  Snackbar,
-  Alert,
   TableContainer,
   Paper,
   Table,
@@ -17,7 +14,6 @@ import {
 
 import Botao from "../Botao";
 import StoreContext from "../../store/context";
-import { mesesDoAno } from "../../utils/constantes";
 import { StyledTableRow, StyledTableCell } from "./../../utils/constantes";
 
 import "./styles.css";
@@ -27,15 +23,8 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
   const navigate = useNavigate();
 
   const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState("");
-  const [mesDoAno, setMesDoAno] = useState("");
-  const [anoFiltragem, setAnoFiltragem] = useState("");
 
   const [rows, setRows] = useState([]);
-
-  const realizarFiltragem = (event) => {
-    event.preventDefault();
-    props.realizarFiltragem(nomeCompeticaoFiltragem, mesDoAno, anoFiltragem);
-  };
 
   const acessarCompeticao = (idCompeticao) => {
     navigate(`/dados-competicao/${idCompeticao}/${props.papelUsuario}`);
@@ -78,7 +67,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
               <Botao
                 titulo="filtrar"
                 classes="btn btn-warning botao-menor-personalizado"
-                onClick={realizarFiltragem}
+                onClick={null}
               />
             </div>
 

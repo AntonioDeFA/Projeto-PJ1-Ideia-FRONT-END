@@ -1,0 +1,53 @@
+ul.lista-artefatos {
+  list-style: none;
+  max-height: 373px;
+  overflow-y: auto;
+  width: 985px;
+  margin-left: -35px;
+}
+
+li.item-list-artefato {
+  width: 931px;
+}
+
+div .artefato {
+  width: 931px;
+  height: 70px;
+  padding: 20px;
+  display: flex;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  align-items: center;
+  background-color: white;
+  justify-content: space-between;
+  border: 1px solid var(--color-pitch);
+}
+
+div .nome-competicao-artefato-h4 {
+  margin: 0;
+}
+
+div .botoes-acessar-artefato {
+  display: flex;
+  justify-content: space-between;
+}
+
+div .botoes-acessar-artefato {
+  width: 90px;
+}
+
+i.icone-artefato {
+  color: var(--color-pitch);
+  font-weight: bolder;
+  font-size: 30pt;
+}
+
+h5#saudacao-parte-1 {
+  line-height: 30px;
+}
+
+.link-competicao {
+  color: black;
+  text-decoration: none;
+}
