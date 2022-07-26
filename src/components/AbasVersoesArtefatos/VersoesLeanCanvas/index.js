@@ -49,7 +49,7 @@ function VersoesLeanCanvas(props) {
                 ></i>
 
                 <h6 style={{ margin: 0 }}>
-                  Data: {formatarDataEHora(versao.dataHoraAprovacao)}
+                  {formatarDataEHora(versao.dataHoraAprovacao)}
                 </h6>
                 <Link
                   to={`/equipe/${props.idEquipe}/${props.papelUsuario}/feedbacks-lean-canvas/${versao.idLeanCanvas}`}
