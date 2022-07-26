@@ -11,6 +11,7 @@ import DefaultHeader from "../../components/DefaultHeader";
 import AsideFeedbacksLeanCanvas from "../../components/AsideFeedbacksLeanCanvas";
 
 import "./styles.css";
+import { formatarDataEHora } from "../../services/utils";
 
 function FeedbacksLeanCanvas() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function FeedbacksLeanCanvas() {
   const { token } = useContext(StoreContext);
 
   const [equipe, setEquipe] = useState(null);
+  const [dataHoraUltimoFeedbackInformado, setDataHoraUltimoFeedbackInformado] =
+    useState(null);
 
   const [leanCanvas, setLeanCanvas] = useState({
     problema: "",
@@ -33,6 +36,20 @@ function FeedbacksLeanCanvas() {
   });
 
   const [mudou, setMudou] = useState(true);
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/lean-canvas/${idLeanCanvas}/feedbacks-consultoria`)
+      .then((response) => {
+        setDataHoraUltimoFeedbackInformado(
+          response.data.dataHoraUltimoFeedbackInformado
+        );
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }, [token]);
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -102,7 +119,8 @@ function FeedbacksLeanCanvas() {
           />
         </div>
         <div style={{ marginLeft: "375px" }}>
-          Último feedback criado em dd/MM/yyyy. Consultor{" "}
+          Último feedback criado em{" "}
+          {formatarDataEHora(dataHoraUltimoFeedbackInformado)}. Consultor{" "}
           {equipe?.nomeConsultor}.
         </div>
 
