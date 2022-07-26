@@ -90,48 +90,44 @@ function AsideFeedbacksLeanCanvas(props) {
         className="elementos-centralizados"
         id="listagens-feedbacks-filtragem"
       >
-        <div className="botoes-principais">
-          <ButtonGroup
-            variant="contained"
-            aria-label="outlined primary button group"
-          >
-            <Botao
-              titulo="potencialidades"
-              onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
-              id="id-btn-feedbacks-potencialidades"
-              classes={classesBtnPotencialidades}
-            />
-            <Botao
-              titulo="fragilidades"
-              onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
-              id="id-btn-feedbacks-fragilidades"
-              classes={classesBtnFragilidades}
-            />
-          </ButtonGroup>
-        </div>
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Botao
+            titulo="potencialidades"
+            onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
+            id="id-btn-feedbacks-potencialidades"
+            classes={classesBtnPotencialidades}
+          />
+          <Botao
+            titulo="fragilidades"
+            onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
+            id="id-btn-feedbacks-fragilidades"
+            classes={classesBtnFragilidades}
+          />
+        </ButtonGroup>
       </div>
 
       <div className="feedbacks">
-        {mudou ? (
-          <List
-            sx={{
-              width: "100%",
-              position: "relative",
-            }}
-          >
-            {feedbacks?.map((feedback, index) => (
-              <li
-                key={index}
-                style={{ maxHeight: "150px", overflowY: "auto" }}
-                className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
-              >
-                <h6 style={{ wordBreak: "break-all", margin: 0 }}>
-                  <strong>{index + 1}°</strong> {feedback.sugestao}
-                </h6>
-              </li>
-            ))}
-          </List>
-        ) : null}
+        <List
+          sx={{
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          {feedbacks?.map((feedback, index) => (
+            <li
+              key={index}
+              style={{ maxHeight: "150px", overflowY: "auto" }}
+              className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+            >
+              <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                <strong>{index + 1}°</strong> {feedback.sugestao}
+              </h6>
+            </li>
+          ))}
+        </List>
       </div>
     </div>
   );

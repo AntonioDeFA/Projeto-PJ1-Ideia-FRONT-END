@@ -88,5 +88,5 @@ export const MSG054 = "warning";
 export const MSG055 = "Lean Canvas enviado para consultoria";
 export const MSG056 = "Lean Canvas salvo com sucesso";
 export const MSG057 = "Enviado para avaliação";
-export const MSG058 = "Pitch Dech enviado para consultoria";
+export const MSG058 = "Pitch Deck enviado para consultoria";
 export const MSG059 = "Upload de Pitch Deck feito com sucesso";

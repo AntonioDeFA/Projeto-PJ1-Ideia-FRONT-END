@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { List, TextareaAutosize } from "@mui/material";
+import { ButtonGroup, List, TextareaAutosize } from "@mui/material";
 
 import Botao from "../../Botao";
 import api from "../../../services/api";
@@ -14,7 +14,7 @@ function VersoesPitchDeck(props) {
 
   const [mudouFeedBacks, setMudouFeedbacks] = useState(true);
   const [mudouBotao, setMudouBotao] = useState(true);
-  const [habilitar, setHabilitar] = useState(true);
+  const [isPotencialidades, setIsPotencialidades] = useState(true);
 
   const [versoes, setVersoes] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
@@ -36,7 +36,7 @@ function VersoesPitchDeck(props) {
 
     await setTimeout(() => {
       setFeedbacks(feedbacksPotencialidades);
-      setHabilitar(true);
+      setIsPotencialidades(true);
       setMudouFeedbacks(false);
       setMudouFeedbacks(true);
     }, 400);
@@ -45,10 +45,10 @@ function VersoesPitchDeck(props) {
   const trocarListaFeedbacks = async (tipo) => {
     if (tipo === "POTENCIALIDADES") {
       setFeedbacks(feedbacksPotencialidades);
-      setHabilitar(true);
+      setIsPotencialidades(true);
     } else {
       setFeedbacks(feedbacksFragilidades);
-      setHabilitar(false);
+      setIsPotencialidades(false);
     }
 
     await setTimeout(() => {
@@ -84,7 +84,6 @@ function VersoesPitchDeck(props) {
       .get(`/pitch-deck/${props.idEquipe}/feedbacks-de-versoes-consultoria`)
       .then((response) => {
         setVersoes(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -97,70 +96,52 @@ function VersoesPitchDeck(props) {
         <div className="d-flex justify-content-between">
           <div className="w-50 cor-background-feedbacks p-3">
             <div>
-              {mudouBotao ? (
-                <>
+              <div className="botoes-principais">
+                <ButtonGroup
+                  variant="contained"
+                  aria-label="outlined primary button group"
+                >
                   <Botao
                     titulo="potencialidades"
                     onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
                     id="id-btn-feedbacks-potencialidades"
                     classes={
-                      habilitar
-                        ? "btn btn-secondary botao-menor-personalizado me-2"
-                        : "btn btn-warning botao-menor-personalizado me-2"
+                      isPotencialidades
+                        ? "btn btn-warning botao-menor-personalizado"
+                        : "btn btn-secondary botao-menor-personalizado"
                     }
-                    disabled={habilitar}
                   />
                   <Botao
                     titulo="fragilidades"
                     onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
                     id="id-btn-feedbacks-fragilidades"
                     classes={
-                      habilitar
-                        ? "btn btn-warning botao-menor-personalizado me-2"
-                        : "btn btn-secondary botao-menor-personalizado me-2"
+                      isPotencialidades
+                        ? "btn btn-secondary botao-menor-personalizado"
+                        : "btn btn-warning botao-menor-personalizado"
                     }
-                    disabled={!habilitar}
                   />
-                </>
-              ) : null}
+                </ButtonGroup>
+              </div>
 
-              <div id="id-lista-feedbacks" className="mt-3">
+              <div id="id-lista-feedbacks" className="feedbacks">
                 <List
-                  className="cor-background-feedbacks"
                   sx={{
                     width: "100%",
                     position: "relative",
-                    overflow: "auto",
-                    maxHeight: 320,
-                    "& ul": { padding: 0 },
                   }}
-                  subheader={<li />}
                 >
-                  {mudouFeedBacks
-                    ? feedbacks.map((feedback, index) => (
-                        <li
-                          key={index}
-                          className="rounded mb-3 p-3 borda-laranja align-self-center cor-background-card"
-                        >
-                          <div>
-                            <h6 className="mb-2">{feedback.tipoFeedback}</h6>
-                          </div>
-                          <div>
-                            <TextareaAutosize
-                              aria-label="minimum height"
-                              minRows={2}
-                              value={feedback.sugestao}
-                              className="w-100 p-2 ps-0 cor-background-card border-0"
-                              style={{
-                                height: 120,
-                                resize: "none",
-                              }}
-                              disabled={true}
-                            />
-                          </div>
-                        </li>
-                      ))
-                    : null}
+                  {feedbacks?.map((feedback, index) => (
+                    <li
+                      key={index}
+                      style={{ maxHeight: "150px", overflowY: "auto" }}
+                      className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+                    >
+                      <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                        <strong>{index + 1}°</strong> {feedback.sugestao}
+                      </h6>
+                    </li>
+                  ))}
                 </List>
               </div>
             </div>
