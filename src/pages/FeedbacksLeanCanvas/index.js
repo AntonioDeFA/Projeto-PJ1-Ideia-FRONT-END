@@ -102,7 +102,8 @@ function FeedbacksLeanCanvas() {
           />
         </div>
         <div style={{ marginLeft: "375px" }}>
-          Último feedback criado em dd/MM/yyyy. Consultor fulano.
+          Último feedback criado em dd/MM/yyyy. Consultor{" "}
+          {equipe?.nomeConsultor}.
         </div>
 
         <div className="p-3 d-flex justify-content-center">
