@@ -102,10 +102,7 @@ function FeedbacksLeanCanvas() {
           />
         </div>
         <div style={{ marginLeft: "375px" }}>
-          <h5>
-            Aqui poderão ver os feedbacks dos Lean Canvas submetidos para
-            consultoria.
-          </h5>
+          Último feedback criado em dd/MM/yyyy. Consultor fulano.
         </div>
 
         <div className="p-3 d-flex justify-content-center">

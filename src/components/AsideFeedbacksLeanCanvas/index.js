@@ -79,6 +79,13 @@ function AsideFeedbacksLeanCanvas(props) {
 
   return (
     <div className="aside-feedbacks-lean-canvas">
+      <div className="mt-2 mb-3" style={{ textAlign: "center" }}>
+        <h6>
+          Aqui poderão ver os feedbacks dos Lean Canvas submetidos para a
+          consultoria.
+        </h6>
+      </div>
+
       <div
         className="elementos-centralizados"
         id="listagens-feedbacks-filtragem"
