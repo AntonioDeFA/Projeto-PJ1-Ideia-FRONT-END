@@ -1,0 +1,18 @@
+div .aside-feedbacks-lean-canvas-em-elaboracao {
+  background-color: var(--color-background-aside);
+  width: 22rem;
+  padding: 15px;
+  display: block;
+  float: left;
+  height: 770px;
+  overflow: auto;
+}
+
+div #listagens-feedbacks-filtragem-em-elaboracao {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+div .feedbacks-em-elaboracao {
+  margin-top: 10px;
+}

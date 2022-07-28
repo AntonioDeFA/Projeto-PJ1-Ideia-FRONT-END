@@ -8,20 +8,15 @@ import Botao from "../../components/Botao";
 import LeanCanvas from "../../components/LeanCanvas";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
-import AsideFeedbacksLeanCanvas from "../../components/AsideFeedbacksLeanCanvas";
+import AsideCriacaoFeedbacksLeanCanvas from "../../components/AsideCriacaoFeedbacksLeanCanvas";
 
 import "./styles.css";
-import { formatarDataEHora } from "../../services/utils";
 
-function FeedbacksLeanCanvas() {
+function CriacaoFeedbacksLeanCanvas() {
   const navigate = useNavigate();
   const { idEquipe, papelUsuario, idLeanCanvas } = useParams();
 
   const { token } = useContext(StoreContext);
-
-  const [equipe, setEquipe] = useState(null);
-  const [dataHoraUltimoFeedbackInformado, setDataHoraUltimoFeedbackInformado] =
-    useState(null);
 
   const [leanCanvas, setLeanCanvas] = useState({
     problema: "",
@@ -40,34 +35,7 @@ function FeedbacksLeanCanvas() {
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
-      .get(
-        `/lean-canvas/${idLeanCanvas}/AVALIADO_CONSULTOR/feedbacks-consultoria`
-      )
-      .then((response) => {
-        setDataHoraUltimoFeedbackInformado(
-          response.data.dataHoraUltimoFeedbackInformado
-        );
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  }, [token]);
-
-  useEffect(() => {
-    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
-    api
-      .get(`/equipe/dados/${idEquipe}`)
-      .then((response) => {
-        setEquipe(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-
-    api
-      .get(
-        `/lean-canvas/${idLeanCanvas}/AVALIADO_CONSULTOR/feedbacks-consultoria`
-      )
+      .get(`/lean-canvas/${idLeanCanvas}/EM_CONSULTORIA/feedbacks-consultoria`)
       .then((response) => {
         const { data } = response;
 
@@ -82,6 +50,8 @@ function FeedbacksLeanCanvas() {
           estruturaDeCusto: data.estruturaDeCustos,
           fontesDeReceita: data.fonteDeReceita,
         });
+
+        console.log(data);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -95,37 +65,34 @@ function FeedbacksLeanCanvas() {
 
   return (
     <div id="pagina-feedbacks-lean-canvas">
-      <DefaultHeader isLoginViaToken={papelUsuario === "USUARIO_TOKEN"} />
+      <DefaultHeader
+        iconeDestaque="consultor"
+        isLoginViaToken={papelUsuario === "USUARIO_TOKEN"}
+      />
 
       <div id="aside-feedbacks-lean-canvas-componente">
-        <AsideFeedbacksLeanCanvas idLeanCanvas={idLeanCanvas} />
+        <AsideCriacaoFeedbacksLeanCanvas idLeanCanvas={idLeanCanvas} />
       </div>
 
       <div id="dados-lean-canvas-para-leitura">
         <div className="ps-0 pe-4 pt-3 d-flex justify-content-between">
           <div>
             <div>
-              <h1 className="ps-3 ms-1 titulos-principais">
-                Equipe {equipe?.nomeEquipe}
-              </h1>
+              <h1 className="ps-3 ms-1 titulos-principais">Lean Canvas</h1>
             </div>
           </div>
-          <Botao
-            titulo="voltar"
-            classes="btn me-4 btn-warning botao-menor-personalizado"
-            onClick={() => {
-              navigate(
-                `/equipe/${idEquipe}/${papelUsuario}/versoes-artefatos/LEAN_CANVAS`
-              );
-            }}
-          />
-        </div>
-        <div style={{ marginLeft: "375px" }}>
-          Último feedback criado em{" "}
-          {dataHoraUltimoFeedbackInformado
-            ? formatarDataEHora(dataHoraUltimoFeedbackInformado)
-            : null}
-          . Consultor {equipe?.nomeConsultor}.
+          <div>
+            <Botao
+              titulo="enviar"
+              classes="btn me-2 btn-warning botao-menor-personalizado"
+              onClick={null}
+            />
+            <Botao
+              titulo="voltar"
+              classes="btn me-4 btn-secondary botao-menor-personalizado"
+              onClick={null}
+            />
+          </div>
         </div>
 
         <div className="p-3 d-flex justify-content-center">
@@ -142,4 +109,4 @@ function FeedbacksLeanCanvas() {
   );
 }
 
-export default FeedbacksLeanCanvas;
+export default CriacaoFeedbacksLeanCanvas;

@@ -1,6 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 
-import { ButtonGroup, List } from "@mui/material";
+import {
+  List,
+  Radio,
+  RadioGroup,
+  ButtonGroup,
+  FormControl,
+  FormControlLabel,
+  TextareaAutosize,
+} from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "./../Botao/index";
@@ -9,7 +17,7 @@ import StoreContext from "./../../store/context";
 
 import "./styles.css";
 
-function AsideFeedbacksLeanCanvas(props) {
+function AsideCriacaoFeedbacksLeanCanvas(props) {
   const [feedbacks, setFeedbacks] = useState(null);
   const [feedbacksPotencialidades, setFeedbacksPotencialidades] =
     useState(null);
@@ -21,9 +29,18 @@ function AsideFeedbacksLeanCanvas(props) {
 
   const [btnSelecionado, setBtnSelecionado] = useState("POTENCIALIDADES");
 
+  const rdButtonPotencialidade = useRef(null);
+  const rdButtonFragilidade = useRef(null);
+
+  const [opcaoTipoFeedback, setOpcaoTipoFeedback] = useState("potencialidade");
+
   const { token } = useContext(StoreContext);
 
-  const [mudou, setMudou] = useState(true);
+  const [feedback, setFeedback] = useState(MSG000);
+
+  const handleRadioButtonsTipoFeedback = (event) => {
+    setOpcaoTipoFeedback(event.target.value);
+  };
 
   const trocarListaFeedbacks = (tipoFeedback) => {
     setBtnSelecionado(tipoFeedback);
@@ -44,11 +61,6 @@ function AsideFeedbacksLeanCanvas(props) {
       setFeedbacks(feedbacksFragilidades);
     }
 
-    setTimeout(() => {
-      setMudou(false);
-      setMudou(true);
-    }, 400);
-
     setClassesBtnPotencialidades(classesBotaoPotencialidades);
     setClassesBtnFragilidades(classesBotaoFragilidades);
   }, [btnSelecionado]);
@@ -60,7 +72,7 @@ function AsideFeedbacksLeanCanvas(props) {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
       .get(
-        `/lean-canvas/${props.idLeanCanvas}/AVALIADO_CONSULTOR/feedbacks-consultoria`
+        `/lean-canvas/${props.idLeanCanvas}/EM_CONSULTORIA/feedbacks-consultoria`
       )
       .then((response) => {
         response.data.feedbacksAvaliativos.map((feedback) => {
@@ -80,17 +92,10 @@ function AsideFeedbacksLeanCanvas(props) {
   }, [token]);
 
   return (
-    <div className="aside-feedbacks-lean-canvas">
-      <div className="mt-2 mb-3" style={{ textAlign: "center" }}>
-        <h6>
-          Aqui poderão ver os feedbacks dos Lean Canvas submetidos para a
-          consultoria.
-        </h6>
-      </div>
-
+    <div className="aside-feedbacks-lean-canvas-em-elaboracao">
       <div
         className="elementos-centralizados"
-        id="listagens-feedbacks-filtragem"
+        id="listagens-feedbacks-filtragem-em-elaboracao"
       >
         <ButtonGroup
           variant="contained"
@@ -111,18 +116,20 @@ function AsideFeedbacksLeanCanvas(props) {
         </ButtonGroup>
       </div>
 
-      <div className="feedbacks">
+      <div className="feedbacks-em-elaboracao">
         <List
           sx={{
             width: "100%",
             position: "relative",
+            maxHeight: "400px",
+            overflow: "auto",
           }}
         >
           {feedbacks?.map((feedback, index) => (
             <li
               key={index}
               style={{ maxHeight: "150px", overflowY: "auto" }}
-              className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+              className="rounded borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
             >
               <h6 style={{ wordBreak: "break-all", margin: 0 }}>
                 <strong>{index + 1}°</strong> {feedback.sugestao}
@@ -131,8 +138,78 @@ function AsideFeedbacksLeanCanvas(props) {
           ))}
         </List>
       </div>
+
+      <hr className="separator" />
+
+      <div id="criar-feedback-lean-canvas" className="mt-3">
+        <div className="elementos-centralizados">
+          <h5>Adicione um feedback</h5>
+        </div>
+        <FormControl component="fieldset">
+          <RadioGroup
+            name="controlled-radio-buttons-group"
+            value={opcaoTipoFeedback}
+            onChange={handleRadioButtonsTipoFeedback}
+          >
+            <div className="d-flex">
+              <FormControlLabel
+                value="potencialidade"
+                ref={rdButtonPotencialidade}
+                control={
+                  <Radio
+                    sx={{
+                      color: "#999",
+                      "&.Mui-checked": {
+                        color: "#FC7A00",
+                      },
+                    }}
+                  />
+                }
+                label="Potencialidade"
+              />
+              <FormControlLabel
+                value="fragilidade"
+                ref={rdButtonFragilidade}
+                control={
+                  <Radio
+                    sx={{
+                      color: "#999",
+                      "&.Mui-checked": {
+                        color: "#FC7A00",
+                      },
+                    }}
+                  />
+                }
+                label="Fragilidade"
+              />
+            </div>
+          </RadioGroup>
+        </FormControl>
+
+        <TextareaAutosize
+          aria-label="minimum height"
+          minRows={2}
+          placeholder="Digite aqui seu feedback"
+          value={feedback}
+          id="feedback-avaliativo-id"
+          className="w-100 p-1"
+          onChange={(event) => {
+            setFeedback(event.target.value);
+          }}
+          style={{
+            height: 100,
+            resize: "none",
+          }}
+        />
+        <Botao
+          titulo="adicionar"
+          onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
+          id="id-btn-feedbacks-fragilidades"
+          classes="btn me-2 btn-warning botao-menor-personalizado"
+        />
+      </div>
     </div>
   );
 }
 
-export default AsideFeedbacksLeanCanvas;
+export default AsideCriacaoFeedbacksLeanCanvas;

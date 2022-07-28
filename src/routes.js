@@ -20,6 +20,7 @@ import ListagemAvaliacao from "./pages/ListagemAvaliacao/index";
 import CadastroCompeticao from "./pages/CadastroCompeticao";
 import FeedbacksLeanCanvas from "./pages/FeedbacksLeanCanvas/index";
 import ListagemConsultoria from "./pages/ListagemConsultoria/index";
+import CriacaoFeedbacksLeanCanvas from "./pages/CriacaoFeedbacksLeanCanvas";
 
 function ProjetoRoutes() {
   return (
@@ -124,6 +125,14 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <ListagemAvaliacao />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/criar-feedbacks-lean-canvas/:idEquipe/:idLeanCanvas"
+            element={
+              <RoutesPrivate>
+                <CriacaoFeedbacksLeanCanvas />
               </RoutesPrivate>
             }
           />

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import api from "./../../services/api";
 import StoreContext from "./../../store/context";
@@ -8,6 +9,7 @@ import AsideFiltragemAvaliacaoConsultoria from "./../../components/AsideFiltrage
 import "./styles.css";
 
 function ListagemConsultoria() {
+  const navigate = useNavigate();
   const { token } = useContext(StoreContext);
 
   const [artefatos, setArtefatos] = useState([]);
@@ -67,7 +69,7 @@ function ListagemConsultoria() {
                       id={"btn-acessar-pitch-deck" + index}
                     >
                       <i
-                        title="Fazer download do Pitch Deck"
+                        title="Escrever feedbacks no Pitch Deck"
                         className="icone-artefato fa-solid fa-file-arrow-down"
                       ></i>
                     </div>
@@ -76,8 +78,11 @@ function ListagemConsultoria() {
                       id={"btn-acessar-lean-canvas" + index}
                     >
                       <i
-                        title="Visualizar Lean Canvas"
+                        title="Escrever feedbacks no Lean Canvas"
                         className="icone-artefato fa-brands fa-trello"
+                        onClick={() => {
+                          navigate("/criar-feedbacks-lean-canvas/1/5555");
+                        }}
                       ></i>
                     </div>
                   </div>
