@@ -14,16 +14,20 @@ function ListagemConsultoria() {
 
   const [artefatos, setArtefatos] = useState([]);
 
+  const filtrarEquipesPorCompeticao = (idCompeticao) => {
+    console.log(`Filtrando equipes pela competição ${idCompeticao}`);
+  };
+
   useEffect(() => {
     setArtefatos([
       { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
-      { id: 1, nomeEquipe: "teste" },
+      { id: 2, nomeEquipe: "teste" },
+      { id: 3, nomeEquipe: "teste" },
+      { id: 4, nomeEquipe: "teste" },
+      { id: 5, nomeEquipe: "teste" },
+      { id: 6, nomeEquipe: "teste" },
+      { id: 7, nomeEquipe: "teste" },
+      { id: 8, nomeEquipe: "teste" },
     ]);
   }, [token]);
 
@@ -32,7 +36,10 @@ function ListagemConsultoria() {
       <DefaultHeader iconeDestaque="consultor" />
 
       <div id="aside-feedbacks-lean-canvas-componente">
-        <AsideFiltragemAvaliacaoConsultoria papelUsuario="CONSULTOR" />
+        <AsideFiltragemAvaliacaoConsultoria
+          papelUsuario="CONSULTOR"
+          filtrarEquipesPorCompeticao={filtrarEquipesPorCompeticao}
+        />
       </div>
 
       <div id="equipes-com-artefatos-para-consultoria">
