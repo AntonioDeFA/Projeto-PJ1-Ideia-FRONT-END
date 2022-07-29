@@ -90,3 +90,5 @@ export const MSG056 = "Lean Canvas salvo com sucesso";
 export const MSG057 = "Enviado para avaliação";
 export const MSG058 = "Pitch Deck enviado para consultoria";
 export const MSG059 = "Upload de Pitch Deck feito com sucesso";
+export const MSG060 = "Nenhuma competição foi encontrada.";
+export const MSG061 = "Não há competições disponíveis.";
