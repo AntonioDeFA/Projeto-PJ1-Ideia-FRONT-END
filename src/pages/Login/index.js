@@ -65,6 +65,12 @@ function Login() {
     }
   };
 
+  const fazerLoginViaEnter = (event) => {
+    if (event.keyCode === 13) {
+      fazerLogin();
+    }
+  };
+
   return (
     <div id="page-login">
       <div className="page-login-content m-0">
@@ -112,6 +118,9 @@ function Login() {
                     variant="filled"
                     color="warning"
                     size="small"
+                    onKeyUp={(event) => {
+                      fazerLoginViaEnter(event);
+                    }}
                   />
                 </div>
 
@@ -139,6 +148,9 @@ function Login() {
                       variant="filled"
                       color="warning"
                       size="small"
+                      onKeyUp={(event) => {
+                        fazerLoginViaEnter(event);
+                      }}
                     />
                   </FormControl>
                 </div>
