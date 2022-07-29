@@ -12,9 +12,13 @@ import {
   TableBody,
 } from "@mui/material";
 
+import api from "./../../services/api";
 import Botao from "../Botao";
+import { MSG000, MSG060, MSG061 } from "./../../utils/mensagens";
 import StoreContext from "../../store/context";
 import { StyledTableRow, StyledTableCell } from "./../../utils/constantes";
+
+import { validarCamposObrigatorios } from "../../services/utils";
 
 import "./styles.css";
 
@@ -22,16 +26,50 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
   const { token } = useContext(StoreContext);
   const navigate = useNavigate();
 
-  const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState("");
+  const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] =
+    useState(MSG000);
+  const [errorNomeCompeticao, setErrorNomeCompeticao] = useState(false);
+  const [mensagemNomeCompeticao, setMensagemNomeCompeticao] = useState(MSG000);
 
   const [rows, setRows] = useState([]);
+
+  const [houveFiltragem, setHouveFiltragem] = useState(false);
 
   const acessarCompeticao = (idCompeticao) => {
     navigate(`/dados-competicao/${idCompeticao}/${props.papelUsuario}`);
   };
 
+  const consultarCompeticoes = (nomeCompeticao = "ALL") => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(
+        `/competicoes/usuario-logado/${nomeCompeticao}/${
+          props.papelUsuario === "CONSULTOR" ? "IMERSAO" : "PITCH"
+        }`
+      )
+      .then((response) => {
+        setRows(response.data.map((competicao) => competicao));
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
+  const filtrarCompeticoesPorNome = () => {
+    let statusNome = validarCamposObrigatorios(
+      nomeCompeticaoFiltragem,
+      setErrorNomeCompeticao,
+      setMensagemNomeCompeticao
+    );
+
+    if (statusNome) {
+      setHouveFiltragem(true);
+      consultarCompeticoes(nomeCompeticaoFiltragem);
+    }
+  };
+
   useEffect(() => {
-    setRows([{ idCompeticao: 1, nomeCompeticao: "Teste" }]);
+    consultarCompeticoes();
   }, [token]);
 
   return (
@@ -43,7 +81,6 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
       <div className="form-filtragem">
         <div>
           <Box
-            component="form"
             sx={{
               "& .MuiTextField-root": { m: 1, width: "34ch" },
             }}
@@ -52,6 +89,8 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
           >
             <TextField
               value={nomeCompeticaoFiltragem}
+              error={errorNomeCompeticao}
+              helperText={mensagemNomeCompeticao}
               onChange={(e) => {
                 setNomeCompeticaoFiltragem(e.target.value);
               }}
@@ -67,7 +106,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
               <Botao
                 titulo="filtrar"
                 classes="btn btn-warning botao-menor-personalizado"
-                onClick={null}
+                onClick={filtrarCompeticoesPorNome}
               />
             </div>
 
@@ -86,26 +125,46 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
                       <StyledTableCell align="center">
                         Competição
                       </StyledTableCell>
-                      <StyledTableCell align="center">Acessar</StyledTableCell>
+                      <StyledTableCell align="center">Ações</StyledTableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
-                    {rows.map((row) => (
-                      <StyledTableRow key={row.idCompeticao}>
-                        <StyledTableCell align="center">
-                          <p className="text-break m-0">{row.nomeCompeticao}</p>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <i
-                            onClick={() => {
-                              acessarCompeticao(row.idCompeticao);
-                            }}
-                            className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
-                          ></i>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
+                    {rows.length > 0 ? (
+                      rows.map((row) => (
+                        <StyledTableRow key={row.idCompeticao}>
+                          <StyledTableCell align="center">
+                            <p className="text-break m-0">
+                              {row.nomeCompeticao}
+                            </p>
+
+                            <a href=""></a>
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            <i
+                              title="Acessar esta competição"
+                              className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
+                              onClick={() => {
+                                acessarCompeticao(row.idCompeticao);
+                              }}
+                            ></i>
+                            <i
+                              title="Ver equipes desta competição"
+                              className="fa-solid fa-arrow-up-right-from-square hover-azul cursor-pointer"
+                              onClick={() => {
+                                props.filtrarEquipesPorCompeticao(
+                                  row.idCompeticao
+                                );
+                              }}
+                            ></i>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      ))
+                    ) : houveFiltragem ? (
+                      <p className="m-3">{MSG060}</p>
+                    ) : (
+                      <p className="m-3">{MSG061}</p>
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
