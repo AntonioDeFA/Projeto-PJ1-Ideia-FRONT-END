@@ -93,54 +93,6 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
 
   return (
     <div className="aside-feedbacks-lean-canvas-em-elaboracao">
-      <div
-        className="elementos-centralizados"
-        id="listagens-feedbacks-filtragem-em-elaboracao"
-      >
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          <Botao
-            titulo="potencialidades"
-            onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
-            id="id-btn-feedbacks-potencialidades"
-            classes={classesBtnPotencialidades}
-          />
-          <Botao
-            titulo="fragilidades"
-            onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
-            id="id-btn-feedbacks-fragilidades"
-            classes={classesBtnFragilidades}
-          />
-        </ButtonGroup>
-      </div>
-
-      <div className="feedbacks-em-elaboracao">
-        <List
-          sx={{
-            width: "100%",
-            position: "relative",
-            maxHeight: "400px",
-            overflow: "auto",
-          }}
-        >
-          {feedbacks?.map((feedback, index) => (
-            <li
-              key={index}
-              style={{ maxHeight: "150px", overflowY: "auto" }}
-              className="rounded borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
-            >
-              <h6 style={{ wordBreak: "break-all", margin: 0 }}>
-                <strong>{index + 1}°</strong> {feedback.sugestao}
-              </h6>
-            </li>
-          ))}
-        </List>
-      </div>
-
-      <hr className="separator" />
-
       <div id="criar-feedback-lean-canvas" className="mt-3">
         <div className="elementos-centralizados">
           <h5>Adicione um feedback</h5>
@@ -207,6 +159,65 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
           id="id-btn-feedbacks-fragilidades"
           classes="btn me-2 btn-warning botao-menor-personalizado"
         />
+      </div>
+      <hr className="separator" />
+
+      <div
+        className="elementos-centralizados"
+        id="listagens-feedbacks-filtragem-em-elaboracao"
+      >
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Botao
+            titulo="potencialidades"
+            onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
+            id="id-btn-feedbacks-potencialidades"
+            classes={classesBtnPotencialidades}
+          />
+          <Botao
+            titulo="fragilidades"
+            onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
+            id="id-btn-feedbacks-fragilidades"
+            classes={classesBtnFragilidades}
+          />
+        </ButtonGroup>
+      </div>
+
+      <div className="feedbacks-em-elaboracao">
+        <List
+          sx={{
+            width: "100%",
+            position: "relative",
+            maxHeight: "400px",
+            overflow: "auto",
+          }}
+        >
+          {feedbacks?.map((feedback, index) => (
+            <>
+              <li
+                key={index}
+                style={{
+                  maxHeight: "150px",
+                  overflowY: "auto",
+                  position: "relative",
+                  borderRadius: ".25rem .70rem .25rem .25rem",
+                }}
+                className="borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
+              >
+                <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                  <strong>{index + 1}°</strong> {feedback.sugestao}
+                </h6>
+                <i
+                  id="icone-x-remover-feedback-lean-canvas"
+                  title="Remover feedback"
+                  className="fa-solid fa-circle-xmark"
+                ></i>
+              </li>
+            </>
+          ))}
+        </List>
       </div>
     </div>
   );

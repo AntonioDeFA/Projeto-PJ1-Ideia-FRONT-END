@@ -16,3 +16,11 @@ div #listagens-feedbacks-filtragem-em-elaboracao {
 div .feedbacks-em-elaboracao {
   margin-top: 10px;
 }
+
+i#icone-x-remover-feedback-lean-canvas {
+  top: 0;
+  left: 93.5%;
+  overflow: visible;
+  position: absolute;
+  color: red;
+}
