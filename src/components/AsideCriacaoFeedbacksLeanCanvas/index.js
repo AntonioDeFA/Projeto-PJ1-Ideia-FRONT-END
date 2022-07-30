@@ -212,7 +212,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
                 <i
                   id="icone-x-remover-feedback-lean-canvas"
                   title="Remover feedback"
-                  className="fa-solid fa-circle-xmark"
+                  className="fa-solid fa-circle-xmark cursor-pointer"
                 ></i>
               </li>
             </>
