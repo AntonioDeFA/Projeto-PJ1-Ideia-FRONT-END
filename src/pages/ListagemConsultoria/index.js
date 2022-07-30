@@ -12,23 +12,22 @@ function ListagemConsultoria() {
   const navigate = useNavigate();
   const { token } = useContext(StoreContext);
 
-  const [artefatos, setArtefatos] = useState([]);
+  const [equipes, setEquipes] = useState([]);
 
   const filtrarEquipesPorCompeticao = (idCompeticao) => {
-    console.log(`Filtrando equipes pela competição ${idCompeticao}`);
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/${idCompeticao}/equipes/para-consultoria`)
+      .then((response) => {
+        setEquipes(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   useEffect(() => {
-    setArtefatos([
-      { id: 1, nomeEquipe: "teste" },
-      { id: 2, nomeEquipe: "teste" },
-      { id: 3, nomeEquipe: "teste" },
-      { id: 4, nomeEquipe: "teste" },
-      { id: 5, nomeEquipe: "teste" },
-      { id: 6, nomeEquipe: "teste" },
-      { id: 7, nomeEquipe: "teste" },
-      { id: 8, nomeEquipe: "teste" },
-    ]);
+    filtrarEquipesPorCompeticao(0);
   }, [token]);
 
   return (
@@ -47,51 +46,67 @@ function ListagemConsultoria() {
           <h2>Olá, consultor!</h2>
         </div>
         <div>
-          <h5
-            style={{ marginLeft: "393px" }}
-            className="mb-3"
-            id="saudacao-parte-1"
-          >
-            Lhe foram enviadas essas versões de artefatos de Pitches. Dê uma
-            olhada e devolva-os com feedbacks! <br />
-            Isso ajudará muito as equipes a desenvolver um pitch melhor!
-          </h5>
+          {equipes.length > 0 ? (
+            <h5 style={{ marginLeft: "393px" }} className="mb-3">
+              Lhe foram enviadas essas versões de artefatos de Pitches. Dê uma
+              olhada e devolva-os com feedbacks! <br />
+              Isso ajudará muito as equipes a desenvolver um pitch melhor!
+            </h5>
+          ) : (
+            <h5 style={{ marginLeft: "393px" }} className="mb-3">
+              Você ainda não possui nenhuma solicitação de consultoria.
+            </h5>
+          )}
         </div>
       </div>
 
       <div id="lista-artefatos-div">
         <ul className="lista-artefatos">
-          {artefatos.map((artefato, index) => {
+          {equipes.map((equipe, index) => {
             return (
-              <li key={artefato.id} className="item-list-artefato">
+              <li key={index} className="item-list-artefato">
                 <div className="artefato">
                   <div id="nome-competicao-artefato">
                     <h5 className="nome-competicao-artefato-h4">
-                      Equipe {artefato.nomeEquipe}
+                      Equipe {equipe.nomeEquipe}
                     </h5>
                   </div>
-                  <div className="botoes-acessar-artefato">
-                    <div
-                      className="elementos-centralizados cursor-pointer"
-                      id={"btn-acessar-pitch-deck" + index}
-                    >
-                      <i
-                        title="Escrever feedbacks no Pitch Deck"
-                        className="icone-artefato fa-solid fa-file-arrow-down"
-                      ></i>
-                    </div>
-                    <div
-                      className="elementos-centralizados cursor-pointer"
-                      id={"btn-acessar-lean-canvas" + index}
-                    >
-                      <i
-                        title="Escrever feedbacks no Lean Canvas"
-                        className="icone-artefato fa-brands fa-trello"
-                        onClick={() => {
-                          navigate("/criar-feedbacks-lean-canvas/1/5555");
-                        }}
-                      ></i>
-                    </div>
+                  <div
+                    className={
+                      (equipe.idPitch && !equipe.idLeanCanvas) ||
+                      (!equipe.idPitch && equipe.idLeanCanvas)
+                        ? "elementos-centralizados"
+                        : "botoes-acessar-artefato"
+                    }
+                  >
+                    {equipe.idPitch ? (
+                      <div
+                        className="elementos-centralizados cursor-pointer"
+                        id={"btn-acessar-pitch-deck" + index}
+                      >
+                        <i
+                          title="Escrever feedbacks no Pitch Deck"
+                          className="icone-artefato fa-solid fa-file-arrow-down"
+                        ></i>
+                      </div>
+                    ) : null}
+
+                    {equipe.idLeanCanvas ? (
+                      <div
+                        className="elementos-centralizados cursor-pointer"
+                        id={"btn-acessar-lean-canvas" + index}
+                      >
+                        <i
+                          title="Escrever feedbacks no Lean Canvas"
+                          className="icone-artefato fa-brands fa-trello"
+                          onClick={() => {
+                            navigate(
+                              `/criar-feedbacks-lean-canvas/${equipe.idEquipe}/${equipe.idLeanCanvas}`
+                            );
+                          }}
+                        ></i>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </li>

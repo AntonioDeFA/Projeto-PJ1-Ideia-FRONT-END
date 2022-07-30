@@ -120,52 +120,59 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
                   sx={{ height: 300, overflowY: "auto" }}
                   aria-label="customized table"
                 >
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell align="center">
-                        Competição
-                      </StyledTableCell>
-                      <StyledTableCell align="center">Ações</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {rows.length > 0 ? (
-                      rows.map((row) => (
-                        <StyledTableRow key={row.idCompeticao}>
+                  {rows.length > 0 ? (
+                    <>
+                      <TableHead>
+                        <TableRow>
                           <StyledTableCell align="center">
-                            <p className="text-break m-0">
+                            Competição
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            Ações
+                          </StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      <TableBody>
+                        {rows.map((row) => (
+                          <StyledTableRow key={row.idCompeticao}>
+                            <StyledTableCell align="center">
                               {row.nomeCompeticao}
-                            </p>
-
-                            <a href=""></a>
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            <i
-                              title="Acessar esta competição"
-                              className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
-                              onClick={() => {
-                                acessarCompeticao(row.idCompeticao);
-                              }}
-                            ></i>
-                            <i
-                              title="Ver equipes desta competição"
-                              className="fa-solid fa-arrow-up-right-from-square hover-azul cursor-pointer"
-                              onClick={() => {
-                                props.filtrarEquipesPorCompeticao(
-                                  row.idCompeticao
-                                );
-                              }}
-                            ></i>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    ) : houveFiltragem ? (
-                      <p className="m-3">{MSG060}</p>
-                    ) : (
-                      <p className="m-3">{MSG061}</p>
-                    )}
-                  </TableBody>
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                              <i
+                                title="Acessar esta competição"
+                                className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
+                                onClick={() => {
+                                  acessarCompeticao(row.idCompeticao);
+                                }}
+                              ></i>
+                              <i
+                                title="Ver equipes desta competição"
+                                className="fa-solid fa-arrow-up-right-from-square hover-azul cursor-pointer"
+                                onClick={() => {
+                                  props.filtrarEquipesPorCompeticao(
+                                    row.idCompeticao
+                                  );
+                                }}
+                              ></i>
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </>
+                  ) : (
+                    <StyledTableRow key={0}>
+                      <StyledTableCell
+                        align="center"
+                        sx={{ width: "150% !important" }}
+                      >
+                        <p className="m-3">
+                          {houveFiltragem ? MSG060 : MSG061}
+                        </p>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )}
                 </Table>
               </TableContainer>
             </div>
