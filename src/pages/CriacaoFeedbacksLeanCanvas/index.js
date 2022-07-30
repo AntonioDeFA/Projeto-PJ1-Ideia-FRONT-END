@@ -90,7 +90,9 @@ function CriacaoFeedbacksLeanCanvas() {
             <Botao
               titulo="voltar"
               classes="btn me-4 btn-secondary botao-menor-personalizado"
-              onClick={null}
+              onClick={() => {
+                navigate("/listagem-consultoria");
+              }}
             />
           </div>
         </div>
