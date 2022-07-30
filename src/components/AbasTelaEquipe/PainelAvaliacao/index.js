@@ -78,7 +78,6 @@ function PainelAvaliacao(props) {
       .catch((error) => {
         handleAlerta(error.response.data.motivosErros[0], MSG006);
       });
-    console.log("enviando para avaliação");
   };
 
   const AcordionQuestao = (props) => {

@@ -75,8 +75,6 @@ function PainelMateriaisAquecimento(props) {
   };
 
   const marcarConcluido = async () => {
-    console.log(props?.idEquipe);
-    console.log(idMaterial);
     api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
     api
       .post(`equipe/${props?.idEquipe}/material-estudo/${idMaterial}`)

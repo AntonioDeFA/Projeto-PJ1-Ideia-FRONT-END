@@ -65,8 +65,6 @@ function PainelLeanCanvas(props) {
     api
       .get(`/equipe/${props.idEquipe}/lean-canvas/elaboracao`)
       .then((response) => {
-        console.log("Lean canvas retornado");
-        console.log(response.data);
         setLeanCanvas(response.data);
       })
       .catch((error) => {
@@ -79,10 +77,6 @@ function PainelLeanCanvas(props) {
   };
 
   const salvar = () => {
-    console.log("Lean canvas do painel");
-    console.log(leanCanvas);
-    console.log(props.idEquipe);
-
     if (
       leanCanvas.problema?.replace(/ /g, "").length > 0 &&
       leanCanvas.solucao?.replace(/ /g, "").length > 0 &&
