@@ -92,3 +92,5 @@ export const MSG058 = "Pitch Deck enviado para consultoria";
 export const MSG059 = "Upload de Pitch Deck feito com sucesso";
 export const MSG060 = "Nenhuma competição foi encontrada.";
 export const MSG061 = "Não há competições disponíveis.";
+export const MSG062 = "Os feedbacks devem ter no mínimo 5 caracteres.";
+export const MSG063 = "Feedback criado com sucesso!";
