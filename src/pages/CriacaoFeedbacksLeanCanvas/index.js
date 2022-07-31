@@ -71,7 +71,10 @@ function CriacaoFeedbacksLeanCanvas() {
       />
 
       <div id="aside-feedbacks-lean-canvas-componente">
-        <AsideCriacaoFeedbacksLeanCanvas idLeanCanvas={idLeanCanvas} />
+        <AsideCriacaoFeedbacksLeanCanvas
+          idEquipe={idEquipe}
+          idLeanCanvas={idLeanCanvas}
+        />
       </div>
 
       <div id="dados-lean-canvas-para-leitura">

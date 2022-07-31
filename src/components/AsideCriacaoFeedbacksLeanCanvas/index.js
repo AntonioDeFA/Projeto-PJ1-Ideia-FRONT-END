@@ -8,11 +8,19 @@ import {
   FormControl,
   FormControlLabel,
   TextareaAutosize,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "./../Botao/index";
-import { MSG000 } from "./../../utils/mensagens";
+import {
+  MSG000,
+  MSG005,
+  MSG006,
+  MSG062,
+  MSG063,
+} from "./../../utils/mensagens";
 import StoreContext from "./../../store/context";
 
 import "./styles.css";
@@ -38,12 +46,52 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
 
   const [feedback, setFeedback] = useState(MSG000);
 
+  const [flagAlteracao, setFlagAlteracao] = useState(false);
+
   const handleRadioButtonsTipoFeedback = (event) => {
     setOpcaoTipoFeedback(event.target.value);
   };
 
   const trocarListaFeedbacks = (tipoFeedback) => {
     setBtnSelecionado(tipoFeedback);
+  };
+
+  const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG006);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlerta = (mensagem, severidade) => {
+    setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
+    setOpen(true);
+  };
+
+  const criarFeedback = () => {
+    if (feedback.length < 5) {
+      handleAlerta(MSG062, MSG006);
+    } else {
+      const feedbackFormatado = {
+        tipoFeedback: opcaoTipoFeedback.toUpperCase(),
+        sugestao: feedback,
+        tipoArtefato: "LEAN_CANVAS",
+        idArtefato: Number(props.idLeanCanvas),
+      };
+
+      api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+      api
+        .post(`/criar-feedback/${props.idEquipe}`, feedbackFormatado)
+        .then((response) => {
+          handleAlerta(MSG063, MSG005);
+          setFlagAlteracao(!flagAlteracao);
+        })
+        .catch((error) => {
+          handleAlerta(error.response.data.motivosErros[0], MSG006);
+        });
+    }
   };
 
   useEffect(() => {
@@ -89,7 +137,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
       .catch((error) => {
         console.log(error.response.data);
       });
-  }, [token]);
+  }, [token, flagAlteracao]);
 
   return (
     <div className="aside-feedbacks-lean-canvas-em-elaboracao">
@@ -155,7 +203,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
         />
         <Botao
           titulo="adicionar"
-          onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
+          onClick={criarFeedback}
           id="id-btn-feedbacks-fragilidades"
           classes="btn me-2 btn-warning botao-menor-personalizado"
         />
@@ -219,6 +267,16 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
           ))}
         </List>
       </div>
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
