@@ -20,6 +20,7 @@ import {
   MSG006,
   MSG062,
   MSG063,
+  MSG064,
 } from "./../../utils/mensagens";
 import StoreContext from "./../../store/context";
 
@@ -27,9 +28,8 @@ import "./styles.css";
 
 function AsideCriacaoFeedbacksLeanCanvas(props) {
   const [feedbacks, setFeedbacks] = useState(null);
-  const [feedbacksPotencialidades, setFeedbacksPotencialidades] =
-    useState(null);
-  const [feedbacksFragilidades, setFeedbacksFragilidades] = useState(null);
+  const [feedbacksPotencialidades, setFeedbacksPotencialidades] = useState([]);
+  const [feedbacksFragilidades, setFeedbacksFragilidades] = useState([]);
 
   const [classesBtnPotencialidades, setClassesBtnPotencialidades] =
     useState(MSG000);
@@ -47,6 +47,9 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
   const [feedback, setFeedback] = useState(MSG000);
 
   const [flagAlteracao, setFlagAlteracao] = useState(false);
+
+  const [ultimoTipoRemovido, setUltimoTipoRemovido] =
+    useState("POTENCIALIDADE");
 
   const handleRadioButtonsTipoFeedback = (event) => {
     setOpcaoTipoFeedback(event.target.value);
@@ -85,13 +88,29 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
       api
         .post(`/criar-feedback/${props.idEquipe}`, feedbackFormatado)
         .then((response) => {
+          setBtnSelecionado(feedbackFormatado.tipoFeedback + "S");
+          setUltimoTipoRemovido(feedbackFormatado.tipoFeedback);
           handleAlerta(MSG063, MSG005);
           setFlagAlteracao(!flagAlteracao);
         })
         .catch((error) => {
-          handleAlerta(error.response.data.motivosErros[0], MSG006);
+          console.log(error.response.data);
         });
     }
+  };
+
+  const removerFeedback = (idFeedback, tipoFeedback) => {
+    api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
+    api
+      .delete(`/deletar-feedback-avaliativo/${idFeedback}`)
+      .then((response) => {
+        setUltimoTipoRemovido(tipoFeedback);
+        handleAlerta(MSG064, MSG005);
+        setFlagAlteracao(!flagAlteracao);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   useEffect(() => {
@@ -132,7 +151,11 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
         setFeedbacksPotencialidades(listaPotencialidades);
         setFeedbacksFragilidades(listaFragilidades);
 
-        setFeedbacks(listaPotencialidades);
+        setFeedbacks(
+          ultimoTipoRemovido === "POTENCIALIDADE"
+            ? listaPotencialidades
+            : listaFragilidades
+        );
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -210,63 +233,92 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
       </div>
       <hr className="separator" />
 
-      <div
-        className="elementos-centralizados"
-        id="listagens-feedbacks-filtragem-em-elaboracao"
-      >
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          <Botao
-            titulo="potencialidades"
-            onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
-            id="id-btn-feedbacks-potencialidades"
-            classes={classesBtnPotencialidades}
-          />
-          <Botao
-            titulo="fragilidades"
-            onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
-            id="id-btn-feedbacks-fragilidades"
-            classes={classesBtnFragilidades}
-          />
-        </ButtonGroup>
-      </div>
+      {feedbacksPotencialidades.length > 0 ||
+      feedbacksFragilidades.length > 0 ? (
+        <>
+          <div
+            className="elementos-centralizados"
+            id="listagens-feedbacks-filtragem-em-elaboracao"
+          >
+            <ButtonGroup
+              variant="contained"
+              aria-label="outlined primary button group"
+            >
+              <Botao
+                titulo="potencialidades"
+                onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
+                id="id-btn-feedbacks-potencialidades"
+                classes={classesBtnPotencialidades}
+              />
+              <Botao
+                titulo="fragilidades"
+                onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
+                id="id-btn-feedbacks-fragilidades"
+                classes={classesBtnFragilidades}
+              />
+            </ButtonGroup>
+          </div>
 
-      <div className="feedbacks-em-elaboracao">
-        <List
-          sx={{
-            width: "100%",
-            position: "relative",
-            maxHeight: "400px",
-            overflow: "auto",
-          }}
-        >
-          {feedbacks?.map((feedback, index) => (
-            <>
-              <li
-                key={index}
-                style={{
-                  maxHeight: "150px",
-                  overflowY: "auto",
+          {(btnSelecionado === "POTENCIALIDADES" &&
+            feedbacksPotencialidades.length === 0) ||
+          (btnSelecionado === "FRAGILIDADES" &&
+            feedbacksFragilidades.length === 0) ? (
+            <h6 className="text-center">
+              Este Lean Canvas ainda não possui feedbacks de{" "}
+              {btnSelecionado === "POTENCIALIDADES"
+                ? "potencialidades"
+                : "fragilidades"}
+              .
+            </h6>
+          ) : (
+            <div className="feedbacks-em-elaboracao">
+              <List
+                sx={{
+                  width: "100%",
                   position: "relative",
-                  borderRadius: ".25rem .70rem .25rem .25rem",
+                  maxHeight: "400px",
+                  overflow: "auto",
                 }}
-                className="borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
               >
-                <h6 style={{ wordBreak: "break-all", margin: 0 }}>
-                  <strong>{index + 1}°</strong> {feedback.sugestao}
-                </h6>
-                <i
-                  id="icone-x-remover-feedback-lean-canvas"
-                  title="Remover feedback"
-                  className="fa-solid fa-circle-xmark cursor-pointer"
-                ></i>
-              </li>
-            </>
-          ))}
-        </List>
-      </div>
+                {feedbacks?.map((feedback, index) => (
+                  <>
+                    <li
+                      key={index}
+                      style={{
+                        maxHeight: "150px",
+                        overflowY: "auto",
+                        position: "relative",
+                        borderRadius: ".25rem .70rem .25rem .25rem",
+                      }}
+                      className="borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
+                    >
+                      <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                        <strong>{index + 1}°</strong> {feedback.sugestao}
+                      </h6>
+                      <i
+                        id="icone-x-remover-feedback-lean-canvas"
+                        title="Remover feedback"
+                        onClick={() => {
+                          removerFeedback(
+                            feedback.idFeedback,
+                            feedback.tipoFeedback
+                          );
+                        }}
+                        className="fa-solid fa-circle-xmark cursor-pointer"
+                      ></i>
+                    </li>
+                  </>
+                ))}
+              </List>
+            </div>
+          )}
+        </>
+      ) : (
+        <h5 className="text-center">
+          Este Lean Canvas ainda não possui feedbacks.
+        </h5>
+      )}
+
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
         <Alert
           onClose={handleClose}
