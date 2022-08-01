@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import api from "./../../services/api";
 import Botao from "../../components/Botao";
 import LeanCanvas from "../../components/LeanCanvas";
+import { MSG000 } from "./../../utils/mensagens";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideCriacaoFeedbacksLeanCanvas from "../../components/AsideCriacaoFeedbacksLeanCanvas";
@@ -30,7 +31,21 @@ function CriacaoFeedbacksLeanCanvas() {
     fontesDeReceita: "",
   });
 
+  const [nomeEquipe, setNomeEquipe] = useState(MSG000);
+
   const [mudou, setMudou] = useState(true);
+
+  useEffect(() => {
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/equipe/dados/${idEquipe}`)
+      .then((response) => {
+        setNomeEquipe(response.data.nomeEquipe);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }, [idEquipe, token]);
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -81,7 +96,9 @@ function CriacaoFeedbacksLeanCanvas() {
         <div className="ps-0 pe-4 pt-3 d-flex justify-content-between">
           <div>
             <div>
-              <h1 className="ps-3 ms-1 titulos-principais">Lean Canvas</h1>
+              <h1 className="ps-3 ms-1 titulos-principais">
+                Lean Canvas - Equipe {nomeEquipe}
+              </h1>
             </div>
           </div>
           <div>
