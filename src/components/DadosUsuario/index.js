@@ -98,7 +98,7 @@ function DadosUsuario() {
           api
             .post("/usuario", user)
             .then((response) => {
-              return navigate("/inicio");
+              return navigate("/inicio/abertas");
             })
             .catch((error) => {
               setMensagemErro(error.response.data.motivosErros.join("\n"));
@@ -149,7 +149,7 @@ function DadosUsuario() {
         api
           .patch("/usuario/update", dadosAtualizados)
           .then((response) => {
-            return navigate("/inicio");
+            return navigate("/inicio/abertas");
           })
           .catch((error) => {
             console.log(error.response.data);
@@ -282,7 +282,7 @@ function DadosUsuario() {
                 usuarioLogado === null ? fazerCadastro : atualizarCadastro
               }
             />
-            <Link to={usuarioLogado !== null ? "/inicio" : "/"}>
+            <Link to={usuarioLogado !== null ? "/inicio/abertas" : "/"}>
               <Botao
                 titulo="voltar"
                 id="btn-voltar"

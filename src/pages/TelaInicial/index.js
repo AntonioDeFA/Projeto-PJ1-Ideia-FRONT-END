@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideFiltragem from "../../components/AsideFiltragem";
@@ -8,6 +9,7 @@ import ListaCardsCompeticoesAbertas from "../../components/ListaCardsCompeticoes
 import ListaCardsMinhasCompeticoes from "../../components/ListaCardsMinhasCompeticoes";
 
 function TelaInicial() {
+  const { tipoCompeticoes } = useParams();
   const [isCompeticoesAbertas, setCompeticoesAbertas] = useState(true);
 
   const [filtros, setFiltros] = useState({
@@ -35,8 +37,9 @@ function TelaInicial() {
       <div id="content">
         <div id="aside-filtragem">
           <AsideFiltragem
-            verificarTipoCompeticoes={verificarTipoCompeticoes}
+            tipoCompeticoes={tipoCompeticoes}
             realizarFiltragem={realizarFiltragem}
+            verificarTipoCompeticoes={verificarTipoCompeticoes}
           />
         </div>
         <div id="listagem-cards">

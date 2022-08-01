@@ -41,7 +41,7 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/inicio"
+            path="/inicio/:tipoCompeticoes"
             element={
               <RoutesPrivate>
                 <TelaInicial />
@@ -65,7 +65,7 @@ function ProjetoRoutes() {
             }
           />
           <Route
-            path="/dados-competicao/:idCompeticao/:papelUsuario"
+            path="/dados-competicao/:idCompeticao/:papelUsuario/:telaAnterior"
             element={
               <RoutesPrivate>
                 <DadosCompeticao />

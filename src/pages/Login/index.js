@@ -52,7 +52,7 @@ function Login() {
           .post("/seguranca/login", { login: email, senha: password })
           .then((response) => {
             setToken(response.data.token);
-            return navigate("/inicio");
+            return navigate("/inicio/abertas");
           })
           .catch((error) => {
             setMensagem(MSG011);

@@ -36,7 +36,11 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
   const [houveFiltragem, setHouveFiltragem] = useState(false);
 
   const acessarCompeticao = (idCompeticao) => {
-    navigate(`/dados-competicao/${idCompeticao}/${props.papelUsuario}`);
+    navigate(
+      `/dados-competicao/${idCompeticao}/${props.papelUsuario}/listagem-${
+        props.papelUsuario === "CONSULTOR" ? "consultoria" : "avaliacao"
+      }`
+    );
   };
 
   const consultarCompeticoes = (nomeCompeticao = "ALL") => {

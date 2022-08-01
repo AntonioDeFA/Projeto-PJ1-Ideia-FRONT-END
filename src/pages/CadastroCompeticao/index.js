@@ -139,7 +139,7 @@ function CadastroCompeticao() {
             )
             .then((response) => {
               console.log(response.data);
-              return navigate("/inicio");
+              return navigate("/inicio/minhas-competicoes");
             })
             .catch((error) => {
               console.log(error.response.data);
@@ -152,7 +152,7 @@ function CadastroCompeticao() {
   };
 
   const cancelar = () => {
-    return navigate("/inicio");
+    return navigate("/inicio/minhas-competicoes");
   };
 
   useLayoutEffect(() => {

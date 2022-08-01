@@ -75,7 +75,7 @@ function DefaultHeader(props) {
                 className={handleIconeComDestaque("trofeu")}
                 id="op-trofeu-cabecalho"
               >
-                <Link to={"/inicio"}>
+                <Link to={"/inicio/abertas"}>
                   <img src={Trofeu} alt="navegacao_trofeu" />
                 </Link>
               </li>

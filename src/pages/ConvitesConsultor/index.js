@@ -90,7 +90,7 @@ function ConvitesConsultor() {
                             <h4 className="nome-competicao-convite-h4">
                               <Link
                                 className="link-competicao"
-                                to={`/dados-competicao/${convite.idCompeticao}/CONSULTOR`}
+                                to={`/dados-competicao/${convite.idCompeticao}/CONSULTOR/convites-consultor`}
                               >
                                 <i className="fa-solid fa-arrow-right-to-bracket"></i>
                                 {"  " + convite.nomeCompeticao}

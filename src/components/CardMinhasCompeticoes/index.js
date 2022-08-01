@@ -130,7 +130,7 @@ function CardMinhasCompeticoes(props) {
     navigate(
       props.card.papelUsuario === "COMPETIDOR"
         ? `/equipe/${props.card.idEquipe}/USUARIO_LIDER`
-        : `/dados-competicao/${props.card.id}/${props.card.papelUsuario}`
+        : `/dados-competicao/${props.card.id}/${props.card.papelUsuario}/inicial`
     );
   };
 
@@ -150,16 +150,17 @@ function CardMinhasCompeticoes(props) {
             }
           >
             <h6 className="card-subtitle">
-              {props.card?.etapaVigente?.tipoEtapa !== "ENCERRADA" ?
-                handleDatas(
-                  props.card?.etapaVigente?.dataInicio,
-                  props.card?.etapaVigente?.dataTermino,
-                  props.card.isElaboracao,
-                  competicaoNaoIniciada(props.card),
-                  obterDatas(props.card.etapas, MSG032)
-                ) :
-                handleDataCompeticaoEncerrada(props.card?.etapaVigente?.dataInicio)
-              }
+              {props.card?.etapaVigente?.tipoEtapa !== "ENCERRADA"
+                ? handleDatas(
+                    props.card?.etapaVigente?.dataInicio,
+                    props.card?.etapaVigente?.dataTermino,
+                    props.card.isElaboracao,
+                    competicaoNaoIniciada(props.card),
+                    obterDatas(props.card.etapas, MSG032)
+                  )
+                : handleDataCompeticaoEncerrada(
+                    props.card?.etapaVigente?.dataInicio
+                  )}
             </h6>
           </div>
         </div>

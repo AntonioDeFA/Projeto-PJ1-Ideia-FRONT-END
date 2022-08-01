@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
@@ -17,13 +17,11 @@ import { mesesDoAno } from "../../utils/constantes";
 import "./styles.css";
 
 function AsideFiltragem(props) {
-  // Dados para filtragem
   const [nomeCompeticaoFiltragem, setNomeCompeticaoFiltragem] = useState("");
   const [mesDoAno, setMesDoAno] = useState("");
   const [anoFiltragem, setAnoFiltragem] = useState("");
 
-  const [opcaoCompeticoes, setOpcaoCompeticoes] =
-    useState("competicoesAbertas");
+  const [opcaoCompeticoes, setOpcaoCompeticoes] = useState("abertas");
 
   const [etapasFiltragem, setEtapasFiltragem] = useState([]);
 
@@ -40,10 +38,14 @@ function AsideFiltragem(props) {
   const rdButtonCompeticoesAbertas = useRef(null);
   const rdButtonMinhasCompeticoes = useRef(null);
 
-  const handleRadioButtonsCompeticoes = (event) => {
-    setOpcaoCompeticoes(event.target.value);
+  const handleRadioButtonsCompeticoes = (event = null) => {
+    setOpcaoCompeticoes(
+      event?.target?.value ? event.target.value : props.tipoCompeticoes
+    );
 
-    let isCompeticoesAbertas = event.target.value === "competicoesAbertas";
+    let isCompeticoesAbertas = event?.target?.value
+      ? event?.target?.value === "abertas"
+      : props.tipoCompeticoes === "abertas";
 
     setHasCheckBoxes(!isCompeticoesAbertas);
 
@@ -269,6 +271,10 @@ function AsideFiltragem(props) {
     );
   };
 
+  useEffect(() => {
+    handleRadioButtonsCompeticoes();
+  }, []);
+
   return (
     <div className="aside-filtragem-tela-inicial">
       <div className="elementos-centralizados" id="titulo-competicoes">
@@ -356,7 +362,7 @@ function AsideFiltragem(props) {
               onChange={handleRadioButtonsCompeticoes}
             >
               <FormControlLabel
-                value="competicoesAbertas"
+                value="abertas"
                 ref={rdButtonCompeticoesAbertas}
                 control={
                   <Radio
@@ -371,7 +377,7 @@ function AsideFiltragem(props) {
                 label="Competições Abertas"
               />
               <FormControlLabel
-                value="minhasCompeticoes"
+                value="minhas-competicoes"
                 ref={rdButtonMinhasCompeticoes}
                 control={
                   <Radio

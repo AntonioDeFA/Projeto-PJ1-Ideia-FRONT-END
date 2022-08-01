@@ -27,7 +27,7 @@ import "./styles.css";
 
 function DadosCompeticao() {
   const { token } = useContext(StoreContext);
-  const { idCompeticao, papelUsuario } = useParams();
+  const { idCompeticao, papelUsuario, telaAnterior } = useParams();
 
   const [nome, setNome] = useState(MSG000);
 
@@ -116,6 +116,14 @@ function DadosCompeticao() {
     setMudou(true);
   };
 
+  const handleBtnVoltar = () => {
+    if (telaAnterior === "inicial") {
+      navigate("/inicio/minhas-competicoes");
+    } else {
+      navigate(`/${telaAnterior}`);
+    }
+  };
+
   const PainelEquipes = () => {
     return (
       <div id="painel-equipes">
@@ -190,7 +198,7 @@ function DadosCompeticao() {
         <Botao
           titulo="voltar"
           classes="btn me-4 btn-warning botao-menor-personalizado"
-          onClick={() => navigate("/inicio")}
+          onClick={handleBtnVoltar}
         />
       </div>
       <div className="p-3 d-flex justify-content-center">

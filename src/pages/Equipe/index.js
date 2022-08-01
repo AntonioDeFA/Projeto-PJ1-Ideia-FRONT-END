@@ -32,7 +32,7 @@ function Equipe() {
 
   const handleSairDaTela = () => {
     if (papelUsuario === "USUARIO_LIDER") {
-      navigate("/inicio");
+      navigate("/inicio/minhas-competicoes");
     } else {
       setToken("");
       navigate("/");

@@ -92,7 +92,7 @@ function ConvitesAvaliador() {
                             <h4 className="nome-competicao-convite-h4">
                               <Link
                                 className="link-competicao"
-                                to={`/dados-competicao/${convite.idCompeticao}/AVALIADOR`}
+                                to={`/dados-competicao/${convite.idCompeticao}/AVALIADOR/convites-avaliador`}
                               >
                                 <i className="fa-solid fa-arrow-right-to-bracket cursor-pointer"></i>
                                 {"  " + convite.nomeCompeticao}

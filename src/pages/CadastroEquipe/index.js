@@ -132,7 +132,7 @@ function CadastroEquipe() {
     api
       .post("/equipe", dadosEquipe)
       .then((response) => {
-        return navigate("/inicio");
+        return navigate("/inicio/minhas-competicoes");
       })
       .catch((error) => {
         setMensagem(error.response.data.motivosErros.join("\n"));
@@ -248,7 +248,7 @@ function CadastroEquipe() {
                 />
               </div>
               <div id="btn-voltar">
-                <Link to={"/inicio"}>
+                <Link to={"/inicio/abertas"}>
                   <Botao
                     titulo="voltar"
                     id="btn-voltar-para-teste"
@@ -304,18 +304,18 @@ function CadastroEquipe() {
             <ul id="lista-membros">
               {mudou
                 ? membros.map((membro, index) => {
-                  return (
-                    <li key={index}>
-                      <CardMembro
-                        nome={membro.nomeMembro}
-                        email={membro.emailMembro}
-                        isLider={membro.isLider}
-                        sequencial={index + 1}
-                        removerMembro={removerMembro}
-                      />
-                    </li>
-                  );
-                })
+                    return (
+                      <li key={index}>
+                        <CardMembro
+                          nome={membro.nomeMembro}
+                          email={membro.emailMembro}
+                          isLider={membro.isLider}
+                          sequencial={index + 1}
+                          removerMembro={removerMembro}
+                        />
+                      </li>
+                    );
+                  })
                 : null}
             </ul>
           </div>
