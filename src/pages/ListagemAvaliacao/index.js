@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import api from "./../../services/api";
 import StoreContext from "./../../store/context";
@@ -8,6 +9,7 @@ import AsideFiltragemAvaliacaoConsultoria from "./../../components/AsideFiltrage
 import "./styles.css";
 
 function ListagemAvaliacao() {
+  const navigate = useNavigate();
   const { token } = useContext(StoreContext);
 
   const [pitches, setPitches] = useState([]);
@@ -71,7 +73,12 @@ function ListagemAvaliacao() {
                     className="elementos-centralizados cursor-pointer"
                     id={"btn-acessar-lean-canvas" + index}
                   >
-                    <i className="icone-pitch fa-solid fa-arrow-right-to-bracket hover-azul"></i>
+                    <i className="icone-pitch fa-solid fa-arrow-right-to-bracket hover-azul"
+                    onClick={() => {
+                      navigate(
+                        `/avaliar-equipe/${pitch.id}`
+                      );
+                    }}></i>
                   </div>
                 </div>
               </li>
