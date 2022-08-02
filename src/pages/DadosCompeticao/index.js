@@ -172,7 +172,10 @@ function DadosCompeticao() {
                       }
                       key={equipe.id}
                     >
-                      <ListItemText primary={equipe.nome} />
+                      <ListItemText
+                        primary={equipe.nome}
+                        sx={{ width: "50px" }}
+                      />
                       <ListItemText
                         secondary={
                           equipe.consultor != null
