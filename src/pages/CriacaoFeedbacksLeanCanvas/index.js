@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "../../components/Botao";
 import LeanCanvas from "../../components/LeanCanvas";
-import { MSG000 } from "./../../utils/mensagens";
+import { MSG000, MSG005, MSG006, MSG065 } from "./../../utils/mensagens";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
 import AsideCriacaoFeedbacksLeanCanvas from "../../components/AsideCriacaoFeedbacksLeanCanvas";
@@ -34,6 +34,50 @@ function CriacaoFeedbacksLeanCanvas() {
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
 
   const [mudou, setMudou] = useState(true);
+
+  const [qntdFeedbacks, setQntdFeedbacks] = useState(0);
+
+  const [open, setOpen] = useState(false);
+  const [severidade, setSeveridade] = useState(MSG000);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlerta = (mensagem, severidade) => {
+    setMensagemSnackBar(mensagem);
+    setSeveridade(severidade);
+    setOpen(true);
+  };
+
+  const atualizarQntdFeedbacks = (novaQntdFeedbacks) => {
+    setQntdFeedbacks(novaQntdFeedbacks);
+  };
+
+  const enviarFeedbacksParaAEquipe = () => {
+    if (qntdFeedbacks === 0) {
+      handleAlerta(MSG065, MSG006);
+      return;
+    }
+
+    let leanCanvasNovaEtapa = {
+      idArtefato: idLeanCanvas,
+      tipoArtefato: "LEAN_CANVAS",
+      novaEtapa: "AVALIADO_CONSULTOR",
+    };
+
+    api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
+    api
+      .put("/atualizar-etapa-artefato-pitch", leanCanvasNovaEtapa)
+      .then((response) => {
+        handleAlerta(MSG065, MSG005);
+        navigate("/listagem-consultoria");
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -89,6 +133,7 @@ function CriacaoFeedbacksLeanCanvas() {
         <AsideCriacaoFeedbacksLeanCanvas
           idEquipe={idEquipe}
           idLeanCanvas={idLeanCanvas}
+          atualizarQntdFeedbacks={atualizarQntdFeedbacks}
         />
       </div>
 
@@ -105,7 +150,7 @@ function CriacaoFeedbacksLeanCanvas() {
             <Botao
               titulo="enviar"
               classes="btn me-2 btn-warning botao-menor-personalizado"
-              onClick={null}
+              onClick={enviarFeedbacksParaAEquipe}
             />
             <Botao
               titulo="voltar"
@@ -127,6 +172,16 @@ function CriacaoFeedbacksLeanCanvas() {
           </Box>
         </div>
       </div>
+      <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
+        <Alert
+          onClose={handleClose}
+          severity={severidade}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {mensagemSnackBar}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

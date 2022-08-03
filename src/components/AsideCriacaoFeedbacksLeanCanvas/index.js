@@ -156,6 +156,10 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
             ? listaPotencialidades
             : listaFragilidades
         );
+
+        props.atualizarQntdFeedbacks(
+          listaPotencialidades.length + listaFragilidades.length
+        );
       })
       .catch((error) => {
         console.log(error.response.data);
