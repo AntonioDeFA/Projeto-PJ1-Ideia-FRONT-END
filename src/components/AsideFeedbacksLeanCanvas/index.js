@@ -112,24 +112,37 @@ function AsideFeedbacksLeanCanvas(props) {
       </div>
 
       <div className="feedbacks">
-        <List
-          sx={{
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          {feedbacks?.map((feedback, index) => (
-            <li
-              key={index}
-              style={{ maxHeight: "150px", overflowY: "auto" }}
-              className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
-            >
-              <h6 style={{ wordBreak: "break-all", margin: 0 }}>
-                <strong>{index + 1}°</strong> {feedback.sugestao}
-              </h6>
-            </li>
-          ))}
-        </List>
+        {(btnSelecionado === "POTENCIALIDADES" &&
+          feedbacksPotencialidades?.length === 0) ||
+        (btnSelecionado === "FRAGILIDADES" &&
+          feedbacksFragilidades?.length === 0) ? (
+          <h6 className="text-center">
+            Não foram informados feedbacks de{" "}
+            {btnSelecionado === "POTENCIALIDADES"
+              ? "potencialidades"
+              : "fragilidades"}
+            .
+          </h6>
+        ) : (
+          <List
+            sx={{
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            {feedbacks?.map((feedback, index) => (
+              <li
+                key={index}
+                style={{ maxHeight: "150px", overflowY: "auto" }}
+                className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+              >
+                <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                  <strong>{index + 1}°</strong> {feedback.sugestao}
+                </h6>
+              </li>
+            ))}
+          </List>
+        )}
       </div>
     </div>
   );
