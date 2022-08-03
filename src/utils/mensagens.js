@@ -98,3 +98,5 @@ export const MSG064 = "Feedback removido com sucesso!";
 export const MSG065 =
   "Você precisa fornecer feedbacks antes de devolver à equipe!";
 export const MSG066 = "Versão de Lean Canvas devolvida com feedbacks!";
+export const MSG067 =
+  "Uma vez enviados, estes feedbacks não poderão mais ser editados. Deseja enviar estes feedbacks para a equipe?";
