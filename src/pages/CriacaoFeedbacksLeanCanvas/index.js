@@ -1,14 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Alert, Box, Snackbar } from "@mui/material";
+import { Alert, Box, Modal, Snackbar, Typography } from "@mui/material";
 
 import api from "./../../services/api";
 import Botao from "../../components/Botao";
 import LeanCanvas from "../../components/LeanCanvas";
-import { MSG000, MSG005, MSG006, MSG065 } from "./../../utils/mensagens";
+import {
+  MSG000,
+  MSG005,
+  MSG006,
+  MSG065,
+  MSG066,
+  MSG067,
+} from "./../../utils/mensagens";
 import StoreContext from "./../../store/context";
 import DefaultHeader from "../../components/DefaultHeader";
+import { styleModals } from "../../utils/constantes";
 import AsideCriacaoFeedbacksLeanCanvas from "../../components/AsideCriacaoFeedbacksLeanCanvas";
 
 import "./styles.css";
@@ -30,6 +38,18 @@ function CriacaoFeedbacksLeanCanvas() {
     estruturaDeCusto: "",
     fontesDeReceita: "",
   });
+
+  const [openModalAlertaEnvioFeedbacks, setOpenModalAlertaEnvioFeedbacks] =
+    React.useState(false);
+  const handleOpenModalAlertaEnvioFeedbacks = () => {
+    if (qntdFeedbacks === 0) {
+      handleAlerta(MSG065, MSG006);
+      return;
+    }
+    setOpenModalAlertaEnvioFeedbacks(true);
+  };
+  const handleCloseModalAlertaEnvioFeedbacks = () =>
+    setOpenModalAlertaEnvioFeedbacks(false);
 
   const [nomeEquipe, setNomeEquipe] = useState(MSG000);
 
@@ -56,11 +76,6 @@ function CriacaoFeedbacksLeanCanvas() {
   };
 
   const enviarFeedbacksParaAEquipe = () => {
-    if (qntdFeedbacks === 0) {
-      handleAlerta(MSG065, MSG006);
-      return;
-    }
-
     let leanCanvasNovaEtapa = {
       idArtefato: idLeanCanvas,
       tipoArtefato: "LEAN_CANVAS",
@@ -71,8 +86,12 @@ function CriacaoFeedbacksLeanCanvas() {
     api
       .put("/atualizar-etapa-artefato-pitch", leanCanvasNovaEtapa)
       .then((response) => {
-        handleAlerta(MSG065, MSG005);
-        navigate("/listagem-consultoria");
+        handleAlerta(MSG066, MSG005);
+        handleCloseModalAlertaEnvioFeedbacks();
+
+        setTimeout(() => {
+          navigate("/listagem-consultoria");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -150,7 +169,7 @@ function CriacaoFeedbacksLeanCanvas() {
             <Botao
               titulo="enviar"
               classes="btn me-2 btn-warning botao-menor-personalizado"
-              onClick={enviarFeedbacksParaAEquipe}
+              onClick={handleOpenModalAlertaEnvioFeedbacks}
             />
             <Botao
               titulo="voltar"
@@ -172,6 +191,7 @@ function CriacaoFeedbacksLeanCanvas() {
           </Box>
         </div>
       </div>
+
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
         <Alert
           onClose={handleClose}
@@ -182,6 +202,36 @@ function CriacaoFeedbacksLeanCanvas() {
           {mensagemSnackBar}
         </Alert>
       </Snackbar>
+
+      <Modal
+        open={openModalAlertaEnvioFeedbacks}
+        onClose={handleCloseModalAlertaEnvioFeedbacks}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: "20px", textAlign: "center" }}
+          >
+            {MSG067}
+          </Typography>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Botao
+              titulo="enviar"
+              classes="btn btn-warning botao-menor-personalizado"
+              onClick={enviarFeedbacksParaAEquipe}
+            />
+            <Botao
+              titulo="cancelar"
+              classes="btn btn-secondary botao-menor-personalizado"
+              onClick={handleCloseModalAlertaEnvioFeedbacks}
+            />
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }
