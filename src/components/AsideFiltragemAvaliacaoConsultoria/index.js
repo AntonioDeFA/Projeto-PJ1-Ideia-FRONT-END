@@ -98,7 +98,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
               onChange={(e) => {
                 setNomeCompeticaoFiltragem(e.target.value);
               }}
-              id="filled-search"
+              id="buscar-equipes-com-artefatos"
               label="Buscar"
               type="search"
               variant="filled"
@@ -108,6 +108,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
 
             <div className="margem-personalizada">
               <Botao
+                id="btn-filtrar-resultados-na-tabela"
                 titulo="filtrar"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={filtrarCompeticoesPorNome}
@@ -145,6 +146,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
                             </StyledTableCell>
                             <StyledTableCell align="center">
                               <i
+                                id="icone-acessar-competicao"
                                 title="Acessar esta competição"
                                 className="fa-solid fa-arrow-right-to-bracket hover-azul cursor-pointer"
                                 onClick={() => {
@@ -152,6 +154,7 @@ function AsideFiltragemAvaliacaoConsultoria(props) {
                                 }}
                               ></i>
                               <i
+                                id="icone-filtrar-por-competicao"
                                 title="Ver equipes desta competição"
                                 className="fa-solid fa-arrow-up-right-from-square hover-azul cursor-pointer"
                                 onClick={() => {

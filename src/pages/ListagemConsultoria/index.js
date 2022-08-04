@@ -97,6 +97,7 @@ function ListagemConsultoria() {
                         id={"btn-acessar-lean-canvas" + index}
                       >
                         <i
+                          id="btn-acessar-tela-criar-feedbacks-lean-canvas"
                           title="Escrever feedbacks no Lean Canvas"
                           className="icone-artefato fa-brands fa-trello"
                           onClick={() => {

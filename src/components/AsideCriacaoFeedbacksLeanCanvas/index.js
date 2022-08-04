@@ -180,6 +180,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
           >
             <div className="d-flex">
               <FormControlLabel
+                id="btn-tipo-feedback-potencialidade"
                 value="potencialidade"
                 ref={rdButtonPotencialidade}
                 control={
@@ -195,6 +196,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
                 label="Potencialidade"
               />
               <FormControlLabel
+                id="btn-tipo-feedback-fragilidade"
                 value="fragilidade"
                 ref={rdButtonFragilidade}
                 control={
@@ -231,7 +233,7 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
         <Botao
           titulo="adicionar"
           onClick={criarFeedback}
-          id="id-btn-feedbacks-fragilidades"
+          id="id-btn-criar-feedbacks-aside-criacao"
           classes="btn me-2 btn-warning botao-menor-personalizado"
         />
       </div>
@@ -251,13 +253,13 @@ function AsideCriacaoFeedbacksLeanCanvas(props) {
               <Botao
                 titulo="potencialidades"
                 onClick={() => trocarListaFeedbacks("POTENCIALIDADES")}
-                id="id-btn-feedbacks-potencialidades"
+                id="id-btn-feedbacks-potencialidades-aside-criacao"
                 classes={classesBtnPotencialidades}
               />
               <Botao
                 titulo="fragilidades"
                 onClick={() => trocarListaFeedbacks("FRAGILIDADES")}
-                id="id-btn-feedbacks-fragilidades"
+                id="id-btn-feedbacks-fragilidades-aside-criacao"
                 classes={classesBtnFragilidades}
               />
             </ButtonGroup>

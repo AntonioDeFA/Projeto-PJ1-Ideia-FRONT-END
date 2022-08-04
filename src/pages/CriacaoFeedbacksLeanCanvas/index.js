@@ -167,11 +167,13 @@ function CriacaoFeedbacksLeanCanvas() {
           </div>
           <div>
             <Botao
+              id="btn-enviar-feedbacks-para-a-equipe"
               titulo="enviar"
               classes="btn me-2 btn-warning botao-menor-personalizado"
               onClick={handleOpenModalAlertaEnvioFeedbacks}
             />
             <Botao
+              id="btn-voltar-para-a-tela-de-listagem-consultoria"
               titulo="voltar"
               classes="btn me-4 btn-secondary botao-menor-personalizado"
               onClick={() => {
