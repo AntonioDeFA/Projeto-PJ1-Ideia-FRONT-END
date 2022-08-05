@@ -21,6 +21,8 @@ import CadastroCompeticao from "./pages/CadastroCompeticao";
 import FeedbacksLeanCanvas from "./pages/FeedbacksLeanCanvas/index";
 import ListagemConsultoria from "./pages/ListagemConsultoria/index";
 import CriacaoFeedbacksLeanCanvas from "./pages/CriacaoFeedbacksLeanCanvas";
+import CriacaoAvaliacao from "./pages/CriacaoAvaliacao";
+import FeedbacksPitch from "./pages/FeedbacksPitch";
 
 function ProjetoRoutes() {
   return (
@@ -133,6 +135,22 @@ function ProjetoRoutes() {
             element={
               <RoutesPrivate>
                 <CriacaoFeedbacksLeanCanvas />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/avaliar-equipe/:idEquipe"
+            element={
+              <RoutesPrivate>
+                <CriacaoAvaliacao />
+              </RoutesPrivate>
+            }
+          />
+          <Route
+            path="/criar-feedbacks-pitch/:idEquipe/:idPitch"
+            element={
+              <RoutesPrivate>
+                <FeedbacksPitch />
               </RoutesPrivate>
             }
           />

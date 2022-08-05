@@ -1,0 +1,14 @@
+#id-criar-avaliacao-equipe {
+  margin-left: 40px;
+  margin-right: 46px;
+  margin-top: 40px;
+}
+
+.div-movimentar-nota-maxima {
+  background-color: #ffc107;
+  width: 55%;
+  height: 48px;
+  border-radius: 0px 10px 0px 0px;
+  text-align: center;
+  vertical-align: text-bottom;
+}
