@@ -1,0 +1,23 @@
+.margem-pagina-feedback-pitch {
+  margin-left: 40px;
+  margin-right: 46px;
+  margin-top: 40px;
+}
+
+.card-feedback-pitch {
+  background-color: #ffc107;
+  height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.cor-branca {
+  color: white !important;
+}
+
+.icone-x-remover-feedback-pitch {
+  top: 5%;
+  left: 96%;
+  position: absolute;
+  color: red;
+}
