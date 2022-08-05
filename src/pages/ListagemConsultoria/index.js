@@ -74,7 +74,7 @@ function ListagemConsultoria() {
                   <div
                     className={
                       (equipe.idPitch && !equipe.idLeanCanvas) ||
-                      (!equipe.idPitch && equipe.idLeanCanvas)
+                        (!equipe.idPitch && equipe.idLeanCanvas)
                         ? "elementos-centralizados"
                         : "botoes-acessar-artefato"
                     }
@@ -87,6 +87,11 @@ function ListagemConsultoria() {
                         <i
                           title="Escrever feedbacks no Pitch Deck"
                           className="icone-artefato fa-solid fa-file-arrow-down"
+                          onClick={() => {
+                            navigate(
+                              `/criar-feedbacks-pitch/${equipe.idEquipe}/${equipe.idPitch}`
+                            );
+                          }}
                         ></i>
                       </div>
                     ) : null}
