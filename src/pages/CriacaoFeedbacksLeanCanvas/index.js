@@ -222,11 +222,13 @@ function CriacaoFeedbacksLeanCanvas() {
           </Typography>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Botao
+              id="btn-enviar-feedbacks-modal"
               titulo="enviar"
               classes="btn btn-warning botao-menor-personalizado"
               onClick={enviarFeedbacksParaAEquipe}
             />
             <Botao
+              id="btn-cancelar-envio-feedbacks-modal"
               titulo="cancelar"
               classes="btn btn-secondary botao-menor-personalizado"
               onClick={handleCloseModalAlertaEnvioFeedbacks}
