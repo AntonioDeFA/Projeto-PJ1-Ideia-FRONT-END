@@ -27,7 +27,8 @@ import {
   MSG069,
   MSG070,
   MSG071,
-  MSG072
+  MSG072,
+  MSG073
 } from "./../../utils/mensagens";
 
 import "./styles.css";
@@ -195,12 +196,15 @@ function CriacaoAvaliacao() {
         api
           .post(`/criar-avaliacao/${idEquipe}`, questoes)
           .then((response) => {
-            navigate("/listagem-avaliacao");
+            handleAlerta(MSG073, MSG005)
+            setTimeout(() => {
+              navigate("/listagem-avaliacao");
+            }, 400);
           })
           .catch((error) => {
             console.log(error.response.data);
           });
-      }, 2500);
+      }, 2000);
 
     } else {
       handleAlerta(MSG072, MSG006);
@@ -285,7 +289,6 @@ function CriacaoAvaliacao() {
     api
       .get(`/equipe/${idEquipe}/dados-avaliacao`)
       .then((response) => {
-        console.log(response.data);
         setDadosAvaliacao(response.data);
         setQuestoesAdaptabilidade(response.data.questoesAdaptabilidade);
         setQuestoesInovacao(response.data.questoesInovacao);
@@ -302,7 +305,7 @@ function CriacaoAvaliacao() {
       <DefaultHeader iconeDestaque="avaliador" />
       <div id="id-criar-avaliacao-equipe">
         <div className="d-flex justify-content-between mb-4">
-          <div className="titulos-principais">Nome Competição / Nome Equipe</div>
+          <div className="titulos-principais">{dadosAvaliacao?.nomeCompeticao} / {dadosAvaliacao?.nomeEquipe}</div>
           <div>
             <Botao
               titulo="lean canvas"
