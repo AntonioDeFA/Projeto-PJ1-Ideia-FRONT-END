@@ -105,3 +105,4 @@ export const MSG069 = "As sugestões devem ter no mínimo 5 caracteres.";
 export const MSG070 = "A nota atribuida não pode exceder a nota máxima.";
 export const MSG071 = "Avaliação criada com sucesso.";
 export const MSG072 = "É preciso avaliar todas as questões antes de concluir a avaliação.";
+export const MSG073 = "Avaliação concluida com sucesso.";
