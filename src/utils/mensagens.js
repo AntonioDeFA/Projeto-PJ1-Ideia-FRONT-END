@@ -100,3 +100,8 @@ export const MSG065 =
 export const MSG066 = "Versão de Lean Canvas devolvida com feedbacks!";
 export const MSG067 =
   "Uma vez enviados, estes feedbacks não poderão mais ser editados. Deseja enviar estes feedbacks para a equipe?";
+export const MSG068 = "Versão de Pitch devolvida com feedbacks!";
+export const MSG069 = "As sugestões devem ter no mínimo 5 caracteres.";
+export const MSG070 = "A nota atribuida não pode exceder a nota máxima.";
+export const MSG071 = "Avaliação criada com sucesso.";
+export const MSG072 = "É preciso avaliar todas as questões antes de concluir a avaliação.";
