@@ -1,18 +1,33 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Modal,
+  Typography,
+  TextareaAutosize,
+  Tabs,
+  Tab,
+  List,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  Snackbar,
+  Alert
+} from "@mui/material";
 
 import api from "../../../services/api";
 import Botao from "../../Botao/index";
 import StoreContext from "../../../store/context";
+import { styleModals } from "../../../utils/constantes";
 import {
   MSG000,
   MSG005,
   MSG006,
-  MSG054,
   MSG058,
   MSG059,
+  MSG074
 } from "../../../utils/mensagens";
 
 import "./styles.css";
@@ -26,6 +41,14 @@ function PainelPitchDeck(props) {
   const [open, setOpen] = useState(false);
   const [severidade, setSeveridade] = useState(MSG000);
   const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
+
+  const [openModalAlerta, setOpenModalAlerta] =
+    React.useState(false);
+  const handleOpenModalAlerta = () =>
+    setOpenModalAlerta(true);
+  ;
+  const handleCloseModalAlerta = () =>
+    setOpenModalAlerta(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -52,37 +75,44 @@ function PainelPitchDeck(props) {
 
   const fazerUpload = async () => {
     let arquivoInput = document.getElementById("id-input-pitch-deck").files[0];
-
+    handleCloseModalAlerta();
     if (arquivoInput) {
-      let extensaoPdf = /(.pdf)$/i;
-      let result = await toBase64(arquivoInput);
-      result = result.replace("data:video/mp4;base64,", "");
+      let extensao = arquivoInput.name.split(".").pop();
 
-      let nome = arquivoInput.name.split(".")[0];
+      if (extensao !== "pdf" && extensao !== "mp4") {
+        handleAlerta(MSG074, MSG006);
+      } else {
+        let extensaoPdf = /(.pdf)$/i;
+        let result = await toBase64(arquivoInput);
+        result = result.replace("data:video/mp4;base64,", "");
 
-      let tipo = "VIDEO";
+        let nome = arquivoInput.name.split(".")[0];
 
-      if (extensaoPdf.exec(arquivoInput.name)) {
-        tipo = "ARQUIVO";
-        result = result.replace("data:application/pdf;base64,", "");
+        let tipo = "VIDEO";
+
+        if (extensaoPdf.exec(arquivoInput.name)) {
+          tipo = "ARQUIVO";
+          result = result.replace("data:application/pdf;base64,", "");
+        }
+
+        await setTimeout(() => {
+          api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+          api
+            .post(`/pitch-deck/${props.idEquipe}`, {
+              arquivoPitchDeck: result,
+              tipo,
+              titulo: nome,
+              descricao: nome,
+            })
+            .then((response) => {
+              handleAlerta(MSG059, MSG005);
+            })
+            .catch((error) => {
+              handleAlerta(error.response.data.message, MSG006);
+            });
+        }, 400);
       }
 
-      await setTimeout(() => {
-        api.defaults.headers.post["Authorization"] = `Bearer ${token}`;
-        api
-          .post(`/pitch-deck/${props.idEquipe}`, {
-            arquivoPitchDeck: result,
-            tipo,
-            titulo: nome,
-            descricao: nome,
-          })
-          .then((response) => {
-            handleAlerta(MSG059, MSG005);
-          })
-          .catch((error) => {
-            handleAlerta(error.response.data.message, MSG006);
-          });
-      }, 400);
     }
   };
 
@@ -101,42 +131,30 @@ function PainelPitchDeck(props) {
       .then((response) => {
         setCompeticao(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }, []);
 
   return (
     <div id="painel-pitch-deck">
-      <h5 className="mb-4">
-        Olá competidor, aqui você poderá carregar seu Pitch Deck para que ele
-        possa ser avaliado!
-      </h5>
-      <h5 className="mb-4">
-        Aqui você envia um arquivo que te ajuda a demonstrar a sua ideias!
-      </h5>
-      <h5 className="mb-5">
-        Lembre-se: caso envie um vídeo, ele deve estar no limite máximo do
-        pitch, que é {competicao?.tempoMaximoVideoEmSeg / 60} minutos!
-      </h5>
-      <div className="d-flex justify-content-start mt-5">
+      <div className="d-flex justify-content-start mt-2">
         {props.papelUsuario === "USUARIO_TOKEN" ? (
           <h3>Verifique as versões do seu Pitch Deck</h3>
         ) : (
           <h3>Faça o upload do seu Pitch Deck</h3>
         )}
         <div className="ms-4">
-          <label for="id-input-pitch-deck">
-            <i className="fa fa-upload fa-2x cursor-pointer icone-upload"></i>
-          </label>
-          <input
-            type="file"
-            id="id-input-pitch-deck"
-            accept="video/*,.pdf"
-            onChange={(evento) => {
-              fazerUpload();
-            }}
-          />
+          <i
+            className="fa fa-upload fa-2x cursor-pointer icone-upload"
+            onClick={handleOpenModalAlerta}
+          ></i>
         </div>
       </div>
+      <h5 className="mb-4 mt-2">
+        Olá competidor, aqui você poderá carregar seu Pitch Deck para que ele
+        possa ser avaliado. Aqui você envia um arquivo que te ajuda a demonstrar a sua ideias.
+        Lembre-se, caso envie um vídeo, ele deve estar no limite máximo do
+        pitch, que é <strong>{competicao?.tempoMaximoVideoEmSeg / 60}</strong> minutos.
+      </h5>
       <div className="d-flex justify-content-between espacamento-entre-botoes-pitch-deck mt-3">
         {props.papelUsuario === "USUARIO_TOKEN" ? null : (
           <Botao
@@ -155,6 +173,41 @@ function PainelPitchDeck(props) {
           }}
         />
       </div>
+      <Modal
+        open={openModalAlerta}
+        onClose={handleCloseModalAlerta}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModals}>
+          <div>
+            <h5 className="m-0">{MSG074}</h5>
+            <div className="d-flex justify-content-between mt-3 pt-3">
+              <Botao
+                titulo="voltar"
+                classes="btn btn-secondary botao-menor-personalizado"
+                id="btn-voltar-feedback-pitch"
+                onClick={handleCloseModalAlerta}
+              />
+              <div>
+                <label for="id-input-pitch-deck">
+                  <div className="btn btn-warning">
+                    <h5 className="m-0 align-self-center text-white"><strong>ESCOLHER ARQUIVO</strong></h5>
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  id="id-input-pitch-deck"
+                  accept="video/*,.pdf"
+                  onChange={(evento) => {
+                    fazerUpload();
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
       <Snackbar open={open} onClose={handleClose} autoHideDuration={5000}>
         <Alert
           onClose={handleClose}
