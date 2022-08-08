@@ -6,9 +6,58 @@
 
 .div-movimentar-nota-maxima {
   background-color: #ffc107;
-  width: 55%;
+  width: 100px;
   height: 48px;
-  border-radius: 0px 10px 0px 0px;
+  border-radius: 0 .25rem 0 0;
   text-align: center;
   vertical-align: text-bottom;
+}
+
+.tamanho-personalizado {
+  width: 600px !important;
+  height: 150px !important;
+}
+
+#campo-problema {
+  height: 300px !important;
+  width: 230px !important;
+}
+
+#campo-proposta {
+  height: 300px !important;
+  width: 230px !important;
+}
+
+#campo-segmentos {
+  height: 300px !important;
+  width: 230px !important;
+}
+
+#campo-solucao {
+  height: 125px !important;
+  width: 230px !important;
+}
+
+#campo-metricas {
+  height: 125px !important;
+  width: 230px !important;
+}
+
+#campo-vantagem {
+  height: 125px !important;
+  width: 230px !important;
+  margin-top: 20px;
+}
+
+#campo-canais {
+  height: 125px !important;
+  width: 230px !important;
+}
+
+#campo-estrutura {
+  height: 125px !important;
+}
+
+#campo-fonte {
+  height: 125px !important;
 }
