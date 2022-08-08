@@ -222,7 +222,7 @@ function FeedbacksPitch(props) {
                 position: "relative",
                 borderRadius: ".25rem .70rem .25rem .25rem",
               }}
-              className="borda-laranja rounded p-3 m-3"
+              className="borda-laranja rounded p-3"
             >
               <h6 style={{ wordBreak: "break-all", margin: 0 }}>
                 {feedback.sugestao}
@@ -292,7 +292,7 @@ function FeedbacksPitch(props) {
       />
       <div className="margem-pagina-feedback-pitch">
         <div className="d-flex justify-content-between">
-          <h5 className="titulos-principais m-0">Feedback Picth da equipe {nomeEquipe}</h5>
+          <h5 className="titulos-principais m-0">Pitch Deck da Equipe {nomeEquipe}</h5>
           <div>
             <Botao
               titulo="enviar"
@@ -393,10 +393,10 @@ function FeedbacksPitch(props) {
                 />
               </Tabs>
             </Box>
-            <TabPanel color="warning" value={value} index={0}>
+            <TabPanel color="warning" value={value} index={0} className="tab-customizada">
               <Lista opcao="POTENCIALIDADE" />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={1} className="tab-customizada">
               <Lista opcao="FRAGILIDADE" />
             </TabPanel>
           </div>
