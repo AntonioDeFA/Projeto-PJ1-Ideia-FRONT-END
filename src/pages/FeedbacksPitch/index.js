@@ -28,7 +28,10 @@ import {
   MSG006,
   MSG062,
   MSG063,
-  MSG064
+  MSG064,
+  MSG065,
+  MSG067,
+  MSG068
 } from "./../../utils/mensagens";
 
 import "./styles.css";
@@ -56,7 +59,7 @@ function FeedbacksPitch(props) {
     React.useState(false);
   const handleOpenModalAlertaEnvioFeedbacks = () => {
     if (listaPotencialidade.length === 0 && listaFragilidade.length === 0) {
-      handleAlerta("MSG065", MSG006);
+      handleAlerta(MSG065, MSG006);
       return;
     }
     setOpenModalAlertaEnvioFeedbacks(true);
@@ -89,7 +92,7 @@ function FeedbacksPitch(props) {
   const baixarArquivo = () => {
     let descricaoType = "video/mp4;base64";
 
-    if (arquivoPitch.tipoArquivo === "PDF") {
+    if (arquivoPitch.tipoArquivo === "ARQUIVO") {
       descricaoType = "application/pdf;base64";
     }
 
@@ -151,26 +154,26 @@ function FeedbacksPitch(props) {
 
   const enviarFeedbacksParaAEquipe = () => {
     console.log("CLICOU EM ENVIAR");
-    // api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
-    // api
-    //   .put("/atualizar-etapa-artefato-pitch", 
-    //   {
-    //     idArtefato: idPitch,
-    //     tipoArtefato: "PITCH_DECK",
-    //     novaEtapa: "AVALIADO_CONSULTOR"
-    //   }
-    //   )
-    //   .then((response) => {
-    //     handleAlerta("MSG066", MSG005);
-    //     handleCloseModalAlertaEnvioFeedbacks();
+    api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
+    api
+      .put("/atualizar-etapa-artefato-pitch",
+        {
+          idArtefato: idPitch,
+          tipoArtefato: "PITCH_DECK",
+          novaEtapa: "AVALIADO_CONSULTOR"
+        }
+      )
+      .then((response) => {
+        handleAlerta(MSG068, MSG005);
+        handleCloseModalAlertaEnvioFeedbacks();
 
-    //     setTimeout(() => {
-    //       navigate("/listagem-consultoria");
-    //     }, 3000);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
+        setTimeout(() => {
+          navigate("/listagem-consultoria");
+        }, 3000);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
 
     handleCloseModalAlertaEnvioFeedbacks(); //apagar essa linha depois
   }
@@ -311,7 +314,7 @@ function FeedbacksPitch(props) {
           <div className="w-50 pe-2">
             <div className="d-flex justify-content-between mt-1">
               <div className="align-self-center">
-                <h5 className="m-0">Comentário</h5>
+                <h5 className="m-0">Feedback</h5>
               </div>
               <FormControl>
                 <RadioGroup row value={opcaoTipoFeedback} onChange={handleRadioButtonsTipoFeedback}>
@@ -421,7 +424,7 @@ function FeedbacksPitch(props) {
               component="h2"
               style={{ marginBottom: "20px", textAlign: "center" }}
             >
-              {"MSG067"}
+              {MSG067}
             </Typography>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Botao
