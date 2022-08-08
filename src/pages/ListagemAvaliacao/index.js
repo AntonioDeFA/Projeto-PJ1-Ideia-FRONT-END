@@ -15,20 +15,19 @@ function ListagemAvaliacao() {
   const [pitches, setPitches] = useState([]);
 
   const filtrarEquipesPorCompeticao = (idCompeticao) => {
-    console.log(`Filtrando equipes pela competição ${idCompeticao}`);
+    api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
+    api
+      .get(`/${idCompeticao}/equipes/para-avaliacao`)
+      .then((response) => {
+        setPitches(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   useEffect(() => {
-    setPitches([
-      { id: 1, nomeEquipe: "teste" },
-      { id: 2, nomeEquipe: "teste" },
-      { id: 3, nomeEquipe: "teste" },
-      { id: 4, nomeEquipe: "teste" },
-      { id: 5, nomeEquipe: "teste" },
-      { id: 6, nomeEquipe: "teste" },
-      { id: 7, nomeEquipe: "teste" },
-      { id: 8, nomeEquipe: "teste" },
-    ]);
+    filtrarEquipesPorCompeticao(0);
   }, [token]);
 
   return (
@@ -74,11 +73,11 @@ function ListagemAvaliacao() {
                     id={"btn-acessar-lean-canvas" + index}
                   >
                     <i className="icone-pitch fa-solid fa-arrow-right-to-bracket hover-azul"
-                    onClick={() => {
-                      navigate(
-                        `/avaliar-equipe/${pitch.id}`
-                      );
-                    }}></i>
+                      onClick={() => {
+                        navigate(
+                          `/avaliar-equipe/${pitch.idEquipe}`
+                        );
+                      }}></i>
                   </div>
                 </div>
               </li>

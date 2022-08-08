@@ -85,6 +85,7 @@ function ListagemConsultoria() {
                         id={"btn-acessar-pitch-deck" + index}
                       >
                         <i
+                          id="btn-acessar-tela-criar-feedbacks-pitch-deck"
                           title="Escrever feedbacks no Pitch Deck"
                           className="icone-artefato fa-solid fa-file-arrow-down"
                           onClick={() => {
