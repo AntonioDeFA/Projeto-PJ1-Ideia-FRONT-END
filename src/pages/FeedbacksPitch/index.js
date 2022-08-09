@@ -31,13 +31,12 @@ import {
   MSG064,
   MSG065,
   MSG067,
-  MSG068
+  MSG068,
 } from "./../../utils/mensagens";
 
 import "./styles.css";
 
 function FeedbacksPitch(props) {
-
   const [value, setValue] = React.useState(0);
   const [listaPotencialidade, setListaPotencialidade] = useState([]);
   const [listaFragilidade, setListaFragilidade] = useState([]);
@@ -87,7 +86,7 @@ function FeedbacksPitch(props) {
     } else {
       setValue(0);
     }
-  }
+  };
 
   const baixarArquivo = () => {
     let descricaoType = "video/mp4;base64";
@@ -105,14 +104,12 @@ function FeedbacksPitch(props) {
     var file = new Blob([byteArray], { type: descricaoType });
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
-  }
+  };
 
   const adicionarFeedback = async () => {
-
     if (feedback.length < 5) {
       handleAlerta(MSG062, MSG006);
     } else {
-
       const feedbackFormatado = {
         tipoFeedback: opcaoTipoFeedback.toUpperCase(),
         sugestao: feedback,
@@ -136,8 +133,7 @@ function FeedbacksPitch(props) {
         mudarBotao(opcaoTipoFeedback);
       }, 1000);
     }
-
-  }
+  };
 
   const removerFeedback = (idFeedback) => {
     api.defaults.headers.delete["Authorization"] = `Bearer ${token}`;
@@ -150,19 +146,17 @@ function FeedbacksPitch(props) {
       .catch((error) => {
         console.log(error.response.data);
       });
-  }
+  };
 
   const enviarFeedbacksParaAEquipe = () => {
     console.log("CLICOU EM ENVIAR");
     api.defaults.headers.put["Authorization"] = `Bearer ${token}`;
     api
-      .put("/atualizar-etapa-artefato-pitch",
-        {
-          idArtefato: idPitch,
-          tipoArtefato: "PITCH_DECK",
-          novaEtapa: "AVALIADO_CONSULTOR"
-        }
-      )
+      .put("/atualizar-etapa-artefato-pitch", {
+        idArtefato: idPitch,
+        tipoArtefato: "PITCH_DECK",
+        novaEtapa: "AVALIADO_CONSULTOR",
+      })
       .then((response) => {
         handleAlerta(MSG068, MSG005);
         handleCloseModalAlertaEnvioFeedbacks();
@@ -176,17 +170,16 @@ function FeedbacksPitch(props) {
       });
 
     handleCloseModalAlertaEnvioFeedbacks(); //apagar essa linha depois
-  }
+  };
 
   const Lista = (props) => {
-
     let lista = [];
 
     if (props.opcao === "FRAGILIDADE") {
       lista = listaFragilidade;
       setTipoSelecionado("FRAGILIDADE");
     } else {
-      lista = listaPotencialidade
+      lista = listaPotencialidade;
       setTipoSelecionado("POTENCIALIDADE");
     }
 
@@ -201,7 +194,6 @@ function FeedbacksPitch(props) {
         </h6>
       );
     } else {
-
       return (
         <List
           sx={{
@@ -234,13 +226,11 @@ function FeedbacksPitch(props) {
                 onClick={() => removerFeedback(feedback.idFeedback)}
               ></i>
             </div>
-          ))
-          }
-        </List >
+          ))}
+        </List>
       );
     }
-
-  }
+  };
 
   useEffect(() => {
     let listaPotencialidades = [];
@@ -248,18 +238,14 @@ function FeedbacksPitch(props) {
 
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
     api
-      .get(
-        `/pitch-deck/${idPitch}/feedbacks-pitch-consultoria`
-      )
+      .get(`/pitch-deck/${idPitch}/feedbacks-pitch-consultoria`)
       .then((response) => {
-        console.log(response.data)
-        setArquivoPitch(
-          {
-            arquivo: response.data.arquivoPitchDeck,
-            tipoArquivo: response.data.tipo,
-            nome: response.data.nome
-          }
-        );
+        console.log(response.data);
+        setArquivoPitch({
+          arquivo: response.data.arquivoPitchDeck,
+          tipoArquivo: response.data.tipo,
+          nome: response.data.nome,
+        });
         response.data.feedbacksAvaliativos.map((feedback) => {
           feedback.tipoFeedback === "POTENCIALIDADE"
             ? listaPotencialidades.push(feedback)
@@ -268,7 +254,6 @@ function FeedbacksPitch(props) {
 
         setListaPotencialidade(listaPotencialidades);
         setListaFragilidade(listaFragilidades);
-
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -292,7 +277,9 @@ function FeedbacksPitch(props) {
       />
       <div className="margem-pagina-feedback-pitch">
         <div className="d-flex justify-content-between">
-          <h5 className="titulos-principais m-0">Pitch Deck da Equipe {nomeEquipe}</h5>
+          <h5 className="titulos-principais m-0">
+            Pitch Deck da Equipe {nomeEquipe}
+          </h5>
           <div>
             <Botao
               titulo="enviar"
@@ -317,27 +304,40 @@ function FeedbacksPitch(props) {
                 <h5 className="m-0">Feedback</h5>
               </div>
               <FormControl>
-                <RadioGroup row value={opcaoTipoFeedback} onChange={handleRadioButtonsTipoFeedback}>
-                  <FormControlLabel value="POTENCIALIDADE" control={
-                    <Radio
-                      sx={{
-                        color: "#999",
-                        "&.Mui-checked": {
-                          color: "#FC7A00",
-                        },
-                      }}
-                    />
-                  } label="Potencialidade" />
-                  <FormControlLabel value="FRAGILIDADE" control={
-                    <Radio
-                      sx={{
-                        color: "#999",
-                        "&.Mui-checked": {
-                          color: "#FC7A00",
-                        },
-                      }}
-                    />
-                  } label="Fragilidade" className="me-0" />
+                <RadioGroup
+                  row
+                  value={opcaoTipoFeedback}
+                  onChange={handleRadioButtonsTipoFeedback}
+                >
+                  <FormControlLabel
+                    value="POTENCIALIDADE"
+                    control={
+                      <Radio
+                        sx={{
+                          color: "#999",
+                          "&.Mui-checked": {
+                            color: "#FC7A00",
+                          },
+                        }}
+                      />
+                    }
+                    label="Potencialidade"
+                  />
+                  <FormControlLabel
+                    value="FRAGILIDADE"
+                    control={
+                      <Radio
+                        sx={{
+                          color: "#999",
+                          "&.Mui-checked": {
+                            color: "#FC7A00",
+                          },
+                        }}
+                      />
+                    }
+                    label="Fragilidade"
+                    className="me-0"
+                  />
                 </RadioGroup>
               </FormControl>
             </div>
@@ -361,10 +361,14 @@ function FeedbacksPitch(props) {
             />
             <div className=" d-flex justify-content-between mt-4 card-feedback-pitch rounded">
               <div className="d-flex justify-content-start">
-                {arquivoPitch?.tipoArquivo === "ARQUIVO" ?
-                  (<i className="fa fa-file-powerpoint-o fa-2x cor-branca align-self-center"></i>) :
-                  (<i class="fa fa-youtube-play fa-2x cor-branca align-self-center"></i>)}
-                <h6 className="m-0 cor-branca align-self-center text-break ms-2">{arquivoPitch?.nome}</h6>
+                {arquivoPitch?.tipoArquivo === "ARQUIVO" ? (
+                  <i className="fa fa-file-powerpoint-o fa-2x cor-branca align-self-center"></i>
+                ) : (
+                  <i class="fa fa-youtube-play fa-2x cor-branca align-self-center"></i>
+                )}
+                <h6 className="m-0 cor-branca align-self-center text-break ms-2">
+                  {arquivoPitch?.nome}
+                </h6>
               </div>
               <i
                 className="fa-solid fa-download cursor-pointer cor-branca align-self-center"
@@ -383,17 +387,16 @@ function FeedbacksPitch(props) {
                 indicatorColor="inherit"
                 aria-label="basic tabs example"
               >
-                <Tab
-                  label={`Potencialidade`}
-                  {...valueProps(0)}
-                />
-                <Tab
-                  label={`Fragilidade`}
-                  {...valueProps(1)}
-                />
+                <Tab label={`Potencialidade`} {...valueProps(0)} />
+                <Tab label={`Fragilidade`} {...valueProps(1)} />
               </Tabs>
             </Box>
-            <TabPanel color="warning" value={value} index={0} className="tab-customizada">
+            <TabPanel
+              color="warning"
+              value={value}
+              index={0}
+              className="tab-customizada"
+            >
               <Lista opcao="POTENCIALIDADE" />
             </TabPanel>
             <TabPanel value={value} index={1} className="tab-customizada">
@@ -428,11 +431,13 @@ function FeedbacksPitch(props) {
             </Typography>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Botao
+                id="btn-confirmar-envio-de-feedbacks-para-a-equipe"
                 titulo="enviar"
                 classes="btn btn-warning botao-menor-personalizado"
                 onClick={enviarFeedbacksParaAEquipe}
               />
               <Botao
+                id="btn-cancelar-envio-de-feedbacks-para-a-equipe"
                 titulo="cancelar"
                 classes="btn btn-secondary botao-menor-personalizado"
                 onClick={handleCloseModalAlertaEnvioFeedbacks}
