@@ -245,7 +245,7 @@ function CriacaoAvaliacao() {
         subheader={<li />}
       >
         {questoes.map((questao, index) => (
-          <div key={index} className="borda-laranja rounded p-3">
+          <div key={index} className="borda-laranja rounded mb-3 p-3">
             <div className="d-flex justify-content-between">
               <h5 className="text-break w-75 ms-2 mb-0 align-self-center">{questao.questaoAvaliativa}</h5>
               <Botao
@@ -385,7 +385,9 @@ function CriacaoAvaliacao() {
         >
           <Box sx={styleModals}>
             <div className="w-100">
-              <LeanCanvas leanCanvas={dadosAvaliacao?.leanCanvas} isTelaFeedbacks={true} />
+              <div id="lean-anvas-modal">
+                <LeanCanvas leanCanvas={dadosAvaliacao?.leanCanvas} isTelaFeedbacks={true} />
+              </div>
               <div className="d-flex justify-content-end mt-3">
                 <Botao
                   titulo="fechar"

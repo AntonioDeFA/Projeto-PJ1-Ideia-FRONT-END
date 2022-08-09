@@ -18,46 +18,7 @@
   height: 150px !important;
 }
 
-#campo-problema {
-  height: 300px !important;
-  width: 230px !important;
-}
 
-#campo-proposta {
-  height: 300px !important;
-  width: 230px !important;
-}
-
-#campo-segmentos {
-  height: 300px !important;
-  width: 230px !important;
-}
-
-#campo-solucao {
-  height: 125px !important;
-  width: 230px !important;
-}
-
-#campo-metricas {
-  height: 125px !important;
-  width: 230px !important;
-}
-
-#campo-vantagem {
-  height: 125px !important;
-  width: 230px !important;
-  margin-top: 20px;
-}
-
-#campo-canais {
-  height: 125px !important;
-  width: 230px !important;
-}
-
-#campo-estrutura {
-  height: 125px !important;
-}
-
-#campo-fonte {
-  height: 125px !important;
+#lean-anvas-modal {
+  width: 980px !important;
 }

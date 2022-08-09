@@ -214,7 +214,7 @@ function FeedbacksPitch(props) {
                 position: "relative",
                 borderRadius: ".25rem .70rem .25rem .25rem",
               }}
-              className="borda-laranja rounded p-3"
+              className="borda-laranja bg-white d-flex justify-content-start align-items-center mb-3 p-3 w-100"
             >
               <h6 style={{ wordBreak: "break-all", margin: 0 }}>
                 {feedback.sugestao}
@@ -278,7 +278,7 @@ function FeedbacksPitch(props) {
       <div className="margem-pagina-feedback-pitch">
         <div className="d-flex justify-content-between">
           <h5 className="titulos-principais m-0">
-            Pitch Deck da Equipe {nomeEquipe}
+            Pitch Deck da Equipe {nomeEquipe} - Feedbacks
           </h5>
           <div>
             <Botao
