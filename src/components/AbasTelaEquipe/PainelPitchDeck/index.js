@@ -14,7 +14,7 @@ import {
   FormControl,
   FormControlLabel,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 
 import api from "../../../services/api";
@@ -27,7 +27,7 @@ import {
   MSG006,
   MSG058,
   MSG059,
-  MSG074
+  MSG074,
 } from "../../../utils/mensagens";
 
 import "./styles.css";
@@ -42,13 +42,9 @@ function PainelPitchDeck(props) {
   const [severidade, setSeveridade] = useState(MSG000);
   const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
 
-  const [openModalAlerta, setOpenModalAlerta] =
-    React.useState(false);
-  const handleOpenModalAlerta = () =>
-    setOpenModalAlerta(true);
-  ;
-  const handleCloseModalAlerta = () =>
-    setOpenModalAlerta(false);
+  const [openModalAlerta, setOpenModalAlerta] = React.useState(false);
+  const handleOpenModalAlerta = () => setOpenModalAlerta(true);
+  const handleCloseModalAlerta = () => setOpenModalAlerta(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -112,7 +108,6 @@ function PainelPitchDeck(props) {
             });
         }, 400);
       }
-
     }
   };
 
@@ -131,7 +126,7 @@ function PainelPitchDeck(props) {
       .then((response) => {
         setCompeticao(response.data);
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }, []);
 
   return (
@@ -151,9 +146,10 @@ function PainelPitchDeck(props) {
       </div>
       <h5 className="mb-4 mt-2">
         Olá competidor, aqui você poderá carregar seu Pitch Deck para que ele
-        possa ser avaliado. Aqui você envia um arquivo que te ajuda a demonstrar a sua ideias.
-        Lembre-se, caso envie um vídeo, ele deve estar no limite máximo do
-        pitch, que é <strong>{competicao?.tempoMaximoVideoEmSeg / 60}</strong> minutos.
+        possa ser avaliado. Aqui você envia um arquivo que te ajuda a demonstrar
+        a sua ideias. Lembre-se, caso envie um vídeo, ele deve estar no limite
+        máximo do pitch, que é{" "}
+        <strong>{competicao?.tempoMaximoVideoEmSeg / 60}</strong> minutos.
       </h5>
       <div className="d-flex justify-content-between espacamento-entre-botoes-pitch-deck mt-3">
         {props.papelUsuario === "USUARIO_TOKEN" ? null : (
@@ -183,16 +179,12 @@ function PainelPitchDeck(props) {
           <div>
             <h5 className="m-0">{MSG074}</h5>
             <div className="d-flex justify-content-between mt-3 pt-3">
-              <Botao
-                titulo="voltar"
-                classes="btn btn-secondary botao-menor-personalizado"
-                id="btn-voltar-feedback-pitch"
-                onClick={handleCloseModalAlerta}
-              />
               <div>
                 <label for="id-input-pitch-deck">
                   <div className="btn btn-warning">
-                    <h5 className="m-0 align-self-center text-white"><strong>ESCOLHER ARQUIVO</strong></h5>
+                    <h5 className="m-0 align-self-center text-white">
+                      <strong>ESCOLHER ARQUIVO</strong>
+                    </h5>
                   </div>
                 </label>
                 <input
@@ -204,6 +196,12 @@ function PainelPitchDeck(props) {
                   }}
                 />
               </div>
+              <Botao
+                titulo="voltar"
+                classes="btn btn-secondary botao-menor-personalizado"
+                id="btn-voltar-feedback-pitch"
+                onClick={handleCloseModalAlerta}
+              />
             </div>
           </div>
         </Box>
