@@ -16,8 +16,9 @@
 }
 
 .icone-x-remover-feedback-pitch {
-  top: 5%;
-  left: 96%;
+  top: 0;
+  left: 96.5%;
+  overflow: visible;
   position: absolute;
   color: red;
 }
