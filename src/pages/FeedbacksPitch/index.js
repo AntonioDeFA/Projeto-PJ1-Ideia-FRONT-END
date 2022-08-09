@@ -297,7 +297,7 @@ function FeedbacksPitch(props) {
             />
           </div>
         </div>
-        <div className="d-flex justify-content-between mt-5">
+        <div className="d-flex justify-content-between mt-4">
           <div className="w-50 pe-2">
             <div className="d-flex justify-content-between mt-1">
               <div className="align-self-center">
