@@ -45,15 +45,22 @@ function ListagemAvaliacao() {
         <div style={{ marginLeft: "390px", marginTop: "30px" }}>
           <h2 id="nome-pagina">Olá, avaliador!</h2>
         </div>
+
         <div>
-          <h5
-            style={{ marginLeft: "393px" }}
-            className="mb-3"
-            id="saudacao-parte-1"
-          >
-            Lhe foram enviados esses pitches para serem avaliados. Dê uma olhada
-            e devolva-os com notas e feedbacks!
-          </h5>
+          {pitches.length > 0 ? (
+            <h5
+              id="saudacao-parte-1"
+              style={{ marginLeft: "393px" }}
+              className="mb-3"
+            >
+              Lhe foram enviados esses pitches para serem avaliados. Dê uma
+              olhada e devolva-os com notas e feedbacks!
+            </h5>
+          ) : (
+            <h5 style={{ marginLeft: "393px" }} className="mb-3">
+              Você ainda não possui nenhum pitch disponível para avaliação.
+            </h5>
+          )}
         </div>
       </div>
 
@@ -72,12 +79,12 @@ function ListagemAvaliacao() {
                     className="elementos-centralizados cursor-pointer"
                     id={"btn-acessar-lean-canvas" + index}
                   >
-                    <i className="icone-pitch fa-solid fa-arrow-right-to-bracket hover-azul"
+                    <i
+                      className="icone-pitch fa-solid fa-arrow-right-to-bracket hover-azul"
                       onClick={() => {
-                        navigate(
-                          `/avaliar-equipe/${pitch.idEquipe}`
-                        );
-                      }}></i>
+                        navigate(`/avaliar-equipe/${pitch.idEquipe}`);
+                      }}
+                    ></i>
                   </div>
                 </div>
               </li>
