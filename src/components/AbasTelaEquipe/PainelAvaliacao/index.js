@@ -109,10 +109,18 @@ function PainelAvaliacao(props) {
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell className="border">Avaliador</TableCell>
-                    <TableCell className="border">Questão</TableCell>
-                    <TableCell className="border">Comentário</TableCell>
-                    <TableCell className="border">Nota</TableCell>
+                    <TableCell className="border">
+                      <p className="fw-bold m-0">AVALIADOR</p>
+                    </TableCell>
+                    <TableCell className="border">
+                      <p className="fw-bold m-0">QUESTÃO</p>
+                    </TableCell>
+                    <TableCell className="border">
+                      <p className="fw-bold m-0">COMENTÁRIO</p>
+                    </TableCell>
+                    <TableCell className="border">
+                      <p className="fw-bold m-0">NOTA</p>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -145,7 +153,7 @@ function PainelAvaliacao(props) {
                         className="border text-break"
                       >
                         <div>
-                          <strong>{questao.nota}</strong>/{questao.notaMax}
+                          <strong>{questao.nota}</strong> /{questao.notaMax}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -278,13 +286,13 @@ function PainelAvaliacao(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleModals} style={{ width: 600 }}>
-          <h5 className="">
+          <h5>
             Esse processo não pode ser desfeito. Você tem certeza que deseja
             submeter para avaliação?
           </h5>
           <h5 className="mb-2">
-            Verifique seu Lean Canvas e Pitch deck, e lembre-se de ler o
-            regulamento da competição.
+            Verifique seu Pitch Deck e lembre-se de ler o regulamento da
+            competição.
           </h5>
 
           <div className="botoes-cadastro mt-5">

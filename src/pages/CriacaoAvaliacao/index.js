@@ -10,7 +10,7 @@ import {
   Tab,
   List,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 
 import api from "./../../services/api";
@@ -28,15 +28,15 @@ import {
   MSG070,
   MSG071,
   MSG072,
-  MSG073
+  MSG073,
 } from "./../../utils/mensagens";
 
 import "./styles.css";
 
 function CriacaoAvaliacao() {
-
   const [value, setValue] = React.useState(0);
   const [campoNota, setCampoNota] = useState(MSG000);
+  const [campoQuestaoTexto, setQuestaoTexto] = useState(MSG000);
   const [campoSugestao, setCampoSugestao] = useState(MSG000);
   const [pontMax, setPontMax] = useState(0);
   const [tipo, setTipo] = useState(MSG000);
@@ -52,21 +52,13 @@ function CriacaoAvaliacao() {
   const [open, setOpen] = useState(false);
   const [severidade, setSeveridade] = useState(MSG006);
   const [mensagemSnackBar, setMensagemSnackBar] = useState(MSG000);
-  const [openModalLeanCanvas, setOpenModalLeanCanvas] =
-    React.useState(false);
-  const handleOpenModalLeanCanvas = () =>
-    setOpenModalLeanCanvas(true);
-  ;
-  const handleCloseModalLeanCanvas = () =>
-    setOpenModalLeanCanvas(false);
+  const [openModalLeanCanvas, setOpenModalLeanCanvas] = React.useState(false);
+  const handleOpenModalLeanCanvas = () => setOpenModalLeanCanvas(true);
+  const handleCloseModalLeanCanvas = () => setOpenModalLeanCanvas(false);
 
-  const [openModalAvaliar, setOpenModalAvaliar] =
-    React.useState(false);
-  const handleOpenModalAvaliar = () =>
-    setOpenModalAvaliar(true);
-  ;
-  const handleCloseModalAvaliar = () =>
-    setOpenModalAvaliar(false);
+  const [openModalAvaliar, setOpenModalAvaliar] = React.useState(false);
+  const handleOpenModalAvaliar = () => setOpenModalAvaliar(true);
+  const handleCloseModalAvaliar = () => setOpenModalAvaliar(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -82,19 +74,27 @@ function CriacaoAvaliacao() {
   const { token } = useContext(StoreContext);
   const { idEquipe } = useParams();
 
-  const abrirModalAvaliar = (notaMax, sugestao, nota, index, id) => {
+  const abrirModalAvaliar = (
+    notaMax,
+    sugestao,
+    nota,
+    index,
+    id,
+    questaoTexto
+  ) => {
     setPontMax(notaMax);
     setCampoSugestao(sugestao);
     setCampoNota(nota);
-    setPosicao(index)
+    setQuestaoTexto(questaoTexto);
+    setPosicao(index);
     setId(id);
     handleOpenModalAvaliar();
-  }
+  };
 
   const abrirPitch = () => {
     let descricaoType = "video/mp4;base64";
 
-    if (dadosAvaliacao.pitchDeck.tipo === "PDF") {
+    if (dadosAvaliacao.pitchDeck.tipo === "ARQUIVO") {
       descricaoType = "application/pdf;base64";
     }
 
@@ -107,10 +107,9 @@ function CriacaoAvaliacao() {
     var file = new Blob([byteArray], { type: descricaoType });
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
-  }
+  };
 
   const adicionarAvaliacao = () => {
-
     if (campoSugestao === null || campoNota === null) {
       handleAlerta(MSG001, MSG006);
     } else if (campoSugestao.length < 5) {
@@ -118,7 +117,6 @@ function CriacaoAvaliacao() {
     } else if (campoNota > pontMax) {
       handleAlerta(MSG070, MSG006);
     } else {
-
       let lista = [];
 
       if (tipo === "ADAPTABILIDADE") {
@@ -141,54 +139,46 @@ function CriacaoAvaliacao() {
       handleCloseModalAvaliar();
       handleAlerta(MSG071, MSG005);
     }
-  }
+  };
 
   const enviarAvaliacao = async () => {
-
-    if (questoesAdaptabilidade.length +
-      questoesInovacao.length +
-      questoesUtilidade.length +
-      questoesSustentabilidade.length === questoesAvaliadas.length) {
-
-
+    if (
+      questoesAdaptabilidade.length +
+        questoesInovacao.length +
+        questoesUtilidade.length +
+        questoesSustentabilidade.length ===
+      questoesAvaliadas.length
+    ) {
       questoesAdaptabilidade.map((questao) => {
-        questoes.push(
-          {
-            notaAtribuida: Number(questao.nota),
-            idQuestao: Number(questao.id),
-            observacao: questao.sugestao
-          }
-        );
+        questoes.push({
+          notaAtribuida: Number(questao.nota),
+          idQuestao: Number(questao.id),
+          observacao: questao.sugestao,
+        });
       });
 
       questoesInovacao.map((questao) => {
-        questoes.push(
-          {
-            notaAtribuida: Number(questao.nota),
-            idQuestao: Number(questao.id),
-            observacao: questao.sugestao
-          }
-        );
+        questoes.push({
+          notaAtribuida: Number(questao.nota),
+          idQuestao: Number(questao.id),
+          observacao: questao.sugestao,
+        });
       });
 
       questoesUtilidade.map((questao) => {
-        questoes.push(
-          {
-            notaAtribuida: Number(questao.nota),
-            idQuestao: Number(questao.id),
-            observacao: questao.sugestao
-          }
-        );
+        questoes.push({
+          notaAtribuida: Number(questao.nota),
+          idQuestao: Number(questao.id),
+          observacao: questao.sugestao,
+        });
       });
 
       questoesSustentabilidade.map((questao) => {
-        questoes.push(
-          {
-            notaAtribuida: Number(questao.nota),
-            idQuestao: Number(questao.id),
-            observacao: questao.sugestao
-          }
-        );
+        questoes.push({
+          notaAtribuida: Number(questao.nota),
+          idQuestao: Number(questao.id),
+          observacao: questao.sugestao,
+        });
       });
 
       setTimeout(() => {
@@ -196,24 +186,21 @@ function CriacaoAvaliacao() {
         api
           .post(`/criar-avaliacao/${idEquipe}`, questoes)
           .then((response) => {
-            handleAlerta(MSG073, MSG005)
+            handleAlerta(MSG073, MSG005);
             setTimeout(() => {
               navigate("/listagem-avaliacao");
-            }, 400);
+            }, 3000);
           })
           .catch((error) => {
             console.log(error.response.data);
           });
       }, 2000);
-
     } else {
       handleAlerta(MSG072, MSG006);
     }
-  }
-
+  };
 
   const ListaQuestao = (props) => {
-
     const { opcao } = props;
 
     let questoes = [];
@@ -247,18 +234,31 @@ function CriacaoAvaliacao() {
         {questoes.map((questao, index) => (
           <div key={index} className="borda-laranja rounded mb-3 p-3">
             <div className="d-flex justify-content-between">
-              <h5 className="text-break w-75 ms-2 mb-0 align-self-center">{questao.questaoAvaliativa}</h5>
+              <h5 className="text-break w-75 ms-2 mb-0 align-self-center">
+                {questao.questaoAvaliativa}
+              </h5>
               <Botao
                 titulo="responder questão"
                 classes="btn btn-warning botao-menor-personalizado"
                 id="btn-lean-canvas-avaliacao"
-                onClick={() => abrirModalAvaliar(questao.pontuacaoMaxima, questao.sugestao, questao.nota, index, questao.id)}
+                onClick={() =>
+                  abrirModalAvaliar(
+                    questao.pontuacaoMaxima,
+                    questao.sugestao,
+                    questao.nota,
+                    index,
+                    questao.id,
+                    questao.questaoAvaliativa
+                  )
+                }
               />
             </div>
             {questao.sugestao !== null ? (
               <div>
                 <div className="d-flex justify-content-end mt-4">
-                  <h5 className="m-0"><strong>{questao.nota}</strong>/{questao.pontuacaoMaxima} </h5>
+                  <h5 className="m-0">
+                    <strong>{questao.nota}</strong> /{questao.pontuacaoMaxima}{" "}
+                  </h5>
                 </div>
                 <TextareaAutosize
                   id="textarea-sugestao-questao-avaliativa"
@@ -270,19 +270,18 @@ function CriacaoAvaliacao() {
                   disabled={true}
                 />
               </div>
-            ) :
-              (
-                <div className="w-25 border border-danger rounded mt-4">
-                  <h6 className="m-2 text-center text-danger">
-                    Necessita de avaliação.
-                  </h6>
-                </div>
-              )}
+            ) : (
+              <div className="w-25 border border-danger rounded mt-4">
+                <h6 className="m-2 text-center text-danger">
+                  Necessita de avaliação.
+                </h6>
+              </div>
+            )}
           </div>
         ))}
-      </List >
+      </List>
     );
-  }
+  };
 
   useEffect(() => {
     api.defaults.headers.get["Authorization"] = `Bearer ${token}`;
@@ -305,7 +304,9 @@ function CriacaoAvaliacao() {
       <DefaultHeader iconeDestaque="avaliador" />
       <div id="id-criar-avaliacao-equipe">
         <div className="d-flex justify-content-between mb-4">
-          <div className="titulos-principais">{dadosAvaliacao?.nomeCompeticao} / {dadosAvaliacao?.nomeEquipe}</div>
+          <div className="titulos-principais">
+            {dadosAvaliacao?.nomeCompeticao} / {dadosAvaliacao?.nomeEquipe}
+          </div>
           <div>
             <Botao
               titulo="lean canvas"
@@ -346,25 +347,30 @@ function CriacaoAvaliacao() {
             aria-label="basic tabs example"
           >
             <Tab
-              label={`Adaptabilidade`}
+              label={`Adaptabilidade (${questoesAdaptabilidade.length})`}
               {...valueProps(0)}
             />
             <Tab
-              label={`Inovação`}
+              label={`Inovação (${questoesInovacao.length})`}
               {...valueProps(1)}
             />
             <Tab
-              label={`Utilidade`}
+              label={`Utilidade (${questoesUtilidade.length})`}
               {...valueProps(2)}
             />
             <Tab
-              label={`Sustentabilidade`}
+              label={`Sustentabilidade (${questoesSustentabilidade.length})`}
               {...valueProps(3)}
             />
           </Tabs>
         </Box>
 
-        <TabPanel color="warning" value={value} index={0} className="tab-customizada">
+        <TabPanel
+          color="warning"
+          value={value}
+          index={0}
+          className="tab-customizada"
+        >
           <ListaQuestao opcao="ADAPTABILIDADE" />
         </TabPanel>
         <TabPanel value={value} index={1} className="tab-customizada">
@@ -386,7 +392,10 @@ function CriacaoAvaliacao() {
           <Box sx={styleModals}>
             <div className="w-100">
               <div id="lean-anvas-modal">
-                <LeanCanvas leanCanvas={dadosAvaliacao?.leanCanvas} isTelaFeedbacks={true} />
+                <LeanCanvas
+                  leanCanvas={dadosAvaliacao?.leanCanvas}
+                  isTelaFeedbacks={true}
+                />
               </div>
               <div className="d-flex justify-content-end mt-3">
                 <Botao
@@ -408,6 +417,9 @@ function CriacaoAvaliacao() {
         >
           <Box sx={styleModals}>
             <div className="w-100">
+              <div style={{ marginBottom: "30px" }}>
+                <h3 className="text-break">{campoQuestaoTexto}</h3>
+              </div>
               <div className="align-self-center d-flex justify-content-start">
                 <TextField
                   id="input-nota-questao"
@@ -425,7 +437,8 @@ function CriacaoAvaliacao() {
                 />
                 <div
                   className="div-movimentar-nota-maxima border-bottom border-secondary d-flex justify-content-between"
-                  title="Esta é a nota máxima que pode ser atribuída nesta questão">
+                  title="Esta é a nota máxima que pode ser atribuída nesta questão"
+                >
                   <h6 className="m-0 w-50 text-end align-self-center">max:</h6>
                   <h6 className="m-0 w-50 text-start ps-2 align-self-center">
                     {pontMax}
@@ -472,7 +485,7 @@ function CriacaoAvaliacao() {
           </Alert>
         </Snackbar>
       </div>
-    </div >
+    </div>
   );
 }
 
