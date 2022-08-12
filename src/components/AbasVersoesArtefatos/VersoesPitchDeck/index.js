@@ -125,24 +125,39 @@ function VersoesPitchDeck(props) {
               </div>
 
               <div id="id-lista-feedbacks" className="feedbacks">
-                <List
-                  sx={{
-                    width: "100%",
-                    position: "relative",
-                  }}
-                >
-                  {feedbacks?.map((feedback, index) => (
-                    <li
-                      key={index}
-                      style={{ maxHeight: "150px", overflowY: "auto" }}
-                      className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
-                    >
-                      <h6 style={{ wordBreak: "break-all", margin: 0 }}>
-                        <strong>{index + 1}°</strong> {feedback.sugestao}
+                {(isPotencialidades &&
+                  feedbacksPotencialidades?.length === 0) ||
+                  (!isPotencialidades &&
+                    feedbacksFragilidades?.length === 0) ?
+                  (
+                    <div className="mt-4">
+                      <h6 className="text-start">
+                        Não foram informados feedbacks de{" "}
+                        {isPotencialidades
+                          ? "potencialidades"
+                          : "fragilidades"}
+                        .
                       </h6>
-                    </li>
-                  ))}
-                </List>
+                    </div>
+                  ) :
+                  (<List
+                    sx={{
+                      width: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    {feedbacks?.map((feedback, index) => (
+                      <li
+                        key={index}
+                        style={{ maxHeight: "150px", overflowY: "auto" }}
+                        className="rounded mb-3 p-2 borda-laranja bg-white d-flex justify-content-start align-items-center mt-2 mb-2 p-3 w-100"
+                      >
+                        <h6 style={{ wordBreak: "break-all", margin: 0 }}>
+                          <strong>{index + 1}°</strong> {feedback.sugestao}
+                        </h6>
+                      </li>
+                    ))}
+                  </List>)}
               </div>
             </div>
           </div>
